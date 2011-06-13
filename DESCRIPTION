@@ -1,0 +1,9 @@
+Package: Bioconductor
+Title: Install/Update Bioconductor and CRAN Packages
+Description: Installs/updates Bioconductor and CRAN packages
+Version: 1.1.9
+Author: Dan Tenenbaum and Biocore Team
+Maintainer: Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>
+biocViews: Software
+Depends: R (>= 2.14.0)
+License: Artistic-2.0
