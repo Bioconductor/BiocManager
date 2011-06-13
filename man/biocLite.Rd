@@ -30,7 +30,7 @@ biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),
     to NOT automatically update.}
 
   \item{suppressAutoUpdate}{\code{logical(1)} indicating whether the
-    \code{Bioconductor} package updates itself.}
+    \code{BiocInstaller} package updates itself.}
 
   \item{ask}{\code{logical(1)} indicating whether to prompt user before
     installed packages are updated, or the character string 'graphics',
@@ -43,7 +43,7 @@ biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),
 \details{
 
   The \code{biocLite()} function is generally used after sourcing the
-  file \code{biocLite.R}. This will install the Bioconductor package
+  file \code{biocLite.R}. This will install the \code{BiocInstaller} package
   if it is not already installed. See example section for more information.
 
 }
@@ -75,12 +75,12 @@ chooseBioCmirror()
 chooseCRANmirror()
 
 
-## If you don't have the Bioconductor package installed, you can 
+## If you don't have the BiocInstaller package installed, you can 
 ## quickly install and load it as follows:
 source("http://bioconductor.org/biocLite.R")
 
 
-## The most recent version of the Bioconductor package is now loaded.
+## The most recent version of the BiocInstaller package is now loaded.
 ## No need to load it with library().
 biocLite() # installs default packages
 
@@ -88,7 +88,7 @@ biocLite() # installs default packages
 ## Now install a CRAN package:
 biocLite("survival")
 
-## install a Bioconductor package, but don't update all installed
+## install a BiocInstaller package, but don't update all installed
 ## packages as well:
 biocLite("GenomicRanges", suppressUpdates=TRUE)
 

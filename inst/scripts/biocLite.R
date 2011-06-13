@@ -13,13 +13,13 @@ local({
         tryCatch(tools:::.BioC_version_associated_with_R_version,
                  error=function(...) numeric_version(0.0))
     if (vers > "2.13" && biocVers > "2.8") {
-        if (!suppressWarnings(require("Bioconductor", quietly=TRUE))) {
+        if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
             oldRepos <- setRepositories(ind=3)
             if (!is.null(oldRepos))
                 on.exit(options(oldRepos))
-            install.packages("Bioconductor")
-            if (!suppressWarnings(require("Bioconductor", quietly=TRUE))) {
-                stop("use 'install.packages(\"Bioconductor\")' before\n",
+            install.packages("BiocInstaller")
+            if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
+                stop("use 'install.packages(\"BiocInstaller\")' before\n",
                       "  'source(\"http://bioconductor.org/biocLite.R\")'")
             }
         }

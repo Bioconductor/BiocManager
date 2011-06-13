@@ -12,7 +12,7 @@ mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
 .onLoad <-
     function(libname, pkgname) 
 {
-    .message("Bioconductor package version %s loaded,
+    .message("BiocInstaller package version %s loaded,
               type ?biocLite for help",
-             packageVersion("Bioconductor"))
+             packageVersion("BiocInstaller"))
 }

@@ -47,8 +47,8 @@ biocLiteInstall <-
 
     version <- getRversion()
     thisRVer <- sprintf("%d.%d", version$major, version$minor)
-    .message("Using R version %s, Bioconductor package version %s.",
-             thisRVer, packageVersion("Bioconductor"))
+    .message("Using R version %s, BiocInstaller package version %s.",
+             thisRVer, packageVersion("BiocInstaller"))
 
     if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
         .stop("failed to load package 'utils'")

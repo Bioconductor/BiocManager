@@ -6,8 +6,8 @@ getContribUrl <-
     {
         contribUrl <- contrib.url(repos)
         pkgs <- available.packages(contribUrl)
-        if (!"Bioconductor" %in% rownames(pkgs))
-            .stop("'Bioconductor' package not in repository '%s'", repos,
+        if (!"BiocInstaller" %in% rownames(pkgs))
+            .stop("'BiocInstaller' package not in repository '%s'", repos,
                   call.=FALSE)
         contribUrl
     }
@@ -29,33 +29,33 @@ bioconductorPackageIsCurrent <-
 {
     installedSentinel <- availableSentinel <- package_version("0.0.0")
     installedVersion <-
-        tryCatch(packageVersion("Bioconductor"),
+        tryCatch(packageVersion("BiocInstaller"),
                  error = function(err) installedSentinel)
     ap <- available.packages(getContribUrl())
     availableVersion <-
-        if ("Bioconductor" %in% rownames(ap))
-            package_version(ap["Bioconductor", "Version"])
+        if ("BiociInstaller" %in% rownames(ap))
+            package_version(ap["BiocInstaller", "Version"])
         else
             availableSentinel
     if ((installedVersion == availableVersion) &&
         (installedVersion == installedSentinel))
-        .stop("'Bioconductor' package not installed, and not available")
+        .stop("'BiocInstaller' package not installed, and not available")
     availableVersion <= installedVersion
 }
 
 updateBioconductorPackage <-
     function(pkgs, ask, suppressUpdates, ...)
 {
-    .dbg("before, version is '%s'", packageVersion("Bioconductor"))
+    .dbg("before, version is '%s'", packageVersion("BiocInstaller"))
     bootstrap <-
         function()
     {
-        if ("package:Bioconductor" %in% search())
-            detach("package:Bioconductor", unload=TRUE, force=TRUE)
+        if ("package:BiocInstaller" %in% search())
+            detach("package:BiocInstaller", unload=TRUE, force=TRUE)
         ## contribUrl will be in bootstrap's environment
-        install.packages("Bioconductor", repos=NULL, contriburl=contribUrl)
-        library(Bioconductor)
-        Bioconductor:::.updateBioconductorPackageFinish()
+        install.packages("BiocInstaller", repos=NULL, contriburl=contribUrl)
+        library(BiocInstaller)
+        BiocInstaller:::.updateBioconductorPackageFinish()
     }
     biocBootstrapEnv <- new.env()
     environment(bootstrap) <- biocBootstrapEnv
@@ -77,8 +77,8 @@ updateBioconductorPackage <-
                    suppressUpdates=get("suppressUpdates", "biocBootstrapEnv")),
               get("dotArgs", "biocBootstrapEnv"))
     detach("biocBootstrapEnv")
-    .dbg("after, version is %s", packageVersion("Bioconductor"))
-    .message("'Bioconductor' package updated to version %s.",
-             packageVersion("Bioconductor"))
+    .dbg("after, version is %s", packageVersion("BiocInstaller"))
+    .message("'BiocInstaller' package updated to version %s.",
+             packageVersion("BiocInstaller"))
     do.call(biocLiteInstall, args)
 }

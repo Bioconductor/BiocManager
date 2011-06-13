@@ -6,7 +6,7 @@
     paste(sub("^ +", "", txt), collapse="\n")
 }
 
-# use as Bioconductor:::.opts$get()  Bioconductor:::.opts$set(TRUE)
+# use as BiocInstaller:::.opts$get()  BiocInstaller:::.opts$set(TRUE)
 .opts = local({
     debug <- FALSE
     list(get=function() debug, set=function(x) {
