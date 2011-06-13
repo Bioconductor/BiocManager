@@ -14,7 +14,10 @@ local({
                  error=function(...) numeric_version(0.0))
     if (vers > "2.13" && biocVers > "2.8") {
         if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
-            oldRepos <- setRepositories(ind=3)
+            reposFile <- file.path(R.home(), "etc", "repositories")
+            reposNames <- rownames(read.table(reposFile, sep="\t"))
+            idx <- match("BioCsoft", reposNames)
+            oldRepos <- setRepositories(ind=idx)
             if (!is.null(oldRepos))
                 on.exit(options(oldRepos))
             install.packages("BiocInstaller")
