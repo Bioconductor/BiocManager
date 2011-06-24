@@ -47,7 +47,7 @@ biocLiteInstall <-
 
     version <- getRversion()
     thisRVer <- sprintf("%d.%d", version$major, version$minor)
-    .message("Using R version %s, BiocInstaller package version %s.",
+    .message("Using R version %s, BiocInstaller version %s.",
              thisRVer, packageVersion("BiocInstaller"))
 
     if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
