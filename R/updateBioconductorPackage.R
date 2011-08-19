@@ -33,7 +33,7 @@ bioconductorPackageIsCurrent <-
                  error = function(err) installedSentinel)
     ap <- available.packages(getContribUrl())
     availableVersion <-
-        if ("BiociInstaller" %in% rownames(ap))
+        if ("BiocInstaller" %in% rownames(ap))
             package_version(ap["BiocInstaller", "Version"])
         else
             availableSentinel
