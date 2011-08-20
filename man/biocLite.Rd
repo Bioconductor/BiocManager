@@ -92,7 +92,7 @@ biocLite() # installs default packages
 ## Now install a CRAN package:
 biocLite("survival")
 
-## install a BiocInstaller package, but don't update all installed
+## install a Bioconductor package, but don't update all installed
 ## packages as well:
 biocLite("GenomicRanges", suppressUpdates=TRUE)
 
