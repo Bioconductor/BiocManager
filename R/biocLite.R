@@ -92,11 +92,39 @@ biocLiteInstall <-
     oldPkgs <- getUpdatablePackages(pkgsToUpdate)
     if (nrow(oldPkgs)) {
         pkgList <- paste(oldPkgs[,"Package"], collapse="' '")
-        .message("Updating packages '%s'", pkgList)
-        update.packages(repos=repos, oldPkgs=oldPkgs, ask=ask)
+        
+        if (ask==TRUE) {
+            .message("The following packages are outdated: '%s'", pkgList)
+            answer <- getAnswer("Would you like to update all/some/none? [a/s/n]: ",
+                allowed = c("a", "A", "s", "S", "n", "N"))
+            switch(answer,
+               a = update.packages(repos=repos, oldPkgs=oldPkgs, ask=FALSE),
+               s = update.packages(repos=repos, oldPkgs=oldPkgs, ask=TRUE),
+               n = invisible(pkgs))   
+        } else {
+            .message("Updating packages '%s'", pkgList)
+            update.packages(repos=repos, oldPkgs=oldPkgs, ask=ask)
+        }
+        
     }
 
     invisible(pkgs)
+}
+
+
+
+getAnswer <- function(msg, allowed){
+    if (interactive()) {
+    repeat {
+            cat(msg)
+            answer <- readLines(n = 1)
+            if (answer %in% allowed)
+                break
+        }
+        tolower(answer)
+    } else {
+        return("n")
+    }
 }
 
 biocLite <-
