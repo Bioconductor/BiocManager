@@ -9,7 +9,7 @@ NEXT_R_DEVEL_VERSION <- "2.15.0" # next (not-yet-supported) version of R
 includeMBNI <- FALSE
 mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
 
-.onLoad <-
+.onAttach <-
     function(libname, pkgname) 
 {
     .message("BiocInstaller version %s loaded,
