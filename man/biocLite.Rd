@@ -107,6 +107,9 @@ biocLite(suppressUpdates=c("^org\\.", "^BSgenome\\."))
 ## install a package from source:
 biocLite("IRanges", type="source")
 
+## don't install any packages, but update installed packages
+biocLite(character(0), ask=FALSE)
+
 }
 ## Show the Bioconductor and CRAN repositories that will be used to
 ## install/update packages.
