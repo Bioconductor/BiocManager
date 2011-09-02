@@ -36,11 +36,12 @@ biocinstallRepos <-
     ## So it's probably better not to rely on the numbers.
     
     
-    setRepositories(ind=c(1:20)) # in case more repos are added
+    setRepositories(ind=1:20) # in case more repos are added
     
     raw.repos <- getOption("repos")
     
-    repos <- raw.repos[c("BioCsoft","CRAN","CRANextra","BioCann","BioCexp","BioCextra")]
+    repos <- raw.repos[c("BioCsoft", "CRAN", "CRANextra", "BioCann",
+        "BioCexp", "BioCextra")]
     
 
     if ("@CRAN@" %in% repos)
@@ -115,7 +116,7 @@ biocLiteInstall <-
     }
     oldPkgs <- getUpdatablePackages(pkgsToUpdate)
     if (nrow(oldPkgs)) {
-        pkgLfist <- paste(oldPkgs[,"Package"], collapse="' '")
+        pkgList <- paste(oldPkgs[,"Package"], collapse="' '")
         
         if (ask==TRUE) {
             .message("The following packages are outdated: '%s'", pkgList)
