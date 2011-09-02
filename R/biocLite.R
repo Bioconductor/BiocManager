@@ -7,6 +7,11 @@ biocinstallRepos <-
     old.opts <- options("repos")
     on.exit(options(old.opts))
 
+    ## Starting at some point in R-2.14, Omegahat is included in
+    ## the list of available repositories, on windows only, it seems.
+
+    ## on mac and linux:
+    
     ## 1: + CRAN
     ## 2: + CRAN (extras)
     ## 3: + BioC software
@@ -15,15 +20,34 @@ biocinstallRepos <-
     ## 6: + BioC extra
     ## 7:   R-Forge
     ## 8:   rforge.net
-
-    setRepositories(ind=c(3, 1:2, 4:6))
-    repos <- getOption("repos")
+    
+    ## on windows:
+    
+    ## 1: + CRAN
+    ## 2: + CRAN (extras)
+    ## 3:   Omegahat 
+    ## 4:   BioC software
+    ## 5:   BioC annotation
+    ## 6:   BioC experiment
+    ## 7:   BioC extra
+    ## 8:   R-Forge
+    ## 9:   rforge.net
+    
+    ## So it's probably better not to rely on the numbers.
+    
+    
+    setRepositories(ind=c(1:20)) # in case more repos are added
+    
+    raw.repos <- getOption("repos")
+    
+    repos <- raw.repos[c("BioCsoft","CRAN","CRANextra","BioCann","BioCexp","BioCextra")]
+    
 
     if ("@CRAN@" %in% repos)
         repos["CRAN"] <- "http://cran.fhcrc.org"
     if (includeMBNI)
         repos[["MBNI"]] <- mbniUrl
-
+          
     repos
 }
 
@@ -91,7 +115,7 @@ biocLiteInstall <-
     }
     oldPkgs <- getUpdatablePackages(pkgsToUpdate)
     if (nrow(oldPkgs)) {
-        pkgList <- paste(oldPkgs[,"Package"], collapse="' '")
+        pkgLfist <- paste(oldPkgs[,"Package"], collapse="' '")
         
         if (ask==TRUE) {
             .message("The following packages are outdated: '%s'", pkgList)
