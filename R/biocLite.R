@@ -40,7 +40,12 @@ biocinstallRepos <-
     
     raw.repos <- getOption("repos")
     
-    repos <- subset(raw.repos, !is.na(raw.repos))
+    
+    repos <- raw.repos[c("BioCsoft", "CRAN", "CRANextra", "BioCann",
+            "BioCexp", "BioCextra")]
+    
+    
+    repos <- subset(repos, !is.na(repos))
     
 
     if ("@CRAN@" %in% repos)
