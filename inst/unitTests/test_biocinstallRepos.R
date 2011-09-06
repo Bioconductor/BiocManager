@@ -8,7 +8,7 @@ test_biocinstallRepos_named_repositories <- function()
 
     checkTrue(all(allOS %in% names(repos)))
     if (Sys.info()[["sysname"]] %in% c("Windows", "Darwin"))
-        checkTrue(all(nonLinux %in% names(repos)))
+        checkTrue(nonLinux %in% names(repos))
 
     checkTrue(!any(is.na(repos)))
 }
