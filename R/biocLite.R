@@ -71,7 +71,7 @@ biocLiteInstall <-
         type <- getOption("pkgType")
 
     biocMirror <- getOption("BioC_mirror", "http://www.bioconductor.org")
-    .message("BioC_mirror = '%s', change using chooseBioCmirror().",
+    .message("BioC_mirror: '%s'",
              biocMirror)
 
     version <- getRversion()

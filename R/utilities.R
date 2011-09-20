@@ -1,5 +1,5 @@
 .msg <-
-    function(fmt, ..., width=0.9 * getOption("width"))
+    function(fmt, ..., width=getOption("width"))
     ## Use this helper to format all error / warning / message text
 {
     txt <- strwrap(sprintf(fmt, ...), width=width, indent=4)

@@ -25,10 +25,24 @@ local({
                 p <- file.path(R.home("etc"), "repositories")
                 a <- tools:::.read_repositories(p)
             }
-            install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
-            if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
-                stop("use 'install.packages(\"BiocInstaller\")' before\n",
-                      "  'source(\"http://bioconductor.org/biocLite.R\")'")
+            if (!"package:utils" %in% search()) {
+                url <- "http://bioconductor.org/biocLite.R"
+                txt <- sprintf("use 'source(\"%s\")' to update 'BiocInstaller'
+                                after 'utils' package is attached",
+                               url)
+                message(paste(strwrap(txt), collapse="\n  "))
+            } else {
+                install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
+                if (!suppressWarnings(require("BiocInstaller",
+                                              quietly=TRUE))) {
+                    url0 <- "http://www.bioconductor.org/packages"
+                    url <- sprintf("%s/%s/bioc",
+                                   url0, as.character(biocVers))
+                    txt0 <- "'biocLite.R' failed to install 'BiocInstaller',
+                            use 'install.packages(\"%s\", repos=\"%s\")'"
+                    txt <- sprintf(txt0, "BiocInstaller", url)
+                    message(paste(strwrap(txt), collapse="\n  "))
+                }
             }
         }
     } else {

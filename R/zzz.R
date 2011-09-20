@@ -12,7 +12,6 @@ mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
 .onAttach <-
     function(libname, pkgname) 
 {
-    .message("BiocInstaller version %s loaded,
-              type ?biocLite for help",
+    .message("BiocInstaller version %s, ?biocLite for help",
              packageVersion("BiocInstaller"))
 }
