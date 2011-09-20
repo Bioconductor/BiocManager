@@ -25,7 +25,7 @@ local({
                 p <- file.path(R.home("etc"), "repositories")
                 a <- tools:::.read_repositories(p)
             }
-            install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
+            utils::install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
             if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
                 stop("use 'install.packages(\"BiocInstaller\")' before\n",
                       "  'source(\"http://bioconductor.org/biocLite.R\")'")
