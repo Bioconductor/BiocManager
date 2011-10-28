@@ -43,7 +43,28 @@ biocinstallRepos <-
     
     repos <- raw.repos[c("BioCsoft", "CRAN", "CRANextra", "BioCann",
             "BioCexp", "BioCextra")]
-    
+
+    ## This needs to be commented out a few months (3? 4?) after the
+    ## development cycle for BioC 2.10 has started, when we are confident
+    ## that no developper is still using an early R 2.15 with a
+    ## tools:::.BioC_version_associated_with_R_version still pointing to
+    ## BioC 2.9.
+    if (getRversion() >= "2.15") {
+        ## Add repos here as they become available.
+        active_hutch_repos <- "BioCsoft"
+        #active_hutch_repos <- c(active_hutch_repos, "BioCann")
+        #active_hutch_repos <- c(active_hutch_repos, "BioCexp")
+        #active_hutch_repos <- c(active_hutch_repos, "BioCextra")
+
+        ## No need to touch below.
+        bioc_repos <- c(BioCsoft="bioc",
+                        BioCann="data/annotation",
+                        BioCexp="data/experiment",
+                        BioCextra="extra")
+        tmp_repos <- paste("http://bioconductor.org/packages/2.10",
+                           bioc_repos[active_hutch_repos], sep="/")
+        repos[names(tmp_repos)] <- tmp_repos
+    }
     
     repos <- subset(repos, !is.na(repos))
     
