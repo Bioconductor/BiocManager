@@ -63,7 +63,7 @@ biocinstallRepos <-
                         BioCextra="extra")
         tmp_repos <- paste("http://bioconductor.org/packages/2.10",
                            bioc_repos[active_hutch_repos], sep="/")
-        repos[names(tmp_repos)] <- tmp_repos
+        repos[active_hutch_repos] <- tmp_repos
     }
     
     repos <- subset(repos, !is.na(repos))
