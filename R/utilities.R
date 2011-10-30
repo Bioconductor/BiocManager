@@ -2,15 +2,15 @@
     function(fmt, ..., width=getOption("width"))
     ## Use this helper to format all error / warning / message text
 {
-    txt <- strwrap(sprintf(fmt, ...), width=width, indent=4)
-    paste(sub("^ +", "", txt), collapse="\n")
+    txt <- strwrap(sprintf(fmt, ...), width=width, exdent=2)
+    paste(txt, collapse="\n")
 }
 
 # use as BiocInstaller:::.opts$get()  BiocInstaller:::.opts$set(TRUE)
 .opts = local({
     debug <- FALSE
     list(get=function() debug, set=function(x) {
-        old < debug
+        old <- debug
         debug <<- x
         old
     })

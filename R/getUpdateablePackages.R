@@ -14,8 +14,10 @@ getUpdatablePackages <-
     updateable <- pkgs[all == 0, , drop=FALSE]
     if (length(nonUpdateable))
     {
-        txt <- "package update failed, installed directory not writeable: '%s'"
-        .warning(txt, paste(nonUpdateable, collapse="' '"), call.=FALSE)
+        txt <- sprintf("'%s' cannot be updated, installed directory '%s'
+                        not writeable",
+                       nonUpdateable, pkgs[nonUpdateable, "LibPath"])
+        .warning(txt, call.=FALSE)
     }
     updateable
 }

@@ -139,14 +139,14 @@ biocLiteInstall <-
             filterPackagesToUpdate(suppressUpdates, pkgsToUpdate)
         suppressUpdates <- FALSE
     }
+
     oldPkgs <- getUpdatablePackages(pkgsToUpdate)
     if (nrow(oldPkgs)) {
-        pkgList <- paste(oldPkgs[,"Package"], collapse="' '")
-        
+        pkgList <- paste(oldPkgs[,"Package"], collapse="', '")
         if (ask==TRUE) {
-            .message("The following packages are outdated: '%s'", pkgList)
-            answer <- getAnswer("Would you like to update all/some/none? [a/s/n]: ",
-                allowed = c("a", "A", "s", "S", "n", "N"))
+            .message("Old packages: '%s'", pkgList)
+            answer <- getAnswer("Update all/some/none? [a/s/n]: ",
+                                allowed = c("a", "A", "s", "S", "n", "N"))
             switch(answer,
                a = update.packages(repos=repos, oldPkgs=oldPkgs, ask=FALSE),
                s = update.packages(repos=repos, oldPkgs=oldPkgs, ask=TRUE),
@@ -155,7 +155,6 @@ biocLiteInstall <-
             .message("Updating packages '%s'", pkgList)
             update.packages(repos=repos, oldPkgs=oldPkgs, ask=ask)
         }
-        
     }
 
     invisible(pkgs)
@@ -212,12 +211,13 @@ biocLite <-
              suppressAutoUpdate=FALSE,
              ask=TRUE, ...)
 {
-    tryCatch(.checkSvnRevision(R.Version()[['svn rev']]),
-             error=function(e) {
-                 .stop("biocLite: %s", conditionMessage(e), call.=FALSE)
-             }, warning=function(w) {
-                 .warning("biocLite: %s", conditionMessage(w), call.=FALSE)
-             })
+    tryCatch({
+        .checkSvnRevision(R.Version()[['svn rev']])
+    }, error=function(e) {
+        .stop("biocLite: %s", conditionMessage(e), call.=FALSE)
+    }, warning=function(w) {
+        .warning("biocLite: %s", conditionMessage(w), call.=FALSE)
+    })
     if (!suppressAutoUpdate && !bioconductorPackageIsCurrent()) {
         on.exit(updateBioconductorPackage(pkgs, ask=ask,
                                           suppressUpdates=suppressUpdates,
