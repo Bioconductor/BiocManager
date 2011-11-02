@@ -61,7 +61,8 @@ biocinstallRepos <-
                         BioCann="data/annotation",
                         BioCexp="data/experiment",
                         BioCextra="extra")
-        tmp_repos <- paste("http://bioconductor.org/packages/2.10",
+        biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
+        tmp_repos <- paste(biocMirror, "packages/2.10",
                            bioc_repos[active_hutch_repos], sep="/")
         repos[active_hutch_repos] <- tmp_repos
     }
@@ -91,7 +92,7 @@ biocLiteInstall <-
     if (is.null(type))
         type <- getOption("pkgType")
 
-    biocMirror <- getOption("BioC_mirror", "http://www.bioconductor.org")
+    biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
     .message("BioC_mirror: '%s'",
              biocMirror)
 
