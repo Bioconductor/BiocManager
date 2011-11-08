@@ -274,6 +274,13 @@ graph_group <- function()
     c("graph", "Rgraphviz", "RBGL")
 }
 
+all_group <- function()
+{
+    contribUrl <- paste(biocinstallRepos()['BioCsoft'], "src/contrib", sep="/")
+    pkglist = available.packages(contribUrl)
+    pkgs = rownames(pkglist)
+}
+
 RBioinf_group <- function()
 {
     c(

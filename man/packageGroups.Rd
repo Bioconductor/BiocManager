@@ -2,6 +2,7 @@
 \alias{biocases_group}
 \alias{RBioinf_group}
 \alias{monograph_group}
+\alias{all_group}
 \title{
 
   Convenience functions to return package names associated with Bioconductor publications.
@@ -17,6 +18,7 @@
 monograph_group()
 RBioinf_group()
 biocases_group()
+all_group()
 }
 \value{
   \code{character()} of package names.
@@ -49,5 +51,8 @@ RBioinf_group()
 ## "Bioinformatics and Computational Biology Solutions
 ## Using R and Bioconductor":
 monograph_group()
+
+## Get the names of all Bioconductor software packages
+all_group()
 }
 \keyword{environment}

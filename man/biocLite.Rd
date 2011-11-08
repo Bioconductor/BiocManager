@@ -73,6 +73,9 @@ biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),
   \code{\link{monograph_group}}, \code{\link{RBioinf_group}} and
   \code{\link{biocases_group}} return package names associated 
   with Bioconductor publications.
+  
+  \code{\link{all_group}} returns the names of all Bioconductor
+  software packages.
 
 }
 
@@ -109,6 +112,9 @@ biocLite("IRanges", type="source")
 
 ## don't install any packages, but update installed packages
 biocLite(character(0), ask=FALSE)
+
+## install all Bioconductor software packages
+biocLite(all_group())
 
 }
 ## Show the Bioconductor and CRAN repositories that will be used to
