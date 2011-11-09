@@ -13,6 +13,10 @@ local({
         tryCatch(tools:::.BioC_version_associated_with_R_version,
                  error=function(...) numeric_version(0.0))
     if (vers > "2.13" && biocVers > "2.8") {
+        
+        if (vers == "2.15") ## BioC_version_associated_with_R_version is
+          biocVers <- numeric_version("2.10") ## currently wrong
+          
         if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
             a <- NULL
             p <- file.path(Sys.getenv("HOME"), ".R", "repositories")
