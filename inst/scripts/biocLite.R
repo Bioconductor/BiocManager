@@ -14,8 +14,6 @@ local({
                  error=function(...) numeric_version(0.0))
     if (vers > "2.13" && biocVers > "2.8") {
         
-        if (vers == "2.15") ## BioC_version_associated_with_R_version is
-          biocVers <- numeric_version("2.10") ## currently wrong
           
         if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
             a <- NULL
@@ -36,6 +34,12 @@ local({
                                url)
                 message(paste(strwrap(txt), collapse="\n  "))
             } else {
+                if (vers == "2.15") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.10",
+                      a["BioCsoft", "URL"])
+                      biocVers <- numeric_version("2.10")
+                }
+                
                 install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
                 if (!suppressWarnings(require("BiocInstaller",
                                               quietly=TRUE))) {
