@@ -13,7 +13,11 @@ local({
         tryCatch(tools:::.BioC_version_associated_with_R_version,
                  error=function(...) numeric_version(0.0))
     if (vers > "2.13" && biocVers > "2.8") {
-        
+        if ("biocLite" %in% ls(envir=.GlobalEnv)) {
+            message <- paste("You have an outdated biocLite() function.",
+            "Run 'rm(biocLite)' and try again.")
+            stop(message)
+        }
           
         if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
             a <- NULL
