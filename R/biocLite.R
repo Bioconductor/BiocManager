@@ -52,7 +52,7 @@ biocinstallRepos <-
     if (getRversion() >= "2.15") {
         ## Add repos here as they become available.
         active_hutch_repos <- "BioCsoft"
-        #active_hutch_repos <- c(active_hutch_repos, "BioCann")
+        active_hutch_repos <- c(active_hutch_repos, "BioCann")
         active_hutch_repos <- c(active_hutch_repos, "BioCexp")
         active_hutch_repos <- c(active_hutch_repos, "BioCextra")
 
