@@ -12,7 +12,14 @@
 
 }
 \usage{
-biocinstallRepos()
+biocinstallRepos(siteRepos=NULL)
+}
+\arguments{
+\item{siteRepos}{\code{character()} representing an additional
+  repository in which to look for packages to install. This 
+  repository will be prepended to the default repositories
+  returned by the function.}
+
 }
 \value{
   Named \code{character()} of repositories.

@@ -2,7 +2,7 @@
 ## the way sourcing biocLite.R does now.
 
 biocinstallRepos <-
-    function()
+    function(siteRepos=NULL)
 {
     old.opts <- options("repos")
     on.exit(options(old.opts))
@@ -74,7 +74,9 @@ biocinstallRepos <-
         repos["CRAN"] <- "http://cran.fhcrc.org"
     if (includeMBNI)
         repos[["MBNI"]] <- mbniUrl
-          
+    
+    if (!is.null(siteRepos))
+        repos <- c("siteRepos" = siteRepos, repos)
     repos
 }
 
@@ -107,9 +109,7 @@ biocLiteInstall <-
         .message("Temporarily using Bioconductor version %s",
                  BIOC_VERSION)
 
-    repos <- biocinstallRepos()
-    if (!is.null(siteRepos))
-        repos <- c(siteRepos, repos)
+    repos <- biocinstallRepos(siteRepos)
 
     if (length(pkgs)) {
         if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
