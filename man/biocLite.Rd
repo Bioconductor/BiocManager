@@ -16,6 +16,7 @@
 biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),  
   suppressUpdates=FALSE,
   suppressAutoUpdate=FALSE,
+  siteRepos=NULL,
   ask=TRUE, ...)
 }
 \arguments{
@@ -31,6 +32,11 @@ biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),
 
   \item{suppressAutoUpdate}{\code{logical(1)} indicating whether the
     \code{BiocInstaller} package updates itself.}
+
+  \item{siteRepos}{\code{character()} representing an additional
+    repository in which to look for packages to install. This 
+    repository will be prepended to the default repositories
+    (which you can see with \code{\link{biocinstallRepos}}).}
 
   \item{ask}{\code{logical(1)} indicating whether to prompt user before
     installed packages are updated, or the character string 'graphics',

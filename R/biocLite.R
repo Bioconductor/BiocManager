@@ -79,7 +79,7 @@ biocinstallRepos <-
 }
 
 biocLiteInstall <-
-    function(pkgs, repos, ask, suppressUpdates, ...)
+    function(pkgs, repos, ask, suppressUpdates, siteRepos, ...)
 {
     if (!missing(repos))
         .stop("'repos' argument to 'biocLite' not allowed")
@@ -108,6 +108,8 @@ biocLiteInstall <-
                  BIOC_VERSION)
 
     repos <- biocinstallRepos()
+    if (!is.null(siteRepos))
+        repos <- c(siteRepos, repos)
 
     if (length(pkgs)) {
         if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
@@ -210,7 +212,7 @@ biocLite <-
     function(pkgs=c("Biobase","IRanges","AnnotationDbi"),
              suppressUpdates=FALSE,
              suppressAutoUpdate=FALSE,
-             ask=TRUE, ...)
+             siteRepos=NULL, ask=TRUE, ...)
 {
     tryCatch({
         .checkSvnRevision(R.Version()[['svn rev']])
@@ -224,7 +226,7 @@ biocLite <-
                                           suppressUpdates=suppressUpdates,
                                           ...))
     } else {
-        biocLiteInstall(pkgs, ask=ask,
+        biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
                         suppressUpdates=suppressUpdates, ...)
     }
 }

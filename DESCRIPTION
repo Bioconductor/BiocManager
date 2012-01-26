@@ -1,7 +1,7 @@
 Package: BiocInstaller
 Title: Install/Update Bioconductor and CRAN Packages
 Description: Installs/updates Bioconductor and CRAN packages
-Version: 1.3.5
+Version: 1.3.6
 Author: Dan Tenenbaum and Biocore Team
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 biocViews: Software
