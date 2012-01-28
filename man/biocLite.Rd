@@ -16,7 +16,7 @@
 biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),  
   suppressUpdates=FALSE,
   suppressAutoUpdate=FALSE,
-  siteRepos=NULL,
+  siteRepos=character(),
   ask=TRUE, ...)
 }
 \arguments{

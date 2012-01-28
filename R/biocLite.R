@@ -2,7 +2,7 @@
 ## the way sourcing biocLite.R does now.
 
 biocinstallRepos <-
-    function(siteRepos=NULL)
+    function(siteRepos=character())
 {
     old.opts <- options("repos")
     on.exit(options(old.opts))
@@ -75,13 +75,12 @@ biocinstallRepos <-
     if (includeMBNI)
         repos[["MBNI"]] <- mbniUrl
     
-    if (!is.null(siteRepos))
-        repos <- c("siteRepos" = siteRepos, repos)
-    repos
+    c(siteRepos=siteRepos, repos)
 }
 
 biocLiteInstall <-
-    function(pkgs, repos, ask, suppressUpdates, siteRepos, ...)
+    function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
+             ...)
 {
     if (!missing(repos))
         .stop("'repos' argument to 'biocLite' not allowed")
@@ -95,8 +94,7 @@ biocLiteInstall <-
         type <- getOption("pkgType")
 
     biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
-    .message("BioC_mirror: '%s'",
-             biocMirror)
+    .message("BioC_mirror: %s", biocMirror)
 
     version <- getRversion()
     thisRVer <- sprintf("%d.%d", version$major, version$minor)
@@ -212,7 +210,7 @@ biocLite <-
     function(pkgs=c("Biobase","IRanges","AnnotationDbi"),
              suppressUpdates=FALSE,
              suppressAutoUpdate=FALSE,
-             siteRepos=NULL, ask=TRUE, ...)
+             siteRepos=character(), ask=TRUE, ...)
 {
     tryCatch({
         .checkSvnRevision(R.Version()[['svn rev']])
@@ -224,7 +222,7 @@ biocLite <-
     if (!suppressAutoUpdate && !bioconductorPackageIsCurrent()) {
         on.exit(updateBioconductorPackage(pkgs, ask=ask,
                                           suppressUpdates=suppressUpdates,
-                                          ...))
+                                          siteRepos=siteRepos, ...))
     } else {
         biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
                         suppressUpdates=suppressUpdates, ...)

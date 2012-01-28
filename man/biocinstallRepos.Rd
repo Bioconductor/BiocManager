@@ -12,7 +12,7 @@
 
 }
 \usage{
-biocinstallRepos(siteRepos=NULL)
+biocinstallRepos(siteRepos=character())
 }
 \arguments{
 \item{siteRepos}{\code{character()} representing an additional
