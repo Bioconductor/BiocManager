@@ -45,12 +45,35 @@ biocinstallRepos <-
     ## that no developper is still using an early R 2.15 with a
     ## tools:::.BioC_version_associated_with_R_version still pointing to
     ## BioC 2.9.
-    if (getRversion() >= "2.15") {
-        ## Add repos here as they become available.
-        active_hutch_repos <- "BioCsoft"
-        active_hutch_repos <- c(active_hutch_repos, "BioCann")
-        active_hutch_repos <- c(active_hutch_repos, "BioCexp")
-        active_hutch_repos <- c(active_hutch_repos, "BioCextra")
+
+
+    ## This version of BiocInstaller is meant for use with R-2.15.
+    ## Both BioC 2.10 and 2.11 can be used with R-2.15. 
+
+    ## The following code will become active only after BioC 2.10
+    ## is released (on 02 Apr 2012). At that point, BioC 2.10 will
+    ## be "release" and BioC 2.11 will be "devel".
+
+    biocInstallerVers <- packageVersion("BiocInstaller")
+    versY <- biocInstallerVers$minor
+
+    biocRepos <- c('BioCsoft', 'bioCann', 'BioCexp', 'BioCextra')
+
+    if (versY %% 2 == 0) { ## release version
+        biocVers <- "2.10"
+    } else { ## devel version
+        biocVers <- "2.11"
+    }
+
+    ## Until bioC 2.10 release, make sure biocVers is correct:
+    biocVers <- "2.10" # delete this after release
+    
+    if (biocVers == "2.11") {
+        ## Add (uncomment) repos here as they become available.
+        active_hutch_repos <- "BioCextra"
+        ##active_hutch_repos <- c(active_hutch_repos, "BioCsoft")
+        ##active_hutch_repos <- c(active_hutch_repos, "BioCann")
+        ##active_hutch_repos <- c(active_hutch_repos, "BioCexp")
 
         ## No need to touch below.
         bioc_repos <- c(BioCsoft="bioc",
@@ -58,7 +81,7 @@ biocinstallRepos <-
                         BioCexp="data/experiment",
                         BioCextra="extra")
         biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
-        tmp_repos <- paste(biocMirror, "packages/2.10",
+        tmp_repos <- paste(biocMirror, "packages", biocVers,
                            bioc_repos[active_hutch_repos], sep="/")
         repos[active_hutch_repos] <- tmp_repos
     }
