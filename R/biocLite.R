@@ -98,7 +98,7 @@ biocinstallRepos <-
 
 biocLiteInstall <-
     function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
-             ...)
+             lib.loc=.libPaths(), lib=.libPaths()[1], ...)
 {
     if (!missing(repos))
         .stop("'repos' argument to 'biocLite' not allowed")
@@ -143,13 +143,13 @@ biocLiteInstall <-
 
         .message("Installing package(s) '%s'",
                  paste(pkgs, collapse="' '"))
-        install.packages(pkgs=pkgs, repos=repos, ...)
+        install.packages(pkgs=pkgs, lib=lib, repos=repos, ...)
     }
 
     ## early exit if suppressUpdates
     if (is.logical(suppressUpdates) && suppressUpdates)
         return(invisible(pkgs))
-    pkgsToUpdate <- old.packages(repos=repos)
+    pkgsToUpdate <- old.packages(repos=repos, lib.loc=lib.loc)
     if (is.null(pkgsToUpdate))
         return(invisible(pkgs))
 

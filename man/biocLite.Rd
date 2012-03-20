@@ -47,7 +47,11 @@ biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),
     will be updated). Otherwise, the value is passed to
     \code{\link{update.packages}}.} 
 
-  \item{...}{Additional arguments passed to \code{\link{install.packages}}.}
+  \item{...}{Additional arguments. \code{lib.loc} is passed to
+    \code{\link{old.packages}} (used to determine the library location
+    of installed packages to be updated). \code{lib} is passed to
+    \code{\link{install.packages}} (used to determine the library
+    location where \code{pkgs} are to be installed).}
 
 }
 \details{
