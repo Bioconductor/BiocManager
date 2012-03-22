@@ -249,3 +249,38 @@ biocLite <-
     }
 }
 
+getDevel <- function(devel=TRUE)
+{
+    if (devel)
+        biocVers <- "2.11"
+    else
+        biocVers <- "2.10"
+    repos <- paste("http://bioconductor.org/packages", biocVers, "bioc",
+        sep="/")
+        bootstrap <-
+            function()
+        {
+            if ("package:BiocInstaller" %in% search())
+                detach("package:BiocInstaller", unload=TRUE, force=TRUE)
+            suppressWarnings(tryCatch({
+                install.packages("BiocInstaller", repos=repos)
+            }, error=function(err) {
+                assign("failed", TRUE, "biocBootstrapEnv")
+                NULL
+            }))
+            library(BiocInstaller)
+            BiocInstaller:::.getDevelFinish()
+        }
+        biocBootstrapEnv <- new.env()
+        environment(bootstrap) <- biocBootstrapEnv
+        biocBootstrapEnv[["bootstrap"]] <- bootstrap
+        attach(biocBootstrapEnv)
+        on.exit(eval(bootstrap(), biocBootstrapEnv))
+}
+
+.getDevelFinish <- function() {
+    failed <- exists("failed", "biocBootstrapEnv")
+    vers <- packageVersion("BiocInstaller")
+    if (failed) .message("getDevel() failed.")
+    else .message("getDevel() succeeded, using BiocInstaller version %s.", vers)
+}
