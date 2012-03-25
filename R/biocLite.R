@@ -54,16 +54,12 @@ biocinstallRepos <-
     ## is released (on 02 Apr 2012). At that point, BioC 2.10 will
     ## be "release" and BioC 2.11 will be "devel".
 
-    biocInstallerVers <- packageVersion("BiocInstaller")
-    versY <- biocInstallerVers$minor
-
-    biocRepos <- c('BioCsoft', 'bioCann', 'BioCexp', 'BioCextra')
-
-    if (versY %% 2 == 0) { ## release version
+    if (.isDevel()) {
         biocVers <- "2.10"
     } else { ## devel version
         biocVers <- "2.11"
     }
+    
 
     ## Until bioC 2.10 release, make sure biocVers is correct:
     biocVers <- "2.10" # delete this after release
@@ -96,6 +92,19 @@ biocinstallRepos <-
     c(siteRepos=siteRepos, repos)
 }
 
+
+.isDevel <- function ()
+{
+    biocInstallerVers <- packageVersion("BiocInstaller")
+    versY <- biocInstallerVers$minor
+
+    if (versY %% 2 == 0) { ## release version
+        return(FALSE)
+    } else { ## devel version
+        return(TRUE)
+    }
+    
+}
 biocLiteInstall <-
     function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
              lib.loc=.libPaths(), lib=.libPaths()[1], ...)
@@ -251,6 +260,9 @@ biocLite <-
 
 getDevel <- function(devel=TRUE)
 {
+    if (devel && .isDevel()) stop("Devel version already installed.")
+    if ((!devel) && (!.isDevel())) stop("Release version already installed.")
+    
     if (devel)
         biocVers <- "2.11"
     else
