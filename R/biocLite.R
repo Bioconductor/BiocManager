@@ -284,10 +284,7 @@ getDevel <- function(devel=TRUE)
             BiocInstaller:::.getDevelFinish()
         }
         biocBootstrapEnv <- new.env()
-        environment(bootstrap) <- biocBootstrapEnv
-        biocBootstrapEnv[["bootstrap"]] <- bootstrap
-        attach(biocBootstrapEnv)
-        on.exit(eval(bootstrap(), biocBootstrapEnv))
+        .stepAside(biocBootstrapEnv, bootstrap)
 }
 
 .getDevelFinish <- function() {

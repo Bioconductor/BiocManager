@@ -65,14 +65,13 @@ updateBioconductorPackage <-
     }
     biocBootstrapEnv <- new.env()
     environment(bootstrap) <- biocBootstrapEnv
-    biocBootstrapEnv[["bootstrap"]] <- bootstrap
     biocBootstrapEnv[["pkgs"]] <- pkgs
     biocBootstrapEnv[["ask"]] <- ask
     biocBootstrapEnv[["suppressUpdates"]] <- suppressUpdates
     biocBootstrapEnv[["contribUrl"]] <- .getContribUrl()
     biocBootstrapEnv[["dotArgs"]] <- list(...)
-    attach(biocBootstrapEnv)
-    on.exit(eval(bootstrap(), biocBootstrapEnv))
+    
+    .stepAside(biocBootstrapEnv, bootstrap)
 }
 
 .updateBioconductorPackageFinish <-
