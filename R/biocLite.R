@@ -122,7 +122,7 @@ biocLiteInstall <-
         .message("Temporarily using Bioconductor version %s",
                  BIOC_VERSION)
 
-    repos <- .biocinstallRepos(siteRepos)
+    repos <- biocinstallRepos(siteRepos)
 
     if (length(pkgs)) {
         if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
