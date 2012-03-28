@@ -55,10 +55,18 @@
     paste(major, minor, sep=".")
 }
 
+.isDevel <-
+    function ()
+{
+    isOdd <- (packageVersion("BiocInstaller")$minor %% 2L) == 1L
+    isOdd && !nzchar(R.version$status)
+}
+
 # bootstrap() should take care of unloading BiocInstaller 
 # and reloading it.
 
-.stepAside <- function(biocBootstrapEnv, bootstrap) 
+.stepAside <-
+    function(biocBootstrapEnv, bootstrap) 
 {
     environment(bootstrap) <- biocBootstrapEnv
     biocBootstrapEnv[["bootstrap"]] <- bootstrap

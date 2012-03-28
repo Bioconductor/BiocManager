@@ -1,3 +1,4 @@
 import("utils")
 
-export(biocLite, biocinstallRepos, monograph_group, RBioinf_group, biocases_group, all_group)
+export(biocLite, biocinstallRepos, ## useDevel, uncomment on release
+    monograph_group, RBioinf_group, biocases_group, all_group)

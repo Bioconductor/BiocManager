@@ -1,5 +1,5 @@
 .getContribUrl <-
-    function()
+    function(devel=.isDevel())
 {
     .contribUrl <-
         function(repos)
@@ -11,7 +11,7 @@
                   call.=FALSE)
         contribUrl
     }
-    repos <- biocinstallRepos()["BioCsoft"]
+    repos <- .biocinstallRepos(devel=devel)["BioCsoft"]
     suppressWarnings(tryCatch({
         .contribUrl(repos)
     }, error=function(err) {
@@ -64,7 +64,6 @@ updateBioconductorPackage <-
         BiocInstaller:::.updateBioconductorPackageFinish()
     }
     biocBootstrapEnv <- new.env()
-    environment(bootstrap) <- biocBootstrapEnv
     biocBootstrapEnv[["pkgs"]] <- pkgs
     biocBootstrapEnv[["ask"]] <- ask
     biocBootstrapEnv[["suppressUpdates"]] <- suppressUpdates

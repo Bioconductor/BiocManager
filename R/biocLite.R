@@ -4,6 +4,13 @@
 biocinstallRepos <-
     function(siteRepos=character())
 {
+    ## siteRepos argument is public, but need devel internally
+    .biocinstallRepos(siteRepos=siteRepos, devel=.isDevel())
+}
+
+.biocinstallRepos <-
+    function(siteRepos=character(), devel)
+{
     old.opts <- options("repos")
     on.exit(options(old.opts))
 
@@ -46,7 +53,6 @@ biocinstallRepos <-
     ## tools:::.BioC_version_associated_with_R_version still pointing to
     ## BioC 2.9.
 
-
     ## This version of BiocInstaller is meant for use with R-2.15.
     ## Both BioC 2.10 and 2.11 can be used with R-2.15. 
 
@@ -54,12 +60,7 @@ biocinstallRepos <-
     ## is released (on 02 Apr 2012). At that point, BioC 2.10 will
     ## be "release" and BioC 2.11 will be "devel".
 
-    if (.isDevel()) {
-        biocVers <- "2.10"
-    } else { ## devel version
-        biocVers <- "2.11"
-    }
-    
+    biocVers <- if (devel) "2.11" else "2.10"
 
     ## Until bioC 2.10 release, make sure biocVers is correct:
     biocVers <- "2.10" # delete this after release
@@ -92,19 +93,6 @@ biocinstallRepos <-
     c(siteRepos=siteRepos, repos)
 }
 
-
-.isDevel <- function ()
-{
-    biocInstallerVers <- packageVersion("BiocInstaller")
-    versY <- biocInstallerVers$minor
-
-    if (versY %% 2 == 0) { ## release version
-        return(FALSE)
-    } else { ## devel version
-        return(TRUE)
-    }
-    
-}
 biocLiteInstall <-
     function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
              lib.loc=.libPaths(), lib=.libPaths()[1], ...)
@@ -134,7 +122,7 @@ biocLiteInstall <-
         .message("Temporarily using Bioconductor version %s",
                  BIOC_VERSION)
 
-    repos <- biocinstallRepos(siteRepos)
+    repos <- .biocinstallRepos(siteRepos)
 
     if (length(pkgs)) {
         if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
@@ -202,7 +190,7 @@ biocLiteInstall <-
         }
         tolower(answer)
     } else {
-        return("n")
+        "n"
     }
 }
 
@@ -256,40 +244,4 @@ biocLite <-
         biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
                         suppressUpdates=suppressUpdates, ...)
     }
-}
-
-getDevel <- function(devel=TRUE)
-{
-    if (devel && .isDevel()) stop("Devel version already installed.")
-    if ((!devel) && (!.isDevel())) stop("Release version already installed.")
-    
-    if (devel)
-        biocVers <- "2.11"
-    else
-        biocVers <- "2.10"
-    repos <- paste("http://bioconductor.org/packages", biocVers, "bioc",
-        sep="/")
-        bootstrap <-
-            function()
-        {
-            if ("package:BiocInstaller" %in% search())
-                detach("package:BiocInstaller", unload=TRUE, force=TRUE)
-            suppressWarnings(tryCatch({
-                install.packages("BiocInstaller", repos=repos)
-            }, error=function(err) {
-                assign("failed", TRUE, "biocBootstrapEnv")
-                NULL
-            }))
-            library(BiocInstaller)
-            BiocInstaller:::.getDevelFinish()
-        }
-        biocBootstrapEnv <- new.env()
-        .stepAside(biocBootstrapEnv, bootstrap)
-}
-
-.getDevelFinish <- function() {
-    failed <- exists("failed", "biocBootstrapEnv")
-    vers <- packageVersion("BiocInstaller")
-    if (failed) .message("getDevel() failed.")
-    else .message("getDevel() succeeded, using BiocInstaller version %s.", vers)
 }
