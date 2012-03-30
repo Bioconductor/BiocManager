@@ -1,5 +1,5 @@
 ## The following two values are updated with each bioC release
-BIOC_VERSION <- "2.10"            # this version of Bioconductor
+BIOC_VERSION <- "2.11"            # this version of Bioconductor
 NEXT_R_DEVEL_VERSION <- "2.16.0" # next (not-yet-supported) version of R
 
 
