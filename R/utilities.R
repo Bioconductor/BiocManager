@@ -59,7 +59,7 @@
     function ()
 {
     isOdd <- (packageVersion("BiocInstaller")$minor %% 2L) == 1L
-    isOdd && !nzchar(R.version$status)
+    isOdd && (!(R.version$status == "" || R.version$status == "Patched"))
 }
 
 # bootstrap() should take care of unloading BiocInstaller 
