@@ -70,7 +70,7 @@ biocinstallRepos <-
         active_hutch_repos <- "BioCextra"
         active_hutch_repos <- c(active_hutch_repos, "BioCsoft")
         ##active_hutch_repos <- c(active_hutch_repos, "BioCann")
-        active_hutch_repos <- c(active_hutch_repos, "BioCexp")
+        ##active_hutch_repos <- c(active_hutch_repos, "BioCexp")
 
         ## No need to touch below.
         bioc_repos <- c(BioCsoft="bioc",
