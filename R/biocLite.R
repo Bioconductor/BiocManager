@@ -62,8 +62,6 @@ biocinstallRepos <-
 
     biocVers <- if (devel) "2.11" else "2.10"
 
-    ## Until bioC 2.10 release, make sure biocVers is correct:
-    biocVers <- "2.10" # delete this after release
     
     if (biocVers == "2.11") {
         ## Add (uncomment) repos here as they become available.
