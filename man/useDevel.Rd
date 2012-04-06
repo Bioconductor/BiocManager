@@ -14,7 +14,8 @@
   Displays the URLs of the repositories used by \code{\link{biocLite}}
   to install Bioconductor and CRAN packages.
 
-  Should only be used with a release (or patched) version of R.
+  Should only be used with a release (or patched) version of R,
+  freshly installed.
 
 }
 \usage{
