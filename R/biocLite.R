@@ -67,7 +67,7 @@ biocinstallRepos <-
         ## Add (uncomment) repos here as they become available.
         active_hutch_repos <- "BioCextra"
         active_hutch_repos <- c(active_hutch_repos, "BioCsoft")
-        ##active_hutch_repos <- c(active_hutch_repos, "BioCann")
+        active_hutch_repos <- c(active_hutch_repos, "BioCann")
         active_hutch_repos <- c(active_hutch_repos, "BioCexp")
 
         ## No need to touch below.
