@@ -58,6 +58,9 @@
 .isDevel <-
     function ()
 {
+    minor <- as.numeric(R.Version()$minor)
+    if (R.Version()$major == "2" && (minor >= 16 && minor < 17))
+        return(TRUE)
     isOdd <- (packageVersion("BiocInstaller")$minor %% 2L) == 1L
     isOdd && (R.version$status == "" || R.version$status == "Patched")
 }
