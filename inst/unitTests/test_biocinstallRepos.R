@@ -7,7 +7,7 @@ test_biocinstallRepos_named_repositories <- function()
     windowsOnly <- "CRANextra"
 
     checkTrue(all(allOS %in% names(repos)))
-    if (Sys.info()[["sysname"]] == "Windows")
+    if (.Platform$OS.type == "windows")
     {
         checkTrue(windowsOnly %in% names(repos))
     } else {
