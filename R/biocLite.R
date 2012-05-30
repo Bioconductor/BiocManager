@@ -64,7 +64,7 @@ biocinstallRepos <-
     biocVers <- if (devel) "2.11" else "2.10"
 
 
-    if (!Sys.info()[["sysname"]] %in% c("Windows"))
+    if (!.Platform$OS.type %in% c("windows"))
     {
         repos <- repos[!names(repos) %in% "CRANextra"]
     }
