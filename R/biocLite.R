@@ -60,8 +60,14 @@ biocinstallRepos <-
     ## is released (on 02 Apr 2012). At that point, BioC 2.10 will
     ## be "release" and BioC 2.11 will be "devel".
 
+
     biocVers <- if (devel) "2.11" else "2.10"
 
+
+    if (!Sys.info()[["sysname"]] %in% c("Windows"))
+    {
+        repos <- repos[!names(repos) %in% "CRANextra"]
+    }
     
     if (biocVers == "2.11") {
         ## Add (uncomment) repos here as they become available.

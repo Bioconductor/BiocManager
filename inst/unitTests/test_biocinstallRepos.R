@@ -4,11 +4,15 @@ test_biocinstallRepos_named_repositories <- function()
 {
 
     allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp", "BioCextra")
-    nonLinux <- "CRANextra"
+    windowsOnly <- "CRANextra"
 
     checkTrue(all(allOS %in% names(repos)))
-    if (Sys.info()[["sysname"]] %in% c("Windows", "Darwin"))
-        checkTrue(nonLinux %in% names(repos))
+    if (Sys.info()[["sysname"]] == "Windows")
+    {
+        checkTrue(windowsOnly %in% names(repos))
+    } else {
+        checkTrue(!windowsOnly %in% names(repos))
+    }
 }
 
 test_biocinstallRepos_noNA_repositories <- function()
