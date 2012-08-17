@@ -44,8 +44,9 @@ biocinstallRepos <-
     
     setRepositories(ind=1:20) # in case more repos are added
     raw.repos <- getOption("repos")
-    repos <- raw.repos[c("BioCsoft", "CRAN", "CRANextra", "BioCann",
-                         "BioCexp", "BioCextra")]
+    wanted_repo_names <- c("BioCsoft", "BioCann", "BioCexp", "BioCextra",
+                           "CRAN", "CRANextra")
+    repos <- raw.repos[intersect(wanted_repo_names, names(raw.repos))]
 
     ## This needs to be commented out a few months (3? 4?) after the
     ## development cycle for BioC 2.10 has started, when we are confident
