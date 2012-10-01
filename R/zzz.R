@@ -1,5 +1,5 @@
 ## The following values are updated with each Bioc release; see .onLoad
-BIOC_VERSION <- package_version("2.11")    # Bioc version of this package
+BIOC_VERSION <- package_version("2.12")    # Bioc version of this package
 IS_END_OF_LIFE <- FALSE                    # is BIOC_VERSION out-of-date?
 NEXT_R_DEVEL_VERSION <- "2.17.0" # next (not-yet-supported) version of R
 
@@ -7,7 +7,7 @@ NEXT_R_DEVEL_VERSION <- "2.17.0" # next (not-yet-supported) version of R
 ## Make sure this change is propagated to users, even 
 ## if builds have stopped for a particular version of BioC.
 ## See biocLite.R:.biocinstallRepos to include / exclude package types
-includeMBNI <- TRUE
+includeMBNI <- FALSE
 mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
 
 globalVariables("contribUrl")           # used in 'bootstrap' functions
