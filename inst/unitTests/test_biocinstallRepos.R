@@ -13,6 +13,7 @@ test_biocinstallRepos_named_repositories <- function()
     } else {
         checkTrue(!windowsOnly %in% names(repos))
     }
+   
 }
 
 test_biocinstallRepos_noNA_repositories <- function()

@@ -15,7 +15,7 @@ getUpdatablePackages <-
     if (length(nonUpdateable))
     {
         pkgList <- paste(nonUpdateable, collapse="', '")
-        fmt <- "installed directory not writeable, cannot offer to update old packages '%s'"
+        fmt <- "installed directory not writable, cannot update packages '%s'"
         .warning(fmt, pkgList, call.=FALSE)
     }
     updateable

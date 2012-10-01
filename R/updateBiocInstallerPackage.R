@@ -1,5 +1,5 @@
 .getContribUrl <-
-    function(devel=.isDevel())
+    function(biocVersion)
 {
     .contribUrl <-
         function(repos)
@@ -7,11 +7,11 @@
         contribUrl <- contrib.url(repos)
         pkgs <- available.packages(contribUrl)
         if (!"BiocInstaller" %in% rownames(pkgs))
-            .stop("'BiocInstaller' package not in repository '%s'", repos,
+            .stop("'BiocInstaller' package not in repository %s", repos,
                   call.=FALSE)
         contribUrl
     }
-    repos <- .biocinstallRepos(devel=devel)["BioCsoft"]
+    repos <- .biocinstallRepos(biocVersion=biocVersion)["BioCsoft"]
     suppressWarnings(tryCatch({
         .contribUrl(repos)
     }, error=function(err) {
@@ -31,7 +31,8 @@ bioconductorPackageIsCurrent <-
     installedVersion <-
         tryCatch(packageVersion("BiocInstaller"),
                  error = function(err) installedSentinel)
-    ap <- available.packages(.getContribUrl())
+    contribUrl <- .getContribUrl(BIOC_VERSION)
+    ap <- available.packages(contribUrl)
     availableVersion <-
         if ("BiocInstaller" %in% rownames(ap))
             package_version(ap["BiocInstaller", "Version"])
@@ -46,7 +47,7 @@ bioconductorPackageIsCurrent <-
 updateBioconductorPackage <-
     function(pkgs, ask, suppressUpdates, ...)
 {
-    .dbg("before, version is '%s'", packageVersion("BiocInstaller"))
+    .dbg("before, version is %s", packageVersion("BiocInstaller"))
     bootstrap <-
         function()
     {
@@ -64,10 +65,10 @@ updateBioconductorPackage <-
         BiocInstaller:::.updateBioconductorPackageFinish()
     }
     biocBootstrapEnv <- new.env()
-    biocBootstrapEnv[["pkgs"]] <- pkgs
+    biocBootstrapEnv[["pkgs"]] <- pkgs[pkgs != "BiocInstaller"]
     biocBootstrapEnv[["ask"]] <- ask
     biocBootstrapEnv[["suppressUpdates"]] <- suppressUpdates
-    biocBootstrapEnv[["contribUrl"]] <- .getContribUrl()
+    biocBootstrapEnv[["contribUrl"]] <- .getContribUrl(BIOC_VERSION)
     biocBootstrapEnv[["dotArgs"]] <- list(...)
     
     .stepAside(biocBootstrapEnv, bootstrap)
@@ -87,7 +88,11 @@ updateBioconductorPackage <-
     if (!failed)
         .message("'BiocInstaller' updated to version %s", vers)
     else
-        .warning("'BiocInstaller' update failed, using version '%s'",
+        .warning("'BiocInstaller' update failed, using version %s",
                  vers, call.=FALSE)
-    do.call(biocLiteInstall, args)
+    if ("BiocUpgrade" %in% args$pkgs) {
+        .biocUpgrade()
+    } else {
+        do.call(biocLiteInstall, args)
+    }
 }
