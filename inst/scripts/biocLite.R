@@ -39,10 +39,10 @@ local({
                 message(paste(strwrap(txt), collapse="\n  "))
             } else {
                 ## add a conditional for each R (or another solution)
-                if (vers == "2.15") {
-                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.10",
+                if (vers >= "2.15" && vers < "2.16") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.11",
                       a["BioCsoft", "URL"])
-                    biocVers <- numeric_version("2.10")
+                    biocVers <- numeric_version("2.11")
                 } else if (vers == "2.16") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.12",
                       a["BioCsoft", "URL"])
