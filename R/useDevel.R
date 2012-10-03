@@ -1,9 +1,6 @@
 .biocUpgrade <-
     function()
 {
-    if (!IS_UPGRADEABLE)
-        .stop("%s is the latest version of Bioconductor for this version of R ",
-              BIOC_VERSION)
     if (IS_USER && !IS_END_OF_LIFE)
         .stop("'BiocUpgrade' not available for this version of BiocInstaller")
 
