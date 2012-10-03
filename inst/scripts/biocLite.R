@@ -38,12 +38,16 @@ local({
                                url)
                 message(paste(strwrap(txt), collapse="\n  "))
             } else {
+                ## add a conditional for each R (or another solution)
                 if (vers == "2.15") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.10",
                       a["BioCsoft", "URL"])
-                      biocVers <- numeric_version("2.10")
-                }
-                
+                    biocVers <- numeric_version("2.10")
+                } else if (vers == "2.16") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.12",
+                      a["BioCsoft", "URL"])
+                    biocVers <- numeric_version("2.12")
+                }                    
                 install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
                 if (!suppressWarnings(require("BiocInstaller",
                                               quietly=TRUE))) {
