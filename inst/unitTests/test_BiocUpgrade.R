@@ -7,7 +7,7 @@ test_useDevel <- function()
     }
     if (!BiocInstaller:::IS_UPGRADEABLE) {
         checkException(useDevel(), silent=TRUE)
-        opts <- options(warn=2); on.exit(options(opt))
+        opts <- options(warn=2); on.exit(options(opts))
         checkException(biocLite("BiocUpgrade"))
     }
 }
