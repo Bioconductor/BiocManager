@@ -31,7 +31,7 @@ bioconductorPackageIsCurrent <-
     installedVersion <-
         tryCatch(packageVersion("BiocInstaller"),
                  error = function(err) installedSentinel)
-    contribUrl <- .getContribUrl(BIOC_VERSION)
+    contribUrl <- .getContribUrl(biocVersion())
     ap <- available.packages(contribUrl)
     availableVersion <-
         if ("BiocInstaller" %in% rownames(ap))
@@ -68,7 +68,7 @@ updateBioconductorPackage <-
     biocBootstrapEnv[["pkgs"]] <- pkgs[pkgs != "BiocInstaller"]
     biocBootstrapEnv[["ask"]] <- ask
     biocBootstrapEnv[["suppressUpdates"]] <- suppressUpdates
-    biocBootstrapEnv[["contribUrl"]] <- .getContribUrl(BIOC_VERSION)
+    biocBootstrapEnv[["contribUrl"]] <- .getContribUrl(biocVersion())
     biocBootstrapEnv[["dotArgs"]] <- list(...)
     
     .stepAside(biocBootstrapEnv, bootstrap)
@@ -91,7 +91,15 @@ updateBioconductorPackage <-
         .warning("'BiocInstaller' update failed, using version %s",
                  vers, call.=FALSE)
     if ("BiocUpgrade" %in% args$pkgs) {
-        .biocUpgrade()
+        if (!IS_UPGRADEABLE) {
+            .warning("%s is the latest version of Bioconductor for this
+                      version of R; installed packages upgraded",
+                     sQuote(biocVersion()))
+            args$pkgs <- args$pkgs[!args$pkgs %in% "BiocUpgrade"]
+            do.call(biocLiteInstall, args)
+        } else  {
+            .biocUpgrade()
+        }
     } else {
         do.call(biocLiteInstall, args)
     }

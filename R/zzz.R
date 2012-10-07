@@ -33,12 +33,14 @@ IS_USER <- IS_UPGRADEABLE <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
 .onAttach <-
     function(libname, pkgname) 
 {
-    .message("BiocInstaller version %s, ?biocLite for help",
-             packageVersion("BiocInstaller"))
+    .message("Bioconductor version %s (BiocInstaller %s), ?biocLite for help",
+             biocVersion(), packageVersion("BiocInstaller"))
     if (IS_END_OF_LIFE) {
         if (IS_UPGRADEABLE)
-            .message("A newer version of Bioconductor is available for this version of R, ?BiocUpgrade for help")
+            .message("A newer version of Bioconductor is available for this
+                      version of R, ?BiocUpgrade for help")
         else
-            .message("A newer version of Bioconductor is available after installing a new version of R, ?BiocUpgrade for help")
+            .message("A newer version of Bioconductor is available after
+                      installing a new version of R, ?BiocUpgrade for help")
     }
 }

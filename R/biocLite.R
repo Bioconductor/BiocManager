@@ -5,7 +5,7 @@ biocinstallRepos <-
     function(siteRepos=character())
 {
     ## siteRepos argument is public, but need biocVersion internally
-    .biocinstallRepos(siteRepos=siteRepos, BIOC_VERSION)
+    .biocinstallRepos(siteRepos=siteRepos, biocVersion())
 }
 
 .biocinstallRepos <-
@@ -118,7 +118,7 @@ biocLiteInstall <-
         .stop("failed to load package 'utils'")
     if (compareVersion(thisRVer, NEXT_R_DEVEL_VERSION) >= 0)
         .message("Temporarily using Bioconductor version %s",
-                 BIOC_VERSION)
+                 biocVersion())
 
     repos <- biocinstallRepos(siteRepos)
 
@@ -240,9 +240,9 @@ biocLite <-
                                           siteRepos=siteRepos, ...))
     } else if ("BiocUpgrade" %in% pkgs) {
         if (!IS_UPGRADEABLE) {
-            .warning("%s is the latest version of Bioconductor for this version of R;
-                      installed packages upgraded",
-                     sQuote(BIOC_VERSION))
+            .warning("%s is the latest version of Bioconductor for this
+                       version of R; installed packages upgraded",
+                     sQuote(biocVersion()))
             pkgs <- pkgs[!pkgs %in% "BiocUpgrade"]
             biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
                             suppressUpdates=suppressUpdates, ...)
