@@ -1,5 +1,6 @@
 ## The following values are updated with each Bioc release; see .onLoad
-BIOC_VERSION <- package_version("2.12")    # Bioc version of this package
+BIOC_VERSION <- package_version("2.12")    # Bioc version for this package
+R_VERSION <- package_version("2.16")       # R version for this package
 IS_END_OF_LIFE <- FALSE                    # is BIOC_VERSION out-of-date?
 NEXT_R_DEVEL_VERSION <- "2.17.0" # next (not-yet-supported) version of R
 
@@ -20,8 +21,11 @@ IS_USER <- IS_UPGRADEABLE <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
 {
     # USER or DEVEL?
     IS_USER <<- (packageVersion(pkgname)$minor %% 2L) == 0L
-    ## Allowable within-R changes
-    IS_UPGRADEABLE <<- IS_USER && ((BIOC_VERSION$minor %% 2L) == 0L)
+    IS_UPGRADEABLE <<-
+        (## Allowable within-R changes
+         (IS_USER && ((BIOC_VERSION$minor %% 2L) == 0L)) ||
+         ## between-R change
+         (getRversion()$minor >= R_VERSION$minor + 1L))
     IS_DOWNGRADEABLE <<- !IS_USER && ((BIOC_VERSION$minor %% 2L) != 0L)
     ## Up- and downgrade versions, whether accessible or not
     vers <- sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor + 1L)
@@ -37,8 +41,8 @@ IS_USER <- IS_UPGRADEABLE <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
              biocVersion(), packageVersion("BiocInstaller"))
     if (IS_END_OF_LIFE) {
         if (IS_UPGRADEABLE)
-            .message("A newer version of Bioconductor is available for this
-                      version of R, ?BiocUpgrade for help")
+            .message("A newer version of Bioconductor is available for
+                      this version of R, ?BiocUpgrade for help")
         else
             .message("A newer version of Bioconductor is available after
                       installing a new version of R, ?BiocUpgrade for help")

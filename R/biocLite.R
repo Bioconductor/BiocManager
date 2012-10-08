@@ -111,8 +111,8 @@ biocLiteInstall <-
 
     version <- getRversion()
     thisRVer <- sprintf("%d.%d", version$major, version$minor)
-    .message("Using R version %s, BiocInstaller version %s.",
-             thisRVer, packageVersion("BiocInstaller"))
+    .message("Using Bioconductor version %s (BiocInstaller %s), R version %s.",
+             biocVersion(), packageVersion("BiocInstaller"), version)
 
     if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
         .stop("failed to load package 'utils'")
@@ -240,9 +240,8 @@ biocLite <-
                                           siteRepos=siteRepos, ...))
     } else if ("BiocUpgrade" %in% pkgs) {
         if (!IS_UPGRADEABLE) {
-            .warning("%s is the latest version of Bioconductor for this
-                       version of R; installed packages upgraded",
-                     sQuote(biocVersion()))
+            .warning("Bioconductor version %s is the latest available for
+                      R version %s", biocVersion(), R_VERSION)
             pkgs <- pkgs[!pkgs %in% "BiocUpgrade"]
             biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
                             suppressUpdates=suppressUpdates, ...)

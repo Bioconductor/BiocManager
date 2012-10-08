@@ -1,9 +1,6 @@
 .biocUpgrade <-
     function()
 {
-    if (IS_USER && !IS_END_OF_LIFE)
-        .stop("'BiocUpgrade' not available for this version of BiocInstaller")
-
     txt <- sprintf("Upgrade all packages to Bioconductor version %s? [y/n]: ",
                    UPGRADE_VERSION)
     answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
