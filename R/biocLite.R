@@ -227,6 +227,8 @@ biocLite <-
              suppressAutoUpdate=FALSE,
              siteRepos=character(), ask=TRUE, ...)
 {
+    if (missing(pkgs))   # biocLite() update w/out installing defaults
+        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
     tryCatch({
         .checkSvnRevision(R.Version()[['svn rev']])
     }, error=function(e) {
