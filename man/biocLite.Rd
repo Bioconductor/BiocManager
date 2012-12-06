@@ -13,7 +13,7 @@
 
 }
 \usage{
-biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),  
+biocLite (pkgs=c("Biobase", "IRanges", "AnnotationDbi"),  
   suppressUpdates=FALSE,
   suppressAutoUpdate=FALSE,
   siteRepos=character(),
@@ -22,8 +22,9 @@ biocLite (pkgs=c("Biobase","IRanges","AnnotationDbi"),
 \arguments{
 
   \item{pkgs}{\code{character()} of package names to install or update.
-    A value of \code{character(0)} and \code{suppressUpdates=FALSE}
-    updates packages without installing new ones.}
+    A missing value and \code{suppressUpdates=FALSE} updates installed
+    packages, perhaps also installing \code{Biobase}, \code{IRanges},
+    and \code{AnnotationDbi} if they are not already installed.}
 
   \item{suppressUpdates}{\code{logical(1)} indicating whether to
     suppress automatic updating of all installed packages, or
@@ -103,7 +104,10 @@ source("http://bioconductor.org/biocLite.R")
 
 ## The most recent version of the BiocInstaller package is now loaded.
 ## No need to load it with library().
-biocLite() # installs default packages
+
+# installs default packages (if not already installed) and updates
+# previously installed packages 
+biocLite()
 
 
 ## Now install a CRAN package:
@@ -119,9 +123,6 @@ biocLite(suppressUpdates=c("^org\\.", "^BSgenome\\."))
 
 ## install a package from source:
 biocLite("IRanges", type="source")
-
-## don't install any packages, but update installed packages
-biocLite(character(0), ask=FALSE)
 
 ## install all Bioconductor software packages
 biocLite(all_group())
