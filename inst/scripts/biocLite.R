@@ -43,7 +43,7 @@ local({
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.11",
                       a["BioCsoft", "URL"])
                     biocVers <- numeric_version("2.11")
-                } else if (vers == "2.16") {
+                } else if (vers == "2.16" || vers == "3.0") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.12",
                       a["BioCsoft", "URL"])
                     biocVers <- numeric_version("2.12")
