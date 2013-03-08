@@ -192,35 +192,6 @@ biocLiteInstall <-
     }
 }
 
-.checkSvnRevision <-
-    function(svnRev)
-{
-    cmd <- "R.Version()[['svn rev']]"
-    minSvnRev <- 55733
-    if (is.character(svnRev) && 1L == length(svnRev) &&
-        "unknown" == svnRev) {
-        msg <- sprintf("%s == 'unknown' (expected > r%d)",
-                       cmd, minSvnRev)
-        .warning(msg)
-    } else if (length(svnRev) != 1) {
-        .warning("length(%s) != 1", cmd)
-    } else {
-        svnInt <-
-            withCallingHandlers(as.integer(svnRev), warning=function(w) {
-                msg <- sprintf("%s ('%s') cannot be coerced to integer",
-                               cmd, svnRev)
-                .warning(msg)
-                invokeRestart("muffleWarning")
-            })
-        if (!is.na(svnInt) && minSvnRev >= svnInt) {
-            msg <- sprintf("%s >= %d required, %d found",
-                           cmd, minSvnRev, svnInt)
-            .stop(msg)
-        }
-    }
-    TRUE
-}
-
 biocLite <-
     function(pkgs=c("Biobase","IRanges","AnnotationDbi"),
              suppressUpdates=FALSE,
@@ -229,13 +200,6 @@ biocLite <-
 {
     if (missing(pkgs))   # biocLite() update w/out installing defaults
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
-    tryCatch({
-        .checkSvnRevision(R.Version()[['svn rev']])
-    }, error=function(e) {
-        .stop("biocLite: %s", conditionMessage(e), call.=FALSE)
-    }, warning=function(w) {
-        .warning("biocLite: %s", conditionMessage(w), call.=FALSE)
-    })
     if (!suppressAutoUpdate && !bioconductorPackageIsCurrent()) {
         on.exit(updateBioconductorPackage(pkgs, ask=ask,
                                           suppressUpdates=suppressUpdates,
