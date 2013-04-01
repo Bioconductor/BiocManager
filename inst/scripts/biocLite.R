@@ -38,16 +38,13 @@ local({
                                url)
                 message(paste(strwrap(txt), collapse="\n  "))
             } else {
-                ## add a conditional for each R (or another solution)
+                ## add a conditional for Bioc releases occuring WITHIN
+                ## a single R minor version
                 if (vers >= "2.15" && vers < "2.16") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.11",
                       a["BioCsoft", "URL"])
                     biocVers <- numeric_version("2.11")
-                } else if (vers == "2.16" || vers == "3.0") {
-                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.12",
-                      a["BioCsoft", "URL"])
-                    biocVers <- numeric_version("2.12")
-                }                    
+                }
                 install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
                 if (!suppressWarnings(require("BiocInstaller",
                                               quietly=TRUE))) {
