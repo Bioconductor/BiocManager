@@ -3,7 +3,9 @@
 {
     idx <- rownames(availPkgs) %in% rownames(instPkgs)
     vers <- availPkgs[idx, "Version"]
-    tooNew <- names(vers)[vers < instPkgs[names(vers), "Version"]]
+    idx <- package_version(vers) <
+        package_version(instPkgs[names(vers), "Version"])
+    tooNew <- names(vers)[idx]
     instPkgs[tooNew, c("Version", "LibPath"), drop=FALSE]
 }
 
@@ -52,7 +54,7 @@ print.validPackages <-
             sQuote(as.character(biocVersion())), "\n\n", sep="")
         print(x$tooNewPkgs)
         pkgs <- paste(dQuote(rownames(x$tooNewPkgs)), collapse=", ")
-        msg <- .msg(ifelse(length(pkgs) == 1L, "biocLite(%s)",
+        msg <- .msg(ifelse(length(x$tooNewPkgs) == 1L, "biocLite(%s)",
                            "biocLite(c(%s))"), pkgs)
         cat("\ndowngrade with ", msg, "\n", sep="")
     }
