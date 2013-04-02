@@ -9,7 +9,7 @@
     instPkgs[tooNew, c("Version", "LibPath"), drop=FALSE]
 }
 
-validPackages <-
+biocValid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
              filters=NULL, silent=FALSE, ..., fix=FALSE)
@@ -36,7 +36,7 @@ validPackages <-
 
     if (!silent) {
         result <- structure(list(oldPkgs=oldPkgs, tooNewPkgs = tooNewPkgs),
-                            class="validPackages")
+                            class="biocValid")
         print(result)
     }
     if (fix) {
@@ -58,7 +58,7 @@ validPackages <-
     invisible(valid)
 }
 
-print.validPackages <-
+print.biocValid <-
     function(x, ...)
 {
     cat("\n* sessionInfo()\n\n")

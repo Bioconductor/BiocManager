@@ -1,18 +1,19 @@
-\name{validPackages}
+\name{biocValid}
 
-\alias{validPackages}
+\alias{biocValid}
 
-\title{Validate versions of installed packages.}
+\title{Validate installed package versions against biocLite versions.}
 
 \description{
 
   Check that installed packages are consistent (neither out-of-date nor
-  too new) for the version of R and Bioconductor in use.
+  too new) with the version of R and Bioconductor in use, using
+  \code{biocLite} for validation.
 
 }
 
 \usage{
-validPackages(pkgs = installed.packages(lib.loc, priority = priority),
+biocValid(pkgs = installed.packages(lib.loc, priority = priority),
     lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
     filters = NULL, silent = FALSE, ..., fix=FALSE)
 }
@@ -76,6 +77,6 @@ validPackages(pkgs = installed.packages(lib.loc, priority = priority),
 
 \seealso{\code{\link{biocLite}} to update installed packages.}
 
-\examples{try(validPackages())}
+\examples{try(biocValid())}
 
 \keyword{ environment }
