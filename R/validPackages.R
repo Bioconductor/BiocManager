@@ -12,7 +12,7 @@
 validPackages <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-             filters=NULL, silent=FALSE)
+             filters=NULL, silent=FALSE, ..., fix=FALSE)
 {
     if (!is.matrix(pkgs)) {
         if (is.character(pkgs))
@@ -35,7 +35,13 @@ validPackages <-
     valid <- (NROW(oldPkgs) == 0) && (NROW(tooNewPkgs) == 0)
     if (!valid && !silent) {
         print(result)
-        .stop("some packages are not valid")
+        if (fix) {
+            pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
+            biocLite(pkgs, lib.loc=lib.loc, ...)
+            .warning("updated or downgraded package(s) %s",
+                     paste(sQuote(pkgs), collapse=" "))
+        } else 
+            .stop("some packages are not valid")
     }
     valid
 }
@@ -54,7 +60,7 @@ print.validPackages <-
             sQuote(as.character(biocVersion())), "\n\n", sep="")
         print(x$tooNewPkgs)
         pkgs <- paste(dQuote(rownames(x$tooNewPkgs)), collapse=", ")
-        msg <- .msg(ifelse(length(x$tooNewPkgs) == 1L, "biocLite(%s)",
+        msg <- .msg(ifelse(NROW(x$tooNewPkgs) == 1L, "biocLite(%s)",
                            "biocLite(c(%s))"), pkgs)
         cat("\ndowngrade with ", msg, "\n", sep="")
     }

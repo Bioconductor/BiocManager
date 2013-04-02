@@ -14,7 +14,7 @@
 \usage{
 validPackages(pkgs = installed.packages(lib.loc, priority = priority),
     lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
-    filters = NULL, silent = FALSE)
+    filters = NULL, silent = FALSE, ..., fix=FALSE)
 }
 
 \arguments{
@@ -38,6 +38,12 @@ validPackages(pkgs = installed.packages(lib.loc, priority = priority),
     default) and abort execution, or return a logical(1)
     (\code{silent=TRUE}) indicating the overall validity of installed
     packages.}
+
+  \item{\dots}{Additional arguments, passed to \code{\link{biocLite}}
+    when \code{fix=TRUE}.}
+
+  \item{fix}{When \code{TRUE}, invoke \code{biocLite} to reinstall
+    (update or downgrade, as appropriate) invalid packages.}
     
 }
 
