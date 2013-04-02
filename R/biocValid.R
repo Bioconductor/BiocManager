@@ -63,8 +63,9 @@ print.biocValid <-
 {
     cat("\n* sessionInfo()\n\n")
     print(sessionInfo())
+    cat("\n")
     if (NROW(x$oldPkgs)) {
-        cat("\n* Out-of-date packages\n")
+        cat("* Out-of-date packages\n")
         print(x$oldPkgs)
         cat("\nupdate with biocLite()\n\n")
     }
