@@ -30,20 +30,32 @@ validPackages <-
         type=type)
     tooNewPkgs <- .tooNewPkgs(pkgs, availPkgs)
 
-    result <- structure(list(oldPkgs=oldPkgs, tooNewPkgs = tooNewPkgs),
-                        class="validPackages")
     valid <- (NROW(oldPkgs) == 0) && (NROW(tooNewPkgs) == 0)
-    if (!valid && !silent) {
+    if (valid)
+        return(valid)
+
+    if (!silent) {
+        result <- structure(list(oldPkgs=oldPkgs, tooNewPkgs = tooNewPkgs),
+                            class="validPackages")
         print(result)
-        if (fix) {
-            pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
-            biocLite(pkgs, lib.loc=lib.loc, ...)
-            .warning("updated or downgraded package(s) %s",
-                     paste(sQuote(pkgs), collapse=" "))
-        } else 
-            .stop("some packages are not valid")
     }
-    valid
+    if (fix) {
+        pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
+        biocLite(pkgs, lib.loc=lib.loc, ...)
+        .warning("updated or downgraded package(s) %s",
+                 paste(sQuote(pkgs), collapse=" "))
+    } else {
+        msg <- character()
+        if (NROW(oldPkgs))
+            msg <-
+                c(msg, sprintf("%d package(s) out of date", NROW(oldPkgs)))
+        if (NROW(tooNewPkgs))
+            msg <-
+                c(msg, sprintf("%d package(s) too new", NROW(tooNewPkgs)))
+        .stop(paste(msg, collapse="; "))
+    }
+
+    invisible(valid)
 }
 
 print.validPackages <-
