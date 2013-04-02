@@ -61,23 +61,21 @@ validPackages <-
 print.validPackages <-
     function(x, ...)
 {
+    cat("\n* sessionInfo()\n\n")
+    print(sessionInfo())
     if (NROW(x$oldPkgs)) {
         cat("\n* Out-of-date packages\n")
         print(x$oldPkgs)
-        cat("\nupdate with biocLite()\n")
+        cat("\nupdate with biocLite()\n\n")
     }
 
     if (NROW(x$tooNewPkgs)) {
-        cat("\n* Packages too new for Bioconductor version ",
+        cat("* Packages too new for Bioconductor version ",
             sQuote(as.character(biocVersion())), "\n\n", sep="")
         print(x$tooNewPkgs)
         pkgs <- paste(dQuote(rownames(x$tooNewPkgs)), collapse=", ")
         msg <- .msg(ifelse(NROW(x$tooNewPkgs) == 1L, "biocLite(%s)",
                            "biocLite(c(%s))"), pkgs)
-        cat("\ndowngrade with ", msg, "\n", sep="")
+        cat("\ndowngrade with ", msg, "\n\n", sep="")
     }
-
-    cat("\n* sessionInfo()\n\n")
-    print(sessionInfo())
-    cat("\n")
 }
