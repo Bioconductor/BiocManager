@@ -14,9 +14,6 @@ biocValid <-
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
              filters=NULL, silent=FALSE, ..., fix=FALSE)
 {
-    oldQuoteOption <- getOption("useFancyQuotes")
-    on.exit(options(useFancyQuotes=oldQuoteOption))
-    options(useFancyQuotes=FALSE)
     if (!is.matrix(pkgs)) {
         if (is.character(pkgs))
             pkgs <- installed.packages(pkgs, lib.loc=lib.loc)
@@ -46,7 +43,7 @@ biocValid <-
         pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
         biocLite(pkgs, lib.loc=lib.loc, ...)
         .warning("updated or downgraded package(s) %s",
-                 paste(sQuote(pkgs), collapse=" "))
+                 paste(.sQuote(pkgs), collapse=" "))
     } else {
         msg <- character()
         if (NROW(oldPkgs))
@@ -75,9 +72,9 @@ print.biocValid <-
 
     if (NROW(x$tooNewPkgs)) {
         cat("* Packages too new for Bioconductor version ",
-            sQuote(as.character(biocVersion())), "\n\n", sep="")
+            .sQuote(as.character(biocVersion())), "\n\n", sep="")
         print(x$tooNewPkgs)
-        pkgs <- paste(dQuote(rownames(x$tooNewPkgs)), collapse=", ")
+        pkgs <- paste(.dQuote(rownames(x$tooNewPkgs)), collapse=", ")
         msg <- .msg(ifelse(NROW(x$tooNewPkgs) == 1L, "biocLite(%s)",
                            "biocLite(c(%s))"), pkgs)
         cat("\ndowngrade with ", msg, "\n\n", sep="")

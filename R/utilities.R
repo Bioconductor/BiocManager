@@ -1,3 +1,9 @@
+.dQuote <- function(x)
+    sprintf('"%s"', as.character(x))
+
+.sQuote <- function(x)
+    sprintf("'%s'", as.character(x))
+
 .msg <-
     function(fmt, ..., width=getOption("width"))
     ## Use this helper to format all error / warning / message text
