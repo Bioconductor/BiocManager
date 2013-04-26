@@ -14,6 +14,9 @@ biocValid <-
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
              filters=NULL, silent=FALSE, ..., fix=FALSE)
 {
+    oldQuoteOption <- getOption("useFancyQuotes")
+    on.exit(options(useFancyQuotes=oldQuoteOption))
+    options(useFancyQuotes=FALSE)
     if (!is.matrix(pkgs)) {
         if (is.character(pkgs))
             pkgs <- installed.packages(pkgs, lib.loc=lib.loc)
