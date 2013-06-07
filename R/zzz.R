@@ -47,4 +47,10 @@ IS_USER <- IS_UPGRADEABLE <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
             .message("A newer version of Bioconductor is available after
                       installing a new version of R, ?BiocUpgrade for help")
     }
+    if (R.version$major == "3" &&
+      R.version$minor == "0.0" && 
+      Sys.info()["sysname"] %in% c("Darwin", "Windows"))
+    {
+        .message("Upgrade to R-3.0.1 or some packages may not load properly.")
+    }
 }
