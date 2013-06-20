@@ -7,17 +7,17 @@
 }
 \description{
 
-  \code{biocLite} installs or updates Bioconductor and CRAN packages,
-  ensuring that packages from the appropriate version of Bioconductor
-  are installed, and that all packages remain up to date.
+  \code{biocLite} installs or updates Bioconductor and CRAN packages in
+  a Bioconductor release.  Upgrading to a new Bioconductor release
+  requires additional steps; see \url{http://bioconductor.org/install}.
 
 }
 \usage{
 biocLite (pkgs=c("Biobase", "IRanges", "AnnotationDbi"),  
-  suppressUpdates=FALSE,
-  suppressAutoUpdate=FALSE,
-  siteRepos=character(),
-  ask=TRUE, ...)
+    suppressUpdates=FALSE,
+    suppressAutoUpdate=FALSE,
+    siteRepos=character(),
+    ask=TRUE, ...)
 }
 \arguments{
 
@@ -53,13 +53,6 @@ biocLite (pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
     of installed packages to be updated). \code{lib} is passed to
     \code{\link{install.packages}} (used to determine the library
     location where \code{pkgs} are to be installed).}
-
-}
-\details{
-
-  The \code{biocLite()} function is generally used after sourcing the
-  file \code{biocLite.R}. This will install the \code{BiocInstaller} package
-  if it is not already installed. See example section for more information.
 
 }
 
