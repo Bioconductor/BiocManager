@@ -20,7 +20,8 @@ local({
         txt <- strwrap(sprintf("Your Bioconductor is out-of-date, update
             to version %s by following instructions at
             http://bioconductor.org/install.", currBiocVers))
-        warning("\n", paste(txt, collapse="\n"), immediate.=TRUE)
+        warning("\n", paste(txt, collapse="\n"), immediate.=TRUE,
+                call.=FALSE)
     }
 
     if (vers > "2.13" && biocVers > "2.8") {
