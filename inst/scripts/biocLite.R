@@ -8,15 +8,27 @@
 ## options("BioC_mirror" = "http://www.bioconductor.org")
 
 local({
+    currRVers <- package_version("3.0.1")
+    currBiocVers <- package_version("2.12")
     vers <- getRversion()
     biocVers <-
         tryCatch(tools:::.BioC_version_associated_with_R_version,
                  error=function(...) numeric_version(0.0))
+
+    if (biocVers < currBiocVers) {
+        txt <- strwrap(sprintf("New features require Bioconductor
+            version %s, R version %s; your versions are %s and %s;
+            see http://bioconductor.org/install.",
+            currBiocVers, currRVers, biocVers, vers))
+        message(paste(txt, collapse="\n"))
+    }
+
     if (vers > "2.13" && biocVers > "2.8") {
-        if ("biocLite" %in% ls(envir=.GlobalEnv)) {
-            message <- paste("You have an outdated biocLite() function.",
-            "Run 'rm(biocLite)' and try again.")
-            stop(message)
+
+        if (exists("biocLite", .GlobalEnv, inherits=FALSE)) {
+            txt <- strwrap("There is an outdated biocLite() function in the
+                global environment; run 'rm(biocLite)' and try again.")
+            stop("\n", paste(txt, collapse="\n"))
         }
           
         if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
