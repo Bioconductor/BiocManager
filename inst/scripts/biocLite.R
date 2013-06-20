@@ -8,19 +8,19 @@
 ## options("BioC_mirror" = "http://www.bioconductor.org")
 
 local({
-    currRVers <- package_version("3.0.1")
     currBiocVers <- package_version("2.12")
     vers <- getRversion()
-    biocVers <-
-        tryCatch(tools:::.BioC_version_associated_with_R_version,
-                 error=function(...) numeric_version(0.0))
+    biocVers <- tryCatch({
+        BiocInstaller::biocVersion() # recent BiocInstaller
+    }, error=function(...) {         # no / older BiocInstaller
+        tools:::.BioC_version_associated_with_R_version
+    })
 
     if (biocVers < currBiocVers) {
-        txt <- strwrap(sprintf("New features require Bioconductor
-            version %s, R version %s; your versions are %s and %s.
-            See http://bioconductor.org/install.",
-            currBiocVers, currRVers, biocVers, vers))
-        message(paste(txt, collapse="\n"))
+        txt <- strwrap(sprintf("Your Bioconductor is out-of-date, update
+            to version %s by following instructions at
+            http://bioconductor.org/install.", currBiocVers))
+        warning("\n", paste(txt, collapse="\n"), immediate.=TRUE)
     }
 
     if (vers > "2.13" && biocVers > "2.8") {
