@@ -17,8 +17,8 @@ local({
 
     if (biocVers < currBiocVers) {
         txt <- strwrap(sprintf("New features require Bioconductor
-            version %s, R version %s; your versions are %s and %s;
-            see http://bioconductor.org/install.",
+            version %s, R version %s; your versions are %s and %s.
+            See http://bioconductor.org/install.",
             currBiocVers, currRVers, biocVers, vers))
         message(paste(txt, collapse="\n"))
     }
