@@ -8,7 +8,9 @@
 ## options("BioC_mirror" = "http://www.bioconductor.org")
 
 local({
-    currBiocVers <- package_version("2.12")
+    currBiocVers <- 
+        package_version(readLines("http://bioconductor.org/bioc-version",
+        warn=FALSE))
     vers <- getRversion()
     biocVers <- tryCatch({
         BiocInstaller::biocVersion() # recent BiocInstaller
