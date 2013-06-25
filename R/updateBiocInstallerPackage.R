@@ -6,8 +6,11 @@
     {
         contribUrl <- contrib.url(repos)
         pkgs <- available.packages(contribUrl)
-        if (!"BiocInstaller" %in% rownames(pkgs))
-            .stop("'BiocInstaller' package not in repository %s", repos,
+        if (nrow(pkgs) == 0L)
+            .stop("no packages in repository (no internet connection?)",
+                  call.=FALSE)
+        else if (!"BiocInstaller" %in% rownames(pkgs))
+            .stop("'BiocInstaller' package not in repository",
                   call.=FALSE)
         contribUrl
     }
@@ -19,7 +22,11 @@
         currentVersion <- sprintf("%d.%d", version$major, version$minor)
         lowerVersion <- .lowerRVersionString(version)
         oldRepos <- sub(currentVersion, lowerVersion, repos)
-        .message("%s, using '%s'", conditionMessage(err), oldRepos)
+        if (oldRepos == repos)
+            .stop("'%s' while trying %s", conditionMessage(err),
+                  repos, call.=FALSE)
+        .message("'%s' while trying %s, trying %s", conditionMessage(err),
+                 repos, oldRepos)
         .contribUrl(oldRepos)
     }))
 }
