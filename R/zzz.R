@@ -1,8 +1,8 @@
 ## The following values are updated with each Bioc release; see .onLoad
 BIOC_VERSION <- package_version("2.13")    # Bioc version for this package
-R_VERSION <- package_version("3.0.0")      # R version for this package
-IS_END_OF_LIFE <- FALSE                    # is BIOC_VERSION out-of-date?
-NEXT_R_DEVEL_VERSION <- "3.1.0" # next (not-yet-supported) version of R
+R_VERSION <- package_version("3.0.2")      # R version for this package
+IS_END_OF_LIFE <- TRUE                     # is BIOC_VERSION out-of-date?
+NEXT_R_DEVEL_VERSION <- "3.2.0" # next (not-yet-supported) version of R
 
 ## Change when the status of MBNI changes. 
 ## Make sure this change is propagated to users, even 
