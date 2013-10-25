@@ -8,14 +8,15 @@
 }
 \description{
 
-  Downloads the latest version of the BiocInstaller package, and
-  upgrades all currently installed packages to the latest repositories
-  for this version of R.
+  Downloads the latest version of the BiocInstaller package,
+  and upgrades all currently installed packages to the latest
+  repositories \strong{for this version of R}.
 
   To upgrade, use: \preformatted{
     source("http://bioconductor.org/biocLite.R")
     biocLite("BiocUpgrade")
   }
+
 }
 
 \seealso{

@@ -8,9 +8,6 @@
 ## options("BioC_mirror" = "http://www.bioconductor.org")
 
 local({
-    currBiocVers <- 
-        package_version(readLines("http://bioconductor.org/bioc-version",
-        warn=FALSE))
     vers <- getRversion()
     biocVers <- tryCatch({
         BiocInstaller::biocVersion() # recent BiocInstaller
@@ -18,11 +15,14 @@ local({
         tools:::.BioC_version_associated_with_R_version
     })
 
-    if (biocVers < currBiocVers) {
-        txt <- strwrap(sprintf("Your Bioconductor is out-of-date, upgrade
-            to version %s by following instructions at
-            http://bioconductor.org/install.", currBiocVers))
+    if (vers < "3.0") {
+        ## legacy; no need to change "3.0" ever
+        txt <- strwrap("A new version of Bioconductor is available
+            after installing the current version of R", exdent=2)
         message(paste(txt, collapse="\n"))
+    } else if ("package:BiocInstaller" %in% search()) {
+        ## messages even if already attached
+        tryCatch(BiocInstaller:::.onAttach(), error=function(...) NULL)
     }
 
     if (vers > "2.13" && biocVers > "2.8") {
@@ -32,7 +32,7 @@ local({
                 global environment; run 'rm(biocLite)' and try again.")
             stop("\n", paste(txt, collapse="\n"))
         }
-          
+
         if (!suppressWarnings(require("BiocInstaller", quietly=TRUE))) {
             a <- NULL
             p <- file.path(Sys.getenv("HOME"), ".R", "repositories")
