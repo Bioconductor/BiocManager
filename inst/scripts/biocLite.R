@@ -17,8 +17,10 @@ local({
 
     if (vers < "3.0") {
         ## legacy; no need to change "3.0" ever
+        ## coordinate this message with .onAttach
         txt <- strwrap("A new version of Bioconductor is available
-            after installing the current version of R", exdent=2)
+            after installing the most recent version of R; see
+            http://bioconductor.org/install", exdent=2)
         message(paste(txt, collapse="\n"))
     } else if ("package:BiocInstaller" %in% search()) {
         ## messages even if already attached

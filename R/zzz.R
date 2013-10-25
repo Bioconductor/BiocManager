@@ -45,7 +45,8 @@ IS_USER <- IS_UPGRADEABLE <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
                       this version of R, ?BiocUpgrade for help")
         else
             .message("A new version of Bioconductor is available after
-                      installing the current version of R")
+                      installing the most recent version of R; see
+                      http://bioconductor.org/install")
     }
     if (R.version$major == "3" &&
       R.version$minor == "0.0" && 
