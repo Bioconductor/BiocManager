@@ -13,7 +13,7 @@
 
 }
 \usage{
-biocLite (pkgs=c("Biobase", "IRanges", "AnnotationDbi"),  
+biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),  
     suppressUpdates=FALSE,
     suppressAutoUpdate=FALSE,
     siteRepos=character(),

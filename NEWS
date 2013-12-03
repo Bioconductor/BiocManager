@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.14.0
+-------------------------
+
+NEW FEATURES
+
+    o biocUpdatePackages updates installed packages and their
+    dependencies.
+
 CHANGES IN VERSION 1.10.0
 -------------------------
 
