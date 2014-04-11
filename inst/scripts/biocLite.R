@@ -57,7 +57,7 @@ local({
                 ## add a conditional for Bioc releases occuring WITHIN
                 ## a single R minor version
                 if (vers == "3.1.0")
-                    ## R-devel points to 2.13 repository
+                    ## R-devel points to 2.14 repository
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.14",
                       a["BioCsoft", "URL"])
                 else if (vers >= "2.15" && vers < "2.16") {
