@@ -3,6 +3,7 @@ BIOC_VERSION <- package_version("3.0")    # Bioc version for this package
 R_VERSION <- package_version("3.1.0")      # R version for this package
 IS_END_OF_LIFE <- FALSE                    # is BIOC_VERSION out-of-date?
 NEXT_R_DEVEL_VERSION <- "3.2.0" # next (not-yet-supported) version of R
+## DON'T FORGET TO FIX THE TEMPORARY HACK BELOW FOR BioC 3.1
 
 ## Change when the status of MBNI changes. 
 ## Make sure this change is propagated to users, even 
@@ -30,7 +31,8 @@ IS_USER <- IS_UPGRADEABLE <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
     ## Up- and downgrade versions, whether accessible or not
     vers <- sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor + 1L)
     UPGRADE_VERSION <<- package_version(vers)
-    vers <- sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor - 1L)
+    #vers <- sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor - 1L)
+    vers <- "2.14" # TEMPORARY HACK!!!
     DOWNGRADE_VERSION <<- package_version(vers)
 }
 
