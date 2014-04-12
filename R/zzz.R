@@ -27,12 +27,19 @@ IS_USER <- IS_UPGRADEABLE <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
          (IS_USER && ((BIOC_VERSION$minor %% 2L) == 0L)) ||
          ## between-R change
          (getRversion()$minor >= R_VERSION$minor + 1L))
-    IS_DOWNGRADEABLE <<- !IS_USER && ((BIOC_VERSION$minor %% 2L) != 0L)
+    IS_DOWNGRADEABLE <<- !IS_USER && ((BIOC_VERSION$minor %% 2L) == 0L)
     ## Up- and downgrade versions, whether accessible or not
-    vers <- sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor + 1L)
+    vers <- if (BIOC_VERSION == "2.14") {
+        "3.0"
+    } else {
+        sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor + 1L)
+    }
     UPGRADE_VERSION <<- package_version(vers)
-    #vers <- sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor - 1L)
-    vers <- "2.14" # TEMPORARY HACK!!!
+    vers <- if (BIOC_VERSION == "3.0") {
+        "2.14"
+    } else {
+        sprintf("%s.%s", BIOC_VERSION$major, BIOC_VERSION$minor - 1L)
+    }
     DOWNGRADE_VERSION <<- package_version(vers)
 }
 

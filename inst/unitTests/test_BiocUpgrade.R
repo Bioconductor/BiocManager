@@ -1,10 +1,7 @@
 test_useDevel <- function()
 {
-    if (!BiocInstaller:::IS_END_OF_LIFE) {
-        checkException(useDevel(), silent=TRUE)
-    } else if (!BiocInstaller:::IS_DOWNGRADEABLE) {
+    if (!BiocInstaller:::IS_DOWNGRADEABLE)
         checkException(useDevel(FALSE), silent=TRUE)
-    }
     if (!BiocInstaller:::IS_UPGRADEABLE) {
         checkException(useDevel(), silent=TRUE)
         opts <- options(warn=2); on.exit(options(opts))
