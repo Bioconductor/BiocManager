@@ -205,15 +205,7 @@ biocLite <-
                                           suppressUpdates=suppressUpdates,
                                           siteRepos=siteRepos, ...))
     } else if ("BiocUpgrade" %in% pkgs) {
-        if (!IS_UPGRADEABLE) {
-            .warning("Bioconductor version %s is the latest available for
-                      R version %s", biocVersion(), R_VERSION)
-            pkgs <- pkgs[!pkgs %in% "BiocUpgrade"]
-            biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
-                            suppressUpdates=suppressUpdates, ...)
-        } else  {
-            .biocUpgrade()
-        }
+        .biocUpgrade()
     } else {
         biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
                         suppressUpdates=suppressUpdates, ...)
