@@ -9,16 +9,6 @@
 
 local({
 
-     tryCatch({
-         type <- options("pkgType")[[1]]
-         if (!is.null(type) && (type == "mac.binary.mavericks")) {
-             txt <- strwrap("'Mavericks' binary packages not yet available
-                 (approximate availability: end of April, 2014);
-                 use R built for Snow Leopard.")
-             warning("\n\n", paste(txt, collapse="\n"), "\n")
-         }
-     })
-
     vers <- getRversion()
     biocVers <- tryCatch({
         BiocInstaller::biocVersion() # recent BiocInstaller
