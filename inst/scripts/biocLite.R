@@ -13,11 +13,10 @@ local({
     biocVers <- tryCatch({
         BiocInstaller::biocVersion() # recent BiocInstaller
     }, error=function(...) {         # no / older BiocInstaller
-        if (is(tools:::.BioC_version_associated_with_R_version,
-               "numeric_version"))
-            tools:::.BioC_version_associated_with_R_version
-        else
+        if (is.function(tools:::.BioC_version_associated_with_R_version))
             tools:::.BioC_version_associated_with_R_version()
+        else                            # numeric_version
+            tools:::.BioC_version_associated_with_R_version
     })
 
     if (vers < "3.0") {
