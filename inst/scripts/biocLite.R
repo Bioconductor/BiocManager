@@ -16,7 +16,7 @@ local({
         BioC_version_associated_with_R_version <-
             get(".BioC_version_associated_with_R_version",
                 envir=asNamespace("tools"), inherits=FALSE)
-        if (is.function(Bioc_Version_Associated_With_R_Version))
+        if (is.function(BioC_version_associated_with_R_version))
             BioC_version_associated_with_R_version()
         else                            # numeric_version
             BioC_version_associated_with_R_version
