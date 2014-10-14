@@ -62,12 +62,22 @@ local({
                 message(paste(strwrap(txt), collapse="\n  "))
             } else {
                 ## add a conditional for Bioc releases occuring WITHIN
-                ## a single R minor version
-                if (vers == "3.1.0")
+                ## a single R minor version. This is so that a user with a
+                ## version of R (whose etc/repositories file references the
+                ## no-longer-latest URL) and without BiocInstaller
+                ## will be pointed to the most recent repository suitable
+                ## for their version of R
+                if (vers == "3.1.1") {
+                    ## R-3.1.1's etc/repositories file at the time of the release 
+                    ## of Bioc 3.0 pointed to the 2.14 repository, but we want 
+                    ## new installations to access the 3.0 repository
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.0",
+                      a["BioCsoft", "URL"])
+                } else if (vers == "3.1.0") {
                     ## R-devel points to 2.14 repository
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.14",
                       a["BioCsoft", "URL"])
-                else if (vers >= "2.15" && vers < "2.16") {
+                } else if (vers >= "2.15" && vers < "2.16") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "2.11",
                       a["BioCsoft", "URL"])
                     biocVers <- numeric_version("2.11")
