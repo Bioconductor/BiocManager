@@ -67,7 +67,10 @@ local({
                 ## no-longer-latest URL) and without BiocInstaller
                 ## will be pointed to the most recent repository suitable
                 ## for their version of R
-                if (vers == "3.1.1") {
+                if (vers == "3.2.0") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.1",
+                      a["BioCsoft", "URL"])
+                } else if (vers == "3.1.1") {
                     ## R-3.1.1's etc/repositories file at the time of the release 
                     ## of Bioc 3.0 pointed to the 2.14 repository, but we want 
                     ## new installations to access the 3.0 repository
