@@ -100,9 +100,10 @@
     if ("BiocUpgrade" %in% args$pkgs) {
         .biocUpgrade()
     } else {
-        do.call(biocLiteInstall, args)
+        do.call(.biocLiteInstall, args)
     }
 }
 
-## FIXME: DEFUNCT after package version 1.18.0
+## FIXME: DEFUNCT after BiocInstaller version 1.18.0
 .updateBioconductorPackageFinish <- .updateBiocInstallerFinish
+biocLiteInstall <- .biocLiteInstall

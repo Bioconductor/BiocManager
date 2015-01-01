@@ -1,6 +1,7 @@
 .mbniFilter <-
-    function(pkgs, repos, ..., type=getOption("pkgType"))
+    function(pkgs, ..., type=getOption("pkgType"))
 {
+    repos <- getOption("repos")
     ## MBNI packages not always available
     doing <- character()
     if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
@@ -19,14 +20,14 @@
 }
 
 .reposInstall <-
-    function(pkgs, lib, repos, ...)
+    function(pkgs, lib, ...)
 {
     ## non-'github' packages
     doing <- grep("/", pkgs, invert=TRUE, value=TRUE)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
-        install.packages(pkgs=doing, lib=lib, repos=repos, ...)
+        install.packages(pkgs=doing, lib=lib, ...)
     }
     setdiff(pkgs, doing)
 }
@@ -46,7 +47,7 @@
     setdiff(pkgs, doing)
 }
 
-biocLiteInstall <-
+.biocLiteInstall <-
     function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
              lib.loc=.libPaths(), lib=.libPaths()[1], ...)
 {
@@ -71,18 +72,19 @@ biocLiteInstall <-
         .message("Temporarily using Bioconductor version %s",
                  biocVersion())
 
-    repos <- biocinstallRepos(siteRepos)
+    orepos <- options(repos=biocinstallRepos(siteRepos))
+    on.exit(options(orepos))
 
     if (length(pkgs)) {
-        todo <- .mbniFilter(pkgs, repos, ...)
-        todo <- .reposInstall(todo, lib=lib, repos=repos, ...)
+        todo <- .mbniFilter(pkgs, ...)
+        todo <- .reposInstall(todo, lib=lib, ...)
         todo <- .githubInstall(todo, ...)
     }
 
     ## early exit if suppressUpdates
     if (is.logical(suppressUpdates) && suppressUpdates)
         return(invisible(pkgs))
-    pkgsToUpdate <- old.packages(repos=repos, lib.loc=lib.loc)
+    pkgsToUpdate <- old.packages(lib.loc=lib.loc)
     if (is.null(pkgsToUpdate))
         return(invisible(pkgs))
 
@@ -103,12 +105,12 @@ biocLiteInstall <-
                            allowed = c("a", "A", "s", "S", "n", "N"))
 
             switch(answer,
-                   a = update.packages(repos=repos, oldPkgs=oldPkgs, ask=FALSE),
-                   s = update.packages(repos=repos, oldPkgs=oldPkgs, ask=TRUE),
+                   a = update.packages(oldPkgs=oldPkgs, ask=FALSE),
+                   s = update.packages(oldPkgs=oldPkgs, ask=TRUE),
                    n = invisible(pkgs))   
         } else {
             .message("Updating packages '%s'", pkgList)
-            update.packages(repos=repos, oldPkgs=oldPkgs, ask=ask)
+            update.packages(oldPkgs=oldPkgs, ask=ask)
         }
     }
 
@@ -145,7 +147,7 @@ biocLite <-
     } else if ("BiocUpgrade" %in% pkgs) {
         .biocUpgrade()
     } else {
-        biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
-                        suppressUpdates=suppressUpdates, ...)
+        .biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
+                         suppressUpdates=suppressUpdates, ...)
     }
 }
