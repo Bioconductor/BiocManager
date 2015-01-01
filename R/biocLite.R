@@ -1,94 +1,49 @@
-## TODO: should probably print out a message about how to use mirrors,
-## the way sourcing biocLite.R does now.
-
-biocinstallRepos <-
-    function(siteRepos=character())
+.mbniFilter <-
+    function(pkgs, repos, ..., type=getOption("pkgType"))
 {
-    ## siteRepos argument is public, but need biocVersion internally
-    .biocinstallRepos(siteRepos=siteRepos, biocVersion())
+    ## MBNI packages not always available
+    doing <- character()
+    if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
+        ("MBNI" %in% names(repos)))
+    {
+        url <- contrib.url(repos[["MBNI"]])
+        doing <- intersect(pkgs, row.names(available.packages(url)))
+        if (length(doing)) {
+            pkgNames <- paste(sQuote(doing), collapse=", ")
+            .message("MBNI Brain Array packages %s are not available as
+                      Mac binaries, use biocLite with type='source'",
+                     pkgNames)
+        }
+    }
+    setdiff(pkgs, doing)
 }
 
-.biocinstallRepos <-
-    function(siteRepos=character(), biocVersion)
+.reposInstall <-
+    function(pkgs, lib, repos, ...)
 {
-    old.opts <- options("repos")
-    on.exit(options(old.opts))
-
-    ## Starting at some point in R-2.14, Omegahat is included in
-    ## the list of available repositories, on windows only, it seems.
-
-    ## on mac and linux:
-    
-    ## 1: + CRAN
-    ## 2: + CRAN (extras)
-    ## 3: + BioC software
-    ## 4: + BioC annotation
-    ## 5: + BioC experiment
-    ## 6: + BioC extra
-    ## 7:   R-Forge
-    ## 8:   rforge.net
-    
-    ## on windows:
-    
-    ## 1: + CRAN
-    ## 2: + CRAN (extras)
-    ## 3:   Omegahat 
-    ## 4:   BioC software
-    ## 5:   BioC annotation
-    ## 6:   BioC experiment
-    ## 7:   BioC extra
-    ## 8:   R-Forge
-    ## 9:   rforge.net
-    
-    ## So it's probably better not to rely on the numbers.
-    
-    setRepositories(ind=1:20) # in case more repos are added
-    repos <- getOption("repos")
-
-    biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
-    biocPaths <- c(BioCsoft="bioc", BioCann="data/annotation",
-                    BioCexp="data/experiment", BioCextra="extra")
-    biocRepos <- paste(biocMirror, "packages", biocVersion,
-                        biocPaths, sep="/")
-    repos[names(biocPaths)] <- biocRepos
-
-    keepRepos <- if (.Platform$OS.type %in% "windows") {
-        c(names(biocPaths), "CRAN", "CRANextra")
-    } else {
-        c(names(biocPaths), "CRAN")
+    ## non-'github' packages
+    doing <- grep("/", pkgs, invert=TRUE, value=TRUE)
+    if (length(doing)) {
+        pkgNames <- paste(sQuote(doing), collapse=", ")
+        .message("Installing package(s) %s", pkgNames)
+        install.packages(pkgs=doing, lib=lib, repos=repos, ...)
     }
-    repos <- repos[keepRepos]
+    setdiff(pkgs, doing)
+}
 
-    ## This needs to be commented out a few months (3? 4?) after the
-    ## next development cycle has started, when we are confident that
-    ## no developper is still using an early R devel with a
-    ## tools:::.BioC_version_associated_with_R_version still pointing
-    ## to the release repository.
-    if (!IS_USER)
-    {
-        ## comment repos here as they become available.
-        inactive <- c(
-                      ##   "BioCsoft"
-                      ## , "BioCextra"
-                      ## , "BioCann"
-                      ## , "BioCexp"
-                      )
-
-        ## No need to touch below.
-        tmpRepos <- paste(biocMirror, "packages", DOWNGRADE_VERSION,
-                          biocPaths[inactive], sep="/")
-        repos[inactive] <- tmpRepos
+.githubInstall <-
+    function(pkgs, ...)
+{
+    doing <- grep("/", pkgs, value=TRUE)
+    if (length(doing)) {
+        pkgNames <- paste(sQuote(doing), collapse=", ")
+        if (!requireNamespace("devtools", quietly=TRUE))
+            .stop("github installation of %s only available after
+                   biocLite(\"devtools\")", pkgNames)
+        .message("Installing github package(s) %s", pkgNames)
+        devtools::install_github(doing, ...)
     }
-    
-    repos <- subset(repos, !is.na(repos))
-
-    if ("@CRAN@" %in% repos)
-        repos["CRAN"] <- "http://cran.fhcrc.org"
-    if (includeMBNI &&
-        (getOption("pkgType") %in% c("source", "win.binary")))
-        repos[["MBNI"]] <- mbniUrl
-    
-    c(siteRepos=siteRepos, repos)
+    setdiff(pkgs, doing)
 }
 
 biocLiteInstall <-
@@ -101,10 +56,6 @@ biocLiteInstall <-
     if (!(is.character(suppressUpdates) || is.logical(suppressUpdates)) ||
         (is.logical(suppressUpdates) && 1L != length(suppressUpdates)))
         .stop("'suppressUpdates' must be character() or logical(1)")
-
-    type <- list(...)[["type"]]
-    if (is.null(type))
-        type <- getOption("pkgType")
 
     biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
     .message("BioC_mirror: %s", biocMirror)
@@ -123,22 +74,9 @@ biocLiteInstall <-
     repos <- biocinstallRepos(siteRepos)
 
     if (length(pkgs)) {
-        if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
-            ("MBNI" %in% names(repos)))
-        {
-            url <- contrib.url(repos[["MBNI"]])
-            mbniPkgs <- intersect(pkgs,
-                                  row.names(available.packages(url)))
-            if (length(mbniPkgs) > 0)
-                .message("MBNI Brain Array packages '%s' are not
-                         available as Mac binaries, use biocLite with
-                         type='source'",
-                         paste(mbniPkgs, collapse="' '"))
-        }
-
-        .message("Installing package(s) '%s'",
-                 paste(pkgs, collapse="' '"))
-        install.packages(pkgs=pkgs, lib=lib, repos=repos, ...)
+        todo <- .mbniFilter(pkgs, repos, ...)
+        todo <- .reposInstall(todo, lib=lib, repos=repos, ...)
+        todo <- .githubInstall(todo, ...)
     }
 
     ## early exit if suppressUpdates
@@ -200,10 +138,10 @@ biocLite <-
 {
     if (missing(pkgs))   # biocLite() update w/out installing defaults
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
-    if (!suppressAutoUpdate && !bioconductorPackageIsCurrent()) {
-        on.exit(updateBioconductorPackage(pkgs, ask=ask,
-                                          suppressUpdates=suppressUpdates,
-                                          siteRepos=siteRepos, ...))
+    if (!suppressAutoUpdate && !.isCurrentBiocInstaller()) {
+        on.exit(.updateBiocInstaller(pkgs, ask=ask,
+                                     suppressUpdates=suppressUpdates,
+                                     siteRepos=siteRepos, ...))
     } else if ("BiocUpgrade" %in% pkgs) {
         .biocUpgrade()
     } else {

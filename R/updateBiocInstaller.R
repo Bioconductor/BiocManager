@@ -14,7 +14,7 @@
                   call.=FALSE)
         contribUrl
     }
-    repos <- .biocinstallRepos(biocVersion=biocVersion)["BioCsoft"]
+    repos <- biocinstallRepos(version=biocVersion)["BioCsoft"]
     suppressWarnings(tryCatch({
         .contribUrl(repos)
     }, error=function(err) {
@@ -31,7 +31,7 @@
     }))
 }
 
-bioconductorPackageIsCurrent <-
+.isCurrentBiocInstaller <- 
     function()
 {
     installedSentinel <- availableSentinel <- package_version("0.0.0")
@@ -51,7 +51,7 @@ bioconductorPackageIsCurrent <-
     availableVersion <= installedVersion
 }
 
-updateBioconductorPackage <-
+.updateBiocInstaller <-
     function(pkgs, ask, suppressUpdates, ...)
 {
     .dbg("before, version is %s", packageVersion("BiocInstaller"))
@@ -69,7 +69,7 @@ updateBioconductorPackage <-
             NULL
         }))
         library(BiocInstaller)
-        BiocInstaller:::.updateBioconductorPackageFinish()
+        BiocInstaller:::.updateBiocInstallerFinish()
     }
     biocBootstrapEnv <- new.env()
     biocBootstrapEnv[["pkgs"]] <- pkgs[pkgs != "BiocInstaller"]
@@ -81,7 +81,7 @@ updateBioconductorPackage <-
     .stepAside(biocBootstrapEnv, bootstrap)
 }
 
-.updateBioconductorPackageFinish <-
+.updateBiocInstallerFinish <-
     function()
 {
     args <- c(list(pkgs=get("pkgs", "biocBootstrapEnv"),
@@ -103,3 +103,6 @@ updateBioconductorPackage <-
         do.call(biocLiteInstall, args)
     }
 }
+
+## FIXME: DEFUNCT after package version 1.18.0
+.updateBioconductorPackageFinish <- .updateBiocInstallerFinish

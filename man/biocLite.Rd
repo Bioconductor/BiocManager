@@ -24,7 +24,10 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
   \item{pkgs}{\code{character()} of package names to install or update.
     A missing value and \code{suppressUpdates=FALSE} updates installed
     packages, perhaps also installing \code{Biobase}, \code{IRanges},
-    and \code{AnnotationDbi} if they are not already installed.}
+    and \code{AnnotationDbi} if they are not already installed. Package
+    names containing a \sQuote{/} are treated as github repositories and
+    installed using the \code{install_github()} function of the
+    \code{devtools} package.}
 
   \item{suppressUpdates}{\code{logical(1)} indicating whether to
     suppress automatic updating of all installed packages, or
@@ -53,6 +56,19 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
     of installed packages to be updated). \code{lib} is passed to
     \code{\link{install.packages}} (used to determine the library
     location where \code{pkgs} are to be installed).}
+
+}
+
+\details{
+
+  Installation of Bioconductor and CRAN packages use R's standard
+  functions for library management -- \code{install.packages()},
+  \code{available.packages()}, \code{update.packages()}. Installation of
+  github packages uses the \code{install_github()} function from the
+  \code{devtools} package. For this reason it usually makes sense, when
+  complicated installation options are needed, to invoke
+  \code{biocLite()} separately for Bioconductor / CRAN packages and for
+  github packages.
 
 }
 

@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.18.0
+-------------------------
+
+NEW FEATURES
+
+    o biocLite() supports github repositories (implicitly, 'packages'
+    following the 'maintainer/package' convention)
+
 CHANGES IN VERSION 1.14.0
 -------------------------
 
