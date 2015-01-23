@@ -35,7 +35,7 @@ NEXT_R_DEVEL_VERSION <- "3.3.0" # next (not-yet-supported) version of R
 includeMBNI <- FALSE
 mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
 
-globalVariables("contribUrl")           # used in 'bootstrap' functions
+globalVariables("repos")           # used in 'bootstrap' functions
 
 .onAttach <-
     function(libname, pkgname) 

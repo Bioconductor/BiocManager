@@ -46,13 +46,13 @@ useDevel <-
         function()
     {
         if (nchar(Sys.getenv("BIOCINSTALLER_TEST_REPOS")))
-            contribUrl = Sys.getenv("BIOCINSTALLER_TEST_REPOS")
+            repos = Sys.getenv("BIOCINSTALLER_TEST_REPOS")
 
         if ("package:BiocInstaller" %in% search())
             detach("package:BiocInstaller", unload=TRUE, force=TRUE)
-        ## contribUrl will be in bootstrap's environment
+        ## repos will be in bootstrap's environment
         suppressWarnings(tryCatch({
-            install.packages("BiocInstaller", contriburl=contribUrl)
+            install.packages("BiocInstaller", repos=repos)
         }, error=function(err) {
             assign("failed", TRUE, "biocBootstrapEnv")
             NULL
@@ -61,7 +61,7 @@ useDevel <-
         BiocInstaller:::.updateFinish()
     }
     biocBootstrapEnv <- new.env()
-    biocBootstrapEnv[["contribUrl"]] <- .getContribUrl(biocVersion)
+    biocBootstrapEnv[["repos"]] <- biocinstallRepos(version=biocVersion)
     biocBootstrapEnv[["biocLiteAfterUpdate"]] <- biocLiteAfterUpdate
     .stepAside(biocBootstrapEnv, bootstrap)
 }

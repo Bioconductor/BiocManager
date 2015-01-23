@@ -60,9 +60,9 @@
     {
         if ("package:BiocInstaller" %in% search())
             detach("package:BiocInstaller", unload=TRUE, force=TRUE)
-        ## contribUrl will be in bootstrap's environment
+        ## repos will be in bootstrap's environment
         suppressWarnings(tryCatch({
-            update.packages(contriburl=contribUrl, ask=FALSE,
+            update.packages(repos=repos, ask=FALSE,
                             checkBuilt=TRUE, oldPkgs="BiocInstaller")
         }, error=function(err) {
             assign("failed", TRUE, "biocBootstrapEnv")
@@ -75,7 +75,7 @@
     biocBootstrapEnv[["pkgs"]] <- pkgs[pkgs != "BiocInstaller"]
     biocBootstrapEnv[["ask"]] <- ask
     biocBootstrapEnv[["suppressUpdates"]] <- suppressUpdates
-    biocBootstrapEnv[["contribUrl"]] <- .getContribUrl(biocVersion())
+    biocBootstrapEnv[["repos"]] <- biocinstallRepos(version=biocVersion())
     biocBootstrapEnv[["dotArgs"]] <- list(...)
     
     .stepAside(biocBootstrapEnv, bootstrap)
