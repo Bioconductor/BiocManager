@@ -94,7 +94,7 @@
         suppressUpdates <- FALSE
     }
 
-    oldPkgs <- getUpdatablePackages(pkgsToUpdate)
+    oldPkgs <- pkgsToUpdate
     if (nrow(oldPkgs)) {
         pkgList <- paste(oldPkgs[,"Package"], collapse="', '")
         if (ask==TRUE) {
