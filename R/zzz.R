@@ -1,6 +1,7 @@
 ## The following values are updated with each Bioc release; see .onLoad
-BIOC_VERSION <- package_version("3.1")    # Bioc version for this package
-R_VERSION <- package_version("3.2.0")      # R version for this package
+BIOC_VERSION <- package_version("3.1")     # Bioc version for this package
+R_VERSION_MAX <- package_version("3.3.0")  # Maximum version of R for
+                                           # this version of BiocInstaller
 IS_USER <- FALSE                           # TRUE if this version of
                                            # Bioconductor is the
                                            # current release version
@@ -40,6 +41,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
 .onAttach <-
     function(libname, pkgname) 
 {
+    Rversion <- getRversion()
     .message("Bioconductor version %s (BiocInstaller %s), ?biocLite for help",
              biocVersion(), packageVersion("BiocInstaller"))
     if (IS_END_OF_LIFE) {
@@ -50,5 +52,13 @@ globalVariables("repos")           # used in 'bootstrap' functions
             .message("A new version of Bioconductor is available after
                       installing the most recent version of R; see
                       http://bioconductor.org/install")
+    } else if (Rversion >= R_VERSION_MAX) {
+        if (Rversion >= NEXT_R_DEVEL_VERSION)
+            .message("Bioconductor does not yet support R version %s", Rversion)
+        else
+            .warning("BiocInstaller version %s is too old for R version %s;
+                      remove.packages(\"BiocInstaller\") then
+                      source(\"http://bioconductor.org/biocLite.R\")",
+                     BIOC_VERSION, Rversion)
     }
 }

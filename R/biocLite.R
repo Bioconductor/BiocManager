@@ -68,9 +68,6 @@
 
     if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
         .stop("failed to load package 'utils'")
-    if (compareVersion(thisRVer, NEXT_R_DEVEL_VERSION) >= 0)
-        .message("Temporarily using Bioconductor version %s",
-                 biocVersion())
 
     orepos <- options(repos=biocinstallRepos(siteRepos))
     on.exit(options(orepos))

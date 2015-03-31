@@ -3,7 +3,7 @@
 {
     if (!IS_UPGRADEABLE) {
         .stop("Bioconductor version %s cannot be upgraded with
-               R version %s", biocVersion(), R_VERSION)
+               R version %s", biocVersion(), getRversion())
     }
     if (IS_UPGRADEABLE && UPGRADE_IS_DEVEL)
         .stop("Bioconductor version %s can be upgraded, but only to 'devel';
