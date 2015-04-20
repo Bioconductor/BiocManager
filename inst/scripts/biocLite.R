@@ -97,7 +97,32 @@ local({
                     message(paste(strwrap(txt), collapse="\n  "))
                 }
             }
-        }
+        } else {
+             ## BiocInstaller version 1.16.0-1.18.1 do not
+             ## automatically update when type=="source"; notify users
+             ## when they have updated R over their old libraries
+             installerVersion <- packageVersion("BiocInstaller")
+             test0 <- (vers > "3.1.2") &&
+                 !identical(getOption("pkgType"), "source") &&
+                     (installerVersion >= "1.16.0") &&
+                         (installerVersion <= "1.16.4")
+             if (test0) {
+                 if (installerVersion < "1.16.4") {
+                     txt <- "Update BiocInstaller with
+                         oldPkgType=options(pkgType=\"source\");
+                         biocLite(\"BiocInstaller\"); options(oldPkgType)"
+                     message(paste(strwrap(txt, exdent=2), collapse="\n"))
+                 }
+                 if (vers >= "3.2") {
+                     txt <- sprintf("BiocInstaller version %s is too old for
+                     R version %s; remove.packages(\"BiocInstaller\"),
+                     re-start R, then
+                     source(\"http://bioconductor.org/biocLite.R\")",
+                                    biocVers, vers)
+                     warning(paste(strwrap(txt, exdent=2), collapse="\n"))
+                 }
+             }
+         }
     } else {
         source("http://bioconductor.org/getBioC.R")
         biocLite <<-
