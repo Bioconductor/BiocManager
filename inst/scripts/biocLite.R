@@ -101,7 +101,7 @@ local({
              ## BiocInstaller version 1.16.0-1.18.1 do not
              ## automatically update when type=="source"; notify users
              ## when they have updated R over their old libraries
-             installerVersion <- packageVersion("BiocInstaller")
+             installerVersion <- utils::packageVersion("BiocInstaller")
              test0 <- (vers > "3.1.2") &&
                  !identical(getOption("pkgType"), "source") &&
                      (installerVersion >= "1.16.0") &&
