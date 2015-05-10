@@ -52,7 +52,7 @@
 }
 
 .updateBiocInstaller <-
-    function(pkgs, ask, suppressUpdates, ...)
+    function(pkgs, ask, suppressUpdates, lib.loc=NULL, ...)
 {
     .dbg("before, version is %s", packageVersion("BiocInstaller"))
     bootstrap <-
@@ -62,7 +62,7 @@
             detach("package:BiocInstaller", unload=TRUE, force=TRUE)
         ## repos will be in bootstrap's environment
         suppressWarnings(tryCatch({
-            update.packages(repos=repos, ask=FALSE,
+            update.packages(lib.loc, repos=repos, ask=FALSE,
                             checkBuilt=TRUE, oldPkgs="BiocInstaller")
         }, error=function(err) {
             assign("failed", TRUE, "biocBootstrapEnv")
