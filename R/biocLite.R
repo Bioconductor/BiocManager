@@ -49,7 +49,7 @@
 
 .biocLiteInstall <-
     function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
-             lib.loc=NULL, lib=.libPaths()[1], ...)
+             lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...)
 {
     if (!missing(repos))
         .stop("'repos' argument to 'biocLite' not allowed")
@@ -101,8 +101,10 @@
                            allowed = c("a", "A", "s", "S", "n", "N"))
 
             switch(answer,
-                   a = update.packages(lib.loc, oldPkgs=oldPkgs, ask=FALSE),
-                   s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE),
+                   a = update.packages(lib.loc, oldPkgs=oldPkgs, ask=FALSE,
+                       instlib=instlib),
+                   s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE,
+                       instlib=instlib),
                    n = invisible(pkgs))   
         } else {
             .message("Updating packages '%s'", pkgList)
