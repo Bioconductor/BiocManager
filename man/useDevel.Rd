@@ -142,7 +142,7 @@ useDevel(devel=TRUE)
   
   ...for release and
   
-  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\R\\win-library\\3.0-bioc-devel &&  R"
+  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.0-bioc-devel &&  R"
 
   ...for devel.
 
