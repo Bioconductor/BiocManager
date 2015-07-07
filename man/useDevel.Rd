@@ -29,24 +29,24 @@ useDevel(devel=TRUE)
 \details{
 
   With R going to a yearly release schedule and Bioconductor keeping its
-  twice-yearly release schedule, the same version of R (3.0) can be used
-  with two different versions of Bioconductor (2.11, release, and 2.12, devel).
+  twice-yearly release schedule, the same version of R (3.2) can be used
+  with two different versions of Bioconductor (3.1, release, and 3.2, devel).
   The version number of the BiocInstaller package is what is used to determine
-  whether to download packages from the BioC 2.11 or 2.12 repositories.
+  whether to download packages from the BioC 3.1 or 3.2 repositories.
   In keeping with Bioconductor versioning conventions, if the middle number
   (y in x.y.z) is even, the package is part of a release version; if odd, it's
   part of a devel version.
   
-  By default, when BiocInstaller is first installed on R-3.0, it will be
-  set up to download BioC 2.11 packages. 
+  By default, when BiocInstaller is first installed on R-3.2, it will be
+  set up to download BioC 3.1 packages. 
   
   If you want to change this, you can run the \code{\link{useDevel}}
   function. With argument \code{TRUE} (the default), it will download
   the devel version of BiocInstaller and subsequently all packages
-  downloaded with \code{\link{biocLite}} will be from the BioC 2.12
+  downloaded with \code{\link{biocLite}} will be from the BioC 3.2
   (devel) repository. You should run \code{\link{useDevel}} only once.
   
-  It is possible to keep BioC 2.11 and 2.12 libraries separate, within
+  It is possible to keep BioC 3.1 and 3.2 libraries separate, within
   the same installation of R.
   
   The trick is to use the \code{R_LIBS_USER} environment variable.
@@ -55,21 +55,21 @@ useDevel(devel=TRUE)
   
   Linux:
   
-  ~/R/x86_64-unknown-linux-gnu-library/3.0-bioc-release
+  ~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-release
   
-  ~/R/x86_64-unknown-linux-gnu-library/3.0-bioc-devel
+  ~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel
 
   Mac OS:
   
-  ~/Library/R/3.0-bioc-release/library
+  ~/Library/R/3.2-bioc-release/library
   
-  ~/Library/R/3.0-bioc-devel/library
+  ~/Library/R/3.2-bioc-devel/library
 
   Windows:
   
-  C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.0-bioc-release
+  C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.2-bioc-release
   
-  C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.0-bioc-devel
+  C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.2-bioc-devel
   
   (change YOUR_USER_NAME to your user name)
   
@@ -79,21 +79,21 @@ useDevel(devel=TRUE)
 
   Linux:
   
-  R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.0-bioc-release R
+  R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-release R
   
-  R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.0-bioc-devel R
+  R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel R
   
   
   Mac OS X:
   
-  R_LIBS_USER=~~/Library/R/3.0-bioc-release/library R
-  R_LIBS_USER=~~/Library/R/3.0-bioc-devel/library R
+  R_LIBS_USER=~~/Library/R/3.2-bioc-release/library R
+  R_LIBS_USER=~~/Library/R/3.2-bioc-devel/library R
 
   Windows:
   
-  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.0-bioc-release &&  R"
+  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.2-bioc-release &&  R"
   
-  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.0-bioc-devel &&  R"
+  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.2-bioc-devel &&  R"
   
   (Note: this assumes that R.exe is in your PATH.)
 
@@ -113,14 +113,14 @@ useDevel(devel=TRUE)
 
   Linux
   
-  alias Rdevel='R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.0-bioc-devel R'
+  alias Rdevel='R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel R'
 
-  alias Rrelease='R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.0-bioc-release R'
+  alias Rrelease='R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-release R'
   
   Mac OS X
   
-  alias Rdevel='R_LIBS_USER=~/Library/R/3.0-bioc-devel/library R'
-  alias Rrelease='R_LIBS_USER=~/Library/R/3.0-bioc-release/library R'
+  alias Rdevel='R_LIBS_USER=~/Library/R/3.2-bioc-devel/library R'
+  alias Rrelease='R_LIBS_USER=~/Library/R/3.2-bioc-release/library R'
 
   
   You can then invoke these from the command line as
@@ -138,7 +138,7 @@ useDevel(devel=TRUE)
   
   in the "type the location of the item" box, put:
   
-  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.0-bioc-release &&  R"
+  cmd /C "set R_LIBS_USER=C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.2-bioc-release &&  R"
   
   ...for release and
   
