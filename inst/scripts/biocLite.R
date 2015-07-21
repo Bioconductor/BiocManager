@@ -1,6 +1,6 @@
 ## Mirrors: uncomment the following and change to your favorite CRAN mirror
-## if you don't want to use the default (cran.fhcrc.org, Seattle, USA).
-## options("repos" = c(CRAN="http://cran.fhcrc.org"))
+## if you don't want to use the default (cran.rstudio.com).
+## options("repos" = c(CRAN="http://cran.rstudio.com"))
 
 ## Mirrors: uncomment the following and change to your favorite Bioconductor
 ## mirror, if you don't want to use the default (www.bioconductor.org,

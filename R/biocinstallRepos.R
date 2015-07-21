@@ -78,7 +78,7 @@ biocinstallRepos <-
     repos <- subset(repos, !is.na(repos))
 
     if ("@CRAN@" %in% repos)
-        repos["CRAN"] <- "http://cran.fhcrc.org"
+        repos["CRAN"] <- "http://cran.rstudio.com"
     if (includeMBNI &&
         (getOption("pkgType") %in% c("source", "win.binary")))
         repos[["MBNI"]] <- mbniUrl
