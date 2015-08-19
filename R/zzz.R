@@ -42,9 +42,12 @@ mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
         if (is.null(PROTOCOL)) {
             PROTOCOL <<- tryCatch({
                 ## check for https: availability
-                sink(file(fl <- tempfile(), "a"), type="message")
+                con <- file(fl <- tempfile(), "a")
+                on.exit(close(con))
+                sink(con, type="message")
                 xx <- close(file("https://bioconductor.org"))
                 sink(type="message")
+                flush(con)
                 if (length(readLines(fl)))
                     stop("detected https:// message")
                 "https:"
