@@ -36,19 +36,27 @@ NEXT_R_DEVEL_VERSION <- "3.3.0" # next (not-yet-supported) version of R
 includeMBNI <- FALSE
 mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
 
-PROTOCOL <- "http:"
+.protocol <- local({
+    PROTOCOL <- NULL
+    function() {
+        if (is.null(PROTOCOL)) {
+            PROTOCOL <<- tryCatch({
+                ## check for https: availability
+                sink(file(fl <- tempfile(), "a"), type="message")
+                xx <- close(file("https://bioconductor.org"))
+                sink(type="message")
+                if (length(readLines(fl)))
+                    stop("detected https:// message")
+                "https:"
+            }, error=function(...) {
+                "http:"
+            })
+        }
+        PROTOCOL
+    }
+})
 
 globalVariables("repos")           # used in 'bootstrap' functions
-
-.onLoad <-
-    function(libname, pkgname)
-{
-    tryCatch({
-        ## check for https: availability
-        close(file("https://bioconductor.org"))
-        PROTOCOL <<- "https:"
-    }, error=function(...) NULL)
-}
 
 .onAttach <-
     function(libname, pkgname) 
@@ -71,6 +79,6 @@ globalVariables("repos")           # used in 'bootstrap' functions
             .warning("BiocInstaller version %s is too old for R version %s;
                       remove.packages(\"BiocInstaller\"), re-start R, then
                       source(\"%s//bioconductor.org/biocLite.R\")",
-                     BIOC_VERSION, Rversion, PROTOCOL)
+                     BIOC_VERSION, Rversion, .protocol())
     }
 }
