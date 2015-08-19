@@ -66,7 +66,17 @@ local({
                 ## no-longer-latest URL) and without BiocInstaller
                 ## will be pointed to the most recent repository suitable
                 ## for their version of R
-                if (vers == "3.2.0") {
+                if (vers >= "3.2.2" && vers < "3.3.0") {
+                    ## transitioning to https support; check availability
+                    con <- file(fl <- tempfile(), "w")
+                    sink(con, type="message")
+                    xx <- close(file("https://bioconductor.org"))
+                    sink(type="message")
+                    close(con)
+                    if (!length(readLines(fl)))
+                        a["BioCsoft", "URL"] <-
+                            sub("^http:", "https:", a["BioCsoft", "URL"])
+                } else if (vers == "3.2.0") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.1",
                       a["BioCsoft", "URL"])
                 } else if (vers == "3.1.1") {
