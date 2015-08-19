@@ -40,7 +40,8 @@ biocinstallRepos <-
     setRepositories(ind=1:20) # in case more repos are added
     repos <- getOption("repos")
 
-    biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
+    biocMirror <- getOption("BioC_mirror",
+                            sprintf("%s//bioconductor.org", PROTOCOL))
     biocPaths <- c(BioCsoft="bioc", BioCann="data/annotation",
                     BioCexp="data/experiment", BioCextra="extra")
     biocRepos <- paste(biocMirror, "packages", biocVersion,
@@ -78,7 +79,7 @@ biocinstallRepos <-
     repos <- subset(repos, !is.na(repos))
 
     if ("@CRAN@" %in% repos)
-        repos["CRAN"] <- "http://cran.rstudio.com"
+        repos["CRAN"] <- sprintf("%s//cran.rstudio.com", PROTOCOL)
     if (includeMBNI &&
         (getOption("pkgType") %in% c("source", "win.binary")))
         repos[["MBNI"]] <- mbniUrl

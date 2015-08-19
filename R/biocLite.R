@@ -58,7 +58,8 @@
         (is.logical(suppressUpdates) && 1L != length(suppressUpdates)))
         .stop("'suppressUpdates' must be character() or logical(1)")
 
-    biocMirror <- getOption("BioC_mirror", "http://bioconductor.org")
+    biocMirror <- getOption("BioC_mirror",
+                            sprintf("%s//bioconductor.org", PROTOCOL))
     .message("BioC_mirror: %s", biocMirror)
 
     .message("Using Bioconductor %s (BiocInstaller %s), %s.",

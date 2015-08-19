@@ -13,7 +13,7 @@
   dependencies. Use \code{\link{biocLite}} to install new packages or to
   update all out-of-date packages. Upgrading to a new Bioconductor
   release requires additional steps; see
-  \url{http://bioconductor.org/install}.
+  \url{https://bioconductor.org/install}.
 
 }
 \usage{

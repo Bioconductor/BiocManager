@@ -13,7 +13,8 @@
   repositories \strong{for this version of R}.
 
   To upgrade, use: \preformatted{
-    source("http://bioconductor.org/biocLite.R")
+    ## 'http' if 'https' unavailable
+    source("https://bioconductor.org/biocLite.R")
     biocLite("BiocUpgrade")
   }
 
@@ -35,7 +36,7 @@
 }
 \examples{
 \dontrun{
-source("http://bioconductor.org/biocLite.R")
+source("https://bioconductor.org/biocLite.R")
 biocLite("BiocUpgrade")
 }
 }

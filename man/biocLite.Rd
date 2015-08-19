@@ -9,7 +9,7 @@
 
   \code{biocLite} installs or updates Bioconductor and CRAN packages in
   a Bioconductor release.  Upgrading to a new Bioconductor release
-  requires additional steps; see \url{http://bioconductor.org/install}.
+  requires additional steps; see \url{https://bioconductor.org/install}.
 
 }
 \usage{
@@ -108,7 +108,7 @@ chooseCRANmirror()
 
 ## If you don't have the BiocInstaller package installed, you can 
 ## quickly install and load it as follows:
-source("http://bioconductor.org/biocLite.R")
+source("https://bioconductor.org/biocLite.R")  # 'http' if 'https' unavailable
 
 
 ## The most recent version of the BiocInstaller package is now loaded.

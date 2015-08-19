@@ -1,11 +1,10 @@
 ## Mirrors: uncomment the following and change to your favorite CRAN mirror
 ## if you don't want to use the default (cran.rstudio.com).
-## options("repos" = c(CRAN="http://cran.rstudio.com"))
+## options("repos" = c(CRAN="https://cran.rstudio.com"))
 
 ## Mirrors: uncomment the following and change to your favorite Bioconductor
-## mirror, if you don't want to use the default (www.bioconductor.org,
-## Seattle, USA)
-## options("BioC_mirror" = "http://www.bioconductor.org")
+## mirror, if you don't want to use the default (bioconductor.org)
+## options("BioC_mirror" = "https://bioconductor.org")
 
 local({
 
@@ -55,10 +54,10 @@ local({
                 a <- tools:::.read_repositories(p)
             }
             if (!"package:utils" %in% search()) {
-                url <- "http://bioconductor.org/biocLite.R"
-                txt <- sprintf("use 'source(\"%s\")' to update 'BiocInstaller'
-                                after 'utils' package is attached",
-                               url)
+                path <- "//bioconductor.org/biocLite.R"
+                txt <- sprintf("use 'source(\"https:%s\")' or
+                    'source(\"http:%s\")' to update 'BiocInstaller' after
+                    library(\"utils\")", path, path)
                 message(paste(strwrap(txt), collapse="\n  "))
             } else {
                 ## add a conditional for Bioc releases occuring WITHIN
@@ -88,12 +87,13 @@ local({
                 install.packages("BiocInstaller", repos=a["BioCsoft", "URL"])
                 if (!suppressWarnings(require("BiocInstaller",
                                               quietly=TRUE))) {
-                    url0 <- "http://www.bioconductor.org/packages"
-                    url <- sprintf("%s/%s/bioc",
-                                   url0, as.character(biocVers))
+                    path0 <- "//bioconductor.org/packages"
+                    path <- sprintf("%s/%s/bioc", path0, as.character(biocVers))
                     txt0 <- "'biocLite.R' failed to install 'BiocInstaller',
-                            use 'install.packages(\"%s\", repos=\"%s\")'"
-                    txt <- sprintf(txt0, "BiocInstaller", url)
+                        use 'install.packages(\"BiocInstaller\",
+                        repos=\"https:%s\")' or
+                        'install.packages(\"BiocInstaller\", repos=\"http:%s\")'"
+                    txt <- sprintf(txt0, path, path)
                     message(paste(strwrap(txt), collapse="\n  "))
                 }
             }
@@ -114,17 +114,23 @@ local({
                      message(paste(strwrap(txt, exdent=2), collapse="\n"))
                  }
                  if (vers >= "3.2") {
+                     path <- "//bioconductor.org/biocLite.R"
                      txt <- sprintf("BiocInstaller version %s is too old for
-                     R version %s; remove.packages(\"BiocInstaller\"),
-                     re-start R, then
-                     source(\"http://bioconductor.org/biocLite.R\")",
-                                    biocVers, vers)
+                         R version %s; remove.packages(\"BiocInstaller\"),
+                         re-start R, then source(\"https:%s\") or
+                         source(\"http:%s\")", biocVers, vers, path, path)
                      warning(paste(strwrap(txt, exdent=2), collapse="\n"))
                  }
              }
          }
     } else {
-        source("http://bioconductor.org/getBioC.R")
+        tryCatch({
+            source("https://bioconductor.org/getBioC.R")
+        }, error=function(e) {
+            warning("https: failed (", conditionMessage(e), "), trying http",
+                    immediate.=TRUE)
+            source("http://bioconductor.org/getBioC.R")
+        })
         biocLite <<-
             function(pkgs, groupName="lite", ...)
             {
