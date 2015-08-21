@@ -39,18 +39,24 @@ mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
 .protocol <- local({
     PROTOCOL <- NULL
     function() {
-        if (is.null(PROTOCOL)) {
+        useHTTPS <- getOption("useHTTPS")
+        if (!is.null(useHTTPS)) {
+            PROTOCOL <<- if (useHTTPS) "https:" else "http:"
+        } else if (is.null(PROTOCOL)) {
             con <- file(fl <- tempfile(), "a")
             on.exit(close(con))
+            ## use 'sink' to catch 3.2.1 output
             sink(con, type="message")
             tryCatch({
                 close(file("https://bioconductor.org"))
-            }, error=identity)
+            }, error=function(e) {
+                ## divert errors to message stream
+                message(conditionMessage(e))
+            })
             sink(type="message")
             flush(con)
-            PROTOCOL <<- if (length(readLines(fl))) {
-                "http:"
-            } else "https:"
+            useHTTPS <- length(readLines(fl)) == 0L
+            PROTOCOL <<- if (useHTTPS) "https:" else "http:"
         }
         PROTOCOL
     }
