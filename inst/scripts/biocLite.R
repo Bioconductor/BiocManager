@@ -70,7 +70,11 @@ local({
                     ## transitioning to https support; check availability
                     con <- file(fl <- tempfile(), "w")
                     sink(con, type="message")
-                    xx <- close(file("https://bioconductor.org"))
+                    tryCatch({
+                        xx <- close(file("https://bioconductor.org"))
+                    }, error=function(e) {
+                        message(conditionMessage(e))
+                    })
                     sink(type="message")
                     close(con)
                     if (!length(readLines(fl)))
