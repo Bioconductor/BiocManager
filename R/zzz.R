@@ -1,5 +1,5 @@
 ## The following values are updated with each Bioc release; see .onLoad
-BIOC_VERSION <- package_version("3.2")     # Bioc version for this package
+BIOC_VERSION <- package_version("3.3")     # Bioc version for this package
 R_VERSION_MAX <- package_version("3.3.0")  # Maximum version of R for
                                            # this version of BiocInstaller
 IS_USER <- FALSE                           # TRUE if this version of
@@ -16,14 +16,14 @@ IS_UPGRADEABLE <- FALSE                    # TRUE if a more recent
                                            # version of R
 UPGRADE_IS_DEVEL <- TRUE                   # TRUE if UPGRADE_VERSION
                                            # is for devel use only
-IS_DOWNGRADEABLE <- TRUE                   # TRUE if an older version
+IS_DOWNGRADEABLE <- FALSE                  # TRUE if an older version
                                            # (release or devel) of
                                            # Bioconductor is available
                                            # for this version of R
 UPGRADE_VERSION <- package_version("3.2")  # Bioconductor version for
                                            # upgrade, if
                                            # IS_UPGRADEABLE == TRUE
-DOWNGRADE_VERSION <- package_version("3.1") # Bioconductor version for
+DOWNGRADE_VERSION <- package_version("3.2") # Bioconductor version for
                                            # downgrade, if
                                            # IS_DOWNGRADEABLE == # TRUE
 
