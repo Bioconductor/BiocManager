@@ -25,9 +25,9 @@ UPGRADE_VERSION <- package_version("3.2")  # Bioconductor version for
                                            # IS_UPGRADEABLE == TRUE
 DOWNGRADE_VERSION <- package_version("3.2") # Bioconductor version for
                                            # downgrade, if
-                                           # IS_DOWNGRADEABLE == # TRUE
+                                           # IS_DOWNGRADEABLE == TRUE
 
-NEXT_R_DEVEL_VERSION <- "3.3.0" # next (not-yet-supported) version of R
+NEXT_R_DEVEL_VERSION <- "3.4.0" # next (not-yet-supported) version of R
 
 ## Change when the status of MBNI changes. 
 ## Make sure this change is propagated to users, even 
@@ -78,7 +78,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
             .message("A new version of Bioconductor is available after
                       installing the most recent version of R; see
                       http://bioconductor.org/install")
-    } else if (Rversion >= R_VERSION_MAX) {
+    } else if (Rversion > R_VERSION_MAX) {
         if (Rversion >= NEXT_R_DEVEL_VERSION)
             .message("Bioconductor does not yet support R version %s", Rversion)
         else
