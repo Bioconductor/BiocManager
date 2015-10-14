@@ -80,8 +80,12 @@ local({
                     if (!length(readLines(fl)))
                         a["BioCsoft", "URL"] <-
                             sub("^http:", "https:", a["BioCsoft", "URL"])
-                } else if (vers == "3.2.0") {
-                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.1",
+                }
+                if (vers == "3.3.0") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.3",
+                      a["BioCsoft", "URL"]) 
+                } else if (vers >= "3.2") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.2",
                       a["BioCsoft", "URL"])
                 } else if (vers == "3.1.1") {
                     ## R-3.1.1's etc/repositories file at the time of the release 
