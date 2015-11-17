@@ -48,7 +48,9 @@ mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
             ## use 'sink' to catch 3.2.1 output
             sink(con, type="message")
             tryCatch({
-                close(file("https://bioconductor.org"))
+                fcon <- file("https://bioconductor.org/index.html")
+                on.exit(close(fcon), add=TRUE)
+                readLines(fcon, 1L)
             }, error=function(e) {
                 ## divert errors to message stream
                 message(conditionMessage(e))
