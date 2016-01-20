@@ -51,11 +51,22 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
     will be updated). Otherwise, the value is passed to
     \code{\link{update.packages}}.} 
 
-  \item{...}{Additional arguments. \code{lib.loc} is passed to
-    \code{\link{old.packages}} (used to determine the library location
-    of installed packages to be updated). \code{lib} is passed to
-    \code{\link{install.packages}} (used to determine the library
-    location where \code{pkgs} are to be installed).}
+  \item{...}{Additional arguments.
+
+    When installing CRAN or Bioconductor packages, typical arguments
+    include: \code{lib.loc}, passed to \code{\link{old.packages}} and
+    used to determine the library location of installed packages to be
+    updated; and \code{lib}, passed to \code{\link{install.packages}} to
+    determine the library location where \code{pkgs} are to be
+    installed.
+
+    When installing github packages, \code{...} is passed to the
+    \pkg{devtools} package functions
+    \code{\link[devtools]{install_github}} and
+    \code{\link[devtools]{install}}. A typical use is to build
+    vignettes, via \code{dependencies=TRUE, build_vignettes=TRUE}.
+
+  }
 
 }
 

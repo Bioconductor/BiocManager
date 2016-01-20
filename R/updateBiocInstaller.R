@@ -58,7 +58,7 @@
     bootstrap <-
         function()
     {
-        if ("package:BiocInstaller" %in% search())
+        if (isNamespaceLoaded("BiocInstaller"))
             detach("package:BiocInstaller", unload=TRUE, force=TRUE)
         ## repos will be in bootstrap's environment
         suppressWarnings(tryCatch({
@@ -103,7 +103,3 @@
         do.call(.biocLiteInstall, args)
     }
 }
-
-## FIXME: DEFUNCT after BiocInstaller version 1.18.0
-.updateBioconductorPackageFinish <- .updateBiocInstallerFinish
-biocLiteInstall <- .biocLiteInstall
