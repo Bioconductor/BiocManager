@@ -76,14 +76,12 @@ globalVariables("repos")           # used in 'bootstrap' functions
     conn <- url("https://bioconductor.org/BiocInstaller.dcf")
     on.exit(close(conn))
     dcf <- try(read.dcf(conn), silent=TRUE)
-
-
     if (class(dcf) %in% "try-error")
     {
         return()
     }
-    biocInstallerVars <- dcf[dcf[, "BIOC_VERSION"] == BIOC_VERSION,]
 
+    biocInstallerVars <- dcf[dcf[, "BIOC_VERSION"] == BIOC_VERSION,]
     R_VERSION_MAX <<- package_version(biocInstallerVars[['R_VERSION_MAX']])
     IS_USER <<- as.logical(biocInstallerVars[['IS_USER']])
     IS_END_OF_LIFE <<- as.logical(biocInstallerVars[['IS_END_OF_LIFE']])
