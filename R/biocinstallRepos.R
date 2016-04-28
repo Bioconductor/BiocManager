@@ -13,7 +13,7 @@ biocinstallRepos <-
     ## the list of available repositories, on windows only, it seems.
 
     ## on mac and linux:
-    
+
     ## 1: + CRAN
     ## 2: + CRAN (extras)
     ## 3: + BioC software
@@ -22,21 +22,21 @@ biocinstallRepos <-
     ## 6: + BioC extra
     ## 7:   R-Forge
     ## 8:   rforge.net
-    
+
     ## on windows:
-    
+
     ## 1: + CRAN
     ## 2: + CRAN (extras)
-    ## 3:   Omegahat 
+    ## 3:   Omegahat
     ## 4:   BioC software
     ## 5:   BioC annotation
     ## 6:   BioC experiment
     ## 7:   BioC extra
     ## 8:   R-Forge
     ## 9:   rforge.net
-    
+
     ## So it's probably better not to rely on the numbers.
-    
+
     setRepositories(ind=1:20) # in case more repos are added
     repos <- getOption("repos")
 
@@ -75,7 +75,7 @@ biocinstallRepos <-
                           biocPaths[inactive], sep="/")
         repos[inactive] <- tmpRepos
     }
-    
+
     repos <- subset(repos, !is.na(repos))
 
     if ("@CRAN@" %in% repos)
@@ -83,6 +83,6 @@ biocinstallRepos <-
     if (includeMBNI &&
         (getOption("pkgType") %in% c("source", "win.binary")))
         repos[["MBNI"]] <- mbniUrl
-    
+
     c(siteRepos=siteRepos, repos)
 }
