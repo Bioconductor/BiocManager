@@ -73,7 +73,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
 .onLoad <-
     function(libname, pkgname)
 {
-    conn <- url("https://bioconductor.org/BiocInstaller.dcf")
+    conn <- url(paste0(.protocol(), "//bioconductor.org/BiocInstaller.dcf"))
     on.exit(close(conn))
     dcf <- try(read.dcf(conn), silent=TRUE)
     if (class(dcf) %in% "try-error")
