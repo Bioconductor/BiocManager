@@ -29,10 +29,11 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
     installed using the \code{install_github()} function of the
     \code{devtools} package.}
 
-  \item{suppressUpdates}{\code{logical(1)} indicating whether to
-    suppress automatic updating of all installed packages, or
-    \code{character()} of regular expressions specifying which packages
-    to NOT automatically update.}
+  \item{suppressUpdates}{\code{logical(1)} or \code{character()}. When
+    \code{FALSE}, biocLite asks the user whether old packages should be
+    update. When \code{TRUE}, the user is not prompted to update old
+    packages. When \code{character()} a vector specifying which packages
+    to NOT update.}
 
   \item{suppressAutoUpdate}{\code{logical(1)} indicating whether the
     \code{BiocInstaller} package updates itself.}
