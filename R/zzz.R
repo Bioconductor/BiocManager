@@ -47,21 +47,19 @@ mbniUrl <- "http://brainarray.mbni.med.umich.edu/bioc"
         if (!is.null(useHTTPS)) {
             PROTOCOL <<- if (useHTTPS) "https:" else "http:"
         } else if (is.null(PROTOCOL)) {
-            con <- file(fl <- tempfile(), "a")
-            on.exit(close(con))
-            ## use 'sink' to catch 3.2.1 output
-            sink(con, type="message")
-            tryCatch({
-                fcon <- file("https://bioconductor.org/index.html")
-                on.exit(close(fcon), add=TRUE)
-                readLines(fcon, 1L)
-            }, error=function(e) {
-                ## divert errors to message stream
-                message(conditionMessage(e))
+            useHTTPS <- TRUE
+            withCallingHandlers({
+                tryCatch({
+                    fcon <- file("https://bioconductor.org/index.html")
+                    on.exit(close(fcon), add=TRUE)
+                    readLines(fcon, 1L)
+                }, error=function(e) {
+                    useHTTPS <<- FALSE
+                })
+            }, warning=function(e) {
+                useHTTPS <<- FALSE
+                invokeRestart("muffleWarning")
             })
-            sink(type="message")
-            flush(con)
-            useHTTPS <- length(readLines(fl)) == 0L
             PROTOCOL <<- if (useHTTPS) "https:" else "http:"
         }
         PROTOCOL
@@ -73,15 +71,21 @@ globalVariables("repos")           # used in 'bootstrap' functions
 .onLoad <-
     function(libname, pkgname)
 {
-    conn <- url(paste0(.protocol(), "//bioconductor.org/BiocInstaller.dcf"))
-    on.exit(close(conn))
-    dcf <- try(read.dcf(conn), silent=TRUE)
-    if (class(dcf) %in% "try-error")
-    {
-        return()
+    fl <- system.file(package="BiocInstaller", "scripts",
+                       "BiocInstaller.dcf")
+    dcf <- read.dcf(fl)
+    opt <- getOption("BIOCINSTALLER_ONLINE_DCF",
+                     Sys.getenv("BIOCINSTALLER_ONLINE_DCF", TRUE))
+    if (opt) {
+        tryCatch({
+            con <- url(paste0(.protocol(), "//bioconductor.org/BiocInstaller.dcf"))
+            on.exit(close(con))
+            dcf <- read.dcf(conn)
+        }, error=function(e) {})
     }
 
     biocInstallerVars <- dcf[dcf[, "BIOC_VERSION"] == BIOC_VERSION,]
+
     R_VERSION_MAX <<- package_version(biocInstallerVars[['R_VERSION_MAX']])
     IS_USER <<- as.logical(biocInstallerVars[['IS_USER']])
     IS_END_OF_LIFE <<- as.logical(biocInstallerVars[['IS_END_OF_LIFE']])
