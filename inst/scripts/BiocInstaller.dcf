@@ -10,7 +10,7 @@ UPGRADE_VERSION: 3.5
 DOWNGRADE_VERSION: 3.3
 NEXT_R_DEVEL_VERSION: 3.4.0
 
-Comment: Accurate for current state before release
+Comment: Accurate as of release day
 BIOC_VERSION: 3.3
 R_VERSION_MAX: 3.3.0
 IS_USER: TRUE
