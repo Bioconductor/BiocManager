@@ -80,7 +80,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
         tryCatch({
             con <- url(paste0(.protocol(), "//bioconductor.org/BiocInstaller.dcf"))
             on.exit(close(con))
-            dcf <- read.dcf(conn)
+            dcf <- read.dcf(con)
         }, error=function(e) {})
     }
 
