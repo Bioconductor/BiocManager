@@ -59,7 +59,12 @@
         function()
     {
         if (isNamespaceLoaded("BiocInstaller"))
-            detach("package:BiocInstaller", unload=TRUE, force=TRUE)
+            tryCatch({
+                unloadNamespace("BiocInstaller")
+            }, error=function(err) {
+                stop("failed to update BiocInstaller:",
+                     "\n    ", conditionMessage(err), call.=FALSE)
+            })
         ## repos will be in bootstrap's environment
         suppressWarnings(tryCatch({
             update.packages(lib.loc, repos=repos, ask=FALSE,
