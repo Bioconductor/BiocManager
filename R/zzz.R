@@ -108,7 +108,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
              .message("A newer version of Bioconductor is available for
                        this version of R, ?BiocUpgrade for help")
          else if (Rversion > R_VERSION_MAX)
-             .warning("BiocInstaller version %s is too old for R version %s;
+             .warning("Bioconductor version %s is too old for R version %s;
                  see https://bioconductor.org/install/#troubleshoot-biocinstaller",
                  BIOC_VERSION, Rversion)
          else
@@ -119,7 +119,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
          if (Rversion >= NEXT_R_DEVEL_VERSION)
              .message("Bioconductor does not yet support R version %s", Rversion)
          else
-             .warning("BiocInstaller version %s is too old for R version %s;
+             .warning("Bioconductor version %s is too old for R version %s;
                  see https://bioconductor.org/install/#troubleshoot-biocinstaller",
                  BIOC_VERSION, Rversion)
      }
