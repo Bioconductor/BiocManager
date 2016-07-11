@@ -109,7 +109,7 @@
                    n = invisible(pkgs))   
         } else {
             .message("Updating packages '%s'", pkgList)
-            update.packages(lib.loc, oldPkgs=oldPkgs, ask=ask)
+            update.packages(lib.loc, oldPkgs=oldPkgs, ask=ask, instlib=instlib)
         }
     }
 
