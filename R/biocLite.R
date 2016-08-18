@@ -33,14 +33,17 @@
 }
 
 .githubInstall <-
-    function(pkgs, ...)
+    function(pkgs, ..., lib.loc=NULL)
 {
     doing <- grep("/", pkgs, value=TRUE)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
-        if (!requireNamespace("devtools", quietly=TRUE))
-            .stop("github installation of %s only available after
-                   biocLite(\"devtools\")", pkgNames)
+        tryCatch({
+            loadNamespace("devtools", lib.loc)
+        }, error=function(e) {
+            .stop("package 'devtools' not available:\n  %s",
+                  conditionMessage(e))
+        })
         .message("Installing github package(s) %s", pkgNames)
         devtools::install_github(doing, ...)
     }
@@ -81,17 +84,15 @@
     ## early exit if suppressUpdates
     if (is.logical(suppressUpdates) && suppressUpdates)
         return(invisible(pkgs))
-    pkgsToUpdate <- old.packages(lib.loc)
-    if (is.null(pkgsToUpdate))
+
+    oldPkgs <- old.packages(lib.loc)
+    if (is.null(oldPkgs))
         return(invisible(pkgs))
 
-    if (!is.logical(suppressUpdates)) {
-        pkgsToUpdate <-
-            filterPackagesToUpdate(suppressUpdates, pkgsToUpdate)
-        suppressUpdates <- FALSE
-    }
+    oldPkgs <- .package_filter_suppress_updates(oldPkgs, suppressUpdates)
+    oldPkgs <- .package_filter_masked(oldPkgs)
+    oldPkgs <- .package_filter_unwriteable(oldPkgs, instlib)
 
-    oldPkgs <- pkgsToUpdate
     if (nrow(oldPkgs)) {
         pkgList <- paste(oldPkgs[,"Package"], collapse="', '")
         if (ask) {

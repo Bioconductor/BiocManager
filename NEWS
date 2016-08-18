@@ -1,3 +1,16 @@
+CHANGES IN VERSION 1.24.0
+-------------------------
+
+NEW FEATURES
+
+    o biocLite() uses lib.loc= to find devtools, reports more
+    informatively why devtools fails to load
+
+    o biocLite() only offers to update non-masked packages
+
+    o biocLite() reports when packages in unwriteable directories are
+    out-of-date, but does not try (and fail) to update them.
+
 CHANGES IN VERSION 1.20.0
 -------------------------
 
