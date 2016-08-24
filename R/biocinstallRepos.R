@@ -60,7 +60,7 @@ biocinstallRepos <-
     ## no developper is still using an early R devel with a
     ## tools:::.BioC_version_associated_with_R_version still pointing
     ## to the release repository.
-    if (!IS_USER)
+    if (isDevel())
     {
         ## comment repos here as they become available.
         inactive <- c(

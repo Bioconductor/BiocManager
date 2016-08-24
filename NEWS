@@ -11,6 +11,9 @@ NEW FEATURES
     o biocLite() reports when packages in unwriteable directories are
     out-of-date, but does not try (and fail) to update them.
 
+    o isDevel() returns TRUE if the version of BiocInstaller
+    corresponds to the development version of Bioconductor.
+
 CHANGES IN VERSION 1.20.0
 -------------------------
 

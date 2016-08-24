@@ -17,11 +17,13 @@
         .update(UPGRADE_VERSION, TRUE)
 }
 
+isDevel <- function() !IS_USER
+
 useDevel <-
     function(devel=TRUE)
 {
     if (devel) {
-        if (!IS_USER)
+        if (isDevel())
             .stop("'devel' version already in use")
         if (IS_END_OF_LIFE)
             .stop("'devel' version not available")
@@ -29,7 +31,7 @@ useDevel <-
             .stop("'devel' version requires a more recent R")
         biocVers <- UPGRADE_VERSION
     } else {
-        if (IS_USER)
+        if (!isDevel())
             .stop("'devel' version not in use")
         if (!IS_DOWNGRADEABLE)
             .stop("'devel' version cannot be down-graded with this version of R")

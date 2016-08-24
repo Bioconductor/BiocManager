@@ -1,5 +1,6 @@
 \name{useDevel}
 \alias{useDevel}
+\alias{isDevel}
 \title{
 
   Get the 'devel' version of the BiocInstaller package.
@@ -19,6 +20,7 @@
 
 }
 \usage{
+isDevel()
 useDevel(devel=TRUE)
 }
 \arguments{
@@ -28,35 +30,44 @@ useDevel(devel=TRUE)
 }
 \details{
 
-  With R going to a yearly release schedule and Bioconductor keeping its
-  twice-yearly release schedule, the same version of R (3.2) can be used
-  with two different versions of Bioconductor (3.1, release, and 3.2, devel).
-  The version number of the BiocInstaller package is what is used to determine
-  whether to download packages from the BioC 3.1 or 3.2 repositories.
-  In keeping with Bioconductor versioning conventions, if the middle number
-  (y in x.y.z) is even, the package is part of a release version; if odd, it's
-  part of a devel version.
+  Bioconductor has a 'release' branch and a 'devel' branch. The branch
+  in use depends on the version of R and the version of the
+  BiocInstaller.
+
+  \code{useDevel()} installs the correct version of the BiocInstaller
+  package for use of the devel version of Bioconductor, provided it is
+  supported by the version of R in use.
+
+  \code{isDevel()} returns TRUE when the version of BiocInstaller in use
+  corresponds to the 'devel' version of Bioconductor.
+
+  In more detail, the version number of the BiocInstaller package
+  determines whether to download packages from the release or devel
+  repositories of Bioconductor. In keeping with Bioconductor versioning
+  conventions, if the middle number (y in x.y.z) is even, the package is
+  part of a release version; if odd, it's part of a devel version.
   
-  By default, when BiocInstaller is first installed on R-3.2, it will be
-  set up to download BioC 3.1 packages. 
+  By default, when BiocInstaller is first installed and when the version
+  of R supports the current release version of Bioconductor,
+  BiocInstaller will use the release repository.
   
-  If you want to change this, you can run the \code{\link{useDevel}}
-  function. With argument \code{TRUE} (the default), it will download
-  the devel version of BiocInstaller and subsequently all packages
-  downloaded with \code{\link{biocLite}} will be from the BioC 3.2
-  (devel) repository. You should run \code{\link{useDevel}} only once.
+  To change the version of BiocInstaller to support the 'devel' branch
+  of Bioconductor, run \code{useDevel()}. With argument \code{TRUE} (the
+  default), it will download the devel version of BiocInstaller and
+  subsequently all packages downloaded with \code{\link{biocLite}} will
+  be from the devel repository. You should run \code{\link{useDevel}}
+  only once.
   
-  It is possible to keep BioC 3.1 and 3.2 libraries separate, within
-  the same installation of R.
-  
-  The trick is to use the \code{R_LIBS_USER} environment variable.
-  First, create two separate directories for your BioC release
-  and devel packages. Suggested directory names are as follows:
+  It is possible to use release and devel versions of Bioconductor with
+  the same installation of R.  To do this, use the \code{R_LIBS_USER}
+  environment variable.  First, create two separate directories for your
+  BioC release and devel packages. Suggested directory names are as
+  follows:
   
   Linux:
-  
+
   ~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-release
-  
+
   ~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel
 
   Mac OS:
@@ -72,17 +83,15 @@ useDevel(devel=TRUE)
   C:\\Users\\YOUR_USER_NAME\\Documents\\R\\win-library\\3.2-bioc-devel
   
   (change YOUR_USER_NAME to your user name)
-  
 
-  You can then invoke "R for bioc-devel" or "R for bioc-release" from
-  the command line as follows:
+  Invoke "R for bioc-devel" or "R for bioc-release" from the command
+  line as follows:
 
   Linux:
   
   R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-release R
   
   R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel R
-  
   
   Mac OS X:
   
@@ -97,7 +106,6 @@ useDevel(devel=TRUE)
   
   (Note: this assumes that R.exe is in your PATH.)
 
-
   If you launch R in this way and then invoke \code{\link{.libPaths}},
   you'll see that the first item is your special release or
   devel directory. Packages will be installed to that directory and that
@@ -106,11 +114,9 @@ useDevel(devel=TRUE)
   \code{\link{update.packages}} and friends all respect this
   setting.
 
-
   On Linux and Mac OS X, you can create a bash alias to save typing. Add the
   following to your ~/bash_profile:
   
-
   Linux
   
   alias Rdevel='R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel R'
@@ -121,7 +127,6 @@ useDevel(devel=TRUE)
   
   alias Rdevel='R_LIBS_USER=~/Library/R/3.2-bioc-devel/library R'
   alias Rrelease='R_LIBS_USER=~/Library/R/3.2-bioc-release/library R'
-
   
   You can then invoke these from the command line as
   
@@ -130,7 +135,6 @@ useDevel(devel=TRUE)
   ...and...
   
   Rrelease
-
 
   On Windows, you can create two shortcuts, one for devel and one for
   release. Go to My Computer and navigate to a directory that is in your
@@ -171,13 +175,13 @@ useDevel(devel=TRUE)
   Because \code{R_LIBS_USER} is an environment variable, its value should be
   inherited by any subprocesses started by R, so they should do the
   right thing as well.
-  
-  
 
 }
 
 \value{
-  Invisible NULL.
+  \code{useDevel()}: Invisible NULL.
+
+  \code{isDevel()}: logical(1) TRUE or FALSE.
 }
 \seealso{
   \code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
@@ -194,8 +198,8 @@ useDevel(devel=TRUE)
   public CRAN mirror URLs.
 }
 \examples{
-\dontrun{
-useDevel()
-}
+isDevel()
+
+\dontrun{useDevel()}
 }
 \keyword{environment}
