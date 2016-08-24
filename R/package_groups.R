@@ -34,10 +34,7 @@ graph_group <- function()
 
 all_group <- function()
 {
-    contribUrl <- paste(biocinstallRepos()['BioCsoft'], "src/contrib",
-                        sep="/")
-    pkglist = available.packages(contribUrl)
-    pkgs = rownames(pkglist)
+    rownames(available.packages(repos=biocinstallRepos()['BioCsoft']))
 }
 
 RBioinf_group <- function()
