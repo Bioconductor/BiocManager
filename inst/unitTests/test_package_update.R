@@ -53,8 +53,7 @@ test_package_filter_unwriteable <- function() {
 
     ## setup
     dir.create(p0 <- tempfile())
-    dir.create(p2 <- tempfile())
-    Sys.chmod(p2, mode="0400")          # read but not write
+    on.exit(unlink(p0, recursive=TRUE))
 
     pkgs0 <- matrix(
         character(), 0, 2,
@@ -89,6 +88,11 @@ test_package_filter_unwriteable <- function() {
         "installation path not writeable, unable to update packages: Bar\n",
         msg)
 
+    if (.Platform$OS.type == "windows")
+        ## how to create a read-only directory?
+        return(TRUE)
+
+    dir.create(p2 <- tempfile(), mode="0400") # read but not write
     pkgs <- matrix(c("Foo", p2), 1, byrow=TRUE,
                    dimnames=list("Foo", c("Package", "LibPath")))
     checkIdentical(pkgs0, .filter(pkgs, NULL))
@@ -99,7 +103,6 @@ test_package_filter_unwriteable <- function() {
     checkIdentical(pkgs[c(1, 3),], .filter(pkgs, NULL))
     checkIdentical(pkgs0, .filter(pkgs, p2))
 
-    unlink(p0, recursive=TRUE)
     Sys.chmod(p2, mode="0700")
     unlink(p2, recursive=TRUE)
 }
