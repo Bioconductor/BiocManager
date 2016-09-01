@@ -31,6 +31,7 @@ test_package_filter_masked <- function() {
     paths <- c(tempfile(), tempfile())
     for (path in paths) dir.create(path)
     oLibPaths <- .libPaths()
+    on.exit(.libPaths(oLibPaths))
     .libPaths(paths)
 
     pkgs <- matrix(
@@ -112,11 +113,10 @@ test_writeable_biocLite <- function() {
     file.copy(lib, locked, recursive=TRUE)
 
     oLibPaths <- .libPaths()
+    on.exit(.libPaths(oLibPaths))
     .libPaths(c(locked, .libPaths()))
 
     Sys.chmod(locked, mode="0500")
     biocLite()                          #
     Sys.chmod(locked, mode="0700")
-
-    .libPaths(oLibPaths)
 }

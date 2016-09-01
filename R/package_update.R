@@ -14,7 +14,9 @@
 .package_filter_masked <-
     function(pkgs)
 {
-    idx <- order(match(pkgs[, "LibPath"], .libPaths()))
+    path0 <- normalizePath(pkgs[, "LibPath"], winslash="/")
+    path1 <- normalizePath(.libPaths(), winslash="/")
+    idx <- order(match(path0, path1))
     dup <- duplicated(pkgs[idx,"Package"])[order(idx)]
     pkgs[!dup,, drop=FALSE]
 }
@@ -36,9 +38,12 @@
             fn <- file.path(lib, paste0("_test_dir", Sys.getpid()))
             unlink(fn, recursive = TRUE) # precaution
             res <- try(dir.create(fn, showWarnings = FALSE))
-            if (inherits(res, "try-error") || !res) status <- FALSE
-            else unlink(fn, recursive = TRUE)
-            status
+            if (inherits(res, "try-error") || !res) {
+                FALSE
+            } else {
+                unlink(fn, recursive = TRUE)
+                TRUE
+            }
         }, logical(1))
     } else
         status[status] <- file.access(ulibs[status], 2L) == 0
