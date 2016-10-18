@@ -82,7 +82,7 @@ local({
                             sub("^http:", "https:", a["BioCsoft", "URL"])
                 }
                 if (vers >= "3.3.0") {
-                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.3",
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.4",
                       a["BioCsoft", "URL"]) 
                 } else if (vers >= "3.2") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.2",
