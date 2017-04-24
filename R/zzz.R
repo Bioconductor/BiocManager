@@ -1,9 +1,9 @@
-R_VERSION_MAX <- IS_USER <- IS_END_OF_LIFE <- IS_UPGRADEABLE <- UPGRADE_IS_DEVEL <-
-  IS_DOWNGRADEABLE <- UPGRADE_VERSION <- DOWNGRADE_VERSION <-
-  NEXT_R_DEVEL_VERSION <- NULL
+R_VERSION_MAX <- IS_USER <- IS_END_OF_LIFE <- IS_UPGRADEABLE <-
+    UPGRADE_IS_DEVEL <- IS_DOWNGRADEABLE <- UPGRADE_VERSION <-
+        DOWNGRADE_VERSION <- NEXT_R_DEVEL_VERSION <- NULL
 
 ## The following values are updated with each Bioc release; see .onLoad
-BIOC_VERSION <- package_version("3.5")     # Bioc version for this package
+BIOC_VERSION <- package_version("3.6")     # Bioc version for this package
 # R_VERSION_MAX <- package_version("3.3.0")  # Maximum version of R for
 #                                            # this version of BiocInstaller
 # IS_USER <- FALSE                           # TRUE if this version of
@@ -72,13 +72,17 @@ globalVariables("repos")           # used in 'bootstrap' functions
     function(libname, pkgname)
 {
     fl <- system.file(package="BiocInstaller", "scripts",
-                       "BiocInstaller.dcf")
+                      "BiocInstaller.dcf")
     dcf <- read.dcf(fl)
-    opt <- getOption("BIOCINSTALLER_ONLINE_DCF",
-                     Sys.getenv("BIOCINSTALLER_ONLINE_DCF", TRUE))
+    opt <- getOption(
+        "BIOCINSTALLER_ONLINE_DCF",
+        Sys.getenv("BIOCINSTALLER_ONLINE_DCF", TRUE)
+    )
     if (opt) {
         tryCatch({
-            con <- url(paste0(.protocol(), "//bioconductor.org/BiocInstaller.dcf"))
+            con <- url(paste0(
+                .protocol(), "//bioconductor.org/BiocInstaller.dcf"
+            ))
             on.exit(close(con))
             dcf <- read.dcf(con)
         }, error=function(e) {})

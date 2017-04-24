@@ -58,11 +58,12 @@ useDevel(devel=TRUE)
   be from the devel repository. You should run \code{\link{useDevel}}
   only once.
   
-  It is possible to use release and devel versions of Bioconductor with
-  the same installation of R.  To do this, use the \code{R_LIBS_USER}
-  environment variable.  First, create two separate directories for your
-  BioC release and devel packages. Suggested directory names are as
-  follows:
+  During release cycles where both the release and devel version of
+  Bioconductor use the same version of R, it is possible to use release
+  and devel versions of Bioconductor with the same installation of R.
+  To do this, use the \code{R_LIBS_USER} environment variable.  First,
+  create two separate directories for your BioC release and devel
+  packages. Suggested directory names are as follows:
   
   Linux:
 
