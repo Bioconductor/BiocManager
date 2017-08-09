@@ -43,7 +43,7 @@ biocinstallRepos <-
     biocMirror <- getOption("BioC_mirror",
                             sprintf("%s//bioconductor.org", .protocol()))
     biocPaths <- c(BioCsoft="bioc", BioCann="data/annotation",
-                    BioCexp="data/experiment", BioCextra="extra")
+                    BioCexp="data/experiment")
     biocRepos <- paste(biocMirror, "packages", biocVersion,
                         biocPaths, sep="/")
     repos[names(biocPaths)] <- biocRepos
@@ -65,7 +65,6 @@ biocinstallRepos <-
         ## comment repos here as they become available.
         inactive <- c(
                       ##   "BioCsoft"
-                      ## , "BioCextra"
                       ## , "BioCann"
                       ## , "BioCexp"
                       )

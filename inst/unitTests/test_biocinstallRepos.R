@@ -3,7 +3,7 @@ repos <- biocinstallRepos()
 test_biocinstallRepos_named_repositories <- function()
 {
 
-    allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp", "BioCextra")
+    allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp")
     windowsOnly <- "CRANextra"
 
     checkTrue(all(allOS %in% names(repos)))
