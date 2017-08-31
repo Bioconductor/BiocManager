@@ -77,8 +77,20 @@ biocinstallRepos <-
 
     repos <- subset(repos, !is.na(repos))
 
-    if ("@CRAN@" %in% repos)
-        repos["CRAN"] <- sprintf("%s//cran.rstudio.com", .protocol())
+    CRAN_repo <- repos[["CRAN"]]
+    ## Microsoft R Open is shipped with getOption("repos")[["CRAN"]]
+    ## pointing to a *snapshot* of CRAN (e.g.
+    ## https://mran.microsoft.com/snapshot/2017-05-01), and not
+    ## to a CRAN mirror that is current. For the current release and devel
+    ## BioC versions, biocinstallRepos() needs to point to a CRAN mirror
+    ## that is current so biocLite() and biocValid() behave the same for
+    ## all BioC users, whether they use mainstream R or Microsoft R Open.
+    ## However, since old versions of BioC are frozen, it would probably
+    ## make sense to point to a *snapshot* of CRAN instead of a CRAN mirror
+    ## that is current.
+    snapshot_pattern <- "microsoft.com/snapshot/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
+    if (CRAN_repo == "@CRAN@" || grepl(snapshot_pattern, CRAN_repo))
+        repos[["CRAN"]] <- sprintf("%s//cran.rstudio.com", .protocol())
     if (includeMBNI &&
         (getOption("pkgType") %in% c("source", "win.binary")))
         repos[["MBNI"]] <- mbniUrl
