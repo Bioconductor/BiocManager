@@ -88,7 +88,7 @@ biocinstallRepos <-
     ## However, since old versions of BioC are frozen, it would probably
     ## make sense to point to a *snapshot* of CRAN instead of a CRAN mirror
     ## that is current.
-    snapshot_pattern <- "microsoft.com/snapshot/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
+    snapshot_pattern <- "/snapshot/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
     if (CRAN_repo == "@CRAN@" || grepl(snapshot_pattern, CRAN_repo))
         repos[["CRAN"]] <- sprintf("%s//cran.rstudio.com", .protocol())
     if (includeMBNI &&
