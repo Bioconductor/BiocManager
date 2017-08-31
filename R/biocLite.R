@@ -94,7 +94,7 @@
     if (is.logical(suppressUpdates) && suppressUpdates)
         return(invisible(pkgs))
 
-    oldPkgs <- old.packages(lib.loc)
+    oldPkgs <- old.packages(lib.loc, checkBuilt=TRUE)
     if (is.null(oldPkgs))
         return(invisible(pkgs))
 
