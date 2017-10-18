@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.28.0
+-------------------------
+
+NEW FEATURES
+
+    o biocLite() supports full URLs, e.g., to archived Bioconductor
+    packages.
+
+    o Support MRAN (Microsoft R) archives.
+
 CHANGES IN VERSION 1.24.0
 -------------------------
 
