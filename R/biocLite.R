@@ -19,11 +19,13 @@
     setdiff(pkgs, doing)
 }
 
+.GITHUB_REGEX <- "^[^(http)].*/"
+
 .reposInstall <-
     function(pkgs, lib, ...)
 {
     ## non-'github' packages
-    doing <- grep("/", pkgs, invert=TRUE, value=TRUE)
+    doing <- grep(.GITHUB_REGEX, pkgs, invert=TRUE, value=TRUE)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
@@ -35,7 +37,7 @@
 .githubInstall <-
     function(pkgs, ..., lib.loc=NULL)
 {
-    doing <- grep("/", pkgs, value=TRUE)
+    doing <- grep(.GITHUB_REGEX, pkgs, value=TRUE)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing github package(s) %s", pkgNames)
