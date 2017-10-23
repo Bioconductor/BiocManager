@@ -19,13 +19,18 @@
     setdiff(pkgs, doing)
 }
 
-.GITHUB_REGEX <- "^[^(http)].*/"
+.httpRepos <- function(pkgs, invert=FALSE)
+    grep("^https?://.+", pkgs, invert = invert, value = TRUE)
+
+.githubRepos <- function(pkgs) {
+    pkgs <- .httpRepos(pkgs, invert = TRUE)
+    grep("^[^/]+/.+", pkgs, value=TRUE)
+}
 
 .reposInstall <-
     function(pkgs, lib, ...)
 {
-    ## non-'github' packages
-    doing <- grep(.GITHUB_REGEX, pkgs, invert=TRUE, value=TRUE)
+    doing <- .httpRepos(pkgs)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
@@ -37,7 +42,7 @@
 .githubInstall <-
     function(pkgs, ..., lib.loc=NULL)
 {
-    doing <- grep(.GITHUB_REGEX, pkgs, value=TRUE)
+    doing <- .githubRepos(pkgs)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing github package(s) %s", pkgNames)
@@ -118,7 +123,7 @@
                        instlib=instlib),
                    s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE,
                        instlib=instlib),
-                   n = invisible(pkgs))   
+                   n = invisible(pkgs))
         } else {
             .message("Updating packages '%s'", pkgList)
             update.packages(lib.loc, oldPkgs=oldPkgs, ask=ask, instlib=instlib)
