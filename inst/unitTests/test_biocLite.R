@@ -1,13 +1,13 @@
 test_reposType <- function()
 {
-    .httpRepos <- BiocInstaller:::.httpRepos
+    .rRepos <- BiocInstaller:::.rRepos
     .githubRepos <- BiocInstaller:::.githubRepos
 
+    r <- "foo"
     http <- c("http://foo.bar/baz", "https://foo.bar/baz")
     github <- c("foo/bar", "foo/bar@baz")
-    neither <- c("foo", "foo/")
-    all <- c(http, github, neither)
+    all <- c(r, http, github)
 
-    checkIdentical(http, .httpRepos(all))
+    checkIdentical(c(r, http), .rRepos(all))
     checkIdentical(github, .githubRepos(all))
 }

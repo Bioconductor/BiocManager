@@ -19,18 +19,18 @@
     setdiff(pkgs, doing)
 }
 
-.httpRepos <- function(pkgs, invert=FALSE)
-    grep("^https?://.+", pkgs, invert = invert, value = TRUE)
+.rRepos <- function(pkgs, invert = FALSE)
+    grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
 
 .githubRepos <- function(pkgs) {
-    pkgs <- .httpRepos(pkgs, invert = TRUE)
+    pkgs <- .rRepos(pkgs, invert = TRUE)
     grep("^[^/]+/.+", pkgs, value=TRUE)
 }
 
 .reposInstall <-
     function(pkgs, lib, ...)
 {
-    doing <- .httpRepos(pkgs)
+    doing <- .rRepos(pkgs)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
