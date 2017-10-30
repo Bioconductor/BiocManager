@@ -6,6 +6,6 @@ Version: 1.29.0
 Author: Dan Tenenbaum and Biocore Team
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 biocViews: Infrastructure
-Depends: R (>= 3.4.0)
+Depends: R (>= 3.5.0)
 Suggests: devtools, RUnit, BiocGenerics
 License: Artistic-2.0

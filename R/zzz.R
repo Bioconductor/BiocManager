@@ -3,7 +3,7 @@ R_VERSION_MAX <- IS_USER <- IS_END_OF_LIFE <- IS_UPGRADEABLE <-
         DOWNGRADE_VERSION <- NEXT_R_DEVEL_VERSION <- NULL
 
 ## The following values are updated with each Bioc release; see .onLoad
-BIOC_VERSION <- package_version("3.6")     # Bioc version for this package
+BIOC_VERSION <- package_version("3.7")       # Bioc version for this package
 # R_VERSION_MAX <- package_version("3.3.0")  # Maximum version of R for
 #                                            # this version of BiocInstaller
 # IS_USER <- FALSE                           # TRUE if this version of
