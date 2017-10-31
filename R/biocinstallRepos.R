@@ -48,11 +48,7 @@ biocinstallRepos <-
                         biocPaths, sep="/")
     repos[names(biocPaths)] <- biocRepos
 
-    keepRepos <- if (.Platform$OS.type %in% "windows") {
-        c(names(biocPaths), "CRAN", "CRANextra")
-    } else {
-        c(names(biocPaths), "CRAN")
-    }
+    keepRepos <- c(names(biocPaths), "CRAN")
     repos <- repos[keepRepos]
 
     ## This needs to be commented out a few months (3? 4?) after the
