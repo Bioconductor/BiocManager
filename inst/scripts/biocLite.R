@@ -60,12 +60,6 @@ local({
                     library(\"utils\")", path, path)
                 message(paste(strwrap(txt), collapse="\n  "))
             } else {
-                ## add a conditional for Bioc releases occuring WITHIN
-                ## a single R minor version. This is so that a user with a
-                ## version of R (whose etc/repositories file references the
-                ## no-longer-latest URL) and without BiocInstaller
-                ## will be pointed to the most recent repository suitable
-                ## for their version of R
                 if (vers >= "3.2.2" && vers < "3.3.0") {
                     ## transitioning to https support; check availability
                     con <- file(fl <- tempfile(), "w")
@@ -81,8 +75,17 @@ local({
                         a["BioCsoft", "URL"] <-
                             sub("^http:", "https:", a["BioCsoft", "URL"])
                 }
-                if (vers >= "3.4") {
-                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.5",
+                ## add a conditional for Bioc releases occuring WITHIN
+                ## a single R minor version. This is so that a user with a
+                ## version of R (whose etc/repositories file references the
+                ## no-longer-latest URL) and without BiocInstaller
+                ## will be pointed to the most recent repository suitable
+                ## for their version of R
+                if (vers >= "3.5.0") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.7",
+                      a["BioCsoft", "URL"])
+                } else if (vers >= "3.4.0") {
+                    a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.6",
                       a["BioCsoft", "URL"]) 
                 } else if (vers >= "3.3.0") {
                     a["BioCsoft", "URL"] <- sub(as.character(biocVers), "3.4",
