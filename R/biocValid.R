@@ -30,6 +30,9 @@ biocValid <-
         type=type)
     tooNewPkgs <- .tooNewPkgs(pkgs, availPkgs)
 
+    libPaths <- pkgs[,"LibPath"]
+    rootOwned <- unique(libPaths[file.info(libPaths)$uname == "root"])
+
     valid <- (NROW(oldPkgs) == 0) && (NROW(tooNewPkgs) == 0)
     if (valid)
         return(valid)
@@ -39,6 +42,9 @@ biocValid <-
                             class="biocValid")
         print(result)
     }
+    if (length(rootOwned))
+        .warning("libraries are owned by root %s",
+                paste(.sQuote(rootOwned), collapse=" "))
     if (fix) {
         pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
         biocLite(pkgs, lib.loc=lib.loc, ...)
