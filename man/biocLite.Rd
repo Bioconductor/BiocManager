@@ -1,5 +1,6 @@
 \name{biocLite}
 \alias{biocLite}
+\alias{BIOCINSTALLER_ONLINE_DCF}
 \title{
 
   Install or update Bioconductor and CRAN packages
@@ -10,6 +11,11 @@
   \code{biocLite} installs or updates Bioconductor and CRAN packages in
   a Bioconductor release.  Upgrading to a new Bioconductor release
   requires additional steps; see \url{https://bioconductor.org/install}.
+
+  \env{BIOCINSTALLER_ONLINE_DCF} is an environment variable or global
+  \code{options()} which, when set to \code{FALSE}, uses configuration
+  information from a local archive rather than consulting the current
+  online version.
 
 }
 \usage{
@@ -82,6 +88,11 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
   \code{biocLite()} separately for Bioconductor / CRAN packages and for
   github packages.
 
+  Setting \env{BIOCINSTALLER_ONLINE_DCF} to \code{FALSE} can speed
+  package loading when internet access is slow or non-existent, but may
+  result in out-of-date information about the current release and
+  development versions of Bioconductor.
+
 }
 
 \value{
@@ -117,19 +128,16 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
 chooseBioCmirror()
 chooseCRANmirror()
 
-
 ## If you don't have the BiocInstaller package installed, you can 
 ## quickly install and load it as follows:
 source("https://bioconductor.org/biocLite.R")  # 'http' if 'https' unavailable
 
-
 ## The most recent version of the BiocInstaller package is now loaded.
 ## No need to load it with library().
 
-# installs default packages (if not already installed) and updates
-# previously installed packages 
+## installs default packages (if not already installed) and updates
+## previously installed packages
 biocLite()
-
 
 ## Now install a CRAN package:
 biocLite("survival")
@@ -152,5 +160,9 @@ biocLite(all_group())
 ## Show the Bioconductor and CRAN repositories that will be used to
 ## install/update packages.
 biocinstallRepos()
+
+## Use local archive rather than current online configuration
+## information. Set this prior to loading the BiocInstaller package.
+options(BIOCINSTALLER_ONLINE_DCF = FALSE)
 }
 \keyword{environment}
