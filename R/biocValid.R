@@ -37,12 +37,13 @@ biocValid <-
         return(valid)
 
     if (!silent) {
-        result <- structure(list(oldPkgs=oldPkgs, tooNewPkgs = tooNewPkgs,
-                                 libPaths = libPaths),
-                            class="biocValid")
+        result <- structure(
+            list(oldPkgs=oldPkgs, tooNewPkgs = tooNewPkgs, libPaths = libPaths),
+            class="biocValid"
+        )
         print(result)
     }
-    .checkUnwritableDirectories()
+    .unwritableDirectories(libPaths)
     if (fix) {
         pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
         biocLite(pkgs, lib.loc=lib.loc, ...)
@@ -62,13 +63,12 @@ biocValid <-
     invisible(valid)
 }
 
-.checkUnwritableDirectories <- function() {
-    libPaths <- unique(.libPaths())
-    rootOwned <- libPaths[file.access(libPaths, 2) == -1]
-    
-    if (length(rootOwned))
+.unwritableDirectories <- function(libPaths) {
+    rootOwned <- file.access(libPaths, 2) == -1
+    if (any(rootOwned))
         .warning("libraries cannot be written to %s",
-                 paste(.sQuote(rootOwned), collapse=" "))
+                 paste(.sQuote(libPaths[rootOwned]), collapse=" "))
+    libPaths[rootOwned]
 }
 
 print.biocValid <-
@@ -77,8 +77,8 @@ print.biocValid <-
     cat("\n* sessionInfo()\n\n")
     print(sessionInfo())
     cat("\n")
-    cat("Library path directories:\n")
-    for(i in x$libPaths) cat(noquote(x$libPaths), "\n")
+    cat("Library path directories:\n  ")
+    cat(paste(x$libPaths, collapse = "\n  "), "\n")
     cat("\n")
     if (NROW(x$oldPkgs)) {
         cat("* Out-of-date packages\n")
