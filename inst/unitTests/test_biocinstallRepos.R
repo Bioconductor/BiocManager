@@ -4,15 +4,7 @@ test_biocinstallRepos_named_repositories <- function()
 {
 
     allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp")
-    windowsOnly <- "CRANextra"
-
     checkTrue(all(allOS %in% names(repos)))
-    if (.Platform$OS.type == "windows")
-    {
-        checkTrue(windowsOnly %in% names(repos))
-    } else {
-        checkTrue(!windowsOnly %in% names(repos))
-    }
    
 }
 
