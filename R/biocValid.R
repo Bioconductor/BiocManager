@@ -42,7 +42,7 @@ biocValid <-
                             class="biocValid")
         print(result)
     }
-    .checkUnwritableDirectories()
+    .checkUnwritableDirectories(libPaths)
     if (fix) {
         pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
         biocLite(pkgs, lib.loc=lib.loc, ...)
@@ -62,8 +62,7 @@ biocValid <-
     invisible(valid)
 }
 
-.checkUnwritableDirectories <- function() {
-    libPaths <- unique(.libPaths())
+.checkUnwritableDirectories <- function(libPaths) {
     rootOwned <- libPaths[file.access(libPaths, 2) == -1]
     
     if (length(rootOwned))
@@ -78,8 +77,8 @@ print.biocValid <-
     print(sessionInfo())
     cat("\n")
     cat("Library path directories:\n")
-    for(i in x$libPaths) cat(noquote(x$libPaths), "\n")
-    cat("\n")
+    cat(paste(x$libPaths, collapse="\n"))
+    cat("\n\n")
     if (NROW(x$oldPkgs)) {
         cat("* Out-of-date packages\n")
         print(x$oldPkgs)
