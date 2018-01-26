@@ -43,7 +43,7 @@ biocinstallRepos <-
     biocMirror <- getOption("BioC_mirror",
                             sprintf("%s//bioconductor.org", .protocol()))
     biocPaths <- c(BioCsoft="bioc", BioCann="data/annotation",
-                    BioCexp="data/experiment", BioCworkflow="workflows")
+                    BioCexp="data/experiment")#, BioCworkflows="workflows")
     biocRepos <- paste(biocMirror, "packages", biocVersion,
                         biocPaths, sep="/")
     repos[names(biocPaths)] <- biocRepos
