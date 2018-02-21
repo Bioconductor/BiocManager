@@ -43,44 +43,5 @@ useDevel <-
 .update <-
     function(biocVersion, biocLiteAfterUpdate = FALSE)
 {
-    .dbg("before, version is %s", packageVersion("BiocInstaller"))
-    bootstrap <-
-        function()
-    {
-        if (nchar(Sys.getenv("BIOCINSTALLER_TEST_REPOS")))
-            repos = Sys.getenv("BIOCINSTALLER_TEST_REPOS")
-
-        if ("package:BiocInstaller" %in% search())
-            detach("package:BiocInstaller", unload=TRUE, force=TRUE)
-        ## repos will be in bootstrap's environment
-        suppressWarnings(tryCatch({
-            install.packages("BiocInstaller", repos=repos)
-        }, error=function(err) {
-            assign("failed", TRUE, "biocBootstrapEnv")
-            NULL
-        }))
-        library(BiocInstaller)
-        BiocInstaller:::.updateFinish()
-    }
-    biocBootstrapEnv <- new.env()
-    biocBootstrapEnv[["repos"]] <- biocinstallRepos(version=biocVersion)
-    biocBootstrapEnv[["biocLiteAfterUpdate"]] <- biocLiteAfterUpdate
-    .stepAside(biocBootstrapEnv, bootstrap)
-}
-
-.updateFinish <-
-    function()
-{
-    failed <- exists("failed", "biocBootstrapEnv")
-    biocLiteAfterUpdate <- get("biocLiteAfterUpdate", "biocBootstrapEnv")
-    detach("biocBootstrapEnv")
-    .dbg("after, version is %s", packageVersion("BiocInstaller"))
-    vers <- packageVersion("BiocInstaller")
-    if (!failed) {
-        .message("'BiocInstaller' changed to version %s", vers)
-        if (biocLiteAfterUpdate)
-            biocLite(character(), ask=FALSE)
-    } else
-        .warning("update failed, using BiocInstaller version %s",
-                 vers, call.=FALSE)
+## TODO: write mechanism to upgrade and downgrade packages
 }

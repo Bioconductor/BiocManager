@@ -51,41 +51,6 @@
     availableVersion <= installedVersion
 }
 
-.updateBiocInstaller <-
-    function(pkgs, ask, suppressUpdates, lib.loc=NULL, ...)
-{
-    .dbg("before, version is %s", packageVersion("BiocInstaller"))
-    bootstrap <-
-        function()
-    {
-        if (isNamespaceLoaded("BiocInstaller"))
-            tryCatch({
-                unloadNamespace("BiocInstaller")
-            }, error=function(err) {
-                stop("failed to update BiocInstaller:",
-                     "\n    ", conditionMessage(err), call.=FALSE)
-            })
-        ## repos will be in bootstrap's environment
-        suppressWarnings(tryCatch({
-            update.packages(lib.loc, repos=repos, ask=FALSE,
-                            checkBuilt=TRUE, oldPkgs="BiocInstaller")
-        }, error=function(err) {
-            assign("failed", TRUE, "biocBootstrapEnv")
-            NULL
-        }))
-        library(BiocInstaller)
-        BiocInstaller:::.updateBiocInstallerFinish()
-    }
-    biocBootstrapEnv <- new.env()
-    biocBootstrapEnv[["pkgs"]] <- pkgs[pkgs != "BiocInstaller"]
-    biocBootstrapEnv[["ask"]] <- ask
-    biocBootstrapEnv[["suppressUpdates"]] <- suppressUpdates
-    biocBootstrapEnv[["repos"]] <- biocinstallRepos(version=biocVersion())
-    biocBootstrapEnv[["dotArgs"]] <- list(...)
-    
-    .stepAside(biocBootstrapEnv, bootstrap)
-}
-
 .updateBiocInstallerFinish <-
     function()
 {

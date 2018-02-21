@@ -60,15 +60,3 @@
     }
     paste(major, minor, sep=".")
 }
-
-# bootstrap() should take care of unloading BiocInstaller 
-# and reloading it.
-
-.stepAside <-
-    function(biocBootstrapEnv, bootstrap) 
-{
-    environment(bootstrap) <- biocBootstrapEnv
-    biocBootstrapEnv[["bootstrap"]] <- bootstrap
-    attach(biocBootstrapEnv)
-    on.exit(eval(bootstrap(), biocBootstrapEnv))
-}
