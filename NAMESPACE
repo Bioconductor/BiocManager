@@ -1,5 +1,4 @@
 import("utils")
 
-export(biocLite, biocVersion, biocUpdatePackages, biocinstallRepos,
-    isDevel, useDevel, biocValid, monograph_group, RBioinf_group,
-    biocases_group, all_group)
+export(biocLite, biocVersion, biocUpdatePackages,
+    biocinstallRepos, isDevel, useDevel, biocValid)
