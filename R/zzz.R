@@ -33,33 +33,6 @@ BIOC_VERSION <- package_version("3.7")       # Bioc version for this package
 #
 # NEXT_R_DEVEL_VERSION <- "3.4.0" # next (not-yet-supported) version of R
 
-
-.protocol <- local({
-    PROTOCOL <- NULL
-    function() {
-        useHTTPS <- getOption("useHTTPS")
-        if (!is.null(useHTTPS)) {
-            PROTOCOL <<- if (useHTTPS) "https:" else "http:"
-        } else if (is.null(PROTOCOL)) {
-            useHTTPS <- TRUE
-            withCallingHandlers({
-                tryCatch({
-                    fcon <- file("https://bioconductor.org/index.html")
-                    on.exit(close(fcon), add=TRUE)
-                    readLines(fcon, 1L)
-                }, error=function(e) {
-                    useHTTPS <<- FALSE
-                })
-            }, warning=function(e) {
-                useHTTPS <<- FALSE
-                invokeRestart("muffleWarning")
-            })
-            PROTOCOL <<- if (useHTTPS) "https:" else "http:"
-        }
-        PROTOCOL
-    }
-})
-
 globalVariables("repos")           # used in 'bootstrap' functions
 
 .onLoad <-
@@ -74,9 +47,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
     )
     if (opt) {
         tryCatch({
-            con <- url(paste0(
-                .protocol(), "//bioconductor.org/BiocInstaller.dcf"
-            ))
+            con <- url("https://bioconductor.org/BiocInstaller.dcf")
             on.exit(close(con))
             dcf <- read.dcf(con)
         }, error=function(e) {})
