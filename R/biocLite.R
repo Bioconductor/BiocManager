@@ -1,24 +1,3 @@
-.mbniFilter <-
-    function(pkgs, ..., type=getOption("pkgType"))
-{
-    repos <- getOption("repos")
-    ## MBNI packages not always available
-    doing <- character()
-    if ((type %in% c("mac.binary", "mac.binary.leopard")) &&
-        ("MBNI" %in% names(repos)))
-    {
-        url <- contrib.url(repos[["MBNI"]])
-        doing <- intersect(pkgs, row.names(available.packages(url)))
-        if (length(doing)) {
-            pkgNames <- paste(sQuote(doing), collapse=", ")
-            .message("MBNI Brain Array packages %s are not available as
-                      Mac binaries, use biocLite with type='source'",
-                     pkgNames)
-        }
-    }
-    setdiff(pkgs, doing)
-}
-
 .rRepos <- function(pkgs, invert = FALSE)
     grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
 
@@ -92,8 +71,7 @@
     on.exit(options(orepos))
 
     if (length(pkgs)) {
-        todo <- .mbniFilter(pkgs, ...)
-        todo <- .reposInstall(todo, lib=lib, ...)
+        todo <- .reposInstall(pkgs, lib=lib, ...)
         todo <- .githubInstall(todo, ...)
     }
 

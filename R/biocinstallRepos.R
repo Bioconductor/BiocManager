@@ -86,10 +86,7 @@ biocinstallRepos <-
     ## that is current.
     snapshot_pattern <- "/snapshot/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
     if (CRAN_repo == "@CRAN@" || grepl(snapshot_pattern, CRAN_repo))
-        repos[["CRAN"]] <- sprintf("%s//cran.rstudio.com", .protocol())
-    if (includeMBNI &&
-        (getOption("pkgType") %in% c("source", "win.binary")))
-        repos[["MBNI"]] <- mbniUrl
+        repos[["CRAN"]] <- "https://cran.rstudio.com"
 
     c(siteRepos=siteRepos, repos)
 }
