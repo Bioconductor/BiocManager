@@ -32,10 +32,10 @@
                 if (is.null(lib.loc))
                     lib.loc <- .libPaths()
                 stop(conditionMessage(e),
-                     "\n    package 'devtools' not installed in library path(s)",
-                     "\n        ", paste(lib.loc, collapse="\n        "),
-                     "\n    install with 'biocLite(\"devtools\")', and re-run your biocLite() command",
-                     call.=FALSE)
+                    "\n    package 'devtools' not installed in library path(s)",
+                    "\n        ", paste(lib.loc, collapse="\n        "),
+                    "\n    install with 'biocLite(\"devtools\")', and re-run your biocLite() command",
+                    call.=FALSE)
             } else
                 .stop("'loadNamespace(\"devtools\")' failed:\n    %s",
                       conditionMessage(e))
@@ -47,7 +47,7 @@
 
 .biocLiteInstall <-
     function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
-             lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...)
+        lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...)
 {
     if (!missing(repos))
         .stop("'repos' argument to 'biocLite' not allowed")
@@ -60,8 +60,8 @@
     .message("BioC_mirror: %s", biocMirror)
 
     .message("Using Bioconductor %s (BiocInstaller %s), %s.",
-             biocVersion(), packageVersion("BiocInstaller"),
-             sub(" version", "", R.version.string))
+        biocVersion(), packageVersion("BiocInstaller"),
+        sub(" version", "", R.version.string))
 
     if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
         .stop("failed to load package 'utils'")
@@ -93,14 +93,14 @@
 
             answer <-
                 .getAnswer("Update all/some/none? [a/s/n]: ",
-                           allowed = c("a", "A", "s", "S", "n", "N"))
+                    allowed = c("a", "A", "s", "S", "n", "N"))
 
             switch(answer,
-                   a = update.packages(lib.loc, oldPkgs=oldPkgs, ask=FALSE,
-                       instlib=instlib),
-                   s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE,
-                       instlib=instlib),
-                   n = invisible(pkgs))
+                a = update.packages(lib.loc, oldPkgs=oldPkgs, ask=FALSE,
+                    instlib=instlib),
+                s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE,
+                    instlib=instlib),
+                n = invisible(pkgs))
         } else {
             .message("Updating packages '%s'", pkgList)
             update.packages(lib.loc, oldPkgs=oldPkgs, ask=ask, instlib=instlib)
@@ -126,8 +126,8 @@
 }
 
 bioc <-
-    function(pkgs = "Bioconductor", suppressUpdates=FALSE,
-             siteRepos=character(), ask=TRUE, ...)
+    function(pkgs = "Bioconductor", suppressUpdates = FALSE,
+        siteRepos=character(), ask = TRUE, ...)
 {
     if (isDevel())
         stop("To get the development version of Bioconductor, run 'useDevel()'")
@@ -135,7 +135,7 @@ bioc <-
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
     .biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
-                     suppressUpdates=suppressUpdates, ...)
+        suppressUpdates=suppressUpdates, ...)
 }
 
 bioc_devel <-
