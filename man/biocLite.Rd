@@ -113,10 +113,6 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
   \code{\link{chooseCRANmirror}} lets you choose from a list of all
   public CRAN mirror URLs.
 
-  \code{\link{monograph_group}}, \code{\link{RBioinf_group}} and
-  \code{\link{biocases_group}} return package names associated 
-  with Bioconductor publications.
-  
   \code{\link{all_group}} returns the names of all Bioconductor
   software packages.
 
