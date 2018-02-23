@@ -40,6 +40,14 @@ useDevel <-
     .update(biocVers, FALSE)
 }
 
+useRelease <-
+    function(release=TRUE)
+{
+    if (release) {
+        if (isDevel())
+            ## prompt user
+    }
+}
 .update <-
     function(biocVersion, biocLiteAfterUpdate = FALSE)
 {

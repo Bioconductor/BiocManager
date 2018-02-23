@@ -125,22 +125,28 @@
     }
 }
 
-biocLite <-
-    function(pkgs=c("Biobase","IRanges","AnnotationDbi"),
-             suppressUpdates=FALSE,
-             suppressAutoUpdate=FALSE,
+bioc <-
+    function(pkgs = "Bioconductor", suppressUpdates=FALSE,
              siteRepos=character(), ask=TRUE, ...)
 {
-    if (missing(pkgs))   # biocLite() update w/out installing defaults
+    if (isDevel())
+        stop("To get the development version of Bioconductor, run 'useDevel()'")
+    if (missing(pkgs))
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
-    if (!suppressAutoUpdate && !.isCurrentBiocInstaller()) {
-        on.exit(.updateBiocInstaller(pkgs, ask=ask,
-                                     suppressUpdates=suppressUpdates,
-                                     siteRepos=siteRepos, ...))
-    } else if ("BiocUpgrade" %in% pkgs) {
-        .biocUpgrade()
-    } else {
-        .biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
-                         suppressUpdates=suppressUpdates, ...)
-    }
+
+    .biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
+                     suppressUpdates=suppressUpdates, ...)
+}
+
+bioc_devel <-
+    function(pkgs = "Bioconductor", suppressUpdates = FALSE,
+        siteRepos = character(), ask = TRUE, ...)
+{
+    if (!isDevel())
+        stop("To revert to Bioconductor release, run 'useRelease()'")
+    if (missing(pkgs))
+        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
+
+    .biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
+                     suppressUpdates=suppressUpdates, ...)
 }
