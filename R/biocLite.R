@@ -126,8 +126,8 @@
 }
 
 bioc <-
-    function(pkgs = "Bioconductor", suppressUpdates=FALSE,
-             siteRepos=character(), ask=TRUE, ...)
+    function(pkgs, ..., suppressUpdates = FALSE,
+        siteRepos = character(), ask = TRUE)
 {
     if (isDevel())
         stop("To get the development version of Bioconductor, run 'useDevel()'")
@@ -138,9 +138,9 @@ bioc <-
                      suppressUpdates=suppressUpdates, ...)
 }
 
-bioc_devel <-
-    function(pkgs = "Bioconductor", suppressUpdates = FALSE,
-        siteRepos = character(), ask = TRUE, ...)
+biocDevel <-
+    function(pkgs, ..., suppressUpdates = FALSE,
+        siteRepos = character(), ask = TRUE)
 {
     if (!isDevel())
         stop("To revert to Bioconductor release, run 'useRelease()'")
