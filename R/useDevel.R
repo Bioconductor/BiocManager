@@ -1,22 +1,3 @@
-.biocUpgrade <-
-    function()
-{
-    if (!IS_UPGRADEABLE) {
-        .stop("Bioconductor version %s cannot be upgraded with
-               R version %s", biocVersion(), getRversion())
-    }
-    if (IS_UPGRADEABLE && UPGRADE_IS_DEVEL)
-        .stop("Bioconductor version %s can be upgraded, but only to 'devel';
-               see ?useDevel. Use biocLite() without any arguments to update
-               installed packages", biocVersion())
-
-    txt <- sprintf("Upgrade all packages to Bioconductor version %s? [y/n]: ",
-                   UPGRADE_VERSION)
-    answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
-    if ("y" == answer)
-        .update(UPGRADE_VERSION, TRUE)
-}
-
 isDevel <- function() !IS_USER
 
 useDevel <-
