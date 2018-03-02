@@ -1,5 +1,5 @@
 test_package_filter_suppress_updates <- function() {
-    .filter <- BiocInstaller:::.package_filter_suppress_updates
+    .filter <- Bioconductor:::.package_filter_suppress_updates
 
     pkgs0 <- matrix(
         character(), 0, 2,
@@ -20,7 +20,7 @@ test_package_filter_suppress_updates <- function() {
 }
 
 test_package_filter_masked <- function() {
-    .filter <- BiocInstaller:::.package_filter_masked
+    .filter <- Bioconductor:::.package_filter_masked
 
     pkgs0 <- matrix(
         character(), 0, 2,
@@ -49,7 +49,7 @@ test_package_filter_masked <- function() {
 }
 
 test_package_filter_unwriteable <- function() {
-    .filter <- BiocInstaller:::.package_filter_unwriteable
+    .filter <- Bioconductor:::.package_filter_unwriteable
 
     ## setup
     dir.create(p0 <- tempfile())
@@ -110,7 +110,7 @@ test_package_filter_unwriteable <- function() {
 test_writeable_biocLite <- function() {
     DEACTIVATED("too idiosyncratic for standardized testing")
 
-    lib <- system.file(package="BiocInstaller", "unitTests", "cases",
+    lib <- system.file(package="Bioconductor", "unitTests", "cases",
                        "lib", "Biobase")
     dir.create(locked <- tempfile())
     file.copy(lib, locked, recursive=TRUE)

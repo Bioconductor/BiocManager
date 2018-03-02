@@ -1,7 +1,7 @@
 test_reposType <- function()
 {
-    .rRepos <- BiocInstaller:::.rRepos
-    .githubRepos <- BiocInstaller:::.githubRepos
+    .rRepos <- Bioconductor:::.rRepos
+    .githubRepos <- Bioconductor:::.githubRepos
 
     r <- "foo"
     http <- c("http://foo.bar/baz", "https://foo.bar/baz")

@@ -2,7 +2,7 @@ test_unwritableDirectories <- function()
 {
     if (.Platform$OS.type != "unix")
         return()
-    .unwritableDirectories <- BiocInstaller:::.unwritableDirectories
+    .unwritableDirectories <- Bioconductor:::.unwritableDirectories
 
     dir.create(f <- tempfile(), mode="400")
     dir.create(g <- tempfile())
