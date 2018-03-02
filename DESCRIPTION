@@ -12,7 +12,7 @@ Authors@R: c(
         email  = "maintainer@bioconductor.org",
         role = c("ctb", "cre")))
 biocViews: Infrastructure
-Depends: R (>= 3.5.0)
+Depends: BiocVersion
 Suggests: devtools, RUnit, BiocGenerics
 License: Artistic-2.0
 RoxygenNote: 6.0.1
