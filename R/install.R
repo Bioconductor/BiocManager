@@ -2,7 +2,7 @@
 #' Install or update Bioconductor and CRAN packages
 #'
 #'
-#' \code{bioc} installs or updates Bioconductor and CRAN packages in a
+#' \code{install} installs or updates Bioconductor and CRAN packages in a
 #' Bioconductor release.  Upgrading to a new Bioconductor release requires
 #' additional steps; see \url{https://bioconductor.org/install}.
 #'
@@ -17,7 +17,7 @@
 #' \code{available.packages()}, \code{update.packages()}. Installation of
 #' github packages uses the \code{install_github()} function from the
 #' \code{devtools} package. For this reason it usually makes sense, when
-#' complicated installation options are needed, to invoke \code{bioc()}
+#' complicated installation options are needed, to invoke \code{install()}
 #' separately for Bioconductor / CRAN packages and for github packages.
 #'
 #' Setting \env{BIOCINSTALLER_ONLINE_DCF} to \code{FALSE} can speed package
@@ -25,7 +25,7 @@
 #' out-of-date information about the current release and development versions
 #' of Bioconductor.
 #'
-#' @aliases bioc BIOCINSTALLER_ONLINE_DCF
+#' @aliases install BIOCINSTALLER_ONLINE_DCF
 #' @param pkgs \code{character()} of package names to install or update.  A
 #' missing value and \code{suppressUpdates=FALSE} updates installed packages,
 #' perhaps also installing \code{Biobase}, \code{IRanges}, and
@@ -33,7 +33,7 @@
 #' containing a \sQuote{/} are treated as github repositories and installed
 #' using the \code{install_github()} function of the \code{devtools} package.
 #' @param suppressUpdates \code{logical(1)} or \code{character()}. When
-#' \code{FALSE}, bioc asks the user whether old packages should be update.
+#' \code{FALSE}, install asks the user whether old packages should be update.
 #' When \code{TRUE}, the user is not prompted to update old packages. When
 #' \code{character()} a vector specifying which packages to NOT update.
 #' @param suppressAutoUpdate \code{logical(1)} indicating whether the
@@ -62,11 +62,11 @@
 #' \code{\link[devtools]{install}}. A typical use is to build vignettes, via
 #' \code{dependencies=TRUE, build_vignettes=TRUE}.
 #'
-#' @return \code{bioc()} returns the \code{pkgs} argument, invisibly.
+#' @return \code{install()} returns the \code{pkgs} argument, invisibly.
 #' @seealso
 #'
 #' \code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
-#' repositories used by \code{bioc}.
+#' repositories used by \code{install}.
 #'
 #' \code{\link{install.packages}} installs the packages themselves.
 #'
@@ -90,24 +90,24 @@
 #'
 #' ## installs default packages (if not already installed) and updates
 #' ## previously installed packages
-#' bioc()
+#' install()
 #'
 #' ## Now install a CRAN package:
-#' bioc("survival")
+#' install("survival")
 #'
 #' ## install a Bioconductor package, but don't update all installed
 #' ## packages as well:
-#' bioc("GenomicRanges", suppressUpdates=TRUE)
+#' install("GenomicRanges", suppressUpdates=TRUE)
 #'
 #' ## Install default packages, but do not update any package whose name
 #' ## starts with "org." or "BSgenome."
-#' bioc(suppressUpdates=c("^org\.", "^BSgenome\."))
+#' install(suppressUpdates=c("^org\.", "^BSgenome\."))
 #'
 #' ## install a package from source:
-#' bioc("IRanges", type="source")
+#' install("IRanges", type="source")
 #'
 #' ## install all Bioconductor software packages
-#' bioc(all_group())
+#' install(all_group())
 #'
 #' }
 #' ## Show the Bioconductor and CRAN repositories that will be used to
@@ -118,8 +118,8 @@
 #' ## information. Set this prior to loading the BiocInstaller package.
 #' options(BIOCINSTALLER_ONLINE_DCF = FALSE)
 #'
-#' @export
-bioc <-
+#' @export install
+install <-
     function(pkgs, ..., suppressUpdates = FALSE,
         siteRepos = character(), ask = TRUE)
 {
@@ -132,8 +132,8 @@ bioc <-
         suppressUpdates=suppressUpdates, ...)
 }
 
-#' @rdname bioc
-#' @export
+#' @rdname install
+#' @export biocDevel
 biocDevel <-
     function(pkgs, ..., suppressUpdates = FALSE,
         siteRepos = character(), ask = TRUE)
