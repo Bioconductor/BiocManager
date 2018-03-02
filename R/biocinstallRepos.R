@@ -1,13 +1,10 @@
-## TODO: should probably print out a message about how to use mirrors,
-## the way sourcing biocLite.R does now.
-
-
+## TODO: should probably print out a message about how to use mirrors
 
 #'
 #' Display current Bioconductor and CRAN repositories.
 #'
 #'
-#' Displays the URLs of the repositories used by \code{\link{biocLite}} to
+#' Displays the URLs of the repositories used by \code{\link{install}} to
 #' install Bioconductor and CRAN packages.
 #'
 #'
@@ -21,7 +18,7 @@
 #' @return Named \code{character()} of repositories.
 #' @seealso
 #'
-#' \code{\link{biocLite}} Installs/updates Bioconductor/CRAN packages.
+#' \code{\link{install}} Installs/updates Bioconductor/CRAN packages.
 #'
 #' \code{\link{install.packages}} installs the packages themselves.
 #'
@@ -119,7 +116,7 @@ biocinstallRepos <-
     ## https://mran.microsoft.com/snapshot/2017-05-01), and not
     ## to a CRAN mirror that is current. For the current release and devel
     ## BioC versions, biocinstallRepos() needs to point to a CRAN mirror
-    ## that is current so biocLite() and biocValid() behave the same for
+    ## that is current so install() and biocValid() behave the same for
     ## all BioC users, whether they use mainstream R or Microsoft R Open.
     ## However, since old versions of BioC are frozen, it would probably
     ## make sense to point to a *snapshot* of CRAN instead of a CRAN mirror

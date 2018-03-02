@@ -128,7 +128,7 @@ install <-
     if (missing(pkgs))
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
-    .biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
+    .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
         suppressUpdates=suppressUpdates, ...)
 }
 
@@ -143,6 +143,6 @@ biocDevel <-
     if (missing(pkgs))
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
-    .biocLiteInstall(pkgs, ask=ask, siteRepos=siteRepos,
+    .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
                      suppressUpdates=suppressUpdates, ...)
 }

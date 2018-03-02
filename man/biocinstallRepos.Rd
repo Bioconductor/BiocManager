@@ -20,7 +20,7 @@ repositories are required.}
 Named \code{character()} of repositories.
 }
 \description{
-Displays the URLs of the repositories used by \code{\link{biocLite}} to
+Displays the URLs of the repositories used by \code{\link{install}} to
 install Bioconductor and CRAN packages.
 }
 \examples{
@@ -35,7 +35,7 @@ biocinstallRepos()
 
 }
 \seealso{
-\code{\link{biocLite}} Installs/updates Bioconductor/CRAN packages.
+\code{\link{install}} Installs/updates Bioconductor/CRAN packages.
 
 \code{\link{install.packages}} installs the packages themselves.
 

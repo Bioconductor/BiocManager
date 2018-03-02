@@ -11,30 +11,30 @@
 
 
 
-#' Validate installed package versions against biocLite versions.
-#' 
-#' 
+#' Validate installed package versions against current and appropriate versions.
+#'
+#'
 #' Check that installed packages are consistent (neither out-of-date nor too
-#' new) with the version of R and Bioconductor in use, using \code{biocLite}
+#' new) with the version of R and Bioconductor in use, using \code{install}
 #' for validation.
-#' 
-#' 
+#'
+#'
 #' This function compares the version of installed packages to the version of
 #' packages associated with the version of R and Bioconductor appropriate for
 #' the BiocInstaller package currently in use.
-#' 
+#'
 #' Packages are reported as \sQuote{out-of-date} if a more recent version is
 #' available at the repositories specified by \code{biocinstallRepos()}.
-#' Usually, \code{biocLite()} is sufficient to update packages to their most
+#' Usually, \code{install()} is sufficient to update packages to their most
 #' recent version.
-#' 
+#'
 #' Packages are reported as \sQuote{too new} if the installed version is more
 #' recent than the most recent available in the \code{biocinstallRepos()}
 #' repositories. It is possible to down-grade by re-installing a too new
-#' package \dQuote{PkgA} with \code{biocLite("PkgA")}. It is important for the
+#' package \dQuote{PkgA} with \code{install("PkgA")}. It is important for the
 #' user to understand how their installation became too new, and to avoid this
 #' in the future.
-#' 
+#'
 #' @param pkgs A character list of package names for checking, or a matrix as
 #' returned by \code{\link{installed.packages}}.
 #' @param lib.loc The library location(s) of packages to be validated; see
@@ -48,13 +48,13 @@
 #' @param silent Report how packages are invalid (\code{silent=FALSE}, default)
 #' and abort execution, or return a logical(1) (\code{silent=TRUE}) indicating
 #' the overall validity of installed packages.
-#' @param \dots Additional arguments, passed to \code{\link{biocLite}} when
+#' @param \dots Additional arguments, passed to \code{\link{install}} when
 #' \code{fix=TRUE}.
-#' @param fix When \code{TRUE}, invoke \code{biocLite} to reinstall (update or
+#' @param fix When \code{TRUE}, invoke \code{install} to reinstall (update or
 #' downgrade, as appropriate) invalid packages.
 #' @return \code{logical(1)} indicating overall validity of installed packages.
 #' @author Martin Morgan \url{mtmorgan@@fhcrc.org}
-#' @seealso \code{\link{biocLite}} to update installed packages.
+#' @seealso \code{\link{install}} to update installed packages.
 #' @keywords environment
 #' @examples
 #' try(biocValid())
@@ -96,7 +96,7 @@ biocValid <-
     .unwritableDirectories(libPaths)
     if (fix) {
         pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
-        biocLite(pkgs, lib.loc=lib.loc, ...)
+        install(pkgs, lib.loc=lib.loc, ...)
         .warning("updated or downgraded package(s) %s",
                  paste(.sQuote(pkgs), collapse=" "))
     } else {
@@ -133,7 +133,7 @@ print.biocValid <-
     if (NROW(x$oldPkgs)) {
         cat("* Out-of-date packages\n")
         print(x$oldPkgs)
-        cat("\nupdate with biocLite()\n\n")
+        cat("\nupdate with install()\n\n")
     }
 
     if (NROW(x$tooNewPkgs)) {
@@ -141,8 +141,8 @@ print.biocValid <-
             .sQuote(as.character(biocVersion())), "\n\n", sep="")
         print(x$tooNewPkgs)
         pkgs <- paste(.dQuote(rownames(x$tooNewPkgs)), collapse=", ")
-        msg <- .msg(ifelse(NROW(x$tooNewPkgs) == 1L, "biocLite(%s)",
-                           "biocLite(c(%s))"), pkgs)
+        msg <- .msg(ifelse(NROW(x$tooNewPkgs) == 1L, "install(%s)",
+                           "install(c(%s))"), pkgs)
         cat("\ndowngrade with ", msg, "\n\n", sep="")
     }
 }

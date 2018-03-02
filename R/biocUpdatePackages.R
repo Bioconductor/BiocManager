@@ -1,14 +1,14 @@
-#' 
+#'
 #' Update previously installed Bioconductor or CRAN packages and their
 #' dependencies.
-#' 
-#' 
+#'
+#'
 #' Update previously installed Bioconductor and CRAN packages and their
-#' dependencies. Use \code{\link{biocLite}} to install new packages or to
+#' dependencies. Use \code{\link{install}} to install new packages or to
 #' update all out-of-date packages. Upgrading to a new Bioconductor release
 #' requires additional steps; see \url{https://bioconductor.org/install}.
-#' 
-#' 
+#'
+#'
 #' @param pkgs \code{character()} of package names to install or update.
 #' @param dependencies \code{character()} describing out-of-date dependencies
 #' that are also updated. Defaults to \code{c("Depends", "Imports",
@@ -21,14 +21,14 @@
 #' packages.
 #' @return \sQuote{NULL}, invisibly.
 #' @author Martin Morgan \url{mtmorgan@@fhcrc.org}
-#' @seealso \code{\link{biocLite}}
+#' @seealso \code{\link{install}}
 #' @keywords environment
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' biocUpdatePackages("GenomicRanges", ask=FALSE)
 #' }
-#' 
+#'
 #' @export biocUpdatePackages
 biocUpdatePackages <-
     function(pkgs, dependencies = NA, repos = biocinstallRepos(), ...)
@@ -41,4 +41,4 @@ biocUpdatePackages <-
     deps <- unique(c(pkgs, deps))
     deps <- deps[deps %in% rownames(avail)]
     update.packages(oldPkgs=deps, repos=repos, ...)
-} 
+}

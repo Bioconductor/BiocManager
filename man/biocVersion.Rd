@@ -19,6 +19,6 @@ biocVersion()
 
 }
 \seealso{
-\code{\link{biocLite}} Installs/updates Bioconductor/CRAN packages.
+\code{\link{install}} Installs/updates Bioconductor/CRAN packages.
 }
 \keyword{environment}

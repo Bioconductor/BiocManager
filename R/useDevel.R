@@ -5,10 +5,10 @@ isDevel <- function() !IS_USER
 #'
 #'
 #' Downloads the 'devel' version of the BiocInstaller package so that all
-#' subsequent invocations of \code{\link{biocLite}} and
+#' subsequent invocations of \code{\link{install}} and
 #' \code{\link{biocinstallRepos}} use the devel repositories.
 #'
-#' Displays the URLs of the repositories used by \code{\link{biocLite}} to
+#' Displays the URLs of the repositories used by \code{\link{install}} to
 #' install Bioconductor and CRAN packages.
 #'
 #' Should only be used with a release (or patched) version of R, freshly
@@ -38,7 +38,7 @@ isDevel <- function() !IS_USER
 #' To change the version of BiocInstaller to support the 'devel' branch of
 #' Bioconductor, run \code{useDevel()}. With argument \code{TRUE} (the
 #' default), it will download the devel version of BiocInstaller and
-#' subsequently all packages downloaded with \code{\link{biocLite}} will be
+#' subsequently all packages downloaded with \code{\link{install}} will be
 #' from the devel repository. You should run \code{\link{useDevel}} only once.
 #'
 #' During release cycles where both the release and devel version of
@@ -99,7 +99,7 @@ isDevel <- function() !IS_USER
 #' If you launch R in this way and then invoke \code{\link{.libPaths}}, you'll
 #' see that the first item is your special release or devel directory. Packages
 #' will be installed to that directory and that is the first place that
-#' \code{\link{library}} will look for them.  \code{\link{biocLite}},
+#' \code{\link{library}} will look for them.  \code{\link{install}},
 #' \code{\link{install.packages}}, \code{\link{update.packages}} and friends
 #' all respect this setting.
 #'
@@ -178,15 +178,15 @@ isDevel <- function() !IS_USER
 #'
 #' @aliases useDevel isDevel
 #' @param devel Whether to look in the devel (TRUE) or release (FALSE)
-#' repositories in subsequent invocations of \code{\link{biocLite}} and
+#' repositories in subsequent invocations of \code{\link{install}} and
 #' \code{\link{biocinstallRepos}}.
 #' @return \code{useDevel()}: Invisible NULL.
 #'
 #' \code{isDevel()}: logical(1) TRUE or FALSE.
 #' @seealso \code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
-#' repositories used by \code{biocLite}.
+#' repositories used by \code{install}.
 #'
-#' \code{\link{biocLite}} Installs/updates Bioconductor/CRAN packages.
+#' \code{\link{install}} Installs/updates Bioconductor/CRAN packages.
 #'
 #' \code{\link{install.packages}} installs the packages themselves.
 #'
@@ -227,7 +227,7 @@ useRelease <- function()
 }
 
 .update <-
-    function(biocVersion, biocLiteAfterUpdate = FALSE)
+    function(biocVersion, installAfterUpdate = FALSE)
 {
 ## TODO: write mechanism to upgrade and downgrade packages
 }

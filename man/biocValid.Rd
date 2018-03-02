@@ -2,7 +2,7 @@
 % Please edit documentation in R/biocValid.R
 \name{biocValid}
 \alias{biocValid}
-\title{Validate installed package versions against biocLite versions.}
+\title{Validate installed package versions against current and appropriate versions.}
 \usage{
 biocValid(pkgs = installed.packages(lib.loc, priority = priority),
   lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
@@ -28,10 +28,10 @@ validity against; see \code{\link{available.packages}}.}
 and abort execution, or return a logical(1) (\code{silent=TRUE}) indicating
 the overall validity of installed packages.}
 
-\item{\dots}{Additional arguments, passed to \code{\link{biocLite}} when
+\item{\dots}{Additional arguments, passed to \code{\link{install}} when
 \code{fix=TRUE}.}
 
-\item{fix}{When \code{TRUE}, invoke \code{biocLite} to reinstall (update or
+\item{fix}{When \code{TRUE}, invoke \code{install} to reinstall (update or
 downgrade, as appropriate) invalid packages.}
 }
 \value{
@@ -39,7 +39,7 @@ downgrade, as appropriate) invalid packages.}
 }
 \description{
 Check that installed packages are consistent (neither out-of-date nor too
-new) with the version of R and Bioconductor in use, using \code{biocLite}
+new) with the version of R and Bioconductor in use, using \code{install}
 for validation.
 }
 \details{
@@ -49,13 +49,13 @@ the BiocInstaller package currently in use.
 
 Packages are reported as \sQuote{out-of-date} if a more recent version is
 available at the repositories specified by \code{biocinstallRepos()}.
-Usually, \code{biocLite()} is sufficient to update packages to their most
+Usually, \code{install()} is sufficient to update packages to their most
 recent version.
 
 Packages are reported as \sQuote{too new} if the installed version is more
 recent than the most recent available in the \code{biocinstallRepos()}
 repositories. It is possible to down-grade by re-installing a too new
-package \dQuote{PkgA} with \code{biocLite("PkgA")}. It is important for the
+package \dQuote{PkgA} with \code{install("PkgA")}. It is important for the
 user to understand how their installation became too new, and to avoid this
 in the future.
 }
@@ -63,7 +63,7 @@ in the future.
 try(biocValid())
 }
 \seealso{
-\code{\link{biocLite}} to update installed packages.
+\code{\link{install}} to update installed packages.
 }
 \author{
 Martin Morgan \url{mtmorgan@fhcrc.org}

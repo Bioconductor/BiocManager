@@ -34,7 +34,7 @@
                 stop(conditionMessage(e),
                     "\n    package 'devtools' not installed in library path(s)",
                     "\n        ", paste(lib.loc, collapse="\n        "),
-                    "\n    install with 'biocLite(\"devtools\")', and re-run your biocLite() command",
+                    "\n    install with 'install(\"devtools\")', and re-run your install() command",
                     call.=FALSE)
             } else
                 .stop("'loadNamespace(\"devtools\")' failed:\n    %s",
@@ -45,12 +45,12 @@
     setdiff(pkgs, doing)
 }
 
-.biocLiteInstall <-
+.biocInstall <-
     function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
         lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...)
 {
     if (!missing(repos))
-        .stop("'repos' argument to 'biocLite' not allowed")
+        .stop("'repos' argument to 'install' not allowed")
 
     if (!(is.character(suppressUpdates) || is.logical(suppressUpdates)) ||
         (is.logical(suppressUpdates) && 1L != length(suppressUpdates)))

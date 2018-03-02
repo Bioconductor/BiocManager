@@ -27,7 +27,7 @@ packages.}
 }
 \description{
 Update previously installed Bioconductor and CRAN packages and their
-dependencies. Use \code{\link{biocLite}} to install new packages or to
+dependencies. Use \code{\link{install}} to install new packages or to
 update all out-of-date packages. Upgrading to a new Bioconductor release
 requires additional steps; see \url{https://bioconductor.org/install}.
 }
@@ -39,7 +39,7 @@ biocUpdatePackages("GenomicRanges", ask=FALSE)
 
 }
 \seealso{
-\code{\link{biocLite}}
+\code{\link{install}}
 }
 \author{
 Martin Morgan \url{mtmorgan@fhcrc.org}

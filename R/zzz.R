@@ -69,7 +69,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
 .onAttach <-
     function(libname, pkgname)
 {
-    .message("Bioconductor version %s (BiocInstaller %s), ?biocLite for help",
+    .message("Bioconductor version %s (BiocInstaller %s), ?install for help",
              biocVersion(), packageVersion("BiocInstaller"))
      Rversion <- getRversion()
      if (IS_END_OF_LIFE) {
