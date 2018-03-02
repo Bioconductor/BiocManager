@@ -49,7 +49,7 @@ isDevel <- function() !IS_USER
 #' names are as follows:
 #'
 #' Linux:
-#'
+#' \preformatted{
 #' ~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-release
 #'
 #' ~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel
@@ -65,6 +65,7 @@ isDevel <- function() !IS_USER
 #' C:\Users\YOUR_USER_NAME\Documents\R\win-library\3.2-bioc-release
 #'
 #' C:\Users\YOUR_USER_NAME\Documents\R\win-library\3.2-bioc-devel
+#' }
 #'
 #' (change YOUR_USER_NAME to your user name)
 #'
@@ -72,7 +73,7 @@ isDevel <- function() !IS_USER
 #' follows:
 #'
 #' Linux:
-#'
+#' \preformatted{
 #' R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-release R
 #'
 #' R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel R
@@ -91,6 +92,7 @@ isDevel <- function() !IS_USER
 #' cmd /C "set
 #' R_LIBS_USER=C:\Users\YOUR_USER_NAME\Documents\R\win-library\3.2-bioc-devel
 #' && R"
+#' }
 #'
 #' (Note: this assumes that R.exe is in your PATH.)
 #'
@@ -106,6 +108,7 @@ isDevel <- function() !IS_USER
 #'
 #' Linux
 #'
+#' \preformatted{
 #' alias
 #' Rdevel='R_LIBS_USER=~/R/x86_64-unknown-linux-gnu-library/3.2-bioc-devel R'
 #'
@@ -115,9 +118,10 @@ isDevel <- function() !IS_USER
 #'
 #' Mac OS X
 #'
-#' alias Rdevel='R_LIBS_USER=~/Library/R/3.2-bioc-devel/library R' alias
-#' Rrelease='R_LIBS_USER=~/Library/R/3.2-bioc-release/library R'
+#' alias Rdevel='R_LIBS_USER=~/Library/R/3.2-bioc-devel/library R'
+#' alias Rrelease='R_LIBS_USER=~/Library/R/3.2-bioc-release/library R'
 #'
+#' }
 #' You can then invoke these from the command line as
 #'
 #' Rdevel
@@ -132,6 +136,7 @@ isDevel <- function() !IS_USER
 #'
 #' in the "type the location of the item" box, put:
 #'
+#' \preformatted{
 #' cmd /C "set
 #' R_LIBS_USER=C:\Users\YOUR_USER_NAME\Documents\R\win-library\3.2-bioc-release
 #' && R"
@@ -141,6 +146,7 @@ isDevel <- function() !IS_USER
 #' cmd /C "set
 #' R_LIBS_USER=C:\Users\YOUR_USER_NAME\Documents\R\win-library\3.0-bioc-devel
 #' && R"
+#' }
 #'
 #' ...for devel.
 #'
