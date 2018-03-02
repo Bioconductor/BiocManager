@@ -107,7 +107,7 @@ test_package_filter_unwriteable <- function() {
     unlink(p2, recursive=TRUE)
 }
 
-test_writeable_biocLite <- function() {
+test_writeable_install <- function() {
     DEACTIVATED("too idiosyncratic for standardized testing")
 
     lib <- system.file(package="Bioconductor", "unitTests", "cases",
@@ -120,6 +120,6 @@ test_writeable_biocLite <- function() {
     .libPaths(c(locked, .libPaths()))
 
     Sys.chmod(locked, mode="0500")
-    biocLite()                          #
+    install()                          #
     Sys.chmod(locked, mode="0700")
 }
