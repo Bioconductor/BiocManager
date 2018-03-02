@@ -75,7 +75,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
      if (IS_END_OF_LIFE) {
          if (IS_UPGRADEABLE)
              .message("A newer version of Bioconductor is available for
-                       this version of R, ?BiocUpgrade for help")
+                       this version of R, ?useRelease for help")
          else if (Rversion > R_VERSION_MAX)
              .warning("Bioconductor version %s is too old for R version %s;
                  see https://bioconductor.org/install/#troubleshoot-biocinstaller",

@@ -20,7 +20,5 @@ biocVersion()
 }
 \seealso{
 \code{\link{biocLite}} Installs/updates Bioconductor/CRAN packages.
-
-\code{\link{BiocUpgrade}} Upgrading to new versions.
 }
 \keyword{environment}
