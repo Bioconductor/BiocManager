@@ -1,133 +1,127 @@
-.rRepos <- function(pkgs, invert = FALSE)
-    grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
-
-.githubRepos <- function(pkgs) {
-    pkgs <- .rRepos(pkgs, invert = TRUE)
-    grep("^[^/]+/.+", pkgs, value=TRUE)
-}
-
-.reposInstall <-
-    function(pkgs, lib, ...)
-{
-    doing <- .rRepos(pkgs)
-    if (length(doing)) {
-        pkgNames <- paste(sQuote(doing), collapse=", ")
-        .message("Installing package(s) %s", pkgNames)
-        install.packages(pkgs=doing, lib=lib, ...)
-    }
-    setdiff(pkgs, doing)
-}
-
-.githubInstall <-
-    function(pkgs, ..., lib.loc=NULL)
-{
-    doing <- .githubRepos(pkgs)
-    if (length(doing)) {
-        pkgNames <- paste(sQuote(doing), collapse=", ")
-        .message("Installing github package(s) %s", pkgNames)
-        tryCatch({
-            loadNamespace("devtools", lib.loc)
-        }, error=function(e) {
-            if (!"devtools" %in% rownames(installed.packages(lib.loc))) {
-                if (is.null(lib.loc))
-                    lib.loc <- .libPaths()
-                stop(conditionMessage(e),
-                    "\n    package 'devtools' not installed in library path(s)",
-                    "\n        ", paste(lib.loc, collapse="\n        "),
-                    "\n    install with 'biocLite(\"devtools\")', and re-run your biocLite() command",
-                    call.=FALSE)
-            } else
-                .stop("'loadNamespace(\"devtools\")' failed:\n    %s",
-                      conditionMessage(e))
-        })
-        devtools::install_github(doing, ...)
-    }
-    setdiff(pkgs, doing)
-}
-
-.biocLiteInstall <-
-    function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
-        lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...)
-{
-    if (!missing(repos))
-        .stop("'repos' argument to 'biocLite' not allowed")
-
-    if (!(is.character(suppressUpdates) || is.logical(suppressUpdates)) ||
-        (is.logical(suppressUpdates) && 1L != length(suppressUpdates)))
-        .stop("'suppressUpdates' must be character() or logical(1)")
-
-    biocMirror <- getOption("BioC_mirror", "https://bioconductor.org")
-    .message("BioC_mirror: %s", biocMirror)
-
-    .message("Using Bioconductor %s (BiocInstaller %s), %s.",
-        biocVersion(), packageVersion("BiocInstaller"),
-        sub(" version", "", R.version.string))
-
-    if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
-        .stop("failed to load package 'utils'")
-
-    orepos <- options(repos=biocinstallRepos(siteRepos))
-    on.exit(options(orepos))
-
-    if (length(pkgs)) {
-        todo <- .reposInstall(pkgs, lib=lib, ...)
-        todo <- .githubInstall(todo, ...)
-    }
-
-    ## early exit if suppressUpdates
-    if (is.logical(suppressUpdates) && suppressUpdates)
-        return(invisible(pkgs))
-
-    oldPkgs <- old.packages(lib.loc, checkBuilt=TRUE)
-    if (is.null(oldPkgs))
-        return(invisible(pkgs))
-
-    oldPkgs <- .package_filter_suppress_updates(oldPkgs, suppressUpdates)
-    oldPkgs <- .package_filter_masked(oldPkgs)
-    oldPkgs <- .package_filter_unwriteable(oldPkgs, instlib)
-
-    if (nrow(oldPkgs)) {
-        pkgList <- paste(oldPkgs[,"Package"], collapse="', '")
-        if (ask) {
-            .message("Old packages: '%s'", pkgList)
-
-            answer <-
-                .getAnswer("Update all/some/none? [a/s/n]: ",
-                    allowed = c("a", "A", "s", "S", "n", "N"))
-
-            switch(answer,
-                a = update.packages(lib.loc, oldPkgs=oldPkgs, ask=FALSE,
-                    instlib=instlib),
-                s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE,
-                    instlib=instlib),
-                n = invisible(pkgs))
-        } else {
-            .message("Updating packages '%s'", pkgList)
-            update.packages(lib.loc, oldPkgs=oldPkgs, ask=ask, instlib=instlib)
-        }
-    }
-
-    invisible(pkgs)
-}
-
-.getAnswer <- function(msg, allowed)
-{
-    if (interactive()) {
-        repeat {
-            cat(msg)
-            answer <- readLines(n = 1)
-            if (answer %in% allowed)
-                break
-        }
-        tolower(answer)
-    } else {
-        "n"
-    }
-}
-
+#'
+#' Install or update Bioconductor and CRAN packages
+#'
+#'
+#' \code{bioc} installs or updates Bioconductor and CRAN packages in a
+#' Bioconductor release.  Upgrading to a new Bioconductor release requires
+#' additional steps; see \url{https://bioconductor.org/install}.
+#'
+#' \env{BIOCINSTALLER_ONLINE_DCF} is an environment variable or global
+#' \code{options()} which, when set to \code{FALSE}, uses configuration
+#' information from a local archive rather than consulting the current online
+#' version.
+#'
+#'
+#' Installation of Bioconductor and CRAN packages use R's standard functions
+#' for library management -- \code{install.packages()},
+#' \code{available.packages()}, \code{update.packages()}. Installation of
+#' github packages uses the \code{install_github()} function from the
+#' \code{devtools} package. For this reason it usually makes sense, when
+#' complicated installation options are needed, to invoke \code{bioc()}
+#' separately for Bioconductor / CRAN packages and for github packages.
+#'
+#' Setting \env{BIOCINSTALLER_ONLINE_DCF} to \code{FALSE} can speed package
+#' loading when internet access is slow or non-existent, but may result in
+#' out-of-date information about the current release and development versions
+#' of Bioconductor.
+#'
+#' @aliases bioc BIOCINSTALLER_ONLINE_DCF
+#' @param pkgs \code{character()} of package names to install or update.  A
+#' missing value and \code{suppressUpdates=FALSE} updates installed packages,
+#' perhaps also installing \code{Biobase}, \code{IRanges}, and
+#' \code{AnnotationDbi} if they are not already installed. Package names
+#' containing a \sQuote{/} are treated as github repositories and installed
+#' using the \code{install_github()} function of the \code{devtools} package.
+#' @param suppressUpdates \code{logical(1)} or \code{character()}. When
+#' \code{FALSE}, bioc asks the user whether old packages should be update.
+#' When \code{TRUE}, the user is not prompted to update old packages. When
+#' \code{character()} a vector specifying which packages to NOT update.
+#' @param suppressAutoUpdate \code{logical(1)} indicating whether the
+#' \code{BiocInstaller} package updates itself.
+#' @param siteRepos \code{character()} representing an additional repository in
+#' which to look for packages to install. This repository will be prepended to
+#' the default repositories (which you can see with
+#' \code{\link{biocinstallRepos}}).
+#' @param ask \code{logical(1)} indicating whether to prompt user before
+#' installed packages are updated, or the character string 'graphics', which
+#' brings up a widget for choosing which packages to update.  If TRUE, user can
+#' choose whether to update all outdated packages without further prompting, to
+#' pick and choose packages to update, or to cancel updating (in a
+#' non-interactive session, no packages will be updated). Otherwise, the value
+#' is passed to \code{\link{update.packages}}.
+#' @param ... Additional arguments.
+#'
+#' When installing CRAN or Bioconductor packages, typical arguments include:
+#' \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
+#' the library location of installed packages to be updated; and \code{lib},
+#' passed to \code{\link{install.packages}} to determine the library location
+#' where \code{pkgs} are to be installed.
+#'
+#' When installing github packages, \code{...} is passed to the \pkg{devtools}
+#' package functions \code{\link[devtools]{install_github}} and
+#' \code{\link[devtools]{install}}. A typical use is to build vignettes, via
+#' \code{dependencies=TRUE, build_vignettes=TRUE}.
+#'
+#' @return \code{bioc()} returns the \code{pkgs} argument, invisibly.
+#' @seealso
+#'
+#' \code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
+#' repositories used by \code{bioc}.
+#'
+#' \code{\link{install.packages}} installs the packages themselves.
+#'
+#' \code{\link{update.packages}} updates all installed packages.
+#'
+#' \code{\link{chooseBioCmirror}} lets you choose from a list of all public
+#' Bioconductor mirror URLs.
+#'
+#' \code{\link{chooseCRANmirror}} lets you choose from a list of all public
+#' CRAN mirror URLs.
+#'
+#' \code{\link{all_group}} returns the names of all Bioconductor software
+#' packages.
+#' @keywords environment
+#' @examples
+#'
+#' \dontrun{
+#' ## Change default Bioconductor and CRAN mirrors
+#' chooseBioCmirror()
+#' chooseCRANmirror()
+#'
+#' ## installs default packages (if not already installed) and updates
+#' ## previously installed packages
+#' bioc()
+#'
+#' ## Now install a CRAN package:
+#' bioc("survival")
+#'
+#' ## install a Bioconductor package, but don't update all installed
+#' ## packages as well:
+#' bioc("GenomicRanges", suppressUpdates=TRUE)
+#'
+#' ## Install default packages, but do not update any package whose name
+#' ## starts with "org." or "BSgenome."
+#' bioc(suppressUpdates=c("^org\.", "^BSgenome\."))
+#'
+#' ## install a package from source:
+#' bioc("IRanges", type="source")
+#'
+#' ## install all Bioconductor software packages
+#' bioc(all_group())
+#'
+#' }
+#' ## Show the Bioconductor and CRAN repositories that will be used to
+#' ## install/update packages.
+#' biocinstallRepos()
+#'
+#' ## Use local archive rather than current online configuration
+#' ## information. Set this prior to loading the BiocInstaller package.
+#' options(BIOCINSTALLER_ONLINE_DCF = FALSE)
+#'
+#' @export
 bioc <-
-    function(pkgs = "Bioconductor", suppressUpdates = FALSE,
-        siteRepos=character(), ask = TRUE, ...)
+    function(pkgs, ..., suppressUpdates = FALSE,
+        siteRepos = character(), ask = TRUE)
 {
     if (isDevel())
         stop("To get the development version of Bioconductor, run 'useDevel()'")
@@ -138,9 +132,11 @@ bioc <-
         suppressUpdates=suppressUpdates, ...)
 }
 
-bioc_devel <-
-    function(pkgs = "Bioconductor", suppressUpdates = FALSE,
-        siteRepos = character(), ask = TRUE, ...)
+#' @rdname bioc
+#' @export
+biocDevel <-
+    function(pkgs, ..., suppressUpdates = FALSE,
+        siteRepos = character(), ask = TRUE)
 {
     if (!isDevel())
         stop("To revert to Bioconductor release, run 'useRelease()'")

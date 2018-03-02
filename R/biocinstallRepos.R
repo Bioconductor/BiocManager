@@ -1,6 +1,47 @@
 ## TODO: should probably print out a message about how to use mirrors,
 ## the way sourcing biocLite.R does now.
 
+
+
+#'
+#' Display current Bioconductor and CRAN repositories.
+#'
+#'
+#' Displays the URLs of the repositories used by \code{\link{biocLite}} to
+#' install Bioconductor and CRAN packages.
+#'
+#'
+#' @param siteRepos (Optional) \code{character(1)} representing an additional
+#'   repository (e.g., a URL to an organization's internally maintained
+#'   repository) in which to look for packages to install. This repository will
+#'   be prepended to the default repositories returned by the function.
+#' @param version (Optional) \code{character(1)} or \code{package_version}
+#'   indicating the Bioconductor version (e.g., \dQuote{3.1}) for which
+#'   repositories are required.
+#' @return Named \code{character()} of repositories.
+#' @seealso
+#'
+#' \code{\link{biocLite}} Installs/updates Bioconductor/CRAN packages.
+#'
+#' \code{\link{install.packages}} installs the packages themselves.
+#'
+#' \code{\link{chooseBioCmirror}} lets you choose from a list of all public
+#'   Bioconductor mirror URLs.
+#'
+#' \code{\link{chooseCRANmirror}} lets you choose from a list of all public
+#'   CRAN mirror URLs.
+#' @keywords environment
+#' @examples
+#'
+#' biocinstallRepos()
+#'
+#' ## Choose mirrors
+#' \dontrun{
+#'   chooseCRANmirror()
+#'   chooseBioCmirror()
+#' }
+#'
+#' @export biocinstallRepos
 biocinstallRepos <-
     function(siteRepos=character(), version=biocVersion())
 {
