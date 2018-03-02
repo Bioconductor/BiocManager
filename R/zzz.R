@@ -39,7 +39,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
     function(libname, pkgname)
 {
     fl <- system.file(package="Bioconductor", "scripts",
-                      "BiocInstaller.dcf")
+                      "Bioconductor.dcf")
     dcf <- read.dcf(fl)
     opt <- getOption(
         "BIOCINSTALLER_ONLINE_DCF",
