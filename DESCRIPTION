@@ -10,8 +10,9 @@ Authors@R: c(
         role = "ctb"),
     person("Bioconductor", "Package Maintainer",
         email  = "maintainer@bioconductor.org",
-        role = c("ctb", "cre"))
+        role = c("ctb", "cre")))
 biocViews: Infrastructure
 Depends: R (>= 3.5.0)
 Suggests: devtools, RUnit, BiocGenerics
 License: Artistic-2.0
+RoxygenNote: 6.0.1
