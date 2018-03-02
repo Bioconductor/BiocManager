@@ -5,7 +5,7 @@ R_VERSION_MAX <- IS_USER <- IS_END_OF_LIFE <- IS_UPGRADEABLE <-
 ## The following values are updated with each Bioc release; see .onLoad
 BIOC_VERSION <- package_version("3.7")       # Bioc version for this package
 # R_VERSION_MAX <- package_version("3.3.0")  # Maximum version of R for
-#                                            # this version of BiocInstaller
+#                                            # this version of Bioconductor pkg
 # IS_USER <- FALSE                           # TRUE if this version of
 #                                            # Bioconductor is the
 #                                            # current release version
@@ -38,7 +38,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
 .onLoad <-
     function(libname, pkgname)
 {
-    fl <- system.file(package="BiocInstaller", "scripts",
+    fl <- system.file(package="Bioconductor", "scripts",
                       "BiocInstaller.dcf")
     dcf <- read.dcf(fl)
     opt <- getOption(
@@ -53,24 +53,24 @@ globalVariables("repos")           # used in 'bootstrap' functions
         }, error=function(e) {})
     }
 
-    biocInstallerVars <- dcf[dcf[, "BIOC_VERSION"] == BIOC_VERSION,]
+    bioconductorVars <- dcf[dcf[, "BIOC_VERSION"] == BIOC_VERSION,]
 
-    R_VERSION_MAX <<- package_version(biocInstallerVars[['R_VERSION_MAX']])
-    IS_USER <<- as.logical(biocInstallerVars[['IS_USER']])
-    IS_END_OF_LIFE <<- as.logical(biocInstallerVars[['IS_END_OF_LIFE']])
-    IS_UPGRADEABLE <<- as.logical(biocInstallerVars[['IS_UPGRADEABLE']])
-    UPGRADE_IS_DEVEL <<- as.logical(biocInstallerVars[['UPGRADE_IS_DEVEL']])
-    IS_DOWNGRADEABLE <<- as.logical(biocInstallerVars[['IS_DOWNGRADEABLE']])
-    UPGRADE_VERSION <<- package_version(biocInstallerVars[['UPGRADE_VERSION']])
-    DOWNGRADE_VERSION <<- package_version(biocInstallerVars[['DOWNGRADE_VERSION']])
-    NEXT_R_DEVEL_VERSION <<- package_version(biocInstallerVars[['NEXT_R_DEVEL_VERSION']])
+    R_VERSION_MAX <<- package_version(bioconductorVars[['R_VERSION_MAX']])
+    IS_USER <<- as.logical(bioconductorVars[['IS_USER']])
+    IS_END_OF_LIFE <<- as.logical(bioconductorVars[['IS_END_OF_LIFE']])
+    IS_UPGRADEABLE <<- as.logical(bioconductorVars[['IS_UPGRADEABLE']])
+    UPGRADE_IS_DEVEL <<- as.logical(bioconductorVars[['UPGRADE_IS_DEVEL']])
+    IS_DOWNGRADEABLE <<- as.logical(bioconductorVars[['IS_DOWNGRADEABLE']])
+    UPGRADE_VERSION <<- package_version(bioconductorVars[['UPGRADE_VERSION']])
+    DOWNGRADE_VERSION <<- package_version(bioconductorVars[['DOWNGRADE_VERSION']])
+    NEXT_R_DEVEL_VERSION <<- package_version(bioconductorVars[['NEXT_R_DEVEL_VERSION']])
 }
 
 .onAttach <-
     function(libname, pkgname)
 {
-    .message("Bioconductor version %s (BiocInstaller %s), ?install for help",
-             biocVersion(), packageVersion("BiocInstaller"))
+    .message("Bioconductor version %s (package version %s), ?install for help",
+             biocVersion(), packageVersion("Bioconductor"))
      Rversion <- getRversion()
      if (IS_END_OF_LIFE) {
          if (IS_UPGRADEABLE)

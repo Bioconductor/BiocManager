@@ -45,7 +45,7 @@ for validation.
 \details{
 This function compares the version of installed packages to the version of
 packages associated with the version of R and Bioconductor appropriate for
-the BiocInstaller package currently in use.
+the Bioconductor package currently in use.
 
 Packages are reported as \sQuote{out-of-date} if a more recent version is
 available at the repositories specified by \code{biocinstallRepos()}.

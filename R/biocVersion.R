@@ -2,7 +2,7 @@
 #'
 #'
 #' This function reports the Bioconductor version in use, as determined by the
-#' BiocInstaller package.
+#' Bioconductor package.
 #'
 #'
 #' @return \code{package_version} representing the Bioconductor version in use.

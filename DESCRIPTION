@@ -1,8 +1,8 @@
-Package: BiocInstaller
-Title: Install/Update Bioconductor, CRAN, and github Packages
+Package: Bioconductor
+Title: Install/Update Bioconductor, CRAN, and GitHub Packages
 Description: This package is used to install and update Bioconductor,
-    CRAN, and github packages.
-Version: 1.29.13
+    CRAN, and GitHub packages.
+Version: 1.29.14
 Authors@R: c(
     person("Martin", "Morgan", email = "martin.morgan@roswellpark.org",
         role = "aut"),

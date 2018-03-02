@@ -59,8 +59,8 @@
     biocMirror <- getOption("BioC_mirror", "https://bioconductor.org")
     .message("BioC_mirror: %s", biocMirror)
 
-    .message("Using Bioconductor %s (BiocInstaller %s), %s.",
-        biocVersion(), packageVersion("BiocInstaller"),
+    .message("Using Bioconductor %s (package version %s), %s.",
+        biocVersion(), packageVersion("Bioconductor"),
         sub(" version", "", R.version.string))
 
     if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
@@ -138,7 +138,7 @@
     paste(txt, collapse="\n")
 }
 
-# use as BiocInstaller:::.opts$get()  BiocInstaller:::.opts$set(TRUE)
+# use as Bioconductor:::.opts$get()  Bioconductor:::.opts$set(TRUE)
 .opts = local({
     debug <- FALSE
     list(get=function() debug, set=function(x) {
@@ -198,8 +198,8 @@
         if (nrow(pkgs) == 0L)
             .stop("no packages in repository (no internet connection?)",
                   call.=FALSE)
-        else if (!"BiocInstaller" %in% rownames(pkgs))
-            .stop("'BiocInstaller' package not in repository",
+        else if (!"Bioconductor" %in% rownames(pkgs))
+            .stop("'Bioconductor' package not in repository",
                   call.=FALSE)
         contribUrl
     }

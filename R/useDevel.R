@@ -1,52 +1,53 @@
 isDevel <- function() !IS_USER
 
 #'
-#' Get the 'devel' version of the BiocInstaller package.
+#' Get the 'devel' version of the Bioconductor package.
 #'
 #'
-#' Downloads the 'devel' version of the BiocInstaller package so that all
+#' Downloads the 'devel' version of the 'Bioconductor' package so that all
 #' subsequent invocations of \code{\link{install}} and
 #' \code{\link{biocinstallRepos}} use the devel repositories.
 #'
 #' Displays the URLs of the repositories used by \code{\link{install}} to
-#' install Bioconductor and CRAN packages.
+#' install Bioconductor project and R-project CRAN packages.
 #'
 #' Should only be used with a release (or patched) version of R, freshly
 #' installed.
 #'
 #'
-#' Bioconductor has a 'release' branch and a 'devel' branch. The branch in use
-#' depends on the version of R and the version of the BiocInstaller.
+#' The Bioconductor project has a 'release' branch and a 'devel' branch.
+#' The branch in use depends on the version of R and the version of the
+#' Bioconductor package.
 #'
-#' \code{useDevel()} installs the correct version of the BiocInstaller package
+#' \code{useDevel()} installs the correct version of the Bioconductor package
 #' for use of the devel version of Bioconductor, provided it is supported by
 #' the version of R in use.
 #'
-#' \code{isDevel()} returns TRUE when the version of BiocInstaller in use
-#' corresponds to the 'devel' version of Bioconductor.
+#' \code{isDevel()} returns TRUE when the version of Bioconductor in use
+#' corresponds to the 'devel' version of the Bioconductor package.
 #'
-#' In more detail, the version number of the BiocInstaller package determines
+#' In more detail, the version number of the Bioconductor package determines
 #' whether to download packages from the release or devel repositories of
 #' Bioconductor. In keeping with Bioconductor versioning conventions, if the
 #' middle number (y in x.y.z) is even, the package is part of a release
 #' version; if odd, it's part of a devel version.
 #'
-#' By default, when BiocInstaller is first installed and when the version of R
-#' supports the current release version of Bioconductor, BiocInstaller will use
-#' the release repository.
+#' By default, when the Bioconductor package is first installed and when the
+#' version of R supports the current release version of Bioconductor,
+#' The Bioconductor package will use the release repository.
 #'
-#' To change the version of BiocInstaller to support the 'devel' branch of
-#' Bioconductor, run \code{useDevel()}. With argument \code{TRUE} (the
-#' default), it will download the devel version of BiocInstaller and
-#' subsequently all packages downloaded with \code{\link{install}} will be
+#' To change the version of the Bioconductor package to support the 'devel'
+#' branch of Bioconductor, run \code{useDevel()}. With argument \code{TRUE}
+#' (the default), it will download the devel version of Bioconductor and
+#' subsequently all packages downloaded with \code{\link{biocDevel}} will be
 #' from the devel repository. You should run \code{\link{useDevel}} only once.
 #'
 #' During release cycles where both the release and devel version of
 #' Bioconductor use the same version of R, it is possible to use release and
-#' devel versions of Bioconductor with the same installation of R.  To do this,
-#' use the \code{R_LIBS_USER} environment variable.  First, create two separate
-#' directories for your BioC release and devel packages. Suggested directory
-#' names are as follows:
+#' devel versions of the Bioconductor package with the same installation of R.
+#' To do this, use the \code{R_LIBS_USER} environment variable. First, create
+#' two separate directories for your BioC release and devel packages. Suggested
+#' directory names are as follows:
 #'
 #' Linux:
 #' \preformatted{

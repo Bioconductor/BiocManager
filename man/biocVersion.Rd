@@ -11,7 +11,7 @@ biocVersion()
 }
 \description{
 This function reports the Bioconductor version in use, as determined by the
-BiocInstaller package.
+Bioconductor package.
 }
 \examples{
 

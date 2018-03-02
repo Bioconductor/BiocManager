@@ -20,18 +20,7 @@ perhaps also installing \code{Biobase}, \code{IRanges}, and
 containing a \sQuote{/} are treated as github repositories and installed
 using the \code{install_github()} function of the \code{devtools} package.}
 
-\item{...}{Additional arguments.
-
-When installing CRAN or Bioconductor packages, typical arguments include:
-\code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
-the library location of installed packages to be updated; and \code{lib},
-passed to \code{\link{install.packages}} to determine the library location
-where \code{pkgs} are to be installed.
-
-When installing github packages, \code{...} is passed to the \pkg{devtools}
-package functions \code{\link[devtools]{install_github}} and
-\code{\link[devtools]{install}}. A typical use is to build vignettes, via
-\code{dependencies=TRUE, build_vignettes=TRUE}.}
+\item{...}{Additional arguments.}
 
 \item{suppressUpdates}{\code{logical(1)} or \code{character()}. When
 \code{FALSE}, install asks the user whether old packages should be update.
@@ -49,10 +38,18 @@ brings up a widget for choosing which packages to update.  If TRUE, user can
 choose whether to update all outdated packages without further prompting, to
 pick and choose packages to update, or to cancel updating (in a
 non-interactive session, no packages will be updated). Otherwise, the value
-is passed to \code{\link{update.packages}}.}
+is passed to \code{\link{update.packages}}.
 
-\item{suppressAutoUpdate}{\code{logical(1)} indicating whether the
-\code{BiocInstaller} package updates itself.}
+When installing CRAN or Bioconductor packages, typical arguments include:
+\code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
+the library location of installed packages to be updated; and \code{lib},
+passed to \code{\link{install.packages}} to determine the library location
+where \code{pkgs} are to be installed.
+
+When installing github packages, \code{...} is passed to the \pkg{devtools}
+package functions \code{\link[devtools]{install_github}} and
+\code{\link[devtools]{install}}. A typical use is to build vignettes, via
+\code{dependencies=TRUE, build_vignettes=TRUE}.}
 }
 \value{
 \code{install()} returns the \code{pkgs} argument, invisibly.

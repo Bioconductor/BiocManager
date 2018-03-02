@@ -32,12 +32,11 @@
 #' \code{AnnotationDbi} if they are not already installed. Package names
 #' containing a \sQuote{/} are treated as github repositories and installed
 #' using the \code{install_github()} function of the \code{devtools} package.
+#' @param ... Additional arguments.
 #' @param suppressUpdates \code{logical(1)} or \code{character()}. When
 #' \code{FALSE}, install asks the user whether old packages should be update.
 #' When \code{TRUE}, the user is not prompted to update old packages. When
 #' \code{character()} a vector specifying which packages to NOT update.
-#' @param suppressAutoUpdate \code{logical(1)} indicating whether the
-#' \code{BiocInstaller} package updates itself.
 #' @param siteRepos \code{character()} representing an additional repository in
 #' which to look for packages to install. This repository will be prepended to
 #' the default repositories (which you can see with
@@ -49,7 +48,6 @@
 #' pick and choose packages to update, or to cancel updating (in a
 #' non-interactive session, no packages will be updated). Otherwise, the value
 #' is passed to \code{\link{update.packages}}.
-#' @param ... Additional arguments.
 #'
 #' When installing CRAN or Bioconductor packages, typical arguments include:
 #' \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
