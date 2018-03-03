@@ -1,3 +1,5 @@
+context("Pointer to repositories")
+
 repos <- biocinstallRepos()
 
 test_that("biocinstallRepos returns all repos", {
