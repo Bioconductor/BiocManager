@@ -13,6 +13,10 @@ Authors@R: c(
         role = c("ctb", "cre")))
 biocViews: Infrastructure
 Depends: BiocVersion
-Suggests: devtools, RUnit, BiocGenerics
+Suggests: 
+    devtools,
+    RUnit,
+    BiocGenerics,
+    testthat
 License: Artistic-2.0
 RoxygenNote: 6.0.1
