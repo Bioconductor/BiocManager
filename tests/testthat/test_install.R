@@ -1,5 +1,6 @@
-test_reposType <- function()
-{
+context("Filter URLs, CRAN and GitHub packages")
+
+test_that("Helpers filter the right packages", {
     .rRepos <- Bioconductor:::.rRepos
     .githubRepos <- Bioconductor:::.githubRepos
 
@@ -8,6 +9,6 @@ test_reposType <- function()
     github <- c("foo/bar", "foo/bar@baz")
     all <- c(r, http, github)
 
-    checkIdentical(c(r, http), .rRepos(all))
-    checkIdentical(github, .githubRepos(all))
-}
+    expect_identical(c(r, http), .rRepos(all))
+    expect_identical(github, .githubRepos(all))
+})
