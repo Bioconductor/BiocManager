@@ -76,8 +76,6 @@
 #' \code{\link{chooseCRANmirror}} lets you choose from a list of all public
 #' CRAN mirror URLs.
 #'
-#' \code{\link{all_group}} returns the names of all Bioconductor software
-#' packages.
 #' @keywords environment
 #' @examples
 #'
@@ -103,9 +101,6 @@
 #'
 #' ## install a package from source:
 #' install("IRanges", type="source")
-#'
-#' ## install all Bioconductor software packages
-#' install(all_group())
 #'
 #' }
 #' ## Show the Bioconductor and CRAN repositories that will be used to

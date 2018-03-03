@@ -178,9 +178,7 @@ isDevel <- function() !IS_USER
 #' thing as well.
 #'
 #' @aliases useDevel isDevel
-#' @param devel Whether to look in the devel (TRUE) or release (FALSE)
-#' repositories in subsequent invocations of \code{\link{install}} and
-#' \code{\link{biocinstallRepos}}.
+#'
 #' @return \code{useDevel()}: Invisible NULL.
 #'
 #' \code{isDevel()}: logical(1) TRUE or FALSE.
