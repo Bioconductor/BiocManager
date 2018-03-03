@@ -3,9 +3,12 @@
 \name{useDevel}
 \alias{useDevel}
 \alias{isDevel}
+\alias{isDevel}
 \title{Get the 'devel' version of the Bioconductor package.}
 \usage{
 useDevel()
+
+isDevel()
 }
 \value{
 \code{useDevel()}: Invisible NULL.

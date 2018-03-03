@@ -1,5 +1,3 @@
-isDevel <- function() !IS_USER
-
 #'
 #' Get the 'devel' version of the Bioconductor package.
 #'
@@ -230,3 +228,7 @@ useRelease <- function()
 {
 ## TODO: write mechanism to upgrade and downgrade packages
 }
+
+#' @rdname useDevel
+#' @export
+isDevel <- function() !IS_USER
