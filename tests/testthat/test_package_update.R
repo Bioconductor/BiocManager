@@ -1,6 +1,6 @@
 context("Make use of various package type filters")
 
-testthat("suppressUpdates filter works" {
+test_that("suppressUpdates filter works", {
     .filter <- Bioconductor:::.package_filter_suppress_updates
 
     pkgs0 <- matrix(
