@@ -26,11 +26,11 @@
 #' @examples
 #'
 #' \dontrun{
-#' biocUpdatePackages("GenomicRanges", ask=FALSE)
+#' updatePackages("GenomicRanges", ask=FALSE)
 #' }
 #'
-#' @export biocUpdatePackages
-biocUpdatePackages <-
+#' @export updatePackages
+updatePackages <-
     function(pkgs, dependencies = NA, repos = biocinstallRepos(), ...)
 {
     if (identical(dependencies, NA))
