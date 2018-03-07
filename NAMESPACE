@@ -3,7 +3,6 @@
 export(biocDevel)
 export(biocUpdatePackages)
 export(biocValid)
-export(biocVersion)
 export(biocinstallRepos)
 export(install)
 export(isDevel)
