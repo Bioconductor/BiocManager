@@ -57,9 +57,9 @@
 #' @seealso \code{\link{install}} to update installed packages.
 #' @keywords environment
 #' @examples
-#' try(biocValid())
-#' @export biocValid
-biocValid <-
+#' try(valid())
+#' @export valid
+valid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
              filters=NULL, silent=FALSE, ..., fix=FALSE)

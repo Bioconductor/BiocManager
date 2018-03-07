@@ -2,9 +2,9 @@
 
 export(biocDevel)
 export(biocUpdatePackages)
-export(biocValid)
 export(biocinstallRepos)
 export(install)
 export(isDevel)
 export(useDevel)
+export(valid)
 import(utils)
