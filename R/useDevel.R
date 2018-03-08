@@ -4,7 +4,7 @@
 #'
 #' Downloads the 'devel' version of the 'Bioconductor' package so that all
 #' subsequent invocations of \code{\link{install}} and
-#' \code{\link{biocinstallRepos}} use the devel repositories.
+#' \code{\link{installRepos}} use the devel repositories.
 #'
 #' Displays the URLs of the repositories used by \code{\link{install}} to
 #' install Bioconductor project and R-project CRAN packages.
@@ -180,7 +180,7 @@
 #' @return \code{useDevel()}: Invisible NULL.
 #'
 #' \code{isDevel()}: logical(1) TRUE or FALSE.
-#' @seealso \code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
+#' @seealso \code{\link{installRepos}} returns the Bioconductor and CRAN
 #' repositories used by \code{install}.
 #'
 #' \code{\link{install}} Installs/updates Bioconductor/CRAN packages.

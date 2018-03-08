@@ -30,7 +30,7 @@ When \code{TRUE}, the user is not prompted to update old packages. When
 \item{siteRepos}{\code{character()} representing an additional repository in
 which to look for packages to install. This repository will be prepended to
 the default repositories (which you can see with
-\code{\link{biocinstallRepos}}).}
+\code{\link{installRepos}}).}
 
 \item{ask}{\code{logical(1)} indicating whether to prompt user before
 installed packages are updated, or the character string 'graphics', which
@@ -106,7 +106,7 @@ install("IRanges", type="source")
 }
 ## Show the Bioconductor and CRAN repositories that will be used to
 ## install/update packages.
-biocinstallRepos()
+installRepos()
 
 ## Use local archive rather than current online configuration
 ## information. Set this prior to loading the BiocInstaller package.
@@ -114,7 +114,7 @@ options(BIOCINSTALLER_ONLINE_DCF = FALSE)
 
 }
 \seealso{
-\code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
+\code{\link{installRepos}} returns the Bioconductor and CRAN
 repositories used by \code{install}.
 
 \code{\link{install.packages}} installs the packages themselves.

@@ -30,7 +30,7 @@
 #' @keywords environment
 #' @examples
 #'
-#' biocinstallRepos()
+#' installRepos()
 #'
 #' ## Choose mirrors
 #' \dontrun{
@@ -38,8 +38,8 @@
 #'   chooseBioCmirror()
 #' }
 #'
-#' @export biocinstallRepos
-biocinstallRepos <-
+#' @export installRepos
+installRepos <-
     function(siteRepos=character(), version=biocVersion())
 {
     biocVersion <- as.package_version(version)
@@ -115,8 +115,8 @@ biocinstallRepos <-
     ## pointing to a *snapshot* of CRAN (e.g.
     ## https://mran.microsoft.com/snapshot/2017-05-01), and not
     ## to a CRAN mirror that is current. For the current release and devel
-    ## BioC versions, biocinstallRepos() needs to point to a CRAN mirror
-    ## that is current so install() and biocValid() behave the same for
+    ## BioC versions, installRepos() needs to point to a CRAN mirror
+    ## that is current so install() and valid() behave the same for
     ## all BioC users, whether they use mainstream R or Microsoft R Open.
     ## However, since old versions of BioC are frozen, it would probably
     ## make sense to point to a *snapshot* of CRAN instead of a CRAN mirror

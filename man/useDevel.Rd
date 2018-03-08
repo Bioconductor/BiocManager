@@ -18,7 +18,7 @@ isDevel()
 \description{
 Downloads the 'devel' version of the 'Bioconductor' package so that all
 subsequent invocations of \code{\link{install}} and
-\code{\link{biocinstallRepos}} use the devel repositories.
+\code{\link{installRepos}} use the devel repositories.
 }
 \details{
 Displays the URLs of the repositories used by \code{\link{install}} to
@@ -197,7 +197,7 @@ isDevel()
 
 }
 \seealso{
-\code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
+\code{\link{installRepos}} returns the Bioconductor and CRAN
 repositories used by \code{install}.
 
 \code{\link{install}} Installs/updates Bioconductor/CRAN packages.

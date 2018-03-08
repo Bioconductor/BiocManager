@@ -40,7 +40,7 @@
 #' @param siteRepos \code{character()} representing an additional repository in
 #' which to look for packages to install. This repository will be prepended to
 #' the default repositories (which you can see with
-#' \code{\link{biocinstallRepos}}).
+#' \code{\link{installRepos}}).
 #' @param ask \code{logical(1)} indicating whether to prompt user before
 #' installed packages are updated, or the character string 'graphics', which
 #' brings up a widget for choosing which packages to update.  If TRUE, user can
@@ -63,7 +63,7 @@
 #' @return \code{install()} returns the \code{pkgs} argument, invisibly.
 #' @seealso
 #'
-#' \code{\link{biocinstallRepos}} returns the Bioconductor and CRAN
+#' \code{\link{installRepos}} returns the Bioconductor and CRAN
 #' repositories used by \code{install}.
 #'
 #' \code{\link{install.packages}} installs the packages themselves.
@@ -105,7 +105,7 @@
 #' }
 #' ## Show the Bioconductor and CRAN repositories that will be used to
 #' ## install/update packages.
-#' biocinstallRepos()
+#' installRepos()
 #'
 #' ## Use local archive rather than current online configuration
 #' ## information. Set this prior to loading the BiocInstaller package.

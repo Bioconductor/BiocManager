@@ -66,7 +66,7 @@
     if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
         .stop("failed to load package 'utils'")
 
-    orepos <- options(repos=biocinstallRepos(siteRepos))
+    orepos <- options(repos=installRepos(siteRepos))
     on.exit(options(orepos))
 
     if (length(pkgs)) {
@@ -203,7 +203,7 @@
                   call.=FALSE)
         contribUrl
     }
-    repos <- biocinstallRepos(version=biocVersion)["BioCsoft"]
+    repos <- installRepos(version=biocVersion)["BioCsoft"]
     suppressWarnings(tryCatch({
         .contribUrl(repos)
     }, error=function(err) {

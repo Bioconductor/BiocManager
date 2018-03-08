@@ -24,12 +24,12 @@
 #' the Bioconductor package currently in use.
 #'
 #' Packages are reported as \sQuote{out-of-date} if a more recent version is
-#' available at the repositories specified by \code{biocinstallRepos()}.
+#' available at the repositories specified by \code{installRepos()}.
 #' Usually, \code{install()} is sufficient to update packages to their most
 #' recent version.
 #'
 #' Packages are reported as \sQuote{too new} if the installed version is more
-#' recent than the most recent available in the \code{biocinstallRepos()}
+#' recent than the most recent available in the \code{installRepos()}
 #' repositories. It is possible to down-grade by re-installing a too new
 #' package \dQuote{PkgA} with \code{install("PkgA")}. It is important for the
 #' user to understand how their installation became too new, and to avoid this
@@ -71,11 +71,11 @@ valid <-
             .stop("'pkgs' must be a character vector of package names,
                    or a matrix like that returned by 'installed.packages()'")
     }
-    repos <- biocinstallRepos()
+    repos <- installRepos()
     contribUrl <- contrib.url(repos, type=type)
 
     availPkgs <- available.packages(contribUrl, type=type, filters=filters)
-    oldPkgs <- old.packages(lib.loc, repos=biocinstallRepos(),
+    oldPkgs <- old.packages(lib.loc, repos=installRepos(),
         instPkgs=pkgs, available=availPkgs, checkBuilt=TRUE,
         type=type)
     tooNewPkgs <- .tooNewPkgs(pkgs, availPkgs)

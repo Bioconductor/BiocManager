@@ -15,7 +15,7 @@
 #' "LinkingTo")} but can be a subset of \code{c("Depends", "Imports",
 #' "LinkingTo", "Suggests", "Enhances")}.
 #' @param repos \code{character()} of named repositories in which to look for
-#' package updates, in the style of \code{biocinstallRepos()}.
+#' package updates, in the style of \code{installRepos()}.
 #' @param \dots Additional arguments, passed to \code{\link{update.packages}}.
 #' For example, \code{ask=FALSE} to avoid prompts to update individual
 #' packages.
@@ -31,7 +31,7 @@
 #'
 #' @export updatePackages
 updatePackages <-
-    function(pkgs, dependencies = NA, repos = biocinstallRepos(), ...)
+    function(pkgs, dependencies = NA, repos = installRepos(), ...)
 {
     if (identical(dependencies, NA))
         dependencies <- c("Depends", "Imports", "LinkingTo")
