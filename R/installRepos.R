@@ -85,8 +85,8 @@ installRepos <-
                         biocPaths, sep="/")
     repos[names(biocPaths)] <- biocRepos
 
-    keepRepos <- repos %in% old.repos |
-        names(repos) %in% c(names(biocPaths), "CRAN")
+    keepNames <- names(repos)[repos %in% old.repos]
+    keepRepos <- unique(c(names(biocPaths), "CRAN", keepNames))
 
     repos <- repos[keepRepos]
 
