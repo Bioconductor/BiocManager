@@ -63,7 +63,9 @@
         biocVersion(), packageVersion("Bioconductor"),
         sub(" version", "", R.version.string))
 
-    if (!suppressPackageStartupMessages(require("utils", quietly=TRUE)))
+    if (!suppressPackageStartupMessages(
+            requireNamespace("utils", quietly=TRUE)
+        ))
         .stop("failed to load package 'utils'")
 
     orepos <- options(repos=installRepos(siteRepos))
