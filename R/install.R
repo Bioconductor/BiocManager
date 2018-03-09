@@ -119,7 +119,7 @@ install <-
     if (isDevel())
         stop("To get the development version of Bioconductor, run 'useDevel()'")
     if (missing(pkgs))
-        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
+        pkgs <- rownames(installed.packages())
 
     .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
         suppressUpdates=suppressUpdates, ...)
@@ -134,7 +134,7 @@ biocDevel <-
     if (!isDevel())
         stop("To revert to Bioconductor release, run 'useRelease()'")
     if (missing(pkgs))
-        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
+        pkgs <- rownames(installed.packages())
 
     .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
                      suppressUpdates=suppressUpdates, ...)
