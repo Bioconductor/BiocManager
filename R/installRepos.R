@@ -44,8 +44,8 @@ installRepos <-
 {
     biocVersion <- as.package_version(version)
 
-    old.opts <- options("repos")
-    on.exit(options(old.opts))
+    old.repos <- getOption("repos")
+    on.exit(options(repos = old.repos))
 
     ## Starting at some point in R-2.14, Omegahat is included in
     ## the list of available repositories, on windows only, it seems.
@@ -85,7 +85,9 @@ installRepos <-
                         biocPaths, sep="/")
     repos[names(biocPaths)] <- biocRepos
 
-    keepRepos <- c(names(biocPaths), "CRAN")
+    keepRepos <- repos %in% old.repos |
+        names(repos) %in% c(names(biocPaths), "CRAN")
+
     repos <- repos[keepRepos]
 
     ## This needs to be commented out a few months (3? 4?) after the
@@ -107,8 +109,6 @@ installRepos <-
                           biocPaths[inactive], sep="/")
         repos[inactive] <- tmpRepos
     }
-
-    repos <- subset(repos, !is.na(repos))
 
     CRAN_repo <- repos[["CRAN"]]
     ## Microsoft R Open is shipped with getOption("repos")[["CRAN"]]
