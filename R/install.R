@@ -111,13 +111,14 @@
 #' ## information. Set this prior to loading the BiocInstaller package.
 #' options(BIOCINSTALLER_ONLINE_DCF = FALSE)
 #'
-#' @export install
+#' @export
 install <-
     function(pkgs, ..., suppressUpdates = FALSE,
         siteRepos = character(), ask = TRUE)
 {
     if (isDevel())
-        stop("To get the development version of Bioconductor, run 'useDevel()'")
+        stop("To install packages from the development version of Bioconductor,",
+            "\n   use 'biocDevel()'")
     if (missing(pkgs))
         pkgs <- rownames(installed.packages())
 
@@ -132,7 +133,8 @@ biocDevel <-
         siteRepos = character(), ask = TRUE)
 {
     if (!isDevel())
-        stop("To revert to Bioconductor release, run 'useRelease()'")
+        stop("To revert to the release version of Bioconductor,",
+            "\n    run 'useRelease()'")
     if (missing(pkgs))
         pkgs <- rownames(installed.packages())
 
