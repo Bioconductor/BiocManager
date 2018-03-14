@@ -232,9 +232,13 @@ useRelease <- function()
 }
 
 .update <-
-    function(biocVersion, installAfterUpdate = FALSE)
+    function(biocVersion)
 {
-## TODO: write mechanism to upgrade and downgrade packages
+    .dbg("using version %s", biocVersion)
+    if (isDevel())
+        biocDevel()
+    else
+        install()
 }
 
 #' @rdname useDevel
