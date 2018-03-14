@@ -204,10 +204,19 @@ useDevel <- function()
 {
     if (isDevel())
         .stop("'devel' version already in use")
-    if (!IS_UPGRADEABLE)
-        .stop("'devel' version requires a more recent R")
 
-    .update(UPGRADE_VERSION, FALSE)
+    BiocVersion:::.options$set("BioC_Version", "devel")
+    UPGRADE_VERSION <- biocVersion()
+
+    txt <- sprintf(
+        "Upgrade all packages to Bioconductor version %s? [y/n]: ",
+        UPGRADE_VERSION)
+    answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
+
+    if ("y" == answer)
+        .update(UPGRADE_VERSION)
+    else
+        BiocVersion:::.options$set("BioC_Version", "release")
 }
 
 #'
@@ -223,12 +232,18 @@ useRelease <- function()
     if (!isDevel())
         .stop("'release' version already in use")
 
+    BiocVersion:::.options$set("BioC_Version", "release")
+    DOWNGRADE_VERSION <- biocVersion()
+
     txt <- sprintf(
         "Downgrade all packages to Bioconductor version %s? [y/n]: ",
         DOWNGRADE_VERSION)
+
     answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
     if ("y" == answer)
-        .update(DOWNGRADE_VERSION, TRUE)
+        .update(DOWNGRADE_VERSION)
+    else
+        BiocVersion:::.options$set("BioC_Version", "devel")
 }
 
 .update <-
@@ -243,4 +258,6 @@ useRelease <- function()
 
 #' @rdname useDevel
 #' @export
-isDevel <- function() !IS_USER
+isDevel <- function() {
+    BiocVersion:::.options$get("BioC_Version") == "devel"
+}

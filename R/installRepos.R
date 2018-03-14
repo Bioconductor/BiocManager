@@ -103,7 +103,8 @@ installRepos <-
                       ## , "BioCann"
                       ## , "BioCexp"
                       )
-
+        DOWNGRADE_VERSION <-
+            BiocVersion:::.subtractVersion(biocVersion(), 1L)
         ## No need to touch below.
         tmpRepos <- paste(biocMirror, "packages", DOWNGRADE_VERSION,
                           biocPaths[inactive], sep="/")
