@@ -113,14 +113,14 @@
 #'
 #' @export
 install <-
-    function(pkgs, ..., suppressUpdates = FALSE,
+    function(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
         siteRepos = character(), ask = TRUE)
 {
     if (isDevel())
         stop("To install packages from the development version of Bioconductor,",
             "\n   use 'biocDevel()'")
     if (missing(pkgs))
-        pkgs <- rownames(installed.packages())
+        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
     .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
         suppressUpdates=suppressUpdates, ...)
@@ -129,14 +129,14 @@ install <-
 #' @rdname install
 #' @export biocDevel
 biocDevel <-
-    function(pkgs, ..., suppressUpdates = FALSE,
+    function(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
         siteRepos = character(), ask = TRUE)
 {
     if (!isDevel())
         stop("To revert to the release version of Bioconductor,",
             "\n    run 'useRelease()'")
     if (missing(pkgs))
-        pkgs <- rownames(installed.packages())
+        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
     .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
                      suppressUpdates=suppressUpdates, ...)

@@ -6,11 +6,11 @@
 \alias{biocDevel}
 \title{Install or update Bioconductor and CRAN packages}
 \usage{
-install(pkgs, ..., suppressUpdates = FALSE, siteRepos = character(),
-  ask = TRUE)
+install(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
+  siteRepos = character(), ask = TRUE)
 
-biocDevel(pkgs, ..., suppressUpdates = FALSE, siteRepos = character(),
-  ask = TRUE)
+biocDevel(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
+  siteRepos = character(), ask = TRUE)
 }
 \arguments{
 \item{pkgs}{\code{character()} of package names to install or update.  A
