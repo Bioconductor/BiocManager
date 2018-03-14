@@ -210,6 +210,14 @@ useDevel <- function()
     .update(UPGRADE_VERSION, FALSE)
 }
 
+#'
+#' Use the release version of Bioconductor
+#'
+#' This function will modify the repository pointer to the release version
+#' if you are using devel. It will then prompt a downgrade of all packages
+#' in the \code{.libPaths()[1]}.
+#'
+#' @export
 useRelease <- function()
 {
     if (!isDevel())
