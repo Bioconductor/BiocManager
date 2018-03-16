@@ -70,7 +70,7 @@ globalVariables("repos")           # used in 'bootstrap' functions
     function(libname, pkgname)
 {
     .message("Bioconductor version %s (package version %s), ?install for help",
-             biocVersion(), packageVersion("Bioconductor"))
+             version(), packageVersion("Bioconductor"))
      Rversion <- getRversion()
      if (IS_END_OF_LIFE) {
          if (IS_UPGRADEABLE)

@@ -39,8 +39,8 @@
 #' }
 #'
 #' @export installRepos
-installRepos <-
-    function(siteRepos=character(), version=biocVersion())
+repositories <-
+    function(siteRepos=character(), version=version())
 {
     biocVersion <- as.package_version(version)
 
@@ -104,7 +104,7 @@ installRepos <-
                       ## , "BioCexp"
                       )
         DOWNGRADE_VERSION <-
-            BiocVersion:::.subtractVersion(biocVersion(), 1L)
+            BiocVersion:::.subtractVersion(version(), 1L)
         ## No need to touch below.
         tmpRepos <- paste(biocMirror, "packages", DOWNGRADE_VERSION,
                           biocPaths[inactive], sep="/")

@@ -1,5 +1,5 @@
 #' @import utils
-#' @importFrom BiocVersion biocVersion
+#' @importFrom BiocVersion version
 NULL
 
 #' Install or update Bioconductor, CRAN, or GitHub packages

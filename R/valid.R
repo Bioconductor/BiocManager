@@ -138,7 +138,7 @@ print.biocValid <-
 
     if (NROW(x$tooNewPkgs)) {
         cat("* Packages too new for Bioconductor version ",
-            .sQuote(as.character(biocVersion())), "\n\n", sep="")
+            .sQuote(as.character(version())), "\n\n", sep="")
         print(x$tooNewPkgs)
         pkgs <- paste(.dQuote(rownames(x$tooNewPkgs)), collapse=", ")
         msg <- .msg(ifelse(NROW(x$tooNewPkgs) == 1L, "install(%s)",

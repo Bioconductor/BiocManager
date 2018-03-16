@@ -60,7 +60,7 @@
     .message("BioC_mirror: %s", biocMirror)
 
     .message("Using Bioconductor %s (package version %s), %s.",
-        biocVersion(), packageVersion("Bioconductor"),
+        version(), packageVersion("Bioconductor"),
         sub(" version", "", R.version.string))
 
     if (!suppressPackageStartupMessages(

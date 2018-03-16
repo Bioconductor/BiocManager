@@ -259,5 +259,5 @@ useRelease <- function()
 #' @rdname useDevel
 #' @export
 isDevel <- function() {
-    BiocVersion:::.options$get("BioC_Version") == "devel"
+    as.logical(BiocVersion::version()$minor %% 2)
 }
