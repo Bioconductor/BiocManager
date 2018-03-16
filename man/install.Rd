@@ -3,14 +3,13 @@
 \name{install}
 \alias{install}
 \alias{BIOCINSTALLER_ONLINE_DCF}
-\alias{biocDevel}
+\alias{isDevel}
 \title{Install or update Bioconductor and CRAN packages}
 \usage{
 install(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
-  siteRepos = character(), ask = TRUE)
+  siteRepos = character(), ask = TRUE, version = BiocVersion::version())
 
-biocDevel(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
-  siteRepos = character(), ask = TRUE)
+isDevel()
 }
 \arguments{
 \item{pkgs}{\code{character()} of package names to install or update.  A
@@ -55,15 +54,15 @@ package functions \code{\link[devtools]{install_github}} and
 \code{install()} returns the \code{pkgs} argument, invisibly.
 }
 \description{
-\code{install} installs or updates Bioconductor and CRAN packages in a
-Bioconductor release.  Upgrading to a new Bioconductor release requires
-additional steps; see \url{https://bioconductor.org/install}.
-}
-\details{
+\code{install} installs or updates Bioconductor and CRAN
+packages in a Bioconductor release.  Upgrading to a new Bioconductor release
+requires additional steps; see \url{https://bioconductor.org/install}.
+
 \env{BIOCINSTALLER_ONLINE_DCF} is an environment variable or global
 \code{options()} which, when set to \code{FALSE}, uses configuration
 information from a local archive rather than consulting the current online
 version.
+
 
 Installation of Bioconductor and CRAN packages use R's standard functions
 for library management -- \code{install.packages()},
@@ -78,6 +77,12 @@ loading when internet access is slow or non-existent, but may result in
 out-of-date information about the current release and development versions
 of Bioconductor.
 }
+\section{Functions}{
+\itemize{
+\item \code{isDevel}: check if the current version in use is the development
+version of the Bioconductor project
+}}
+
 \examples{
 
 \dontrun{
@@ -111,6 +116,9 @@ installRepos()
 ## Use local archive rather than current online configuration
 ## information. Set this prior to loading the BiocInstaller package.
 options(BIOCINSTALLER_ONLINE_DCF = FALSE)
+
+## Check if the development version of the Bioconductor project is in use
+isDevel()
 
 }
 \seealso{

@@ -42,7 +42,7 @@
 repositories <-
     function(siteRepos=character(), version=version())
 {
-    biocVersion <- as.package_version(version)
+    biocVersion <- package_version(version)
 
     old.repos <- getOption("repos")
     on.exit(options(repos = old.repos))

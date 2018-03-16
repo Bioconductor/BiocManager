@@ -1,10 +1,11 @@
+#' @name install
 #'
-#' Install or update Bioconductor and CRAN packages
+#' @title Install or update Bioconductor and CRAN packages
 #'
 #'
-#' \code{install} installs or updates Bioconductor and CRAN packages in a
-#' Bioconductor release.  Upgrading to a new Bioconductor release requires
-#' additional steps; see \url{https://bioconductor.org/install}.
+#' @description \code{install} installs or updates Bioconductor and CRAN
+#' packages in a Bioconductor release.  Upgrading to a new Bioconductor release
+#' requires additional steps; see \url{https://bioconductor.org/install}.
 #'
 #' \env{BIOCINSTALLER_ONLINE_DCF} is an environment variable or global
 #' \code{options()} which, when set to \code{FALSE}, uses configuration
@@ -111,33 +112,50 @@
 #' ## information. Set this prior to loading the BiocInstaller package.
 #' options(BIOCINSTALLER_ONLINE_DCF = FALSE)
 #'
+#' ## Check if the development version of the Bioconductor project is in use
+#' isDevel()
+#'
 #' @export
 install <-
     function(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
-        siteRepos = character(), ask = TRUE)
+        siteRepos = character(), ask = TRUE, version = BiocVersion::version())
 {
-    if (isDevel())
-        stop("To install packages from the development version of Bioconductor,",
-            "\n   use 'biocDevel()'")
+    version <- package_version(version)
+
+    ## helper to check if versions match or prompt for switch
+    verdi <- .versionDiff(version)
+    actionWord <- if (verdi < 0L) "Downgrade" else if (verdi > 0L) "Upgrade"
+
+    if (verdi) {
+    txt <- sprintf(
+        "%s all packages to Bioconductor version %s? [y/n]: ",
+        actionWord, version)
+    answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
+
+    if ("n" == answer)
+        version <- BiocVersion::version()
+    else
+        if (!missing(pkgs))
+            pkgs <- append("BiocVersion", pkgs)
+    }
+
     if (missing(pkgs))
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
     .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
-        suppressUpdates=suppressUpdates, ...)
+        suppressUpdates=suppressUpdates, ..., version = version)
 }
 
-#' @rdname install
-#' @export biocDevel
-biocDevel <-
-    function(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
-        siteRepos = character(), ask = TRUE)
-{
-    if (!isDevel())
-        stop("To revert to the release version of Bioconductor,",
-            "\n    run 'useRelease()'")
-    if (missing(pkgs))
-        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
+.versionDiff <- function(biocver) {
+    biocVersion <- BiocVersion::version()
+    if (!identical(biocver$major, biocVersion$major))
+        stop("Provide a valid Bioconductor version")
+    biocver$minor - biocVersion$minor
+}
 
-    .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
-                     suppressUpdates=suppressUpdates, ...)
+#' @describeIn install check if the current version in use is the development
+#' version of the Bioconductor project
+#' @export
+isDevel <- function() {
+    as.logical(BiocVersion::version()$minor %% 2)
 }
