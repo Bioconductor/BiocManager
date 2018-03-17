@@ -33,8 +33,6 @@ BIOC_VERSION <- package_version("3.7")       # Bioc version for this package
 #
 # NEXT_R_DEVEL_VERSION <- "3.4.0" # next (not-yet-supported) version of R
 
-globalVariables("repos")           # used in 'bootstrap' functions
-
 .onLoad <-
     function(libname, pkgname)
 {
