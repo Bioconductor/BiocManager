@@ -6,38 +6,42 @@
 \alias{isDevel}
 \title{Install or update Bioconductor and CRAN packages}
 \usage{
-install(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
-  siteRepos = character(), ask = TRUE, version = BiocVersion::version())
+install(pkgs = "BiocVersion", ..., site_repository = character(),
+  update = TRUE, ask = TRUE, version = Bioconductor::version())
 
 isDevel()
 }
 \arguments{
-\item{pkgs}{\code{character()} of package names to install or update.  A
-missing value and \code{suppressUpdates=FALSE} updates installed packages,
-perhaps also installing \code{Biobase}, \code{IRanges}, and
-\code{AnnotationDbi} if they are not already installed. Package names
-containing a \sQuote{/} are treated as github repositories and installed
-using the \code{install_github()} function of the \code{devtools} package.}
+\item{pkgs}{\code{character()} of package names to install or
+update.  A missing value and \code{update=FALSE} updates
+installed packages, perhaps also installing \code{Biobase},
+\code{IRanges}, and \code{AnnotationDbi} if they are not
+already installed. Package names containing a \sQuote{/} are
+treated as github repositories and installed using the
+\code{install_github()} function of the \code{devtools}
+package.}
 
 \item{...}{Additional arguments.}
 
-\item{suppressUpdates}{\code{logical(1)} or \code{character()}. When
-\code{FALSE}, install asks the user whether old packages should be update.
-When \code{TRUE}, the user is not prompted to update old packages. When
-\code{character()} a vector specifying which packages to NOT update.}
+\item{site_repository}{\code{character()} representing an
+additional repository in which to look for packages to
+install. This repository will be prepended to the default
+repositories (which you can see with
+\code{\link{repositories}}).}
 
-\item{siteRepos}{\code{character()} representing an additional repository in
-which to look for packages to install. This repository will be prepended to
-the default repositories (which you can see with
-\code{\link{installRepos}}).}
+\item{update}{\code{logical(1)}. When \code{FALSE}, install asks
+the user whether old packages should be update.  When
+\code{TRUE}, the user is not prompted to update old packages.}
 
-\item{ask}{\code{logical(1)} indicating whether to prompt user before
-installed packages are updated, or the character string 'graphics', which
-brings up a widget for choosing which packages to update.  If TRUE, user can
-choose whether to update all outdated packages without further prompting, to
-pick and choose packages to update, or to cancel updating (in a
-non-interactive session, no packages will be updated). Otherwise, the value
-is passed to \code{\link{update.packages}}.
+\item{ask}{\code{logical(1)} indicating whether to prompt user
+    before installed packages are updated, or the character string
+    'graphics', which brings up a widget for choosing which
+    packages to update.  If TRUE, user can choose whether to update
+    all outdated packages without further prompting, to pick and
+    choose packages to update, or to cancel updating (in a
+    non-interactive session, no packages will be
+    updated). Otherwise, the value is passed to
+    \code{\link{update.packages}}.
 
 When installing CRAN or Bioconductor packages, typical arguments include:
 \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
@@ -99,11 +103,11 @@ install("survival")
 
 ## install a Bioconductor package, but don't update all installed
 ## packages as well:
-install("GenomicRanges", suppressUpdates=TRUE)
+install("GenomicRanges", update=TRUE)
 
 ## Install default packages, but do not update any package whose name
 ## starts with "org." or "BSgenome."
-install(suppressUpdates=c("^org\\.", "^BSgenome\\."))
+install(update=c("^org\\.", "^BSgenome\\."))
 
 ## install a package from source:
 install("IRanges", type="source")
@@ -111,7 +115,7 @@ install("IRanges", type="source")
 }
 ## Show the Bioconductor and CRAN repositories that will be used to
 ## install/update packages.
-installRepos()
+repositories()
 
 ## Use local archive rather than current online configuration
 ## information. Set this prior to loading the BiocInstaller package.
@@ -122,7 +126,7 @@ isDevel()
 
 }
 \seealso{
-\code{\link{installRepos}} returns the Bioconductor and CRAN
+\code{\link{repositories}} returns the Bioconductor and CRAN
 repositories used by \code{install}.
 
 \code{\link{install.packages}} installs the packages themselves.

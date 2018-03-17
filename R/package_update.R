@@ -1,16 +1,3 @@
-.package_filter_suppress_updates <-
-    function(pkgs, suppressUpdates)
-{
-    if (!is.logical(suppressUpdates)) {
-        ## alternate form of argument: vector of regex
-        regex <- paste(suppressUpdates, collapse="|")
-        hits <- !grepl(regex, pkgs[,"Package"])
-        pkgs[hits, , drop=FALSE]
-    } else {
-        pkgs
-    }
-}
-
 .package_filter_masked <-
     function(pkgs)
 {

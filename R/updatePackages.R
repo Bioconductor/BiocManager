@@ -15,7 +15,7 @@
 #' "LinkingTo")} but can be a subset of \code{c("Depends", "Imports",
 #' "LinkingTo", "Suggests", "Enhances")}.
 #' @param repos \code{character()} of named repositories in which to look for
-#' package updates, in the style of \code{installRepos()}.
+#' package updates, in the style of \code{repositories()}.
 #' @param \dots Additional arguments, passed to \code{\link{update.packages}}.
 #' For example, \code{ask=FALSE} to avoid prompts to update individual
 #' packages.
@@ -31,7 +31,7 @@
 #'
 #' @export updatePackages
 updatePackages <-
-    function(pkgs, dependencies = NA, repos = installRepos(), ...)
+    function(pkgs, dependencies = NA, repos = repositories(), ...)
 {
     if (identical(dependencies, NA))
         dependencies <- c("Depends", "Imports", "LinkingTo")

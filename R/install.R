@@ -27,28 +27,32 @@
 #' of Bioconductor.
 #'
 #' @aliases install BIOCINSTALLER_ONLINE_DCF
-#' @param pkgs \code{character()} of package names to install or update.  A
-#' missing value and \code{suppressUpdates=FALSE} updates installed packages,
-#' perhaps also installing \code{Biobase}, \code{IRanges}, and
-#' \code{AnnotationDbi} if they are not already installed. Package names
-#' containing a \sQuote{/} are treated as github repositories and installed
-#' using the \code{install_github()} function of the \code{devtools} package.
+#' @param pkgs \code{character()} of package names to install or
+#'     update.  A missing value and \code{update=FALSE} updates
+#'     installed packages, perhaps also installing \code{Biobase},
+#'     \code{IRanges}, and \code{AnnotationDbi} if they are not
+#'     already installed. Package names containing a \sQuote{/} are
+#'     treated as github repositories and installed using the
+#'     \code{install_github()} function of the \code{devtools}
+#'     package.
 #' @param ... Additional arguments.
-#' @param suppressUpdates \code{logical(1)} or \code{character()}. When
-#' \code{FALSE}, install asks the user whether old packages should be update.
-#' When \code{TRUE}, the user is not prompted to update old packages. When
-#' \code{character()} a vector specifying which packages to NOT update.
-#' @param siteRepos \code{character()} representing an additional repository in
-#' which to look for packages to install. This repository will be prepended to
-#' the default repositories (which you can see with
-#' \code{\link{installRepos}}).
-#' @param ask \code{logical(1)} indicating whether to prompt user before
-#' installed packages are updated, or the character string 'graphics', which
-#' brings up a widget for choosing which packages to update.  If TRUE, user can
-#' choose whether to update all outdated packages without further prompting, to
-#' pick and choose packages to update, or to cancel updating (in a
-#' non-interactive session, no packages will be updated). Otherwise, the value
-#' is passed to \code{\link{update.packages}}.
+#' @param update \code{logical(1)}. When \code{FALSE}, install asks
+#'     the user whether old packages should be update.  When
+#'     \code{TRUE}, the user is not prompted to update old packages.
+#' @param site_repository \code{character()} representing an
+#'     additional repository in which to look for packages to
+#'     install. This repository will be prepended to the default
+#'     repositories (which you can see with
+#'     \code{\link{repositories}}).
+#' @param ask \code{logical(1)} indicating whether to prompt user
+#'     before installed packages are updated, or the character string
+#'     'graphics', which brings up a widget for choosing which
+#'     packages to update.  If TRUE, user can choose whether to update
+#'     all outdated packages without further prompting, to pick and
+#'     choose packages to update, or to cancel updating (in a
+#'     non-interactive session, no packages will be
+#'     updated). Otherwise, the value is passed to
+#'     \code{\link{update.packages}}.
 #'
 #' When installing CRAN or Bioconductor packages, typical arguments include:
 #' \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
@@ -64,7 +68,7 @@
 #' @return \code{install()} returns the \code{pkgs} argument, invisibly.
 #' @seealso
 #'
-#' \code{\link{installRepos}} returns the Bioconductor and CRAN
+#' \code{\link{repositories}} returns the Bioconductor and CRAN
 #' repositories used by \code{install}.
 #'
 #' \code{\link{install.packages}} installs the packages themselves.
@@ -94,11 +98,11 @@
 #'
 #' ## install a Bioconductor package, but don't update all installed
 #' ## packages as well:
-#' install("GenomicRanges", suppressUpdates=TRUE)
+#' install("GenomicRanges", update=TRUE)
 #'
 #' ## Install default packages, but do not update any package whose name
 #' ## starts with "org." or "BSgenome."
-#' install(suppressUpdates=c("^org\.", "^BSgenome\."))
+#' install(update=c("^org\.", "^BSgenome\."))
 #'
 #' ## install a package from source:
 #' install("IRanges", type="source")
@@ -106,7 +110,7 @@
 #' }
 #' ## Show the Bioconductor and CRAN repositories that will be used to
 #' ## install/update packages.
-#' installRepos()
+#' repositories()
 #'
 #' ## Use local archive rather than current online configuration
 #' ## information. Set this prior to loading the BiocInstaller package.
@@ -117,45 +121,44 @@
 #'
 #' @export
 install <-
-    function(pkgs = "BiocVersion", ..., suppressUpdates = FALSE,
-        siteRepos = character(), ask = TRUE, version = BiocVersion::version())
+    function(pkgs = "BiocVersion", ..., site_repository = character(),
+        update = TRUE, ask = TRUE, version = Bioconductor::version())
 {
+    stopifnot(
+        is.logical(update), length(update) == 1L, !is.na(update),
+        length(site_repository) <= 1L,
+        is.character(site_repository), !any(is.na(site_repository)),
+        is.logical(ask), length(ask) == 1L, !is.na(ask)
+    )
     version <- package_version(version)
+    if (version[, 1:2] != version)
+        stop("'version' ", version, " must have two components, e.g., '3.7'")
 
-    ## helper to check if versions match or prompt for switch
-    verdi <- .versionDiff(version)
-    actionWord <- if (verdi < 0L) "Downgrade" else if (verdi > 0L) "Upgrade"
-
-    if (verdi) {
-    txt <- sprintf(
-        "%s all packages to Bioconductor version %s? [y/n]: ",
-        actionWord, version)
-    answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
-
-    if ("n" == answer)
-        version <- BiocVersion::version()
-    else
-        if (!missing(pkgs))
-            pkgs <- append("BiocVersion", pkgs)
+    cmp <- .compare_version(version, version())
+    if (cmp != 0) {
+        if (version() != .BIOCVERSION_SENTINEL) {
+            ## helper to check if versions match or prompt for switch
+            action <- if (cmp < 0) "Downgrade" else "Upgrade"
+            txt <- sprintf(
+                "%s Bioconductor to version %s? [y/n]: ", action, version
+            )
+            answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
+            if ("n" == answer)
+                stop("Bioconductor version not changed")
+        }
+        pkgs <- unique(c("BiocVersion", pkgs))
     }
 
     if (missing(pkgs))
         pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
-    .biocInstall(pkgs, ask=ask, siteRepos=siteRepos,
-        suppressUpdates=suppressUpdates, ..., version = version)
-}
-
-.versionDiff <- function(biocver) {
-    biocVersion <- BiocVersion::version()
-    if (!identical(biocver$major, biocVersion$major))
-        stop("Provide a valid Bioconductor version")
-    biocver$minor - biocVersion$minor
+    .biocInstall(pkgs, ask=ask, site_repository=site_repository,
+        update=update, ..., version = version)
 }
 
 #' @describeIn install check if the current version in use is the development
 #' version of the Bioconductor project
 #' @export
 isDevel <- function() {
-    as.logical(BiocVersion::version()$minor %% 2)
+    as.logical(Bioconductor::version()$minor %% 2)
 }

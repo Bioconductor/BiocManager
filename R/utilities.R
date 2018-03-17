@@ -46,16 +46,16 @@
 }
 
 .biocInstall <-
-    function(pkgs, repos, ask, suppressUpdates, siteRepos=character(),
+    function(pkgs, repos, ask, update, site_repository = character(),
         lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...,
-        version = BiocVersion::version())
+        version = Bioconductor::version())
 {
     if (!missing(repos))
         .stop("'repos' argument to 'install' not allowed")
 
-    if (!(is.character(suppressUpdates) || is.logical(suppressUpdates)) ||
-        (is.logical(suppressUpdates) && 1L != length(suppressUpdates)))
-        .stop("'suppressUpdates' must be character() or logical(1)")
+    if (!(is.character(update) || is.logical(update)) ||
+        (is.logical(update) && 1L != length(update)))
+        .stop("'update' must be character() or logical(1)")
 
     biocMirror <- getOption("BioC_mirror", "https://bioconductor.org")
     .message("BioC_mirror: %s", biocMirror)
@@ -69,7 +69,7 @@
         ))
         .stop("failed to load package 'utils'")
 
-    orepos <- options(repos=installRepos(siteRepos))
+    orepos <- options(repos=repositories(site_repository))
     on.exit(options(orepos))
 
     if (length(pkgs)) {
@@ -77,15 +77,14 @@
         todo <- .githubInstall(todo, ...)
     }
 
-    ## early exit if suppressUpdates
-    if (is.logical(suppressUpdates) && suppressUpdates)
+    ## early exit if update
+    if (isFALSE(update))
         return(invisible(pkgs))
 
     oldPkgs <- old.packages(lib.loc, checkBuilt=TRUE)
     if (is.null(oldPkgs))
         return(invisible(pkgs))
 
-    oldPkgs <- .package_filter_suppress_updates(oldPkgs, suppressUpdates)
     oldPkgs <- .package_filter_masked(oldPkgs)
     oldPkgs <- .package_filter_unwriteable(oldPkgs, instlib)
 
@@ -206,7 +205,7 @@
                   call.=FALSE)
         contribUrl
     }
-    repos <- installRepos(version=biocVersion)["BioCsoft"]
+    repos <- repositories(version=biocVersion)["BioCsoft"]
     suppressWarnings(tryCatch({
         .contribUrl(repos)
     }, error=function(err) {

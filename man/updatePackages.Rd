@@ -5,7 +5,7 @@
 \title{Update previously installed Bioconductor or CRAN packages and their
 dependencies.}
 \usage{
-updatePackages(pkgs, dependencies = NA, repos = installRepos(), ...)
+updatePackages(pkgs, dependencies = NA, repos = repositories(), ...)
 }
 \arguments{
 \item{pkgs}{\code{character()} of package names to install or update.}
@@ -16,7 +16,7 @@ that are also updated. Defaults to \code{c("Depends", "Imports",
 "LinkingTo", "Suggests", "Enhances")}.}
 
 \item{repos}{\code{character()} of named repositories in which to look for
-package updates, in the style of \code{installRepos()}.}
+package updates, in the style of \code{repositories()}.}
 
 \item{\dots}{Additional arguments, passed to \code{\link{update.packages}}.
 For example, \code{ask=FALSE} to avoid prompts to update individual
