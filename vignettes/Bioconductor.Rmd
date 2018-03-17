@@ -26,7 +26,8 @@ Current _Bioconductor_ packages are available on a 'release' version intended fo
 Use the standard _R_ installation procedure To install the [Bioconductor][1] package
 
 ```{r, eval=FALSE}
-install.package("Bioconductor")
+chooseCRANmirror()
+install.packages("Bioconductor")
 ```
 
 Then install _Bioconductor_ (or CRAN) packages
