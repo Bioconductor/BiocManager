@@ -12,7 +12,6 @@
 #' information from a local archive rather than consulting the current online
 #' version.
 #'
-#'
 #' Installation of Bioconductor and CRAN packages use R's standard functions
 #' for library management -- \code{install.packages()},
 #' \code{available.packages()}, \code{update.packages()}. Installation of
@@ -86,7 +85,6 @@
 #'
 #' \dontrun{
 #' ## Change default Bioconductor and CRAN mirrors
-#' chooseBioCmirror()
 #' chooseCRANmirror()
 #'
 #' ## installs default packages (if not already installed) and updates
@@ -118,22 +116,28 @@
 #'
 #' @export
 install <-
-    function(pkgs = "BiocVersion", ..., site_repository = character(),
+    function(pkgs = character(), ..., site_repository = character(),
         update = TRUE, ask = TRUE, version = Bioconductor::version())
 {
     stopifnot(
-        is.logical(update), length(update) == 1L, !is.na(update),
+        is.character(pkgs), !anyNA(pkgs),
         length(site_repository) <= 1L,
         is.character(site_repository), !any(is.na(site_repository)),
-        is.logical(ask), length(ask) == 1L, !is.na(ask)
+        is.logical(update), length(update) == 1L, !is.na(update),
+        is.logical(ask), length(ask) == 1L, !is.na(ask),
+        length(version) == 1L
     )
     version <- package_version(version)
     if (version[, 1:2] != version)
         stop("'version' ", version, " must have two components, e.g., '3.7'")
 
-    cmp <- .compare_version(version, version())
-    if (cmp != 0) {
-        if (version() != .BIOCVERSION_SENTINEL) {
+    if (version == .BIOCVERSION_SENTINEL) {
+        version <- .version_choose_best()
+        pkgs <- unique(c("BiocVersion", pkgs))
+    } else {
+        cmp <- .compare_version(version, version())
+        if (cmp != 0) {
+            version <- .version_validate(version)
             ## helper to check if versions match or prompt for switch
             action <- if (cmp < 0) "Downgrade" else "Upgrade"
             txt <- sprintf(
@@ -142,12 +146,9 @@ install <-
             answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
             if ("n" == answer)
                 stop("Bioconductor version not changed")
+            pkgs <- unique(c("BiocVersion", pkgs))
         }
-        pkgs <- unique(c("BiocVersion", pkgs))
     }
-
-    if (missing(pkgs))
-        pkgs <- pkgs[!pkgs %in% rownames(installed.packages())]
 
     .biocInstall(pkgs, ask=ask, site_repository=site_repository,
         update=update, ..., version = version)
