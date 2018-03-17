@@ -1,26 +1,5 @@
 context("Make use of various package type filters")
 
-test_that("suppressUpdates filter works", {
-    .filter <- Bioconductor:::.package_filter_suppress_updates
-
-    pkgs0 <- matrix(
-        character(), 0, 2,
-        dimnames=list(NULL, c("Package", "LibPath")))
-
-    expect_identical(pkgs0, .filter(pkgs0, FALSE))
-    expect_identical(pkgs0, .filter(pkgs0, character()))
-
-    p0 <- tempdir()
-    pkgs <- matrix(
-        c("Foo", "Bar", "Baz", p0, p0, p0), 3, 2,
-        dimnames=list(c("Foo", "Bar", "Baz"), c("Package", "LibPath")))
-
-    expect_identical(pkgs, .filter(pkgs, FALSE))
-    expect_identical(pkgs[3,,drop=FALSE], .filter(pkgs, c("Foo", "Bar")))
-    expect_identical(pkgs0, .filter(pkgs, c("Foo", "Bar", "Baz")))
-    expect_identical(pkgs0, .filter(pkgs, ""))
-})
-
 test_that("masked packages are filtered", {
     .filter <- Bioconductor:::.package_filter_masked
 
