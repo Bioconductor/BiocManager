@@ -18,6 +18,8 @@ Suggests:
     devtools,
     RUnit,
     BiocGenerics,
-    testthat
+    testthat,
+    knitr
+VignetteBuilder: knitr
 License: Artistic-2.0
 RoxygenNote: 6.0.1
