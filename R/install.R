@@ -116,9 +116,6 @@
 #' ## information. Set this prior to loading the BiocInstaller package.
 #' options(BIOCINSTALLER_ONLINE_DCF = FALSE)
 #'
-#' ## Check if the development version of the Bioconductor project is in use
-#' isDevel()
-#'
 #' @export
 install <-
     function(pkgs = "BiocVersion", ..., site_repository = character(),
@@ -154,11 +151,4 @@ install <-
 
     .biocInstall(pkgs, ask=ask, site_repository=site_repository,
         update=update, ..., version = version)
-}
-
-#' @describeIn install check if the current version in use is the development
-#' version of the Bioconductor project
-#' @export
-isDevel <- function() {
-    as.logical(Bioconductor::version()$minor %% 2)
 }

@@ -3,13 +3,10 @@
 \name{install}
 \alias{install}
 \alias{BIOCINSTALLER_ONLINE_DCF}
-\alias{isDevel}
 \title{Install or update Bioconductor and CRAN packages}
 \usage{
 install(pkgs = "BiocVersion", ..., site_repository = character(),
   update = TRUE, ask = TRUE, version = Bioconductor::version())
-
-isDevel()
 }
 \arguments{
 \item{pkgs}{\code{character()} of package names to install or
@@ -81,12 +78,6 @@ loading when internet access is slow or non-existent, but may result in
 out-of-date information about the current release and development versions
 of Bioconductor.
 }
-\section{Functions}{
-\itemize{
-\item \code{isDevel}: check if the current version in use is the development
-version of the Bioconductor project
-}}
-
 \examples{
 
 \dontrun{
@@ -120,9 +111,6 @@ repositories()
 ## Use local archive rather than current online configuration
 ## information. Set this prior to loading the BiocInstaller package.
 options(BIOCINSTALLER_ONLINE_DCF = FALSE)
-
-## Check if the development version of the Bioconductor project is in use
-isDevel()
 
 }
 \seealso{
