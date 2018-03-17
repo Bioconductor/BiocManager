@@ -12,7 +12,6 @@
     else 0
 }
 
-
 .version_map_get <-
     function()
 {
@@ -65,18 +64,18 @@
     map <- .version_map()
 
     if (!to %in% map$Bioc)
-        stop("unknown Bioconductor version ", to)
+        .stop("unknown Bioconductor version %s", to)
 
     status <- map$Status[map$Bioc == to]
     if (status == "out-of-date")
-        message("out-of-date Bioconductor version selected")
+        .message("out-of-date Bioconductor version selected")
 
     required <- map$R[map$Bioc == to]
     if (required != getRversion()[, 1:2])
-        stop("Bioconductor version ", to, " requires R version ", required)
+        .stop("Bioconductor version %s requires R version %s", to, required)
 
     if (status == "future")
-        stop("Bioconductor version ", to, " is not yet available")
+        .stop("Bioconductor version %s is not yet available", to)
 
     to
 }

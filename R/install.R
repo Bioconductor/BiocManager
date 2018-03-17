@@ -129,7 +129,7 @@ install <-
     )
     version <- package_version(version)
     if (version[, 1:2] != version)
-        stop("'version' ", version, " must have two components, e.g., '3.7'")
+        .stop("'version' %s must have two components, e.g., '3.7'", version)
 
     if (version == .BIOCVERSION_SENTINEL) {
         version <- .version_choose_best()
@@ -145,7 +145,7 @@ install <-
             )
             answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
             if ("n" == answer)
-                stop("Bioconductor version not changed")
+                .stop("Bioconductor version not changed")
             pkgs <- unique(c("BiocVersion", pkgs))
         }
     }
