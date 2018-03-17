@@ -7,15 +7,14 @@ author:
   affiliation: Roswell Park Cancer Institute, Buffalo, NY
 output:
   BiocStyle::html_document:
-    toc_float: true
-package: Bioconductor
-abstract: |
-  Instructions on enabling _Bioconductor_ style in R Markdown vignettes.
+      toc: true
 vignette: |
   %\VignetteIndexEntry{Installing and Managing Bioconductor Packages}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+# Introduction
 
 Use the [Bioconductor][1] package to install and manage packages from the _[Bioconductor][2]_ project for the statistical analysis and comprehension of high-throughput genomic data.
 
