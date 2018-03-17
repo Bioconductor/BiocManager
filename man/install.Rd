@@ -5,7 +5,7 @@
 \alias{BIOCINSTALLER_ONLINE_DCF}
 \title{Install or update Bioconductor and CRAN packages}
 \usage{
-install(pkgs = "BiocVersion", ..., site_repository = character(),
+install(pkgs = character(), ..., site_repository = character(),
   update = TRUE, ask = TRUE, version = Bioconductor::version())
 }
 \arguments{
@@ -64,7 +64,6 @@ requires additional steps; see \url{https://bioconductor.org/install}.
 information from a local archive rather than consulting the current online
 version.
 
-
 Installation of Bioconductor and CRAN packages use R's standard functions
 for library management -- \code{install.packages()},
 \code{available.packages()}, \code{update.packages()}. Installation of
@@ -82,7 +81,6 @@ of Bioconductor.
 
 \dontrun{
 ## Change default Bioconductor and CRAN mirrors
-chooseBioCmirror()
 chooseCRANmirror()
 
 ## installs default packages (if not already installed) and updates

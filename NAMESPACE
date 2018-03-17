@@ -2,7 +2,6 @@
 
 export(install)
 export(repositories)
-export(updatePackages)
 export(valid)
 export(version)
 import(utils)
