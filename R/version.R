@@ -98,6 +98,23 @@
     map$Bioc[idx]
 }
 
+#' Version of Bioconductor currently installed
+#'
+#' The `install()` function arranges to install the BiocVersion
+#' package. The BiocVersion package has a version number that
+#' corresponds to the version of _Bioconductor_ in use. `version()`
+#' reports on this version. If BiocVersion is not intalled,
+#' `version()` returns a sentinel (version '0.0').
+#'
+#' @return A two-digit version, e.g., `'3.7'`, of class
+#'     `package_version` describing the version of _Bioconductor_ in
+#'     use. A version of `'0.0'` indicates that information on
+#'     _Bioconductor_ version is not available (i.e., the BiocVersion
+#'     package is not installed).
+#'
+#' @examples
+#' version()
+#'
 #' @export
 version <-
     function()

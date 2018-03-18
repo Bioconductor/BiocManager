@@ -31,14 +31,17 @@ the user whether old packages should be update.  When
 \code{TRUE}, the user is not prompted to update old packages.}
 
 \item{ask}{\code{logical(1)} indicating whether to prompt user
-    before installed packages are updated, or the character string
-    'graphics', which brings up a widget for choosing which
-    packages to update.  If TRUE, user can choose whether to update
-    all outdated packages without further prompting, to pick and
-    choose packages to update, or to cancel updating (in a
-    non-interactive session, no packages will be
-    updated). Otherwise, the value is passed to
-    \code{\link{update.packages}}.
+before installed packages are updated, or the character string
+'graphics', which brings up a widget for choosing which
+packages to update.  If TRUE, user can choose whether to update
+all outdated packages without further prompting, to pick and
+choose packages to update, or to cancel updating (in a
+non-interactive session, no packages will be
+updated). Otherwise, the value is passed to
+\code{\link{update.packages}}.}
+
+\item{version}{`character(1)` Bioconductor version to install,
+    e.g., `version = "3.7"`.
 
 When installing CRAN or Bioconductor packages, typical arguments include:
 \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine

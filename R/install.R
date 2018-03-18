@@ -52,6 +52,8 @@
 #'     non-interactive session, no packages will be
 #'     updated). Otherwise, the value is passed to
 #'     \code{\link{update.packages}}.
+#' @param version `character(1)` Bioconductor version to install,
+#'     e.g., `version = "3.7"`.
 #'
 #' When installing CRAN or Bioconductor packages, typical arguments include:
 #' \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
