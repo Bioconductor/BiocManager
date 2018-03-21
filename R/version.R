@@ -95,7 +95,7 @@
     else
         idx <- map$Status == "future"
 
-    map$Bioc[idx]
+    tail(map$Bioc[idx], 1)
 }
 
 #' Version of Bioconductor currently installed
