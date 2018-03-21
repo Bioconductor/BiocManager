@@ -111,12 +111,26 @@
     map <- .version_map()
     rVersion <- getRversion()
     biocVersion <- version()
-
-    if (biocVersion < .version_bioc("release")) {
-        ## return character() diagnosis; TRUE for valid & current
-    }
+    ## return character() diagnosis; TRUE for valid & current
     release <- .version_bioc("release")
     devel <- .version_bioc("devel")
+    if (biocVersion < map[1L, "Bioc"] || biocVersion > tail(map[, "Bioc"], 1L))
+        sprintf("Bioconductor version %s is not supported", biocVersion)
+    else if (biocVersion < release) {
+        version_status <- map$Status[match(biocVersion, map$Bioc)+1]
+        if (version_status == "release")
+            "A newer version of Bioconductor is available for
+            this version of R, see vignettes(package='Bioconductor')
+            for help"
+        else
+            "A new version of Bioconductor is available after
+            installing the most recent version of R; see
+            http://bioconductor.org/install"
+    } else if (biocVersion > devel) {
+            sprintf("Bioconductor version %s is not yet available", biocVersion)
+    } else {
+        TRUE
+    }
 }
 
 #' Version of Bioconductor currently installed
