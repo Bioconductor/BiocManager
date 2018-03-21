@@ -7,9 +7,9 @@
 version()
 }
 \value{
-A two-digit version, e.g., \code{'3.7'}, of class
+A two-digit version, e.g., \code{3.7}, of class
 \code{package_version} describing the version of \emph{Bioconductor} in
-use. A version of \code{'0.0'} indicates that information on
+use. A version of \code{0.0} indicates that information on
 \emph{Bioconductor} version is not available (i.e., the BiocVersion
 package is not installed).
 }
