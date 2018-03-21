@@ -98,6 +98,27 @@
     tail(map$Bioc[idx], 1)
 }
 
+.version_bioc <-
+    function(type)
+{
+    map <- .version_map()
+    map$Bioc[map$Status == type]
+}
+
+.version_diagnosis <-
+    function()
+{
+    map <- .version_map()
+    rVersion <- getRversion()
+    biocVersion <- version()
+
+    if (biocVersion < .version_bioc("release")) {
+        ## return character() diagnosis; TRUE for valid & current
+    }
+    release <- .version_bioc("release")
+    devel <- .version_bioc("devel")
+}
+
 #' Version of Bioconductor currently installed
 #'
 #' The `install()` function arranges to install the BiocVersion
