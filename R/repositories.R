@@ -1,5 +1,3 @@
-## TODO: should probably print out a message about how to use mirrors
-
 #'
 #' Display current Bioconductor and CRAN repositories.
 #'
@@ -31,6 +29,8 @@
 #'
 #' @examples
 #' repositories()
+#' repositories(version="3.6")
+#' pkgs <- available.packages(repos=repositories()["BioCsoft"])
 #'
 #' ## Choose CRAN mirrors
 #' \dontrun{
@@ -86,8 +86,10 @@ repositories <-
     biocMirror <- getOption("BioC_mirror", "https://bioconductor.org")
     biocPaths <- c(
         BioCsoft="bioc", BioCann="data/annotation", BioCexp="data/experiment"
-        ##, BioCworkflows="workflows")
     )
+    if (version >= "3.7")
+        biocPaths[["BioCworkflows"]] <- "workflows"
+    
     biocRepos <- paste(biocMirror, "packages", biocVersion, biocPaths, sep="/")
     repos[names(biocPaths)] <- biocRepos
 
