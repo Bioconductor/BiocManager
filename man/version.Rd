@@ -7,18 +7,18 @@
 version()
 }
 \value{
-A two-digit version, e.g., `'3.7'`, of class
-    `package_version` describing the version of _Bioconductor_ in
-    use. A version of `'0.0'` indicates that information on
-    _Bioconductor_ version is not available (i.e., the BiocVersion
-    package is not installed).
+A two-digit version, e.g., \code{'3.7'}, of class
+\code{package_version} describing the version of \emph{Bioconductor} in
+use. A version of \code{'0.0'} indicates that information on
+\emph{Bioconductor} version is not available (i.e., the BiocVersion
+package is not installed).
 }
 \description{
-The `install()` function arranges to install the BiocVersion
+The \code{install()} function arranges to install the BiocVersion
 package. The BiocVersion package has a version number that
-corresponds to the version of _Bioconductor_ in use. `version()`
+corresponds to the version of \emph{Bioconductor} in use. \code{version()}
 reports on this version. If BiocVersion is not intalled,
-`version()` returns a sentinel (version '0.0').
+\code{version()} returns a sentinel (version '0.0').
 }
 \examples{
 version()

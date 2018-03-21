@@ -27,6 +27,8 @@ install Bioconductor and CRAN packages.
 }
 \examples{
 repositories()
+repositories(version="3.6")
+pkgs <- available.packages(repos=repositories()["BioCsoft"])
 
 ## Choose CRAN mirrors
 \dontrun{

@@ -106,12 +106,13 @@
 #' reports on this version. If BiocVersion is not intalled,
 #' `version()` returns a sentinel (version '0.0').
 #'
-#' @return A two-digit version, e.g., `'3.7'`, of class
+#' @return A two-digit version, e.g., `3.7`, of class
 #'     `package_version` describing the version of _Bioconductor_ in
-#'     use. A version of `'0.0'` indicates that information on
+#'     use. A version of `0.0` indicates that information on
 #'     _Bioconductor_ version is not available (i.e., the BiocVersion
 #'     package is not installed).
 #'
+#' @md
 #' @examples
 #' version()
 #'
