@@ -1,5 +1,14 @@
 # TODO
 
+Package development
+
+- Review documentation
+- update unit tests
+- review vignette
+- remove inst/ directory
+
+Adoption
+
 - BiocVersion to Bioconductor -- devel, before release
 - Test, including 'beta' for developer community
 - Bioconductor to CRAN (immediately after our release?)
