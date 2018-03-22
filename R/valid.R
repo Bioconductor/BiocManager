@@ -9,8 +9,7 @@
     instPkgs[tooNew, c("Version", "LibPath"), drop=FALSE]
 }
 
-
-
+#'
 #' Validate installed package versions against correct versions.
 #'
 #' Check that installed packages are consistent (neither out-of-date
@@ -57,7 +56,7 @@
 #'     (update or downgrade, as appropriate) invalid packages.
 #' @return \code{logical(1)} indicating overall validity of installed
 #'     packages.
-#' @author Martin Morgan \url{mtmorgan@@fhcrc.org}
+#' @author Martin Morgan \email{martin.morgan@@roswellpark.org}
 #' @seealso \code{\link{install}} to update installed packages.
 #' @keywords environment
 #' @examples

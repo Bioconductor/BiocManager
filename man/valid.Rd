@@ -72,6 +72,6 @@ try(valid())
 \code{\link{install}} to update installed packages.
 }
 \author{
-Martin Morgan \url{mtmorgan@fhcrc.org}
+Martin Morgan \email{martin.morgan@roswellpark.org}
 }
 \keyword{environment}
