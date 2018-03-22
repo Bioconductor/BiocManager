@@ -159,20 +159,17 @@
     invisible(pkgs)
 }
 
+#'
 #' @name install
+#' @aliases BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS
 #'
 #' @title Install or update Bioconductor and CRAN packages
 #'
+#' @description The \code{install} function installs or updates Bioconductor
+#' and CRAN packages in a Bioconductor release. Upgrading to a new Bioconductor
+#' release requires additional steps; see \url{https://bioconductor.org/install}.
 #'
-#' @description \code{install} installs or updates Bioconductor and CRAN
-#' packages in a Bioconductor release.  Upgrading to a new Bioconductor release
-#' requires additional steps; see \url{https://bioconductor.org/install}.
-#'
-#' \env{BIOCINSTALLER_ONLINE_DCF} is an environment variable or global
-#' \code{options()} which, when set to \code{FALSE}, uses configuration
-#' information from a local archive rather than consulting the current online
-#' version.
-#'
+#' @details
 #' Installation of Bioconductor and CRAN packages use R's standard functions
 #' for library management -- \code{install.packages()},
 #' \code{available.packages()}, \code{update.packages()}. Installation of
@@ -181,17 +178,30 @@
 #' complicated installation options are needed, to invoke \code{install()}
 #' separately for Bioconductor / CRAN packages and for github packages.
 #'
-#' Setting \env{BIOCINSTALLER_ONLINE_DCF} to \code{FALSE} can speed package
-#' loading when internet access is slow or non-existent, but may result in
-#' out-of-date information about the current release and development versions
-#' of Bioconductor.
+#' When installing CRAN or Bioconductor packages, typical arguments include:
+#' \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
+#' the library location of installed packages to be updated; and \code{lib},
+#' passed to \code{\link{install.packages}} to determine the library location
+#' where \code{pkgs} are to be installed.
 #'
-#' @aliases install BIOCINSTALLER_ONLINE_DCF
+#' When installing github packages, \code{...} is passed to the \pkg{remotes}
+#' package functions \code{\link[remotes]{install_github}} and
+#' \code{\link[remotes]{install}}. A typical use is to build vignettes, via
+#' \code{dependencies=TRUE, build_vignettes=TRUE}.
+#'
+#' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
+#' variable or global \code{options()} which, when set to \code{FALSE}, avoids
+#' the R and Bioconductor version checks that are done by querying an online
+#' configuration file.
+#'
+#' Setting \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} to \code{FALSE} can
+#' speed package loading when internet access is slow or non-existent, but may
+#' result in out-of-date information about the current release and development
+#' versions of Bioconductor.
+#'
 #' @param pkgs \code{character()} of package names to install or
 #'     update.  A missing value and \code{update=FALSE} updates
-#'     installed packages, perhaps also installing \code{Biobase},
-#'     \code{IRanges}, and \code{AnnotationDbi} if they are not
-#'     already installed. Package names containing a \sQuote{/} are
+#'     installed packages. Package names containing a \sQuote{/} are
 #'     treated as github repositories and installed using the
 #'     \code{install_github()} function of the \code{remotes}
 #'     package.
@@ -215,17 +225,6 @@
 #'     \code{\link{update.packages}}.
 #' @param version `character(1)` Bioconductor version to install,
 #'     e.g., `version = "3.7"`.
-#'
-#' When installing CRAN or Bioconductor packages, typical arguments include:
-#' \code{lib.loc}, passed to \code{\link{old.packages}} and used to determine
-#' the library location of installed packages to be updated; and \code{lib},
-#' passed to \code{\link{install.packages}} to determine the library location
-#' where \code{pkgs} are to be installed.
-#'
-#' When installing github packages, \code{...} is passed to the \pkg{remotes}
-#' package functions \code{\link[remotes]{install_github}} and
-#' \code{\link[remotes]{install}}. A typical use is to build vignettes, via
-#' \code{dependencies=TRUE, build_vignettes=TRUE}.
 #'
 #' @return \code{install()} returns the \code{pkgs} argument, invisibly.
 #' @seealso
@@ -275,7 +274,7 @@
 #'
 #' ## Use local archive rather than current online configuration
 #' ## information. Set this prior to loading the BiocInstaller package.
-#' options(BIOCINSTALLER_ONLINE_DCF = FALSE)
+#' options(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS = FALSE)
 #'
 #' @export
 install <-
