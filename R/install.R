@@ -73,21 +73,21 @@
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing github package(s) %s", pkgNames)
         tryCatch({
-            loadNamespace("devtools", lib.loc)
+            loadNamespace("remotes", lib.loc)
         }, error=function(e) {
-            if (!"devtools" %in% rownames(installed.packages(lib.loc))) {
+            if (!"remotes" %in% rownames(installed.packages(lib.loc))) {
                 if (is.null(lib.loc))
                     lib.loc <- .libPaths()
                 stop(conditionMessage(e),
-                    "\n    package 'devtools' not installed in library path(s)",
+                    "\n    package 'remotes' not installed in library path(s)",
                     "\n        ", paste(lib.loc, collapse="\n        "),
-                    "\n    install with 'install(\"devtools\")', and re-run your install() command",
+                    "\n    install with 'install(\"remotes\")', and re-run your install() command",
                     call.=FALSE)
             } else
-                .stop("'loadNamespace(\"devtools\")' failed:\n    %s",
+                .stop("'loadNamespace(\"remotes\")' failed:\n    %s",
                       conditionMessage(e))
         })
-        devtools::install_github(doing, ...)
+        remotes::install_github(doing, ...)
     }
     setdiff(pkgs, doing)
 }
@@ -177,7 +177,7 @@
 #' for library management -- \code{install.packages()},
 #' \code{available.packages()}, \code{update.packages()}. Installation of
 #' github packages uses the \code{install_github()} function from the
-#' \code{devtools} package. For this reason it usually makes sense, when
+#' \code{remotes} package. For this reason it usually makes sense, when
 #' complicated installation options are needed, to invoke \code{install()}
 #' separately for Bioconductor / CRAN packages and for github packages.
 #'
@@ -193,7 +193,7 @@
 #'     \code{IRanges}, and \code{AnnotationDbi} if they are not
 #'     already installed. Package names containing a \sQuote{/} are
 #'     treated as github repositories and installed using the
-#'     \code{install_github()} function of the \code{devtools}
+#'     \code{install_github()} function of the \code{remotes}
 #'     package.
 #' @param ... Additional arguments.
 #' @param update \code{logical(1)}. When \code{FALSE}, install asks
@@ -222,9 +222,9 @@
 #' passed to \code{\link{install.packages}} to determine the library location
 #' where \code{pkgs} are to be installed.
 #'
-#' When installing github packages, \code{...} is passed to the \pkg{devtools}
-#' package functions \code{\link[devtools]{install_github}} and
-#' \code{\link[devtools]{install}}. A typical use is to build vignettes, via
+#' When installing github packages, \code{...} is passed to the \pkg{remotes}
+#' package functions \code{\link[remotes]{install_github}} and
+#' \code{\link[remotes]{install}}. A typical use is to build vignettes, via
 #' \code{dependencies=TRUE, build_vignettes=TRUE}.
 #'
 #' @return \code{install()} returns the \code{pkgs} argument, invisibly.
