@@ -16,13 +16,19 @@ vignette: |
 
 # Introduction
 
-Use the [Bioconductor][1] package to install and manage packages from the _[Bioconductor][2]_ project for the statistical analysis and comprehension of high-throughput genomic data.
+Use the [Bioconductor][1] package to install and manage packages from the
+_[Bioconductor][2]_ project for the statistical analysis and comprehension of
+high-throughput genomic data.
 
-Current _Bioconductor_ packages are available on a 'release' version intended for every-day use, and a 'devel' version where new features are introduced. A new release version is created every six months. Using the [Bioconductor][1] package helps users install packages from the same release.
+Current _Bioconductor_ packages are available on a 'release' version intended
+for every-day use, and a 'devel' version where new features are introduced. A
+new release version is created every six months. Using the [Bioconductor][1]
+package helps users install packages from the same release.
 
 # Basic use
 
-Use the standard _R_ installation procedure To install the [Bioconductor][1] package
+Use the standard _R_ installation procedure To install the [Bioconductor][1]
+package
 
 ```{r, eval=FALSE}
 chooseCRANmirror()
@@ -38,33 +44,46 @@ Bioconductor::install(c("GenomicRanges", "Organism.dplyr"))
 Use `version()` to discover the version of _Bioconductor_ currently in
 use.
 
-_Bioconductor_ packages work best when they are all from the same release. Use `valid()` to identify packages that are out-of-date or from unexpected versions.
+_Bioconductor_ packages work best when they are all from the same release. Use
+`valid()` to identify packages that are out-of-date or from unexpected
+versions.
 
-Questions about installing and managing _Bioconductor_ packages should be addressed to the [_Bioconductor_ support site][4].
+Questions about installing and managing _Bioconductor_ packages should be
+addressed to the [_Bioconductor_ support site][4].
 
 # Advanced use
 
 ## Changing version
 
-Use the `version=` argument to update all packages to a specific _Bioconductor_ version
+Use the `version=` argument to update all packages to a specific _Bioconductor_
+version
 
 ```{r, eval=FALSE}
 Bioconductor::install(version="3.7")
 ```
 
-_Bioconductor_ versions are associated with specific _R_ versions, as summarized [here][5]. To use the most recent version of _Bioconductor_ may require installing a new version of _R_.
+_Bioconductor_ versions are associated with specific _R_ versions, as
+summarized [here][5]. To use the most recent version of _Bioconductor_ may
+require installing a new version of _R_.
 
 ## Managing multiple versions
 
-It is possible to have multiple versions of _Bioconductor_ installed on the same computer. A best practice is to [create an initial _R_ installation][6]. Then create and use a library for each version of _Bioconductor_. The library will contain all _Bioconductor_, CRAN, and other packages for that version of _Bioconductor_. We illustrate the process assuming use of _Bioconductor_ version 3.7, available using _R_ version 3.5
+It is possible to have multiple versions of _Bioconductor_ installed on the
+same computer. A best practice is to [create an initial _R_ installation][6].
+Then create and use a library for each version of _Bioconductor_. The library
+will contain all _Bioconductor_, CRAN, and other packages for that version of
+_Bioconductor_. We illustrate the process assuming use of _Bioconductor_
+version 3.7, available using _R_ version 3.5
 
-Create a directory to contain the library (replace `USER_NAME` with your user name on Windows)
+Create a directory to contain the library (replace `USER_NAME` with your user
+name on Windows)
 
 - Linux: `~/R/3.5-Bioc-3.7`
 - macOS: `~/Library/R/3.5-Bioc-3.7/library`
 - Windows: `C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.7`
 
-Set the environment variable `R_LIBS_USER` to this directory, and invoke _R_. Command line examples for Linux are
+Set the environment variable `R_LIBS_USER` to this directory, and invoke _R_.
+Command line examples for Linux are
 
 - Linux: `R_LIBS_USER=~/R/3.5-Bioc-3.7 R`
 - macOS: `R_LIBS_USER=~~/Library/R/3.5-Bioc-3.7/library R`
@@ -83,7 +102,8 @@ On Linux and macOS, create a bash alias to save typing, e.g.,
 
 Invoke these from the command line as `Bioc3.7`.
 
-On Windows, create a shortcut. Go to My Computer and navigate to a directory that is in your PATH. Then right-click and choose New->Shortcut.
+On Windows, create a shortcut. Go to My Computer and navigate to a directory
+that is in your PATH. Then right-click and choose New->Shortcut.
 In the "type the location of the item" box, put:
 
 ```

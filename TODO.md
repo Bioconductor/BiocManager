@@ -4,8 +4,8 @@ Package development
 
 [x] Review documentation
 [x] remove inst/ directory
+[x] review vignette
 [] update unit tests
-[] review vignette
 
 Adoption
 
