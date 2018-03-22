@@ -2,10 +2,10 @@
 
 Package development
 
-- Review documentation
-- update unit tests
-- review vignette
-- remove inst/ directory
+[x] Review documentation
+[x] remove inst/ directory
+[] update unit tests
+[] review vignette
 
 Adoption
 
