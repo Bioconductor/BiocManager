@@ -1,3 +1,164 @@
+.package_filter_masked <-
+    function(pkgs)
+{
+    path0 <- normalizePath(pkgs[, "LibPath"], winslash="/")
+    path1 <- normalizePath(.libPaths(), winslash="/")
+    idx <- order(match(path0, path1))
+    dup <- duplicated(pkgs[idx,"Package"])[order(idx)]
+    pkgs[!dup,, drop=FALSE]
+}
+
+.package_filter_unwriteable <-
+    function(pkgs, instlib=NULL)
+{
+    if (!nrow(pkgs)) return(pkgs)
+
+    libs <- if (is.null(instlib)) pkgs[,"LibPath"] else instlib
+
+    ulibs <- unique(libs)
+    status <- dir.exists(ulibs)
+
+    if (.Platform$OS.type == "windows") {
+        status[status] <- vapply(ulibs[status], function(lib) {
+            ## from tools::install.R: file.access() unreliable on
+            ## Windows
+            fn <- file.path(lib, paste0("_test_dir", Sys.getpid()))
+            unlink(fn, recursive = TRUE) # precaution
+            res <- try(dir.create(fn, showWarnings = FALSE))
+            if (inherits(res, "try-error") || !res) {
+                FALSE
+            } else {
+                unlink(fn, recursive = TRUE)
+                TRUE
+            }
+        }, logical(1))
+    } else
+        status[status] <- file.access(ulibs[status], 2L) == 0
+
+    status <- status[match(libs, ulibs)]
+    if (!all(status))
+        .message(
+            "installation path not writeable, unable to update packages: %s",
+            paste(pkgs[!status, "Package"], collapse=", "))
+
+    pkgs[status,, drop=FALSE]
+}
+
+
+.rRepos <- function(pkgs, invert = FALSE)
+    grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
+
+.githubRepos <- function(pkgs) {
+    pkgs <- .rRepos(pkgs, invert = TRUE)
+    grep("^[^/]+/.+", pkgs, value=TRUE)
+}
+
+.reposInstall <-
+    function(pkgs, lib, ...)
+{
+    doing <- .rRepos(pkgs)
+    if (length(doing)) {
+        pkgNames <- paste(sQuote(doing), collapse=", ")
+        .message("Installing package(s) %s", pkgNames)
+        install.packages(pkgs=doing, lib=lib, ...)
+    }
+    setdiff(pkgs, doing)
+}
+
+.githubInstall <-
+    function(pkgs, ..., lib.loc=NULL)
+{
+    doing <- .githubRepos(pkgs)
+    if (length(doing)) {
+        pkgNames <- paste(sQuote(doing), collapse=", ")
+        .message("Installing github package(s) %s", pkgNames)
+        tryCatch({
+            loadNamespace("devtools", lib.loc)
+        }, error=function(e) {
+            if (!"devtools" %in% rownames(installed.packages(lib.loc))) {
+                if (is.null(lib.loc))
+                    lib.loc <- .libPaths()
+                stop(conditionMessage(e),
+                    "\n    package 'devtools' not installed in library path(s)",
+                    "\n        ", paste(lib.loc, collapse="\n        "),
+                    "\n    install with 'install(\"devtools\")', and re-run your install() command",
+                    call.=FALSE)
+            } else
+                .stop("'loadNamespace(\"devtools\")' failed:\n    %s",
+                      conditionMessage(e))
+        })
+        devtools::install_github(doing, ...)
+    }
+    setdiff(pkgs, doing)
+}
+
+.biocInstall <-
+    function(pkgs, repos, ask, update, site_repository = character(),
+        lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...,
+        version = Bioconductor::version())
+{
+    if (!missing(repos))
+        .stop("'repos' argument to 'install' not allowed")
+
+    if (!(is.character(update) || is.logical(update)) ||
+        (is.logical(update) && 1L != length(update)))
+        .stop("'update' must be character() or logical(1)")
+
+    biocMirror <- getOption("BioC_mirror", "https://bioconductor.org")
+    .message("BioC_mirror: %s", biocMirror)
+
+    .message("Using Bioconductor %s (package version %s), %s.",
+        version, packageVersion("Bioconductor"),
+        sub(" version", "", R.version.string))
+
+    if (!suppressPackageStartupMessages(
+            requireNamespace("utils", quietly=TRUE)
+        ))
+        .stop("failed to load package 'utils'")
+
+    orepos <- options(repos=repositories(site_repository))
+    on.exit(options(orepos))
+
+    if (length(pkgs)) {
+        todo <- .reposInstall(pkgs, lib=lib, ...)
+        todo <- .githubInstall(todo, ...)
+    }
+
+    ## early exit if update
+    if (isFALSE(update))
+        return(invisible(pkgs))
+
+    oldPkgs <- old.packages(lib.loc, checkBuilt=TRUE)
+    if (is.null(oldPkgs))
+        return(invisible(pkgs))
+
+    oldPkgs <- .package_filter_masked(oldPkgs)
+    oldPkgs <- .package_filter_unwriteable(oldPkgs, instlib)
+
+    if (nrow(oldPkgs)) {
+        pkgList <- paste(oldPkgs[,"Package"], collapse="', '")
+        if (ask) {
+            .message("Old packages: '%s'", pkgList)
+
+            answer <-
+                .getAnswer("Update all/some/none? [a/s/n]: ",
+                    allowed = c("a", "A", "s", "S", "n", "N"))
+
+            switch(answer,
+                a = update.packages(lib.loc, oldPkgs=oldPkgs, ask=FALSE,
+                    instlib=instlib),
+                s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE,
+                    instlib=instlib),
+                n = invisible(pkgs))
+        } else {
+            .message("Updating packages '%s'", pkgList)
+            update.packages(lib.loc, oldPkgs=oldPkgs, ask=ask, instlib=instlib)
+        }
+    }
+
+    invisible(pkgs)
+}
+
 #' @name install
 #'
 #' @title Install or update Bioconductor and CRAN packages
