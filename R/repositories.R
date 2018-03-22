@@ -53,32 +53,9 @@ repositories <-
     on.exit(options(repos = old.repos))
 
     ## Starting at some point in R-2.14, Omegahat is included in
-    ## the list of available repositories, on windows only, it seems.
-
-    ## on mac and linux:
-
-    ## 1: + CRAN
-    ## 2: + CRAN (extras)
-    ## 3: + BioC software
-    ## 4: + BioC annotation
-    ## 5: + BioC experiment
-    ## 6: + BioC extra
-    ## 7:   R-Forge
-    ## 8:   rforge.net
-
-    ## on windows:
-
-    ## 1: + CRAN
-    ## 2: + CRAN (extras)
-    ## 3:   Omegahat
-    ## 4:   BioC software
-    ## 5:   BioC annotation
-    ## 6:   BioC experiment
-    ## 7:   BioC extra
-    ## 8:   R-Forge
-    ## 9:   rforge.net
-
-    ## So it's probably better not to rely on the numbers.
+    ## the list of available repositories, on windows only.
+    ## Thus repository lists differ between OS and
+    ## it's better not to rely on the repository list numbers.
 
     setRepositories(ind=1:20) # in case more repos are added
     repos <- getOption("repos")
@@ -89,7 +66,7 @@ repositories <-
     )
     if (version >= "3.7")
         biocPaths[["BioCworkflows"]] <- "workflows"
-    
+
     biocRepos <- paste(biocMirror, "packages", biocVersion, biocPaths, sep="/")
     repos[names(biocPaths)] <- biocRepos
 
