@@ -6,6 +6,8 @@ Package development
 [x] remove inst/ directory
 [x] review vignette
 [] update unit tests
+[] BiocVersion should never be updated? (always two-digit number x.y?)
+[] 'Status' -> 'BiocStatus' in version_map()
 
 Adoption
 
@@ -18,6 +20,8 @@ Adoption
 - Update useDevel page
 - Update docker images
 - Update BBS; SPB
+- Modify version bump script -- BiocVersion not even in release, odd in devel
+  - propagating with wrong version would be a disaster!
 - Deprecate BiocInstaller (after release)
   - BiocInstaller needs to be modified to support this release and
     next -- DCF, etc.
