@@ -42,7 +42,7 @@
 
     data.frame(
         Bioc = bioc, R = r,
-        Status = factor(
+        BiocStatus = factor(
             status,
             levels = c("out-of-date", "release", "devel", "future")
         )
@@ -66,7 +66,7 @@
     if (!to %in% map$Bioc)
         .stop("unknown Bioconductor version %s", to)
 
-    status <- map$Status[map$Bioc == to]
+    status <- map$BiocStatus[map$Bioc == to]
     if (status == "out-of-date")
         .message("out-of-date Bioconductor version selected")
 
@@ -86,14 +86,14 @@
     map <- .version_map()
     map <- map[map$R == getRversion()[, 1:2],]
 
-    if ("release" %in% map$Status)
-        idx <- map$Status == "release"
-    else if ("devel" %in% map$Status)
-        idx <- map$Status == "devel"
-    else if ("out-of-date" %in% map$Status)
-        idx <- map$Status == "out-of-date"
+    if ("release" %in% map$BiocStatus)
+        idx <- map$BiocStatus == "release"
+    else if ("devel" %in% map$BiocStatus)
+        idx <- map$BiocStatus == "devel"
+    else if ("out-of-date" %in% map$BiocStatus)
+        idx <- map$BiocStatus == "out-of-date"
     else
-        idx <- map$Status == "future"
+        idx <- map$BiocStatus == "future"
 
     tail(map$Bioc[idx], 1)
 }
@@ -102,14 +102,14 @@
     function(type)
 {
     map <- .version_map()
-    map$Bioc[map$Status == type]
+    map$Bioc[map$BiocStatus == type]
 }
 
 .version_R <-
     function(type)
 {
     map <- .version_map()
-    map$R[map$Status == type]
+    map$R[map$BiocStatus == type]
 }
 
 .version_diagnosis <-

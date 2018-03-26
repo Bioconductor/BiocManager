@@ -5,9 +5,9 @@ Package development
 [x] Review documentation
 [x] remove inst/ directory
 [x] review vignette
+[x] 'Status' -> 'BiocStatus' in version_map()
 [] update unit tests
 [] BiocVersion should never be updated? (always two-digit number x.y?)
-[] 'Status' -> 'BiocStatus' in version_map()
 
 Adoption
 
