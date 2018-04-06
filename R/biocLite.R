@@ -47,21 +47,21 @@
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing github package(s) %s", pkgNames)
         tryCatch({
-            loadNamespace("devtools", lib.loc)
+            loadNamespace("remotes", lib.loc)
         }, error=function(e) {
-            if (!"devtools" %in% rownames(installed.packages(lib.loc))) {
+            if (!"remotes" %in% rownames(installed.packages(lib.loc))) {
                 if (is.null(lib.loc))
                     lib.loc <- .libPaths()
                 stop(conditionMessage(e),
-                     "\n    package 'devtools' not installed in library path(s)",
+                     "\n    package 'remotes' not installed in library path(s)",
                      "\n        ", paste(lib.loc, collapse="\n        "),
-                     "\n    install with 'biocLite(\"devtools\")', and re-run your biocLite() command",
+                     "\n    install with 'biocLite(\"remotes\")', and re-run your biocLite() command",
                      call.=FALSE)
             } else
-                .stop("'loadNamespace(\"devtools\")' failed:\n    %s",
+                .stop("'loadNamespace(\"remotes\")' failed:\n    %s",
                       conditionMessage(e))
         })
-        devtools::install_github(doing, ...)
+        remotes::install_github(doing, ...)
     }
     setdiff(pkgs, doing)
 }

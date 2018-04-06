@@ -33,7 +33,7 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
     and \code{AnnotationDbi} if they are not already installed. Package
     names containing a \sQuote{/} are treated as github repositories and
     installed using the \code{install_github()} function of the
-    \code{devtools} package.}
+    \code{remotes} package.}
 
   \item{suppressUpdates}{\code{logical(1)} or \code{character()}. When
     \code{FALSE}, biocLite asks the user whether old packages should be
@@ -68,10 +68,10 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
     installed.
 
     When installing github packages, \code{...} is passed to the
-    \pkg{devtools} package functions
-    \code{\link[devtools]{install_github}} and
-    \code{\link[devtools]{install}}. A typical use is to build
-    vignettes, via \code{dependencies=TRUE, build_vignettes=TRUE}.
+    \pkg{remotes} package functions
+    \code{\link[remotes]{install_github}} and
+    \code{\link[remotes]{install}}. A typical use is to build vignettes,
+    via \code{dependencies=TRUE, build_vignettes=TRUE}.
 
   }
 
@@ -83,7 +83,7 @@ biocLite(pkgs=c("Biobase", "IRanges", "AnnotationDbi"),
   functions for library management -- \code{install.packages()},
   \code{available.packages()}, \code{update.packages()}. Installation of
   github packages uses the \code{install_github()} function from the
-  \code{devtools} package. For this reason it usually makes sense, when
+  \code{remotes} package. For this reason it usually makes sense, when
   complicated installation options are needed, to invoke
   \code{biocLite()} separately for Bioconductor / CRAN packages and for
   github packages.

@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.30.0
+-------------------------
+
+NEW FEATURES
+
+    o biocLite() supports github repositories using the remotes
+    package, rather than devtools. This change should be transparent
+    to end users. (From Peter Hickey
+    https://github.com/Bioconductor/BiocInstaller/issues/4)
+
 CHANGES IN VERSION 1.28.0
 -------------------------
 
