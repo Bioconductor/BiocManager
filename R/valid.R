@@ -18,7 +18,7 @@
 #'
 #' This function compares the version of installed packages to the
 #' version of packages associated with the version of R and
-#' Bioconductor appropriate for the Bioconductor package currently in
+#' Bioconductor appropriate for the BiocManager package currently in
 #' use.
 #'
 #' Packages are reported as \sQuote{out-of-date} if a more recent

@@ -39,7 +39,7 @@
 #'
 #' @export repositories
 repositories <-
-    function(site_repository = character(), version = Bioconductor::version())
+    function(site_repository = character(), version = BiocManager::version())
 {
     version <- package_version(version)
     stopifnot(

@@ -1,8 +1,8 @@
 .onAttach <-
     function(libname, pkgname)
 {
-    .message("Bioconductor version %s (package version %s), ?install for help",
-             version(), packageVersion("Bioconductor"))
+    .message("Bioconductor version %s (BiocManager version %s), ?install for help",
+             version(), packageVersion("BiocManager"))
 
     opt <- getOption(
         "BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS",

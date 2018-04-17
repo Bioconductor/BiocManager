@@ -26,7 +26,7 @@
     paste(txt, collapse="\n")
 }
 
-# use as Bioconductor:::.opts$get()  Bioconductor:::.opts$set(TRUE)
+# use as BiocManager:::.opts$get()  BiocManager:::.opts$set(TRUE)
 .opts = local({
     debug <- FALSE
     list(get=function() debug, set=function(x) {

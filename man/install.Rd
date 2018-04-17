@@ -6,7 +6,7 @@
 \title{Install or update Bioconductor and CRAN packages}
 \usage{
 install(pkgs = character(), ..., site_repository = character(),
-  update = TRUE, ask = TRUE, version = Bioconductor::version())
+  update = TRUE, ask = TRUE, version = BiocManager::version())
 }
 \arguments{
 \item{pkgs}{\code{character()} of package names to install or

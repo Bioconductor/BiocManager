@@ -1,8 +1,8 @@
-Package: Bioconductor
+Package: BiocManager
 Title: Install/Update Bioconductor, CRAN, and GitHub Packages
 Description: This package is used to install and update Bioconductor,
     CRAN, and GitHub packages.
-Version: 1.29.34
+Version: 1.29.35
 Authors@R: c(
     person("Martin", "Morgan", email = "martin.morgan@roswellpark.org",
         role = "aut"),
@@ -23,3 +23,4 @@ Suggests:
 VignetteBuilder: knitr
 License: Artistic-2.0
 RoxygenNote: 6.0.1
+

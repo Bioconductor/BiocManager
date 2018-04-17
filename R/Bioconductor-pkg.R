@@ -3,7 +3,7 @@ NULL
 
 #' Install or update Bioconductor, CRAN, or GitHub packages
 #'
-#' @name Bioconductor-pkg
-#' @aliases Bioconductor
+#' @name BiocManager-pkg
+#' @aliases BiocManager
 #' @docType package
 "_PACKAGE"

@@ -95,7 +95,7 @@
 .biocInstall <-
     function(pkgs, repos, ask, update, site_repository = character(),
         lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...,
-        version = Bioconductor::version())
+        version = BiocManager::version())
 {
     if (!missing(repos))
         .stop("'repos' argument to 'install' not allowed")
@@ -107,8 +107,8 @@
     biocMirror <- getOption("BioC_mirror", "https://bioconductor.org")
     .message("BioC_mirror: %s", biocMirror)
 
-    .message("Using Bioconductor %s (package version %s), %s.",
-        version, packageVersion("Bioconductor"),
+    .message("Using Bioconductor %s (BiocManager %s), %s.",
+        version, packageVersion("BiocManager"),
         sub(" version", "", R.version.string))
 
     if (!suppressPackageStartupMessages(
@@ -279,7 +279,7 @@
 #' @export
 install <-
     function(pkgs = character(), ..., site_repository = character(),
-        update = TRUE, ask = TRUE, version = Bioconductor::version())
+        update = TRUE, ask = TRUE, version = BiocManager::version())
 {
     stopifnot(
         is.character(pkgs), !anyNA(pkgs),
