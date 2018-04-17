@@ -12,10 +12,12 @@ Package development
 Adoption
 
 ## Package management
-- BiocVersion to Bioconductor -- devel, before release
+- BiocVersion to Bioconductor devel and relase, after release
 - Test, including 'beta' for developer community
-- Bioconductor to CRAN (immediately after our release?)
-  - supposed to works with all R-3.5
+- Package to CRAN (immediately after our release)
+  - supposed to work with all R-3.5?
+- References to `biocLite` in other packages (AnnotationHub)
+  - find more references/dependencies to biocLite/BiocInstaller
 ## Website changes
 - Update landing pages
   - 'devel' pages spring release cycle, 'release' pages fall release cycle?
@@ -27,3 +29,8 @@ Adoption
 - Deprecate BiocInstaller (after release)
   - BiocInstaller needs to be modified to support this release and
     next -- DCF, etc.
+## Community updates
+- Travis CI scripts
+- Appveyor CI script
+- Bioconductor docker containers
+
