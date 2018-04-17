@@ -1,4 +1,4 @@
 library(testthat)
-library(Bioconductor)
+library(BiocManager)
 
-test_check("Bioconductor")
+test_check("BiocManager")
