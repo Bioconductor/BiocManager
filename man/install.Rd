@@ -66,7 +66,7 @@ where \code{pkgs} are to be installed.
 
 When installing github packages, \code{...} is passed to the \pkg{remotes}
 package functions \code{\link[remotes]{install_github}} and
-\code{\link[remotes]{install}}. A typical use is to build vignettes, via
+\code{remotes:::install}. A typical use is to build vignettes, via
 \code{dependencies=TRUE, build_vignettes=TRUE}.
 
 \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
