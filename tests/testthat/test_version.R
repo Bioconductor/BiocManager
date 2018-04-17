@@ -13,6 +13,6 @@ test_that("version has two components", {
 test_that("Sentinel works when BiocVersion not installed", {
     skip("Removal of BiocVersion required")
     local({
-        expect_identical(Bioconductor::version(), package_version("0.0"))
+        expect_identical(BiocManager::version(), package_version("0.0"))
     })
 })

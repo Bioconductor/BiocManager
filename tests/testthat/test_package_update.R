@@ -1,7 +1,7 @@
 context("Make use of various package type filters")
 
 test_that("masked packages are filtered", {
-    .filter <- Bioconductor:::.package_filter_masked
+    .filter <- BiocManager:::.package_filter_masked
 
     pkgs0 <- matrix(
         character(), 0, 2,
@@ -30,7 +30,7 @@ test_that("masked packages are filtered", {
 })
 
 test_that("unwriteable packages are not considered", {
-    .filter <- Bioconductor:::.package_filter_unwriteable
+    .filter <- BiocManager:::.package_filter_unwriteable
     ## setup
     dir.create(p0 <- tempfile())
     on.exit(unlink(p0, recursive=TRUE))
@@ -90,7 +90,7 @@ test_that("unwriteable packages are not considered", {
 test_that("packages can be written", {
     skip("too idiosyncratic for standardized testing")
 
-    lib <- system.file(package="Bioconductor", "tests", "cases",
+    lib <- system.file(package="BiocManager", "tests", "cases",
         "lib", "Biobase")
     dir.create(locked <- tempfile())
     file.copy(lib, locked, recursive=TRUE)

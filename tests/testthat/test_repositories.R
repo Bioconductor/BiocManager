@@ -16,7 +16,7 @@ test_that("repositories() returns expected order", {
 test_that("repositories() returns sentinel links", {
     skip("Removal of BiocVersion required")
     local({
-        repos <- Bioconductor::repositories()
+        repos <- BiocManager::repositories()
         expect_true(
             all(
                 grepl("0.0", repos[startsWith(names(repos), "BioC")],

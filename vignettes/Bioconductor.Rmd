@@ -16,29 +16,29 @@ vignette: |
 
 # Introduction
 
-Use the [Bioconductor][1] package to install and manage packages from the
+Use the [BiocManager][1] package to install and manage packages from the
 _[Bioconductor][2]_ project for the statistical analysis and comprehension of
 high-throughput genomic data.
 
 Current _Bioconductor_ packages are available on a 'release' version intended
 for every-day use, and a 'devel' version where new features are introduced. A
-new release version is created every six months. Using the [Bioconductor][1]
+new release version is created every six months. Using the [BiocManager][1]
 package helps users install packages from the same release.
 
 # Basic use
 
-Use the standard _R_ installation procedure To install the [Bioconductor][1]
+Use the standard _R_ installation procedure To install the [BiocManager][1]
 package
 
 ```{r, eval=FALSE}
 chooseCRANmirror()
-install.packages("Bioconductor")
+install.packages("BiocManager")
 ```
 
 Then install _Bioconductor_ (or CRAN) packages
 
 ```{r, eval=FALSE}
-Bioconductor::install(c("GenomicRanges", "Organism.dplyr"))
+BiocManager::install(c("GenomicRanges", "Organism.dplyr"))
 ```
 
 Use `version()` to discover the version of _Bioconductor_ currently in
@@ -59,7 +59,7 @@ Use the `version=` argument to update all packages to a specific _Bioconductor_
 version
 
 ```{r, eval=FALSE}
-Bioconductor::install(version="3.7")
+BiocManager::install(version="3.7")
 ```
 
 _Bioconductor_ versions are associated with specific _R_ versions, as
@@ -112,9 +112,9 @@ cmd /C "set R_LIBS_USER=C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.7 && R"
 
 Click "Next". In the "Type a name for this shortcut" box, type `Bioc-3.7`.
 
-[1]: https://bioconductor.org/packages/Bioconductor
+[1]: https://bioconductor.org/packages/BiocManager
 [2]: https://bioconductor.org
 [3]: https://support.bioconductor.org
-[4]: https://github.com/Bioconductor/Bioconductor
+[4]: https://github.com/Bioconductor/BiocManager
 [5]: https://bioconductor.org/about/release-announcements/
 [6]: https://cloud.r-project.org/

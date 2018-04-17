@@ -4,7 +4,7 @@ test_that("check that directories are writeable", {
     if (.Platform$OS.type != "unix")
         return()
 
-    .unwritableDirectories <- Bioconductor:::.unwritableDirectories
+    .unwritableDirectories <- BiocManager:::.unwritableDirectories
 
     dir.create(f <- tempfile(), mode="400")
     dir.create(g <- tempfile())
