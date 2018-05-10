@@ -1,3 +1,17 @@
+.getAnswer <- function(msg, allowed)
+{
+    if (interactive()) {
+        repeat {
+            cat(msg)
+            answer <- readLines(n = 1)
+            if (answer %in% allowed)
+                break
+        }
+        tolower(answer)
+    } else {
+        "n"
+    }
+}
 .dQuote <- function(x)
     sprintf('"%s"', as.character(x))
 
@@ -12,7 +26,7 @@
     paste(txt, collapse="\n")
 }
 
-# use as BiocInstaller:::.opts$get()  BiocInstaller:::.opts$set(TRUE)
+# use as BiocManager:::.opts$get()  BiocManager:::.opts$set(TRUE)
 .opts = local({
     debug <- FALSE
     list(get=function() debug, set=function(x) {
@@ -46,29 +60,4 @@
     function(..., call.=FALSE, immediate.=FALSE)
 {
     warning(.msg(...), call.=call., immediate.=immediate.)
-}
-
-.lowerRVersionString <-
-    function(version=getRversion())
-{
-    if (0L == version$minor) {
-        major <- version$major - 1L
-        minor <- version$minor
-    } else {
-        major <- version$major
-        minor <- version$minor - 1L
-    }
-    paste(major, minor, sep=".")
-}
-
-# bootstrap() should take care of unloading BiocInstaller 
-# and reloading it.
-
-.stepAside <-
-    function(biocBootstrapEnv, bootstrap) 
-{
-    environment(bootstrap) <- biocBootstrapEnv
-    biocBootstrapEnv[["bootstrap"]] <- bootstrap
-    attach(biocBootstrapEnv)
-    on.exit(eval(bootstrap(), biocBootstrapEnv))
 }
