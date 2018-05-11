@@ -5,7 +5,7 @@
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
 repositories(site_repository = character(),
-  version = BiocManager::version())
+  version = Bioconductor::version())
 }
 \arguments{
 \item{site_repository}{(Optional) \code{character(1)} representing
@@ -16,35 +16,33 @@ repositories returned by the function.}
 
 \item{version}{(Optional) \code{character(1)} or
 \code{package_version} indicating the Bioconductor version
-(e.g., \dQuote{3.1}) for which repositories are required.}
+(e.g., "3.8") for which repositories are required.}
 }
 \value{
 Named \code{character()} of repositories.
 }
 \description{
-Displays the URLs of the repositories used by \code{\link{install}} to
-install Bioconductor and CRAN packages.
+Displays the URLs of the repositories used by
+\code{\link{install}()} to install Bioconductor and CRAN packages.
 }
 \examples{
 repositories()
 repositories(version="3.6")
 pkgs <- available.packages(repos=repositories()["BioCsoft"])
-
-## Choose CRAN mirrors
-\dontrun{
-  chooseCRANmirror()
-}
+nrow(pkgs)          # how many Bioconductor packages available to you?
 
 }
 \seealso{
-\code{\link{install}} Installs/updates Bioconductor/CRAN packages.
+\code{\link{install}()} Installs or updates Bioconductor, CRAN, and
+  github packages.
 
-\code{\link{install.packages}} installs the packages themselves.
+\code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
+  mirror; not usually necessary.
 
-\code{\link{chooseBioCmirror}} lets you choose from a list of all public
-  Bioconductor mirror URLs.
+\code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror;
+  not usually necessary.
 
-\code{\link{chooseCRANmirror}} lets you choose from a list of all public
-  CRAN mirror URLs.
+\code{\link{setRepositories}()} Select additional repositories for
+  searching.
 }
 \keyword{environment}
