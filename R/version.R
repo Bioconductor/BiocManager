@@ -59,25 +59,31 @@
 })
 
 .version_validate <-
-    function(to)
+    function(version)
 {
+    version <- package_version(version)
+    if (version[, 1:2] != version)
+        .stop("'version' %s must have two components, e.g., '3.7'", version)
+
     map <- .version_map()
 
-    if (!to %in% map$Bioc)
-        .stop("unknown Bioconductor version %s", to)
+    if (!version %in% map$Bioc)
+        .stop("unknown Bioconductor version %s", version)
 
-    status <- map$BiocStatus[map$Bioc == to]
+    status <- map$BiocStatus[map$Bioc == version]
     if (status == "out-of-date")
         .message("out-of-date Bioconductor version selected")
 
-    required <- map$R[map$Bioc == to]
+    required <- map$R[map$Bioc == version]
     if (required != getRversion()[, 1:2])
-        .stop("Bioconductor version %s requires R version %s", to, required)
+        .stop(
+            "Bioconductor version %s requires R version %s", version, required
+        )
 
     if (status == "future")
-        .stop("Bioconductor version %s is not yet available", to)
+        .stop("Bioconductor version %s is not yet available", version)
 
-    to
+    version
 }
 
 .version_choose_best <-
