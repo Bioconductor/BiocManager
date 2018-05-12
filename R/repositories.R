@@ -71,17 +71,17 @@
 #'
 #' @export repositories
 repositories <-
-    function(site_repository = character(), version = Bioconductor::version())
+    function(site_repository = character(), version = BiocManager::version())
 {
     stopifnot(
         length(site_repository) <= 1L,
         is.character(site_repository), !anyNA(site_repository)
     )
-    version <- package_version(version)
+    version <- .version_validate(version)
 
     base_repos <- .base_repositories()
     bioc_repos <- .bioc_repositories(version)
 
     repos <- c(site_repository = site_repository, bioc_repos, base_repos)
-    repos <- repos[!duplicated(names(repos))]
+    repos[!duplicated(names(repos))]
 }
