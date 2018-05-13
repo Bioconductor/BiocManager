@@ -15,7 +15,7 @@ vignette: |
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
@@ -31,29 +31,37 @@ package helps users install packages from the same release.
 
 # Basic use
 
-Use the standard _R_ installation procedure To install the [BiocManager][1]
-package
+Use standard _R_ installation procedure to install the
+[BiocManager][1] package
 
-```{r}
+```{r, eval = FALSE}
 chooseCRANmirror()
 install.packages("BiocManager")
 ```
 
 Then install _Bioconductor_ (or CRAN) packages
 
-```{r}
+```{r, eval = FALSE}
 BiocManager::install(c("GenomicRanges", "Organism.dplyr"))
 ```
 
 Use `version()` to discover the version of _Bioconductor_ currently in
 use.
 
+```{r}
+BiocManager::version()
+```
+
 _Bioconductor_ packages work best when they are all from the same release. Use
 `valid()` to identify packages that are out-of-date or from unexpected
 versions.
 
+```{r}
+BiocManager::valid()
+```
+
 Questions about installing and managing _Bioconductor_ packages should be
-addressed to the [_Bioconductor_ support site][4].
+addressed to the [_Bioconductor_ support site][3].
 
 # Advanced use
 
@@ -62,13 +70,16 @@ addressed to the [_Bioconductor_ support site][4].
 Use the `version=` argument to update all packages to a specific _Bioconductor_
 version
 
-```{r}
+```{r, eval = FALSE}
 BiocManager::install(version="3.7")
 ```
 
 _Bioconductor_ versions are associated with specific _R_ versions, as
-summarized [here][5]. To use the most recent version of _Bioconductor_ may
-require installing a new version of _R_.
+summarized [here][5]. To use the most recent version of _Bioconductor_
+may require installing a new version of _R_.
+
+A special version, `version="devel"`, allows use of _Bioconductor_
+packages that are under development.
 
 ## Managing multiple versions
 
@@ -95,7 +106,7 @@ Command line examples for Linux are
 
 Once in _R_, confirm that the version-specific library path has been set
 
-```{r}
+```{r, eval = FALSE}
 .libPaths()
 ```
 
@@ -116,9 +127,8 @@ cmd /C "set R_LIBS_USER=C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.7 && R"
 
 Click "Next". In the "Type a name for this shortcut" box, type `Bioc-3.7`.
 
-[1]: https://bioconductor.org/packages/BiocManager
+[1]: https://cran.r-project.org/package=BiocManager
 [2]: https://bioconductor.org
 [3]: https://support.bioconductor.org
-[4]: https://github.com/Bioconductor/BiocManager
 [5]: https://bioconductor.org/about/release-announcements/
 [6]: https://cloud.r-project.org/
