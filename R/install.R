@@ -178,10 +178,26 @@
     )
 }
 
-.install_change_version <-
-    function(repos, ...)
+.install_updated_version <-
+    function(update, repos, ...)
 {
-    .warning("changed versions require package updates; run `install()`")
+    valid <- valid()
+
+    pkgs <- c(rownames(valid$too_new), rownames(valid$out_of_date))
+    if (is.null(pkgs) || !update)
+        return(pkgs)
+
+    answer <- .getAnswer(
+        sprintf(
+            "reinstall %d packages for Bioconductor version %s? [y/n]: ",
+            length(pkgs), version()
+        ),
+        allowed = c("y", "Y", "n", "N")
+    )
+    if (answer == "y")
+        .install(pkgs, repos, ...)
+
+    pkgs
 }
 
 #' @name install
@@ -319,8 +335,8 @@ install <-
     pkgs <- .install(pkgs, repos = repos, ...)
     if (update && cmp == 0L) {
         .install_update(repos, ask, ...)
-    } else if (update && cmp != 0L) {
-        .install_change_version(repos, ...)
+    } else if (cmp != 0L) {
+        .install_updated_version(update, repos, ...)
     }
 
     invisible(pkgs)
