@@ -5,7 +5,7 @@
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
 repositories(site_repository = character(),
-  version = Bioconductor::version())
+  version = BiocManager::version())
 }
 \arguments{
 \item{site_repository}{(Optional) \code{character(1)} representing

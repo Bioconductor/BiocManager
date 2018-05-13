@@ -1,4 +1,4 @@
-.base_repositories <-
+.repositories_base <-
     function()
 {
     repos <- getOption("repos")
@@ -21,7 +21,7 @@
 }
 
 #' @importFrom stats setNames
-.bioc_repositories <-
+.repositories_bioc <-
     function(version)
 {
     mirror <- getOption("BioC_mirror", "https://bioconductor.org")
@@ -79,9 +79,9 @@ repositories <-
     )
     version <- .version_validate(version)
 
-    base_repos <- .base_repositories()
-    bioc_repos <- .bioc_repositories(version)
+    base <- .repositories_base()
+    bioc <- .repositories_bioc(version)
 
-    repos <- c(site_repository = site_repository, bioc_repos, base_repos)
+    repos <- c(site_repository = site_repository, bioc, base)
     repos[!duplicated(names(repos))]
 }
