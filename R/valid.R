@@ -135,19 +135,22 @@ print.biocValid <-
         sep = ""
     )
 
-    if ((NROW(x$too_new) == 0L) && (NROW(x$out_of_date) == 0L)) {
+    n <- NROW(x$too_new) + NROW(x$out_of_date)
+    if (n == 0L) {
         cat("\n\nInstallation valid\n")
         return()
     }
 
-    fmt <-
-        if (NROW(x$too_new) == 1L) {
-            '  install("%s", update = TRUE, ask = FALSE)'
-        } else {
-            '  install(c(\n    "%s",\n    update = TRUE, ask = FALSE\n  ))'
-        }
+    fmt <-'  BiocManager::install(%s, update = TRUE, ask = FALSE)'
+    if (n == 1L) {
+        fmt <- sprintf(fmt, '"%s"')
+    } else {
+        fmt <- sprintf(fmt, 'c(\n    "%s"\n  )')
+    }
+
+    pkgs0 <- sort(unique(c(rownames(x$too_new), rownames(x$out_of_date))))
     pkgs <- paste(strwrap(
-        paste(rownames(x$too_new), collapse='", "'),
+        paste(pkgs0, collapse='", "'),
         width = getOption("width") - 4L
     ), collapse="\n    ")
     cat(
@@ -156,3 +159,4 @@ print.biocValid <-
         sep = ""
     )
 }
+
