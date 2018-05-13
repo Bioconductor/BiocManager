@@ -66,10 +66,6 @@
 #'     \code{\link{available.packages}}.
 #' @param filters character(1) Filter available packages to check
 #'     validity against; see \code{\link{available.packages}}.
-#' @param silent logical(1) Report how packages are invalid
-#'     (\code{silent=FALSE}, default) and abort execution, or return a
-#'     logical(1) (\code{silent=TRUE}) indicating the overall validity
-#'     of installed packages.
 #' @param \dots Additional arguments, passed to \code{\link{install}}
 #'     when \code{fix=TRUE}.
 #' @return \code{biocValid} list object with elements `too_new` and

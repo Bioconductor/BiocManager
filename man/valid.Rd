@@ -28,11 +28,6 @@ validity against; see \code{\link{available.packages}}.}
 
 \item{\dots}{Additional arguments, passed to \code{\link{install}}
 when \code{fix=TRUE}.}
-
-\item{silent}{logical(1) Report how packages are invalid
-(\code{silent=FALSE}, default) and abort execution, or return a
-logical(1) (\code{silent=TRUE}) indicating the overall validity
-of installed packages.}
 }
 \value{
 \code{biocValid} list object with elements `too_new` and
