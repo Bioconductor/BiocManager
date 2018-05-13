@@ -2,11 +2,14 @@
 % Please edit documentation in R/valid.R
 \name{valid}
 \alias{valid}
+\alias{print.biocValid}
 \title{Validate installed package versions against correct versions.}
 \usage{
 valid(pkgs = installed.packages(lib.loc, priority = priority),
   lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
   filters = NULL, ...)
+
+\method{print}{biocValid}(x, ...)
 }
 \arguments{
 \item{pkgs}{A character() vector of package names for checking, or
@@ -28,12 +31,16 @@ validity against; see \code{\link{available.packages}}.}
 
 \item{\dots}{Additional arguments, passed to \code{\link{install}}
 when \code{fix=TRUE}.}
+
+\item{x}{A \code{biocValid} object returned by \code{valid()}.}
 }
 \value{
 \code{biocValid} list object with elements `too_new` and
     `out_of_date` containing `data.frame`s with packages and their
     installed locations that are too new or out-of-date for the
     current version of Bioconductor.
+
+\code{print()} is invoked for its side effect.
 }
 \description{
 Check that installed packages are consistent (neither out-of-date

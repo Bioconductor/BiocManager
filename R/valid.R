@@ -29,7 +29,6 @@
     pkgs
 }
 
-#'
 #' Validate installed package versions against correct versions.
 #'
 #' Check that installed packages are consistent (neither out-of-date
@@ -117,6 +116,10 @@ valid <-
     result
 }
 
+#' @rdname valid
+#' @param x A \code{biocValid} object returned by \code{valid()}.
+#' @return \code{print()} is invoked for its side effect.
+#' @export
 print.biocValid <-
     function(x, ...)
 {
