@@ -173,7 +173,9 @@
         ask <- answer == "s"
     }
 
-    update.packages(lib.loc, oldPkgs = old_pkgs, ask = ask, instlib = instlib)
+    update.packages(
+        lib.loc, repos, oldPkgs = old_pkgs, ask = ask, instlib = instlib
+    )
 }
 
 .install_change_version <-
