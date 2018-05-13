@@ -1,4 +1,4 @@
-context("version returns a Bioconductor version")
+context("version()")
 
 test_that("version is package_version class", {
     expect_s3_class(version(), "package_version")

@@ -1,4 +1,4 @@
-context("Pointer to repositories")
+context("repositories()")
 
 test_that("repositories() returns all repos", {
     allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp", "BioCworkflows")
@@ -25,4 +25,11 @@ test_that("repositories() rejects invalid versions", {
         "Bioconductor version '2.0' requires R version '2.5'.*"
     )
     ## other validations tested in test_version.R
+})
+
+test_that("repositories(version = 'devel') works", {
+    expect_equal(
+        repositories(version = .version_bioc("devel")),
+        repositories(version = "devel")
+    )
 })
