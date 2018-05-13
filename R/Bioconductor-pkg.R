@@ -1,7 +1,6 @@
-#' @importFrom utils packageVersion available.packages contrib.url head
-#' install.packages installed.packages old.packages sessionInfo setRepositories
-#' tail update.packages
-#' @import BiocVersion
+#' @importFrom utils packageVersion available.packages contrib.url
+#'     head install.packages installed.packages old.packages
+#'     sessionInfo setRepositories tail update.packages
 NULL
 
 #' Install or update Bioconductor, CRAN, or GitHub packages
