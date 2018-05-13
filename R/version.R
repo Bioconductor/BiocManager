@@ -1,6 +1,3 @@
-## sentinel -- BiocVersion package not installed
-.BIOCVERSION_SENTINEL <- package_version("0.0")
-
 .VERSION_HELP <- "see https://bioconductor.org/install"
 
 .compare_version <-
@@ -63,6 +60,8 @@
 .version_validity <-
     function(version)
 {
+    if (identical(version, "devel"))
+        version <- .version_bioc("devel")
     version <- package_version(version)
 
     if (version[, 1:2] != version)
@@ -96,6 +95,8 @@
 .version_validate <-
     function(version)
 {
+    if (identical(version, "devel"))
+        version <- .version_bioc("devel")
     version <- package_version(version)
 
     txt <- .version_validity(version)
@@ -151,19 +152,15 @@
     map$R[map$BiocStatus == type]
 }
 
-#' Version of Bioconductor currently installed
+#' Version of Bioconductor currently in use.
 #'
-#' The `install()` function arranges to install the BiocVersion
-#' package. The BiocVersion package has a version number that
-#' corresponds to the version of _Bioconductor_ in use. `version()`
-#' reports on this version. If BiocVersion is not intalled,
-#' `version()` returns a sentinel (version '0.0').
+#' This is the version of _Bioconductor_ appropropriate for this
+#' version of R or, if the user has requested, the 'devel' version of
+#' _Bioconductor_.
 #'
-#' @return A two-digit version, e.g., `3.7`, of class
+#' @return A two-digit version, e.g., `3.8`, of class
 #'     `package_version` describing the version of _Bioconductor_ in
-#'     use. A version of `0.0` indicates that information on
-#'     _Bioconductor_ version is not available (i.e., the BiocVersion
-#'     package is not installed).
+#'     use.
 #'
 #' @md
 #' @examples

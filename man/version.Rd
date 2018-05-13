@@ -2,23 +2,19 @@
 % Please edit documentation in R/version.R
 \name{version}
 \alias{version}
-\title{Version of Bioconductor currently installed}
+\title{Version of Bioconductor currently in use.}
 \usage{
 version()
 }
 \value{
-A two-digit version, e.g., \code{3.7}, of class
+A two-digit version, e.g., \code{3.8}, of class
 \code{package_version} describing the version of \emph{Bioconductor} in
-use. A version of \code{0.0} indicates that information on
-\emph{Bioconductor} version is not available (i.e., the BiocVersion
-package is not installed).
+use.
 }
 \description{
-The \code{install()} function arranges to install the BiocVersion
-package. The BiocVersion package has a version number that
-corresponds to the version of \emph{Bioconductor} in use. \code{version()}
-reports on this version. If BiocVersion is not intalled,
-\code{version()} returns a sentinel (version '0.0').
+This is the version of \emph{Bioconductor} appropropriate for this
+version of R or, if the user has requested, the 'devel' version of
+\emph{Bioconductor}.
 }
 \examples{
 version()
