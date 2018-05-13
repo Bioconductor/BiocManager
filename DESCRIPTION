@@ -12,14 +12,12 @@ Authors@R: c(
         email  = "maintainer@bioconductor.org",
         role = c("ctb", "cre")))
 biocViews: Infrastructure
-Depends: R (> 3.3.3)
+Depends: R (>= 3.5)
 Imports:
     utils
 Suggests: 
     BiocVersion,
     remotes,
-    RUnit,
-    BiocGenerics,
     testthat,
     knitr
 VignetteBuilder: knitr
