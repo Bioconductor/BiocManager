@@ -1,6 +1,8 @@
 ## sentinel -- BiocVersion package not installed
 .BIOCVERSION_SENTINEL <- package_version("0.0")
 
+.VERSION_HELP <- "see https://bioconductor.org/install"
+
 .compare_version <-
     function(v1, v2)
 {
@@ -58,32 +60,63 @@
     }
 })
 
-.version_validate <-
+.version_validity <-
     function(version)
 {
     version <- package_version(version)
+
     if (version[, 1:2] != version)
-        .stop("'version' %s must have two components, e.g., '3.7'", version)
+        return(.msg(
+            "version '%s' must have two components, e.g., '3.7'", version
+        ))
 
     map <- .version_map()
 
     if (!version %in% map$Bioc)
-        .stop("unknown Bioconductor version %s", version)
-
-    status <- map$BiocStatus[map$Bioc == version]
-    if (status == "out-of-date")
-        .message("out-of-date Bioconductor version selected")
+        return(sprintf("unknown Bioconductor version '%s'; %s",
+                       version, .VERSION_HELP))
 
     required <- map$R[map$Bioc == version]
     if (required != getRversion()[, 1:2])
-        .stop(
-            "Bioconductor version %s requires R version %s", version, required
-        )
+        return(sprintf(
+            "Bioconductor version '%s' requires R version '%s'; %s",
+            version, required, .VERSION_HELP
+        ))
 
+    status <- map$BiocStatus[map$Bioc == version]
     if (status == "future")
-        .stop("Bioconductor version %s is not yet available", version)
+        return(sprintf(
+            "Bioconductor version '%s' is not yet available; %s",
+            version, .VERSION_HELP
+        ))
+
+    TRUE
+}
+
+.version_validate <-
+    function(version)
+{
+    version <- package_version(version)
+
+    txt <- .version_validity(version)
+    isTRUE(txt) || .stop(txt)
 
     version
+}
+
+.version_recommend <-
+    function(version)
+{
+    release <- .version_bioc("release")
+    if (version < release) {
+        return(sprintf(
+            "Bioconductor version '%s' is out-of-date; the current release
+             version '%s' is available with R version '%s'; %s",
+            version, release, .version_R("release"), .VERSION_HELP
+        ))
+    }
+
+    TRUE
 }
 
 .version_choose_best <-
@@ -118,29 +151,6 @@
     map$R[map$BiocStatus == type]
 }
 
-.version_diagnosis <-
-    function()
-{
-    map <- .version_map()
-    myVersion <- version()
-    release <- .version_bioc("release")
-
-    test <-
-        myVersion < head(map[, "Bioc"], 1L) ||
-        myVersion > .version_bioc("devel")
-    if (test)
-        sprintf("Bioconductor version %s is not supported", myVersion)
-    else if (myVersion < release) {
-        sprintf(
-            "The %s (current release) version of Bioconductor is available with
-            R version %s; see https://bioconductor.org/install",
-            release, .version_R("release")
-        )
-    } else {
-        TRUE
-    }
-}
-
 #' Version of Bioconductor currently installed
 #'
 #' The `install()` function arranges to install the BiocVersion
@@ -166,5 +176,5 @@ version <-
     if ("BiocVersion" %in% rownames(installed.packages()))
         packageVersion("BiocVersion")[, 1:2]
     else
-        .BIOCVERSION_SENTINEL
+        .version_choose_best()
 }

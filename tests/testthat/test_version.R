@@ -15,23 +15,23 @@ test_that(".version_validate() validates version", {
 
     expect_error(
         .version_validate("2.0"),
-        "Bioconductor version 2.0 requires R version 2.5"
+        "Bioconductor version '2.0' requires R version '2.5'; .*"
     )
 
     expect_error(
         .version_validate("1.2.3"),
-        "'version' 1.2.3 must have two components, e.g., '3.7'"
+        "version '1.2.3' must have two components, e.g., '3.7'"
     )
 
     expect_error(
         .version_validate("100.1"),
-        "unknown Bioconductor version 100.1"
+        "unknown Bioconductor version '100.1'; .*"
     )
 })
 
-test_that("Sentinel works when BiocVersion not installed", {
-    skip("Removal of BiocVersion required")
-    local({
-        expect_identical(BiocManager::version(), package_version("0.0"))
-    })
+test_that(".version_recommend() recommends update", {
+    expect_true(startsWith(
+        .version_recommend("2.0"),
+        "Bioconductor version '2.0' is out-of-date; the current release"
+    ))
 })

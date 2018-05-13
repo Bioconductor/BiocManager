@@ -22,15 +22,7 @@ test_that("'site_repository=' inserted correctly", {
 test_that("repositories() rejects invalid versions", {
     expect_error(
         repositories(version="2.0"),
-        "Bioconductor version 2.0 requires R version 2.5"
+        "Bioconductor version '2.0' requires R version '2.5'.*"
     )
     ## other validations tested in test_version.R
-})
-
-test_that("repositories() returns sentinel links", {
-    if ("BiocVersion" %in% rownames(installed.packages()))
-        skip("Removal of BiocVersion required")
-    repos <- repositories()
-    bioc <- repos[startsWith(names(repos), "BioC")]
-    expect_true(all(grepl("0.0", bioc, fixed = TRUE)))
 })

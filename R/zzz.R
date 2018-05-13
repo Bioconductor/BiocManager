@@ -1,17 +1,21 @@
 .onAttach <-
     function(libname, pkgname)
 {
-    .message("Bioconductor version %s (BiocManager version %s), ?install for help",
-             version(), packageVersion("BiocManager"))
-
-    opt <- getOption(
-        "BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS",
-        Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
-    )
-    if (isTRUE(opt))
+    if (!interactive())
         return()
 
-    ver_result <- .version_diagnosis()
-    if (!isTRUE(ver_result))
-        .message(ver_result)
+    version <- version()
+
+    valid <- .version_validity(version)
+    if (!isTRUE(valid))
+        .stop(valid)
+
+    .message(
+        "Bioconductor version %s (BiocManager %s), ?install for help",
+        version(), packageVersion("BiocManager")
+    )
+
+    recommend <- .version_recommend(version)
+    if (!isTRUE(recommend))
+        .message(recommend)
 }
