@@ -1,12 +1,32 @@
-.tooNewPkgs <-
+.valid_pkgs_too_new <-
     function(instPkgs, availPkgs)
 {
     idx <- rownames(availPkgs) %in% rownames(instPkgs)
     vers <- availPkgs[idx, "Version"]
     idx <- package_version(vers) <
         package_version(instPkgs[names(vers), "Version"])
-    tooNew <- names(vers)[idx]
-    instPkgs[tooNew, c("Version", "LibPath"), drop=FALSE]
+    too_new <- names(vers)[idx]
+    instPkgs[too_new, c("Version", "LibPath"), drop=FALSE]
+}
+
+.unwritableDirectories <- function(libPaths) {
+    rootOwned <- file.access(libPaths, 2) == -1
+    if (any(rootOwned))
+        .warning("libraries cannot be written to %s",
+                 paste(.sQuote(libPaths[rootOwned]), collapse=" "))
+    libPaths[rootOwned]
+}
+
+.valid_fix <-
+    function(pkgs, lib.loc, ...)
+{
+    install(pkgs, lib.loc, ...)
+    .warning(
+        "updated or downgraded package(s) '%s'",
+        paste0(pkgs, collapse="', '")
+    )
+
+    pkgs
 }
 
 #'
@@ -52,76 +72,53 @@
 #'     of installed packages.
 #' @param \dots Additional arguments, passed to \code{\link{install}}
 #'     when \code{fix=TRUE}.
-#' @param fix When \code{TRUE}, invoke \code{install} to reinstall
-#'     (update or downgrade, as appropriate) invalid packages.
-#' @return \code{logical(1)} indicating overall validity of installed
-#'     packages.
+#' @return \code{biocValid} list object with elements `too_new` and
+#'     `out_of_date` containing `data.frame`s with packages and their
+#'     installed locations that are too new or out-of-date for the
+#'     current version of Bioconductor.
 #' @author Martin Morgan \email{martin.morgan@@roswellpark.org}
 #' @seealso \code{\link{install}} to update installed packages.
 #' @keywords environment
 #' @examples
-#' try(valid())
+#' valid()
 #' @export valid
 valid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-             filters=NULL, silent=FALSE, ..., fix=FALSE)
+             filters=NULL, ...)
 {
     if (!is.matrix(pkgs)) {
-        if (is.character(pkgs))
+        if (is.character(pkgs)) {
             pkgs <- installed.packages(pkgs, lib.loc=lib.loc)
-        else
-            .stop("'pkgs' must be a character vector of package names,
-                   or a matrix like that returned by 'installed.packages()'")
+        } else {
+            .stop(
+                "'pkgs' must be a character vector of package names,
+                 or a matrix like that returned by 'installed.packages()'"
+            )
+        }
     }
     repos <- repositories()
     contribUrl <- contrib.url(repos, type=type)
 
     availPkgs <- available.packages(contribUrl, type=type, filters=filters)
-    oldPkgs <- old.packages(lib.loc, repos=repositories(),
+    out_of_date <- old.packages(lib.loc, repos=repositories(),
         instPkgs=pkgs, available=availPkgs, checkBuilt=TRUE,
         type=type)
-    tooNewPkgs <- .tooNewPkgs(pkgs, availPkgs)
+    too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
 
-    libPaths <- unique(pkgs[,"LibPath"])
+    result <- structure(
+        list(out_of_date=out_of_date, too_new = too_new),
+        class="biocValid"
+    )
 
-    valid <- (NROW(oldPkgs) == 0) && (NROW(tooNewPkgs) == 0)
-    if (valid)
-        return(valid)
-
-    if (!silent) {
-        result <- structure(
-            list(oldPkgs=oldPkgs, tooNewPkgs = tooNewPkgs, libPaths = libPaths),
-            class="biocValid"
+    if (NROW(out_of_date) + NROW(too_new) != 0L) {
+        .warning(
+            "%d packages out-of-date; %d packages too new",
+            NROW(out_of_date), NROW(too_new)
         )
-        print(result)
-    }
-    .unwritableDirectories(libPaths)
-    if (fix) {
-        pkgs <- c(rownames(oldPkgs), rownames(tooNewPkgs))
-        install(pkgs, lib.loc=lib.loc, ...)
-        .warning("updated or downgraded package(s) %s",
-                 paste(.sQuote(pkgs), collapse=" "))
-    } else {
-        msg <- character()
-        if (NROW(oldPkgs))
-            msg <-
-                c(msg, sprintf("%d package(s) out of date", NROW(oldPkgs)))
-        if (NROW(tooNewPkgs))
-            msg <-
-                c(msg, sprintf("%d package(s) too new", NROW(tooNewPkgs)))
-        .stop(paste(msg, collapse="; "))
     }
 
-    invisible(valid)
-}
-
-.unwritableDirectories <- function(libPaths) {
-    rootOwned <- file.access(libPaths, 2) == -1
-    if (any(rootOwned))
-        .warning("libraries cannot be written to %s",
-                 paste(.sQuote(libPaths[rootOwned]), collapse=" "))
-    libPaths[rootOwned]
+    result
 }
 
 print.biocValid <-
@@ -129,23 +126,33 @@ print.biocValid <-
 {
     cat("\n* sessionInfo()\n\n")
     print(sessionInfo())
-    cat("\n")
-    cat("Library path directories:\n  ")
-    cat(paste(x$libPaths, collapse = "\n  "), "\n")
-    cat("\n")
-    if (NROW(x$oldPkgs)) {
-        cat("* Out-of-date packages\n")
-        print(x$oldPkgs)
-        cat("\nupdate with install()\n\n")
+
+    cat(
+        "\nBioconductor version '", as.character(version()), "'",
+        "\n",
+        "\n  * ", NROW(x$out_of_date), " packages out-of-date",
+        "\n  * ", NROW(x$too_new), " packages too new",
+        sep = ""
+    )
+
+    if ((NROW(x$too_new) == 0L) && (NROW(x$out_of_date) == 0L)) {
+        cat("\n\nInstallation valid\n")
+        return()
     }
 
-    if (NROW(x$tooNewPkgs)) {
-        cat("* Packages too new for Bioconductor version ",
-            .sQuote(as.character(version())), "\n\n", sep="")
-        print(x$tooNewPkgs)
-        pkgs <- paste(.dQuote(rownames(x$tooNewPkgs)), collapse=", ")
-        msg <- .msg(ifelse(NROW(x$tooNewPkgs) == 1L, "install(%s)",
-                           "install(c(%s))"), pkgs)
-        cat("\ndowngrade with ", msg, "\n\n", sep="")
-    }
+    fmt <-
+        if (NROW(x$too_new) == 1L) {
+            '  install("%s", update = TRUE, ask = FALSE)'
+        } else {
+            '  install(c(\n    "%s",\n    update = TRUE, ask = FALSE\n  ))'
+        }
+    pkgs <- paste(strwrap(
+        paste(rownames(x$too_new), collapse='", "'),
+        width = getOption("width") - 4L
+    ), collapse="\n    ")
+    cat(
+        "\n\ncreate a valid installation with",
+        "\n\n", sprintf(fmt, pkgs), "\n\n",
+        sep = ""
+    )
 }

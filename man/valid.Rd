@@ -6,7 +6,7 @@
 \usage{
 valid(pkgs = installed.packages(lib.loc, priority = priority),
   lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
-  filters = NULL, silent = FALSE, ..., fix = FALSE)
+  filters = NULL, ...)
 }
 \arguments{
 \item{pkgs}{A character() vector of package names for checking, or
@@ -26,20 +26,19 @@ binary, source) to check validity against; see
 \item{filters}{character(1) Filter available packages to check
 validity against; see \code{\link{available.packages}}.}
 
+\item{\dots}{Additional arguments, passed to \code{\link{install}}
+when \code{fix=TRUE}.}
+
 \item{silent}{logical(1) Report how packages are invalid
 (\code{silent=FALSE}, default) and abort execution, or return a
 logical(1) (\code{silent=TRUE}) indicating the overall validity
 of installed packages.}
-
-\item{\dots}{Additional arguments, passed to \code{\link{install}}
-when \code{fix=TRUE}.}
-
-\item{fix}{When \code{TRUE}, invoke \code{install} to reinstall
-(update or downgrade, as appropriate) invalid packages.}
 }
 \value{
-\code{logical(1)} indicating overall validity of installed
-    packages.
+\code{biocValid} list object with elements `too_new` and
+    `out_of_date` containing `data.frame`s with packages and their
+    installed locations that are too new or out-of-date for the
+    current version of Bioconductor.
 }
 \description{
 Check that installed packages are consistent (neither out-of-date
@@ -66,7 +65,7 @@ how their installation became too new, and to avoid this in the
 future.
 }
 \examples{
-try(valid())
+valid()
 }
 \seealso{
 \code{\link{install}} to update installed packages.
