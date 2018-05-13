@@ -65,7 +65,9 @@
 #'
 #' @examples
 #' repositories()
-#' repositories(version="3.6")
+#' \dontrun{
+#' repositories(version="3.8")
+#' }
 #' pkgs <- available.packages(repos=repositories()["BioCsoft"])
 #' nrow(pkgs)          # how many Bioconductor packages available to you?
 #'
