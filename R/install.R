@@ -39,127 +39,149 @@
     if (!all(status))
         .message(
             "installation path not writeable, unable to update packages: %s",
-            paste(pkgs[!status, "Package"], collapse=", "))
+            paste(pkgs[!status, "Package"], collapse=", ")
+        )
 
     pkgs[status,, drop=FALSE]
 }
 
-
-.rRepos <- function(pkgs, invert = FALSE)
+.install_filter_r_repos <-
+    function(pkgs, invert = FALSE)
+{
     grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
+}
 
-.githubRepos <- function(pkgs) {
-    pkgs <- .rRepos(pkgs, invert = TRUE)
+.install_filter_github_repos <-
+    function(pkgs)
+{
+    pkgs <- .install_filter_r_repos(pkgs, invert = TRUE)
     grep("^[^/]+/.+", pkgs, value=TRUE)
 }
 
-.reposInstall <-
-    function(pkgs, lib, ...)
+.install_github_load_remotes <-
+    function(pkgs, lib.loc = NULL)
 {
-    doing <- .rRepos(pkgs)
+    if (!"remotes" %in% rownames(installed.packages(lib.loc))) {
+        if (is.null(lib.loc))
+            lib.loc <- .libPaths()
+        stop(
+            "package 'remotes' not installed in library path(s)",
+            "\n    ", paste(lib.loc, collapse="\n    "),
+            "\ninstall with 'install(\"remotes\")'",
+            call.=FALSE
+        )
+    }
+
+    tryCatch({
+        loadNamespace("remotes", lib.loc)
+    }, error=function(e) {
+        stop(
+            "'loadNamespace(\"remotes\")' failed:",
+            "\n    ", conditionMessage(e)
+        )
+    })
+
+    TRUE
+}
+
+.install_repos <-
+    function(pkgs, lib, repos, ...)
+{
+    doing <- .install_filter_r_repos(pkgs)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
-        install.packages(pkgs=doing, lib=lib, ...)
+        install.packages(pkgs = doing, lib = lib, repos = repos, ...)
     }
     setdiff(pkgs, doing)
 }
 
-.githubInstall <-
-    function(pkgs, ..., lib.loc=NULL)
+.install_github <-
+    function(pkgs, lib, lib.loc, repos = repos, ...)
 {
-    doing <- .githubRepos(pkgs)
+    doing <- .install_filter_github_repos(pkgs)
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing github package(s) %s", pkgNames)
-        tryCatch({
-            loadNamespace("remotes", lib.loc)
-        }, error=function(e) {
-            if (!"remotes" %in% rownames(installed.packages(lib.loc))) {
-                if (is.null(lib.loc))
-                    lib.loc <- .libPaths()
-                stop(conditionMessage(e),
-                    "\n    package 'remotes' not installed in library path(s)",
-                    "\n        ", paste(lib.loc, collapse="\n        "),
-                    "\n    install with 'install(\"remotes\")', and re-run your install() command",
-                    call.=FALSE)
-            } else
-                .stop("'loadNamespace(\"remotes\")' failed:\n    %s",
-                      conditionMessage(e))
-        })
-        remotes::install_github(doing, ...)
+        .install_github_load_remotes(pkgs, lib.loc = lib.loc)
+        remotes::install_github(pkgs = doing, lib = lib, repos = repos, ...)
     }
     setdiff(pkgs, doing)
 }
 
-.biocInstall <-
-    function(pkgs, repos, ask, update, site_repository = character(),
-        lib.loc=NULL, lib=.libPaths()[1], instlib=NULL, ...,
-        version = BiocManager::version())
+.install_validate_dots <-
+    function(..., repos)
 {
     if (!missing(repos))
-        .stop("'repos' argument to 'install' not allowed")
+        .stop("'repos' argument to 'install()' not allowed")
 
-    if (!(is.character(update) || is.logical(update)) ||
-        (is.logical(update) && 1L != length(update)))
-        .stop("'update' must be character() or logical(1)")
-
-    biocMirror <- getOption("BioC_mirror", "https://bioconductor.org")
-    .message("BioC_mirror: %s", biocMirror)
-
-    .message("Using Bioconductor %s (BiocManager %s), %s.",
-        version, packageVersion("BiocManager"),
-        sub(" version", "", R.version.string))
-
-    if (!suppressPackageStartupMessages(
-            requireNamespace("utils", quietly=TRUE)
-        ))
-        .stop("failed to load package 'utils'")
-
-    orepos <- options(repos=repositories(site_repository))
-    on.exit(options(orepos))
-
-    if (length(pkgs)) {
-        todo <- .reposInstall(pkgs, lib=lib, ...)
-        todo <- .githubInstall(todo, ...)
-    }
-
-    ## early exit if update
-    if (isFALSE(update))
-        return(invisible(pkgs))
-
-    oldPkgs <- old.packages(lib.loc, checkBuilt=TRUE)
-    if (is.null(oldPkgs))
-        return(invisible(pkgs))
-
-    oldPkgs <- .package_filter_masked(oldPkgs)
-    oldPkgs <- .package_filter_unwriteable(oldPkgs, instlib)
-
-    if (nrow(oldPkgs)) {
-        pkgList <- paste(oldPkgs[,"Package"], collapse="', '")
-        if (ask) {
-            .message("Old packages: '%s'", pkgList)
-
-            answer <-
-                .getAnswer("Update all/some/none? [a/s/n]: ",
-                    allowed = c("a", "A", "s", "S", "n", "N"))
-
-            switch(answer,
-                a = update.packages(lib.loc, oldPkgs=oldPkgs, ask=FALSE,
-                    instlib=instlib),
-                s = update.packages(lib.loc, oldPkgs=oldPkgs, ask=TRUE,
-                    instlib=instlib),
-                n = invisible(pkgs))
-        } else {
-            .message("Updating packages '%s'", pkgList)
-            update.packages(lib.loc, oldPkgs=oldPkgs, ask=ask, instlib=instlib)
-        }
-    }
-
-    invisible(pkgs)
+    TRUE
 }
 
-#'
+.install_ask_up_or_down_grade <-
+    function(version, cmp)
+{
+    action <- if (cmp < 0) "Downgrade" else "Upgrade"
+    txt <- sprintf("%s Bioconductor to version '%s'? [y/n]: ", action, version)
+    .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
+}
+
+.install <-
+    function(pkgs, repos, lib.loc=NULL, lib=.libPaths()[1], ...)
+{
+    requireNamespace("utils", quietly=TRUE) ||
+        .stop("failed to load package 'utils'")
+
+    todo <- .install_repos(pkgs, lib = lib, repos = repos, ...)
+    todo <- .install_github(
+        todo, lib = lib, lib.loc = lib.loc, repos = repos, ...
+    )
+
+    if (length(todo))
+        .warning(
+            "packages not installed (unknown repository)",
+            "\n    ", paste(sQuote(todo), collapse = ", ")
+        )
+
+    setdiff(pkgs, todo)
+}
+
+.install_update <-
+    function(repos, ask, lib.loc = NULL, instlib = NULL, checkBuilt = TRUE, ...)
+{
+    old_pkgs <- old.packages(lib.loc, repos, checkBuilt = checkBuilt)
+    if (is.null(old_pkgs))
+        return()
+
+    old_pkgs <- .package_filter_masked(old_pkgs)
+    old_pkgs <- .package_filter_unwriteable(old_pkgs, instlib)
+
+    if (!nrow(old_pkgs))
+        return()
+
+    pkgs <- paste(old_pkgs[,"Package"], collapse="', '")
+    .message("Update old packages: '%s'", pkgs)
+    if (ask) {
+        answer <- .getAnswer(
+            "Update all / some / none? [a/s/n]: ",
+            allowed = c("a", "A", "s", "S", "n", "N")
+        )
+
+        if (answer == "n")
+            return()
+
+        ask <- answer == "s"
+    }
+
+    update.packages(lib.loc, oldPkgs = old_pkgs, ask = ask, instlib = instlib)
+}
+
+.install_change_version <-
+    function(repos, ...)
+{
+    .warning("changed versions require package updates; run `install()`")
+}
+
 #' @name install
 #' @aliases BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS
 #'
@@ -283,35 +305,40 @@ install <-
 {
     stopifnot(
         is.character(pkgs), !anyNA(pkgs),
+        .install_validate_dots(...),
         length(site_repository) <= 1L,
         is.character(site_repository), !any(is.na(site_repository)),
         is.logical(update), length(update) == 1L, !is.na(update),
         is.logical(ask), length(ask) == 1L, !is.na(ask),
         length(version) == 1L
     )
-    version <- package_version(version)
-    if (version[, 1:2] != version)
-        .stop("'version' %s must have two components, e.g., '3.7'", version)
+    version <- .version_validate(version)
 
-    if (version == .BIOCVERSION_SENTINEL) {
-        version <- .version_choose_best()
+    if (!"BiocVersion" %in% rownames(installed.packages())) {
         pkgs <- unique(c("BiocVersion", pkgs))
-    } else {
-        cmp <- .compare_version(version, version())
-        if (cmp != 0) {
-            version <- .version_validate(version)
-            ## helper to check if versions match or prompt for switch
-            action <- if (cmp < 0) "Downgrade" else "Upgrade"
-            txt <- sprintf(
-                "%s Bioconductor to version %s? [y/n]: ", action, version
-            )
-            answer <- .getAnswer(txt, allowed = c("y", "Y", "n", "N"))
-            if ("n" == answer)
-                .stop("Bioconductor version not changed")
-            pkgs <- unique(c("BiocVersion", pkgs))
-        }
     }
 
-    .biocInstall(pkgs, ask=ask, site_repository=site_repository,
-        update=update, ..., version = version)
+    cmp <- .compare_version(version, version())
+    if (cmp != 0) {
+        answer <- .install_ask_up_or_down_grade(version, cmp)
+        if (isFALSE(answer))
+            .stop("Bioconductor version not changed")
+        pkgs <- unique(c("BiocVersion", pkgs))
+    }
+
+    .message(
+        "Using Bioconductor %s (BiocManager %s), %s.",
+        version, packageVersion("BiocManager"),
+        sub(" version", "", R.version.string)
+    )
+
+    repos <- repositories(site_repository, version = version)
+    pkgs <- .install(pkgs, repos = repos, ...)
+    if (update && cmp == 0L) {
+        .install_update(repos, ask, ...)
+    } else if (update && cmp != 0L) {
+        .install_change_version(repos, ...)
+    }
+
+    invisible(pkgs)
 }
