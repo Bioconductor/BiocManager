@@ -100,11 +100,15 @@
     function(pkgs, lib, lib.loc, repos = repos, ...)
 {
     doing <- .install_filter_github_repos(pkgs)
+
+    oopts <- options(repos = repos)     # required by remotes::
+    on.exit(options(oopts))
     if (length(doing)) {
         pkgNames <- paste(sQuote(doing), collapse=", ")
         .message("Installing github package(s) %s", pkgNames)
         .install_github_load_remotes(pkgs, lib.loc = lib.loc)
-        remotes::install_github(pkgs = doing, lib = lib, repos = repos, ...)
+        for (repo in doing)
+            remotes::install_github(repo, lib = lib, ...)
     }
     setdiff(pkgs, doing)
 }
