@@ -44,14 +44,12 @@ when \code{fix=TRUE}.}
 }
 \description{
 Check that installed packages are consistent (neither out-of-date
-nor too new) with the version of R and Bioconductor in use, using
-\code{install} for validation.
+nor too new) with the version of R and Bioconductor in use.
 }
 \details{
 This function compares the version of installed packages to the
 version of packages associated with the version of R and
-Bioconductor appropriate for the BiocManager package currently in
-use.
+Bioconductor currently in use.
 
 Packages are reported as \sQuote{out-of-date} if a more recent
 version is available at the repositories specified by
