@@ -35,42 +35,42 @@
 
 #' Display current Bioconductor and CRAN repositories.
 #'
-#' Displays the URLs of the repositories used by
-#' \code{\link{install}()} to install Bioconductor and CRAN packages.
+#' `repositories()` reports the URLs from which to install
+#' _Bioconductor_ and CRAN packages. It is used by
+#' `BiocManager::install()` and other functions.
 #'
-#' @param site_repository (Optional) \code{character(1)} representing
-#'     an additional repository (e.g., a URL to an organization's
+#' @param site_repository (Optional) `character(1)` representing an
+#'     additional repository (e.g., a URL to an organization's
 #'     internally maintained repository) in which to look for packages
 #'     to install. This repository will be prepended to the default
 #'     repositories returned by the function.
-#' @param version (Optional) \code{character(1)} or
-#'     \code{package_version} indicating the Bioconductor version
-#'     (e.g., "3.8") for which repositories are required.
-#' @return Named \code{character()} of repositories.
+#' @param version (Optional) `character(1)` or `package_version`
+#'     indicating the _Bioconductor_ version (e.g., "3.8") for which
+#'     repositories are required.
+#' @return Named `character()` of repositories.
 #' @seealso
 #'
-#' \code{\link{install}()} Installs or updates Bioconductor, CRAN, and
-#'   github packages.
+#' `BiocManager::\link{install}()` Installs or updates Bioconductor,
+#'  CRAN, and GitHub packages.
 #'
-#' \code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
-#'   mirror; not usually necessary.
+#' `\link{chooseBioCmirror}()` choose an alternative Bioconductor
+#' mirror; not usually necessary.
 #'
-#' \code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror;
-#'   not usually necessary.
+#' `\link{chooseCRANmirror}()` choose an alternative CRAN mirror; not
+#' usually necessary.
 #'
-#' \code{\link{setRepositories}()} Select additional repositories for
-#'   searching.
+#' `\link{setRepositories}()` Select additional repositories for
+#' searching.
 #'
 #' @keywords environment
 #'
 #' @examples
-#' repositories()
+#' BiocManager::repositories()
 #' \dontrun{
-#' repositories(version="3.8")
+#' BiocManager::repositories(version="3.8")
 #' }
-#' pkgs <- available.packages(repos=repositories()["BioCsoft"])
-#' nrow(pkgs)          # how many Bioconductor packages available to you?
 #'
+#' @md
 #' @export repositories
 repositories <-
     function(site_repository = character(), version = BiocManager::version())

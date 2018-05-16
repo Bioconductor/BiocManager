@@ -3,61 +3,63 @@
 \name{install}
 \alias{install}
 \alias{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS}
-\title{Install or update Bioconductor and CRAN packages}
+\title{Install or update Bioconductor, CRAN, and GitHub packages}
 \usage{
 install(pkgs = character(), ..., site_repository = character(),
   update = TRUE, ask = TRUE, version = BiocManager::version())
 }
 \arguments{
 \item{pkgs}{\code{character()} vector of package names to install or
-update.  A missing value and \code{update=TRUE} updates installed
-packages. Package names containing a \sQuote{/} are treated as
-github repositories and installed using the
-\code{remotes::install_github()} function.}
+update.  A missing value updates installed packages according
+to \code{update =} and \code{ask =}. Package names containing a '/' are
+treated as GitHub repositories and installed using
+\code{remotes::install_github()}.}
 
 \item{...}{Additional arguments used by \code{install.packages()}.}
 
-\item{site_repository}{\code{character()} vector representing an
-additional repository in which to look for packages to
-install. This repository will be prepended to the default
-repositories (which you can see with \code{\link{repositories}()}).}
+\item{site_repository}{(Optional) \code{character(1)} vector
+representing an additional repository in which to look for
+packages to install. This repository will be prepended to the
+default repositories (which you can see with
+\code{BiocManager::\link{repositories}()}).}
 
-\item{update}{\code{logical(1)}. When \code{FALSE}, \code{install()} does not
-attempt to update old packages. When \code{TRUE}, the user is
-prompted to update old packages.}
+\item{update}{\code{logical(1)}. When \code{FALSE}, \code{BiocManager::install()}
+does not attempt to update old packages. When \code{TRUE}, update
+old packages according to \code{ask}.}
 
 \item{ask}{\code{logical(1)} indicating whether to prompt user before
 installed packages are updated.  If TRUE, user can choose
 whether to update all outdated packages without further
 prompting, to pick packages to update, or to cancel updating
-(in a non-interactive session, no packages will be updated).}
+(in a non-interactive session, no packages will be updated
+unless \code{ask = FALSE}).}
 
 \item{version}{\code{character(1)} \emph{Bioconductor} version to install,
 e.g., \code{version = "3.8"}. The special symbol \code{version = "devel"}
-installs the current 'development version.}
+installs the current 'development' version.}
 }
 \value{
-\code{install()} returns the \code{pkgs} argument, invisibly.
+\code{BiocManager::install()} returns the \code{pkgs} argument, invisibly.
 }
 \description{
-The \code{install()} function installs or updates
-\emph{Bioconductor} and CRAN packages in a \emph{Bioconductor}
-release. Upgrading to a new \emph{Bioconductor} release requires
+The \code{BiocManager::install()} function installs or
+updates \emph{Bioconductor} and CRAN packages in a \emph{Bioconductor}
+release. Upgrading to a new \emph{Bioconductor} release may require
 additional steps; see \url{https://bioconductor.org/install}.
 }
 \details{
 Installation of \emph{Bioconductor} and CRAN packages use R's standard
 functions for library management -- \code{install.packages()},
-\code{available.packages()}, \code{update.packages()}. Installation of github
+\code{available.packages()}, \code{update.packages()}. Installation of GitHub
 packages uses the \code{remotes::install_github()}.
 
 When installing CRAN or \emph{Bioconductor} packages, typical arguments
-include: \code{lib.loc}, passed to \code{\link{old.packages}} and used to
+include: \code{lib.loc}, passed to \code{\link{old.packages}()} and used to
 determine the library location of installed packages to be updated;
-and \code{lib}, passed to \code{\link{install.packages}} to determine the
+and \code{lib}, passed to \code{\link{install.packages}()} to determine the
 library location where \code{pkgs} are to be installed.
 
-When installing github packages, \code{...} is passed to the
+When installing GitHub packages, \code{...} is passed to the
 \pkg{remotes} package functions \code{\link[remotes]{install_github}()}
 and \code{remotes:::install()}. A typical use is to build vignettes, via
 \code{dependencies=TRUE, build_vignettes=TRUE}.
@@ -74,27 +76,24 @@ development versions of \emph{Bioconductor}.
 \examples{
 
 \dontrun{
-## Change default Bioconductor and CRAN mirrors
-chooseCRANmirror()
+## update previously installed packages
+BiocManager::install()
 
-## updates previously installed packages
-install()
-
-## install a Bioconductor package, and prompt to update all
+## install Bioconductor packages, and prompt to update all
 ## installed packages
-install("GenomicRanges")
+BiocManager::install(c("GenomicRanges", "edgeR"))
 
-## install a CRAN package:
-install("survival")
+## install a CRAN and Bioconductor packages:
+BiocManager::install(c("survival", "SummarizedExperiment"))
 
 ## install a package from source:
-install("IRanges", type="source")
+BiocManager::install("IRanges", type="source")
 }
 
 }
 \seealso{
-\code{\link{repositories}()} returns the \emph{Bioconductor} and CRAN
-repositories used by \code{install()}.
+\code{BiocManager::\link{repositories}()} returns the \emph{Bioconductor} and
+CRAN repositories used by \code{install()}.
 
 \code{\link{install.packages}()} installs the packages themselves.
 

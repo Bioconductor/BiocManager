@@ -12,7 +12,7 @@ available(pattern = "", include_installed = TRUE)
 sensitive.}
 
 \item{include_installed}{logical(1) When \code{TRUE}, include installed
-package in list of available packages; when \code{FALSE}, exclude
+packages in list of available packages; when \code{FALSE}, exclude
 installed packages.}
 }
 \value{
@@ -23,9 +23,9 @@ installation.
 Discover packages available for installation.
 }
 \examples{
-avail <- available()
+avail <- BiocManager::available()
 length(avail)
 
-available("bs.*hsapiens")   ## case-insensitve regular expression filter
+BiocManager::available("bs.*hsapiens")
 
 }

@@ -12,8 +12,6 @@
         "n"
     }
 }
-.dQuote <- function(x)
-    sprintf('"%s"', as.character(x))
 
 .sQuote <- function(x)
     sprintf("'%s'", as.character(x))
@@ -24,24 +22,6 @@
 {
     txt <- strwrap(sprintf(fmt, ...), width=width, exdent=2)
     paste(txt, collapse="\n")
-}
-
-# use as BiocManager:::.opts$get()  BiocManager:::.opts$set(TRUE)
-.opts = local({
-    debug <- FALSE
-    list(get=function() debug, set=function(x) {
-        old <- debug
-        debug <<- x
-        old
-    })
-})
-
-.dbg <-
-    function(...)
-{
-    if (.opts$get()) {
-        .msg(...)
-    }
 }
 
 .message <-

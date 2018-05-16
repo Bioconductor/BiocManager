@@ -154,9 +154,9 @@
 
 #' Version of Bioconductor currently in use.
 #'
-#' This is the version of _Bioconductor_ appropropriate for this
-#' version of R or, if the user has requested, the 'devel' version of
-#' _Bioconductor_.
+#' `version()` reports the version of _Bioconductor_ appropropriate
+#' for this version of R, or the version of _Bioconductor_ requested
+#' by the user.
 #'
 #' @return A two-digit version, e.g., `3.8`, of class
 #'     `package_version` describing the version of _Bioconductor_ in
@@ -164,7 +164,7 @@
 #'
 #' @md
 #' @examples
-#' version()
+#' BiocManager::version()
 #'
 #' @export
 version <-

@@ -89,7 +89,7 @@
 {
     doing <- .install_filter_r_repos(pkgs)
     if (length(doing)) {
-        pkgNames <- paste(sQuote(doing), collapse=", ")
+        pkgNames <- paste(.sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
         install.packages(pkgs = doing, lib = lib, repos = repos, ...)
     }
@@ -104,7 +104,7 @@
     oopts <- options(repos = repos)     # required by remotes::
     on.exit(options(oopts))
     if (length(doing)) {
-        pkgNames <- paste(sQuote(doing), collapse=", ")
+        pkgNames <- paste(.sQuote(doing), collapse=", ")
         .message("Installing github package(s) %s", pkgNames)
         .install_github_load_remotes(pkgs, lib.loc = lib.loc)
         for (repo in doing)
@@ -144,7 +144,7 @@
     if (length(todo))
         .warning(
             "packages not installed (unknown repository)",
-            "\n    ", paste(sQuote(todo), collapse = ", ")
+            "\n    ", paste(.sQuote(todo), collapse = ", ")
         )
 
     setdiff(pkgs, todo)
@@ -208,27 +208,27 @@
 #' @aliases BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS
 #' @md
 #'
-#' @title Install or update Bioconductor and CRAN packages
+#' @title Install or update Bioconductor, CRAN, and GitHub packages
 #'
-#' @description The `install()` function installs or updates
-#'     _Bioconductor_ and CRAN packages in a _Bioconductor_
-#'     release. Upgrading to a new _Bioconductor_ release requires
+#' @description The `BiocManager::install()` function installs or
+#'     updates _Bioconductor_ and CRAN packages in a _Bioconductor_
+#'     release. Upgrading to a new _Bioconductor_ release may require
 #'     additional steps; see \url{https://bioconductor.org/install}.
 #'
 #' @details
 #'
 #' Installation of _Bioconductor_ and CRAN packages use R's standard
 #' functions for library management -- `install.packages()`,
-#' `available.packages()`, `update.packages()`. Installation of github
+#' `available.packages()`, `update.packages()`. Installation of GitHub
 #' packages uses the `remotes::install_github()`.
 #'
 #' When installing CRAN or _Bioconductor_ packages, typical arguments
-#' include: `lib.loc`, passed to `\link{old.packages}` and used to
+#' include: `lib.loc`, passed to `\link{old.packages}()` and used to
 #' determine the library location of installed packages to be updated;
-#' and `lib`, passed to `\link{install.packages}` to determine the
+#' and `lib`, passed to `\link{install.packages}()` to determine the
 #' library location where `pkgs` are to be installed.
 #'
-#' When installing github packages, `...` is passed to the
+#' When installing GitHub packages, `...` is passed to the
 #' \pkg{remotes} package functions `\link[remotes]{install_github}()`
 #' and `remotes:::install()`. A typical use is to build vignettes, via
 #' `dependencies=TRUE, build_vignettes=TRUE`.
@@ -243,32 +243,34 @@
 #' development versions of _Bioconductor_.
 #'
 #' @param pkgs `character()` vector of package names to install or
-#'     update.  A missing value and `update=TRUE` updates installed
-#'     packages. Package names containing a \sQuote{/} are treated as
-#'     github repositories and installed using the
-#'     `remotes::install_github()` function.
+#'     update.  A missing value updates installed packages according
+#'     to `update =` and `ask =`. Package names containing a '/' are
+#'     treated as GitHub repositories and installed using
+#'     `remotes::install_github()`.
 #' @param ... Additional arguments used by `install.packages()`.
-#' @param site_repository `character()` vector representing an
-#'     additional repository in which to look for packages to
-#'     install. This repository will be prepended to the default
-#'     repositories (which you can see with `\link{repositories}()`).
-#' @param update `logical(1)`. When `FALSE`, `install()` does not
-#'     attempt to update old packages. When `TRUE`, the user is
-#'     prompted to update old packages.
+#' @param site_repository (Optional) `character(1)` vector
+#'     representing an additional repository in which to look for
+#'     packages to install. This repository will be prepended to the
+#'     default repositories (which you can see with
+#'     `BiocManager::\link{repositories}()`).
+#' @param update `logical(1)`. When `FALSE`, `BiocManager::install()`
+#'     does not attempt to update old packages. When `TRUE`, update
+#'     old packages according to `ask`.
 #' @param ask `logical(1)` indicating whether to prompt user before
 #'     installed packages are updated.  If TRUE, user can choose
 #'     whether to update all outdated packages without further
 #'     prompting, to pick packages to update, or to cancel updating
-#'     (in a non-interactive session, no packages will be updated).
+#'     (in a non-interactive session, no packages will be updated
+#'     unless `ask = FALSE`).
 #' @param version `character(1)` _Bioconductor_ version to install,
 #'     e.g., `version = "3.8"`. The special symbol `version = "devel"`
-#'     installs the current 'development version.
+#'     installs the current 'development' version.
 #'
-#' @return `install()` returns the `pkgs` argument, invisibly.
+#' @return `BiocManager::install()` returns the `pkgs` argument, invisibly.
 #' @seealso
 #'
-#' `\link{repositories}()` returns the _Bioconductor_ and CRAN
-#' repositories used by `install()`.
+#' `BiocManager::\link{repositories}()` returns the _Bioconductor_ and
+#' CRAN repositories used by `install()`.
 #'
 #' `\link{install.packages}()` installs the packages themselves.
 #'
@@ -284,21 +286,18 @@
 #' @examples
 #'
 #' \dontrun{
-#' ## Change default Bioconductor and CRAN mirrors
-#' chooseCRANmirror()
+#' ## update previously installed packages
+#' BiocManager::install()
 #'
-#' ## updates previously installed packages
-#' install()
-#'
-#' ## install a Bioconductor package, and prompt to update all
+#' ## install Bioconductor packages, and prompt to update all
 #' ## installed packages
-#' install("GenomicRanges")
+#' BiocManager::install(c("GenomicRanges", "edgeR"))
 #'
-#' ## install a CRAN package:
-#' install("survival")
+#' ## install a CRAN and Bioconductor packages:
+#' BiocManager::install(c("survival", "SummarizedExperiment"))
 #'
 #' ## install a package from source:
-#' install("IRanges", type="source")
+#' BiocManager::install("IRanges", type="source")
 #' }
 #'
 #' @export

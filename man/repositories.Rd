@@ -8,43 +8,42 @@ repositories(site_repository = character(),
   version = BiocManager::version())
 }
 \arguments{
-\item{site_repository}{(Optional) \code{character(1)} representing
-an additional repository (e.g., a URL to an organization's
+\item{site_repository}{(Optional) \code{character(1)} representing an
+additional repository (e.g., a URL to an organization's
 internally maintained repository) in which to look for packages
 to install. This repository will be prepended to the default
 repositories returned by the function.}
 
-\item{version}{(Optional) \code{character(1)} or
-\code{package_version} indicating the Bioconductor version
-(e.g., "3.8") for which repositories are required.}
+\item{version}{(Optional) \code{character(1)} or \code{package_version}
+indicating the \emph{Bioconductor} version (e.g., "3.8") for which
+repositories are required.}
 }
 \value{
 Named \code{character()} of repositories.
 }
 \description{
-Displays the URLs of the repositories used by
-\code{\link{install}()} to install Bioconductor and CRAN packages.
+\code{repositories()} reports the URLs from which to install
+\emph{Bioconductor} and CRAN packages. It is used by
+\code{BiocManager::install()} and other functions.
 }
 \examples{
-repositories()
+BiocManager::repositories()
 \dontrun{
-repositories(version="3.8")
+BiocManager::repositories(version="3.8")
 }
-pkgs <- available.packages(repos=repositories()["BioCsoft"])
-nrow(pkgs)          # how many Bioconductor packages available to you?
 
 }
 \seealso{
-\code{\link{install}()} Installs or updates Bioconductor, CRAN, and
-  github packages.
+\code{BiocManager::\link{install}()} Installs or updates Bioconductor,
+CRAN, and GitHub packages.
 
 \code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
-  mirror; not usually necessary.
+mirror; not usually necessary.
 
-\code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror;
-  not usually necessary.
+\code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
+usually necessary.
 
 \code{\link{setRepositories}()} Select additional repositories for
-  searching.
+searching.
 }
 \keyword{environment}

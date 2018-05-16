@@ -16,59 +16,58 @@ valid(pkgs = installed.packages(lib.loc, priority = priority),
 a matrix as returned by \code{\link{installed.packages}}.}
 
 \item{lib.loc}{A character() vector of library location(s) of
-packages to be validated; see \code{\link{installed.packages}}.}
+packages to be validated; see \code{\link{installed.packages}()}.}
 
-\item{priority}{character(1) Check validity of all, \dQuote{base},
-or \dQuote{recommended} packages; see
-\code{\link{installed.packages}}.}
+\item{priority}{character(1) Check validity of all, "base", or
+"recommended" packages; see \code{\link{installed.packages}()}.}
 
 \item{type}{character(1) The type of available package (e.g.,
 binary, source) to check validity against; see
-\code{\link{available.packages}}.}
+\code{\link{available.packages}()}.}
 
 \item{filters}{character(1) Filter available packages to check
-validity against; see \code{\link{available.packages}}.}
+validity against; see \code{\link{available.packages}()}.}
 
-\item{\dots}{Additional arguments, passed to \code{\link{install}}
-when \code{fix=TRUE}.}
+\item{\dots}{Additional arguments, passed to
+\code{BiocManager::\link{install}()} when \code{fix=TRUE}.}
 
-\item{x}{A \code{biocValid} object returned by \code{valid()}.}
+\item{x}{A `biocValid` object returned by `BiocManager::valid()`.}
 }
 \value{
-\code{biocValid} list object with elements `too_new` and
-    `out_of_date` containing `data.frame`s with packages and their
-    installed locations that are too new or out-of-date for the
-    current version of Bioconductor.
+\code{biocValid} list object with elements \code{too_new} and
+\code{out_of_date} containing \code{data.frame}s with packages and their
+installed locations that are too new or out-of-date for the
+current version of \emph{Bioconductor}.
 
-\code{print()} is invoked for its side effect.
+`print()` is invoked for its side effect.
 }
 \description{
 Check that installed packages are consistent (neither out-of-date
-nor too new) with the version of R and Bioconductor in use.
+nor too new) with the version of R and \emph{Bioconductor} in use.
 }
 \details{
-This function compares the version of installed packages to the
-version of packages associated with the version of R and
-Bioconductor currently in use.
+This function compares the version of installed packages
+to the version of packages associated with the version of \emph{R}
+and \emph{Bioconductor} currently in use.\preformatted{Packages are reported as 'out-of-date' if a more recent version
+is available at the repositories specified by
+`BiocManager::repositories()`.  Usually, `BiocManager::install()` is
+sufficient to update packages to their most recent version.
 
-Packages are reported as \sQuote{out-of-date} if a more recent
-version is available at the repositories specified by
-\code{repositories()}.  Usually, \code{install()} is sufficient to
-update packages to their most recent version.
-
-Packages are reported as \sQuote{too new} if the installed version
-is more recent than the most recent available in the
-\code{repositories()} repositories. It is possible to down-grade by
-re-installing a too new package \dQuote{PkgA} with
-\code{install("PkgA")}. It is important for the user to understand
-how their installation became too new, and to avoid this in the
-future.
+Packages are reported as 'too new' if the installed version is
+more recent than the most recent available in the
+`BiocManager::repositories()`. It is possible to down-grade by
+re-installing a too new package "PkgA" with
+`BiocManger::install("PkgA")`. It is important for the user to
+understand how their installation became too new, and to avoid
+this in the future.
+}
 }
 \examples{
-valid()
+BiocManager::valid()
 }
 \seealso{
-\code{\link{install}} to update installed packages.
+\code{BiocManager::\link{install}()} to update installed
+packages.
 }
 \author{
 Martin Morgan \email{martin.morgan@roswellpark.org}

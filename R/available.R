@@ -5,17 +5,17 @@
 #'     sensitive.
 #'
 #' @param include_installed logical(1) When `TRUE`, include installed
-#'     package in list of available packages; when `FALSE`, exclude
+#'     packages in list of available packages; when `FALSE`, exclude
 #'     installed packages.
 #'
 #' @return `character()` vector of package names available for
 #'     installation.
 #'
 #' @examples
-#' avail <- available()
+#' avail <- BiocManager::available()
 #' length(avail)
 #'
-#' available("bs.*hsapiens")   ## case-insensitve regular expression filter
+#' BiocManager::available("bs.*hsapiens")
 #'
 #' @md
 #' @export

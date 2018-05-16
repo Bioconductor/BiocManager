@@ -31,18 +31,25 @@ package helps users install packages from the same release.
 
 # Basic use
 
-Use standard _R_ installation procedure to install the
-[BiocManager][1] package
+Use standard _R_ installation procedures to install the
+[BiocManager][1] package. This command is requried only once per _R_
+installation.
 
 ```{r, eval = FALSE}
 chooseCRANmirror()
 install.packages("BiocManager")
 ```
 
-Then install _Bioconductor_ (or CRAN) packages
+Install _Bioconductor_ (or CRAN) packages with
 
 ```{r, eval = FALSE}
 BiocManager::install(c("GenomicRanges", "Organism.dplyr"))
+```
+
+Installed packages can be updated to their current version with
+
+```{r, eval = FALSE}
+BiocManager::install()
 ```
 
 Use `version()` to discover the version of _Bioconductor_ currently in
@@ -58,6 +65,35 @@ versions.
 
 ```{r}
 BiocManager::valid()
+```
+
+`valid()` returns an object that can be queried for detailed
+information about invalid packages, as illustrated in the following
+screen capture
+
+```
+> v <- valid()
+Warning message:
+6 packages out-of-date; 0 packages too new
+> names(v)
+[1] "out_of_date" "too_new"
+> head(v$out_of_date, 2)
+    Package LibPath
+bit "bit"   "/home/mtmorgan/R/x86_64-pc-linux-gnu-library/3.5-Bioc-3.8"
+ff  "ff"    "/home/mtmorgan/R/x86_64-pc-linux-gnu-library/3.5-Bioc-3.8"
+    Installed Built   ReposVer Repository
+bit "1.1-12"  "3.5.0" "1.1-13" "https://cran.rstudio.com/src/contrib"
+ff  "2.2-13"  "3.5.0" "2.2-14" "https://cran.rstudio.com/src/contrib"
+>
+```
+
+Packages available for your version of _Bioconductor_ can be
+discovered with `available()`; the first argument can be used to
+filter package names based on a regular expression, e.g., 'BSgenome' package available for _Homo sapiens_
+```{r}
+avail <- BiocManager::available()
+length(avail)
+BiocManager::available("BSgenome.Hsapiens")
 ```
 
 Questions about installing and managing _Bioconductor_ packages should be

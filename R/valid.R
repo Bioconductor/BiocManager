@@ -32,48 +32,49 @@
 #' Validate installed package versions against correct versions.
 #'
 #' Check that installed packages are consistent (neither out-of-date
-#' nor too new) with the version of R and Bioconductor in use.
+#' nor too new) with the version of R and _Bioconductor_ in use.
 #'
-#' This function compares the version of installed packages to the
-#' version of packages associated with the version of R and
-#' Bioconductor currently in use.
+#' @details This function compares the version of installed packages
+#'     to the version of packages associated with the version of _R_
+#'     and _Bioconductor_ currently in use.
 #'
-#' Packages are reported as \sQuote{out-of-date} if a more recent
-#' version is available at the repositories specified by
-#' \code{repositories()}.  Usually, \code{install()} is sufficient to
-#' update packages to their most recent version.
+#'     Packages are reported as 'out-of-date' if a more recent version
+#'     is available at the repositories specified by
+#'     `BiocManager::repositories()`.  Usually, `BiocManager::install()` is
+#'     sufficient to update packages to their most recent version.
 #'
-#' Packages are reported as \sQuote{too new} if the installed version
-#' is more recent than the most recent available in the
-#' \code{repositories()} repositories. It is possible to down-grade by
-#' re-installing a too new package \dQuote{PkgA} with
-#' \code{install("PkgA")}. It is important for the user to understand
-#' how their installation became too new, and to avoid this in the
-#' future.
+#'     Packages are reported as 'too new' if the installed version is
+#'     more recent than the most recent available in the
+#'     `BiocManager::repositories()`. It is possible to down-grade by
+#'     re-installing a too new package "PkgA" with
+#'     `BiocManger::install("PkgA")`. It is important for the user to
+#'     understand how their installation became too new, and to avoid
+#'     this in the future.
 #'
 #' @param pkgs A character() vector of package names for checking, or
-#'     a matrix as returned by \code{\link{installed.packages}}.
+#'     a matrix as returned by `\link{installed.packages}`.
 #' @param lib.loc A character() vector of library location(s) of
-#'     packages to be validated; see \code{\link{installed.packages}}.
-#' @param priority character(1) Check validity of all, \dQuote{base},
-#'     or \dQuote{recommended} packages; see
-#'     \code{\link{installed.packages}}.
+#'     packages to be validated; see `\link{installed.packages}()`.
+#' @param priority character(1) Check validity of all, "base", or
+#'     "recommended" packages; see `\link{installed.packages}()`.
 #' @param type character(1) The type of available package (e.g.,
 #'     binary, source) to check validity against; see
-#'     \code{\link{available.packages}}.
+#'     `\link{available.packages}()`.
 #' @param filters character(1) Filter available packages to check
-#'     validity against; see \code{\link{available.packages}}.
-#' @param \dots Additional arguments, passed to \code{\link{install}}
-#'     when \code{fix=TRUE}.
-#' @return \code{biocValid} list object with elements `too_new` and
+#'     validity against; see `\link{available.packages}()`.
+#' @param \dots Additional arguments, passed to
+#'     `BiocManager::\link{install}()` when `fix=TRUE`.
+#' @return `biocValid` list object with elements `too_new` and
 #'     `out_of_date` containing `data.frame`s with packages and their
 #'     installed locations that are too new or out-of-date for the
-#'     current version of Bioconductor.
+#'     current version of _Bioconductor_.
 #' @author Martin Morgan \email{martin.morgan@@roswellpark.org}
-#' @seealso \code{\link{install}} to update installed packages.
+#' @seealso `BiocManager::\link{install}()` to update installed
+#'     packages.
 #' @keywords environment
 #' @examples
-#' valid()
+#' BiocManager::valid()
+#' @md
 #' @export valid
 valid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
@@ -115,8 +116,8 @@ valid <-
 }
 
 #' @rdname valid
-#' @param x A \code{biocValid} object returned by \code{valid()}.
-#' @return \code{print()} is invoked for its side effect.
+#' @param x A `biocValid` object returned by `BiocManager::valid()`.
+#' @return `print()` is invoked for its side effect.
 #' @export
 print.biocValid <-
     function(x, ...)

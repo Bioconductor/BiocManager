@@ -10,10 +10,11 @@
     if (!isTRUE(valid))
         .stop(valid)
 
-    .message(
-        "Bioconductor version %s (BiocManager %s), ?install for help",
-        version(), packageVersion("BiocManager")
+    fmt <- paste0(
+        "Bioconductor version %s (BiocManager %s), ",
+        "?BiocManager::install for help"
     )
+    .message(fmt, version(), packageVersion("BiocManager"))
 
     recommend <- .version_recommend(version)
     if (!isTRUE(recommend))

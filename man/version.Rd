@@ -12,11 +12,11 @@ A two-digit version, e.g., \code{3.8}, of class
 use.
 }
 \description{
-This is the version of \emph{Bioconductor} appropropriate for this
-version of R or, if the user has requested, the 'devel' version of
-\emph{Bioconductor}.
+\code{version()} reports the version of \emph{Bioconductor} appropropriate
+for this version of R, or the version of \emph{Bioconductor} requested
+by the user.
 }
 \examples{
-version()
+BiocManager::version()
 
 }
