@@ -33,6 +33,8 @@ test_that("Versions are checked in install", {
     expect_error(install(ask = "No"))
     expect_error(install(ask = c("No", "Yes", NA)))
     expect_error(install(version = c("3.7", "3.6")))
+    expect_error(install(version = character()))
+    expect_error(install(version = ""))
     expect_error(install(version = "3.4.2"))
 })
 

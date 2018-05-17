@@ -1,5 +1,20 @@
 .VERSION_HELP <- "see https://bioconductor.org/install"
 
+.VERSION_SENTINEL <- local({
+    version <- package_version(list())
+    class(version) <- c("unknown_version", class(version))
+    version
+})
+
+.VERSION_MAP_SENTINEL <- data.frame(
+    Bioc = .VERSION_SENTINEL,
+    R = .VERSION_SENTINEL,
+    BiocStatus = factor(
+        factor(),
+        levels = c("out-of-date", "release", "devel", "future")
+    )
+)
+
 .compare_version <-
     function(v1, v2)
 {
@@ -14,8 +29,14 @@
 .version_map_get <-
     function()
 {
+
     config <- "https://bioconductor.org/config.yaml"
-    txt <- readLines(config)
+    txt <- suppressWarnings(tryCatch({
+        readLines(config)
+    }, error = identity))
+    if (inherits(txt, "error"))
+        return(.VERSION_MAP_SENTINEL)
+
     grps <- grep("^[^[:blank:]]", txt)
     start <- match(grep("r_ver_for_bioc_ver", txt), grps)
     map <- txt[seq(grps[start] + 1, grps[start + 1] - 1)]
@@ -39,19 +60,19 @@
     status[bioc == devel] <- "devel"
     status[bioc > devel] <- "future"
 
-    data.frame(
+    rbind(.VERSION_MAP_SENTINEL, data.frame(
         Bioc = bioc, R = r,
         BiocStatus = factor(
             status,
             levels = c("out-of-date", "release", "devel", "future")
         )
-    )
+    ))
 }
 
 .version_map <- local({
-    version_map <- NULL
+    version_map <- .VERSION_MAP_SENTINEL
     function() {
-        if (is.null(version_map))
+        if (identical(version_map, .VERSION_MAP_SENTINEL))
             version_map <<- .version_map_get()
         version_map
     }
@@ -62,7 +83,10 @@
 {
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
-    version <- package_version(version)
+    version <- .package_version(version)
+
+    if (identical(version, .VERSION_SENTINEL))
+        return("version cannot be validated; no internet connection?")
 
     if (version[, 1:2] != version)
         return(.msg(
@@ -97,7 +121,7 @@
 {
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
-    version <- package_version(version)
+    version <- .package_version(version)
 
     txt <- .version_validity(version)
     isTRUE(txt) || .stop(txt)
@@ -158,6 +182,10 @@
 #' for this version of R, or the version of _Bioconductor_ requested
 #' by the user.
 #'
+#' `version()` (and all functions requiring version information) fails
+#' when version cannot be validated e.g., because internet access is
+#' not available.
+#'
 #' @return A two-digit version, e.g., `3.8`, of class
 #'     `package_version` describing the version of _Bioconductor_ in
 #'     use.
@@ -174,4 +202,28 @@ version <-
         packageVersion("BiocVersion")[, 1:2]
     else
         .version_choose_best()
+}
+
+.package_version <-
+    function(x)
+{
+    if (!inherits(x, "package_version"))      # preserved full class attributes
+        x <- package_version(x)
+    x
+}
+
+#' @rdname version
+#'
+#' @param x An `unknown_version` instance used to represent the
+#'     situation when the version of Bioconductor in use cannot be
+#'     determined.
+#'
+#' @param ... Additional arguments, ignored.
+#'
+#' @md
+#' @export
+print.unknown_version <-
+    function(x, ...)
+{
+    cat("'unknown'\n")
 }

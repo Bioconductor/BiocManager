@@ -2,9 +2,19 @@
 % Please edit documentation in R/version.R
 \name{version}
 \alias{version}
+\alias{print.unknown_version}
 \title{Version of Bioconductor currently in use.}
 \usage{
 version()
+
+\method{print}{unknown_version}(x, ...)
+}
+\arguments{
+\item{x}{An \code{unknown_version} instance used to represent the
+situation when the version of Bioconductor in use cannot be
+determined.}
+
+\item{...}{Additional arguments, ignored.}
 }
 \value{
 A two-digit version, e.g., \code{3.8}, of class
@@ -15,6 +25,11 @@ use.
 \code{version()} reports the version of \emph{Bioconductor} appropropriate
 for this version of R, or the version of \emph{Bioconductor} requested
 by the user.
+}
+\details{
+\code{version()} (and all functions requiring version information) fails
+when version cannot be validated e.g., because internet access is
+not available.
 }
 \examples{
 BiocManager::version()

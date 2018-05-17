@@ -312,7 +312,7 @@ install <-
         is.character(site_repository), !any(is.na(site_repository)),
         is.logical(update), length(update) == 1L, !is.na(update),
         is.logical(ask), length(ask) == 1L, !is.na(ask),
-        length(version) == 1L
+        length(version) == 1L || identical(version, .VERSION_SENTINEL)
     )
     version <- .version_validate(version)
 
