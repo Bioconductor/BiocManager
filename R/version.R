@@ -54,11 +54,17 @@
     devel <- package_version(
         sub(pattern, "\\1", grep(pattern, txt, value=TRUE))
     )
-
     status <- rep("out-of-date", length(bioc))
     status[bioc == release] <- "release"
     status[bioc == devel] <- "devel"
-    status[bioc > devel] <- "future"
+
+    ## append final version for 'devel' R
+    bioc <- c(
+        bioc, max(bioc)
+        ## package_version(paste(unlist(max(bioc)) + 0:1, collapse = "."))
+    )
+    r <- c(r, package_version(paste(unlist(max(r)) + 0:1, collapse = ".")))
+    status <- c(status, "future")
 
     rbind(.VERSION_MAP_SENTINEL, data.frame(
         Bioc = bioc, R = r,
@@ -89,28 +95,38 @@
         return("version cannot be validated; no internet connection?")
 
     if (version[, 1:2] != version)
-        return(.msg(
+        return(sprintf(
             "version '%s' must have two components, e.g., '3.7'", version
         ))
 
     map <- .version_map()
 
     if (!version %in% map$Bioc)
-        return(sprintf("unknown Bioconductor version '%s'; %s",
-                       version, .VERSION_HELP))
+        return(sprintf(
+            "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP
+        ))
 
     required <- map$R[map$Bioc == version]
-    if (required != getRversion()[, 1:2])
+    if (!getRversion()[, 1:2] %in% required)
         return(sprintf(
             "Bioconductor version '%s' requires R version '%s'; %s",
             version, required, .VERSION_HELP
         ))
 
-    status <- map$BiocStatus[map$Bioc == version]
+
+    TRUE
+}
+
+.version_is_not_future <-
+    function(version)
+{
+    map <- .version_map()
+    r_version <- getRversion()[, 1:2]
+    status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
     if (status == "future")
         return(sprintf(
-            "Bioconductor version '%s' is not yet available; %s",
-            version, .VERSION_HELP
+            "Bioconductor does not yet formally support R version '%s'",
+            r_version
         ))
 
     TRUE

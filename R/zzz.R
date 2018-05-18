@@ -22,6 +22,10 @@
     )
     .message(fmt, version, packageVersion("BiocManager"))
 
+    txt <- .version_is_not_future(version)
+    if (!isTRUE(txt))
+        .message(txt)
+
     recommend <- .version_recommend(version)
     if (!isTRUE(recommend))
         .message(recommend)
