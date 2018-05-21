@@ -1,5 +1,11 @@
 .VERSION_HELP <- "see https://bioconductor.org/install"
 
+.VERSION_UNKNOWN <-
+    "Bioconductor version cannot be determined; no internet connection?"
+
+.VERSION_MAP_UNABLE_TO_VALIDATE <-
+    "Bioconductor version cannot be validated; no internet connection?"
+
 .VERSION_SENTINEL <- local({
     version <- package_version(list())
     class(version) <- c("unknown_version", class(version))
@@ -92,7 +98,7 @@
     version <- .package_version(version)
 
     if (identical(version, .VERSION_SENTINEL))
-        return("version cannot be validated; no internet connection?")
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
     if (version[, 1:2] != version)
         return(sprintf(
@@ -100,6 +106,8 @@
         ))
 
     map <- .version_map()
+    if (identical(map, .VERSION_MAP_SENTINEL))
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
     if (!version %in% map$Bioc)
         return(sprintf(
@@ -121,6 +129,9 @@
     function(version)
 {
     map <- .version_map()
+    if (identical(map, .VERSION_MAP_SENTINEL))
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+
     r_version <- getRversion()[, 1:2]
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
     if (status == "future")
@@ -164,8 +175,10 @@
     function()
 {
     map <- .version_map()
-    map <- map[map$R == getRversion()[, 1:2],]
+    if (identical(map, .VERSION_MAP_SENTINEL))
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
+    map <- map[map$R == getRversion()[, 1:2],]
     if ("release" %in% map$BiocStatus)
         idx <- map$BiocStatus == "release"
     else if ("devel" %in% map$BiocStatus)
@@ -182,6 +195,9 @@
     function(type)
 {
     map <- .version_map()
+    if (identical(map, .VERSION_MAP_SENTINEL))
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+
     map$Bioc[map$BiocStatus == type]
 }
 
@@ -189,6 +205,9 @@
     function(type)
 {
     map <- .version_map()
+    if (identical(map, .VERSION_MAP_SENTINEL))
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+
     map$R[map$BiocStatus == type]
 }
 

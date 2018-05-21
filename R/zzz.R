@@ -6,15 +6,16 @@
 
     version <- version()
     if (identical(version, .VERSION_SENTINEL)) {
-        .warning(
-            "Bioconductor version cannot be determined; no internet connection?"
-        )
+        .warning(.VERSION_UNKNOWN)
         return()
     }
 
     valid <- .version_validity(version)
-    if (!isTRUE(valid))
-        .stop(valid)
+    if (identical(valid, .VERSION_MAP_UNABLE_TO_VALIDATE)) {
+        .warning(valid)
+        return()
+    }
+    isTRUE(valid) || .stop(valid)
 
     fmt <- paste0(
         "Bioconductor version %s (BiocManager %s), ",
