@@ -9,26 +9,6 @@
     instPkgs[too_new, c("Version", "LibPath"), drop=FALSE]
 }
 
-.unwritableDirectories <- function(libPaths) {
-    rootOwned <- file.access(libPaths, 2) == -1
-    if (any(rootOwned))
-        .warning("libraries cannot be written to %s",
-                 paste(.sQuote(libPaths[rootOwned]), collapse=" "))
-    libPaths[rootOwned]
-}
-
-.valid_fix <-
-    function(pkgs, lib.loc, ...)
-{
-    install(pkgs, lib.loc, ...)
-    .warning(
-        "updated or downgraded package(s) '%s'",
-        paste0(pkgs, collapse="', '")
-    )
-
-    pkgs
-}
-
 #' Validate installed package versions against correct versions.
 #'
 #' Check that installed packages are consistent (neither out-of-date
@@ -157,4 +137,3 @@ print.biocValid <-
         sep = ""
     )
 }
-

@@ -11,9 +11,13 @@
 .package_filter_unwriteable <-
     function(pkgs, instlib=NULL)
 {
-    if (!nrow(pkgs)) return(pkgs)
+    if (!nrow(pkgs))
+        return(pkgs)
 
-    libs <- if (is.null(instlib)) pkgs[,"LibPath"] else instlib
+    libs <-
+        if (is.null(instlib)) {
+            pkgs[,"LibPath"]
+        } else instlib
 
     ulibs <- unique(libs)
     status <- dir.exists(ulibs)
