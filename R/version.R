@@ -21,15 +21,15 @@
     )
 )
 
-.compare_version <-
+.version_compare <-
     function(v1, v2)
 {
     ## return -1, 0, or 1 when v1 is <, ==, or > v2
     if (v1 < v2)
-        -1
+        -1L
     else if (v1 > v2)
-        1
-    else 0
+        1L
+    else 0L
 }
 
 .version_map_get <-

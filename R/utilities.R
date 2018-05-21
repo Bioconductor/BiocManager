@@ -28,6 +28,7 @@
     function(..., appendLF=TRUE)
 {
     message(.msg(...), appendLF=appendLF)
+    invisible(TRUE)
 }
 
 .stop <-
@@ -40,4 +41,5 @@
     function(..., call.=FALSE, immediate.=FALSE)
 {
     warning(.msg(...), call.=call., immediate.=immediate.)
+    invisible(TRUE)
 }

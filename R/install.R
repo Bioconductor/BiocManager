@@ -320,16 +320,15 @@ install <-
         pkgs <- unique(c("BiocVersion", pkgs))
     }
 
-    cmp <- .compare_version(version, version())
-    if (cmp != 0) {
-        answer <- .install_ask_up_or_down_grade(version, cmp)
-        if (isFALSE(answer))
+    cmp <- .version_compare(version, version())
+    if (cmp != 0L) {
+        .install_ask_up_or_down_grade(version, cmp) ||
             .stop("Bioconductor version not changed")
         pkgs <- unique(c("BiocVersion", pkgs))
     }
 
     .message(
-        "Using Bioconductor %s (BiocManager %s), %s.",
+        "Bioconductor version %s (BiocManager %s), %s",
         version, packageVersion("BiocManager"),
         sub(" version", "", R.version.string)
     )
