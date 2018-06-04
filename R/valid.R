@@ -136,4 +136,5 @@ print.biocValid <-
         "\n\n", sprintf(fmt, pkgs), "\n\n",
         sep = ""
     )
+    cat("more details: valid()$too_new, valid()$out_of_date\n\n")
 }
