@@ -167,4 +167,4 @@ Click "Next". In the "Type a name for this shortcut" box, type `Bioc-3.7`.
 [2]: https://bioconductor.org
 [3]: https://support.bioconductor.org
 [5]: https://bioconductor.org/about/release-announcements/
-[6]: https://cloud.r-project.org/
+[6]: https://cran.R-project.org/
