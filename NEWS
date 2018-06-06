@@ -3,10 +3,22 @@ CHANGES IN VERSION 1.30.0
 
 NEW FEATURES
 
-    o biocLite() supports github repositories using the remotes
+    o package renamed to BiocManager
+
+    o install() supports github repositories using the remotes
     package, rather than devtools. This change should be transparent
-    to end users. (From Peter Hickey
+    to end users. (From Peter Hickey @PeteHaitch,
     https://github.com/Bioconductor/BiocInstaller/issues/4)
+
+    o functions renamed to the following: biocLite > install;
+    biocInstallRepos > repositories; biocValid > valid;
+    biocVersion > version
+
+    o functions removed: biocases_group, biocUpdatePackages, isDevel,
+    useDevel, *_group
+
+    o available() enables package discovery via grep()
+
 
 CHANGES IN VERSION 1.28.0
 -------------------------
