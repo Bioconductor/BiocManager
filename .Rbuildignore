@@ -16,6 +16,7 @@
 # Misc.
 #----------------------------
 ^TODO\.md$
+^cran-comments\.md$
 
 #----------------------------
 # Continuous Integration

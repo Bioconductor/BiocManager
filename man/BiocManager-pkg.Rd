@@ -36,17 +36,24 @@ repository URLs to discover packages for installation.}
 
 }
 }
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://github.com/Bioconductor/BiocManager/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Bioconductor Package Maintainer \email{maintainer@bioconductor.org} [contributor]
 
 Authors:
 \itemize{
-  \item Martin Morgan \email{martin.morgan@roswellpark.org}
+  \item Martin Morgan \email{martin.morgan@roswellpark.org} (0000-0002-5874-8148)
 }
 
 Other contributors:
 \itemize{
-  \item Marcel Ramos \email{marcel.ramos@roswellpark.org} [contributor]
+  \item Marcel Ramos \email{marcel.ramos@roswellpark.org} (0000-0002-3242-0582) [contributor]
 }
 
 }
