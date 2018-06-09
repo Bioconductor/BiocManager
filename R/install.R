@@ -122,6 +122,10 @@
 {
     if (!missing(repos))
         .stop("'repos' argument to 'install()' not allowed")
+    args <- list(...)
+    nms <- sum(nzchar(names(args)))
+    if (nms != length(args))
+        .stop("all '...' arguments to 'install()' must be named")
 
     TRUE
 }

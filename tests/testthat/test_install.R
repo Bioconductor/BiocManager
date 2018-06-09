@@ -1,5 +1,14 @@
 context("install()")
 
+test_that("Arguments are validated", {
+    expect_error(
+        install("foo", "bar"),
+        "all '...' arguments to 'install\\(\\)' must be named"
+    )
+    expect_error(install(TRUE), "is.character\\(pkgs\\) is not TRUE")
+    expect_error(install(ask="foo"), "is.logical\\(ask\\) is not TRUE")
+})
+
 test_that("Helpers filter the right packages", {
     .install_filter_r_repos <- BiocManager:::.install_filter_r_repos
     .install_filter_github_repos <- BiocManager:::.install_filter_github_repos
