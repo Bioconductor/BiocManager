@@ -175,7 +175,7 @@
     .message("Update old packages: '%s'", pkgs)
     if (ask) {
         answer <- .getAnswer(
-            "Update all / some / none? [a/s/n]: ",
+            "Update all/some/none? [a/s/n]: ",
             allowed = c("a", "A", "s", "S", "n", "N")
         )
 
