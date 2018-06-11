@@ -44,16 +44,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Bioconductor Package Maintainer \email{maintainer@bioconductor.org} [contributor]
+\strong{Maintainer}: Marcel Ramos \email{marcel.ramos@roswellpark.org} (0000-0002-3242-0582) [contributor]
 
 Authors:
 \itemize{
   \item Martin Morgan \email{martin.morgan@roswellpark.org} (0000-0002-5874-8148)
-}
-
-Other contributors:
-\itemize{
-  \item Marcel Ramos \email{marcel.ramos@roswellpark.org} (0000-0002-3242-0582) [contributor]
 }
 
 }
