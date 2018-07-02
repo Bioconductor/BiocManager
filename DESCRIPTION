@@ -11,6 +11,7 @@ Depends: R (>= 3.5.0)
 Imports:
     utils
 Suggests: 
+    BiocStyle,
     BiocVersion,
     remotes,
     testthat,
