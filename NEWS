@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.31.2
+-------------------------
+
+USER VISIBLE CHANGES
+
+    o install() only allows Bioconductor version upgrades and downgrades with
+    an empty 'pkgs' argument. Otherwise, it gives the user an informative error.
+
 CHANGES IN VERSION 1.31.0
 -------------------------
 
@@ -26,6 +34,7 @@ NEW FEATURES
 
     o available() enables package discovery via grep()
 
+    o Removed support for MRAN (Microsoft R) archives.
 
 CHANGES IN VERSION 1.28.0
 -------------------------
