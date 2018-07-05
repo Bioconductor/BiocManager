@@ -347,12 +347,14 @@ install <-
             .install_ask_up_or_down_grade(version, npkgs, cmp, action) ||
                 .stop("Bioconductor version not changed")
             pkgs <- unique(c("BiocVersion", pkgs))
-        } else
-            stop(sprintf(paste0(
-                "To use Bioconductor version '%s', %s %d packages with\n",
-                "  \"BiocManager::install(version = '%s')\""),
-                version, tolower(action), npkgs, version), call. = FALSE
+        } else {
+            fmt <- paste0(c(
+                "To use Bioconductor version '%s', %s %d packages with",
+                "\n    \"BiocManager::install(version = '%s')\""))
+            stop(sprintf(fmt, version, tolower(action), npkgs, version),
+                call. = FALSE
             )
+        }
     }
 
     .message(
