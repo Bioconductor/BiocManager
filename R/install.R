@@ -140,7 +140,7 @@
 .install_ask_up_or_down_grade <-
     function(version, npkgs, cmp, action)
 {
-    txt <- sprintf("%s %i packages to Bioconductor version '%s'? [y/n]: ",
+    txt <- sprintf("%s %d packages to Bioconductor version '%s'? [y/n]: ",
         action, npkgs, version)
     .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
 }
@@ -339,19 +339,19 @@ install <-
     cmp <- .version_compare(version, version())
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     repos <- repositories(site_repository, version = version)
+    biocrepos <- repos[names(repos) != "CRAN"]
 
     if (cmp != 0L) {
-        npkgs <- .resolve_npkgs(inst, repos)
+        npkgs <- .resolve_npkgs(inst, biocrepos)
         if (!length(pkgs)) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, action) ||
                 .stop("Bioconductor version not changed")
             pkgs <- unique(c("BiocVersion", pkgs))
         } else
-            stop(
-                "To use Bioconductor version '", version, "', ",
-                tolower(action), " ", npkgs, " packages with\n",
-                "    \"BiocManager::install(version = '", version, "')\"",
-                call. = FALSE
+            stop(sprintf(paste0(
+                "To use Bioconductor version '%s', %s %d packages with\n",
+                "  \"BiocManager::install(version = '%s')\""),
+                version, tolower(action), npkgs, version), call. = FALSE
             )
     }
 
