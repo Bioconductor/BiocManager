@@ -131,11 +131,14 @@
 }
 
 .install_ask_up_or_down_grade <-
-    function(version, cmp)
+    function(version, cmp, ask)
 {
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     txt <- sprintf("%s Bioconductor to version '%s'? [y/n]: ", action, version)
-    .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
+    if (ask) {
+        .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
+    }
+    TRUE
 }
 
 .install <-
@@ -191,7 +194,7 @@
 }
 
 .install_updated_version <-
-    function(update, repos, ...)
+    function(update, repos, ask, ...)
 {
     valid <- valid()
 
@@ -199,16 +202,20 @@
     if (is.null(pkgs) || !update)
         return(pkgs)
 
-    answer <- .getAnswer(
-        sprintf(
-            "reinstall %d packages for Bioconductor version %s? [y/n]: ",
-            length(pkgs), version()
-        ),
-        allowed = c("y", "Y", "n", "N")
-    )
-    if (answer == "y")
-        .install(pkgs, repos, ...)
+    if (ask) {
+        answer <- .getAnswer(
+            sprintf(
+                "reinstall %d packages for Bioconductor version %s? [y/n]: ",
+                length(pkgs), version()
+            ),
+            allowed = c("y", "Y", "n", "N")
+        )
 
+        if (answer == "n")
+            return(pkgs)
+    }
+
+    .install(pkgs, repos, ...)
     pkgs
 }
 
@@ -330,7 +337,7 @@ install <-
 
     cmp <- .version_compare(version, version())
     if (cmp != 0L) {
-        .install_ask_up_or_down_grade(version, cmp) ||
+        .install_ask_up_or_down_grade(version, cmp, ask) ||
             .stop("Bioconductor version not changed")
         pkgs <- unique(c("BiocVersion", pkgs))
     }
@@ -346,7 +353,7 @@ install <-
     if (update && cmp == 0L) {
         .install_update(repos, ask, ...)
     } else if (cmp != 0L) {
-        .install_updated_version(update, repos, ...)
+        .install_updated_version(update, repos, ask, ...)
     }
 
     invisible(pkgs)
