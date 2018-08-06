@@ -130,6 +130,13 @@
     TRUE
 }
 
+.resolve_npkgs <- function(installed, repos, type = getOption("pkgType")) {
+    contribUrl <- contrib.url(repos, type=type)
+
+    availPkgs <- available.packages(contribUrl, type=type)
+    sum(rownames(installed) %in% availPkgs)
+}
+
 .install_ask_up_or_down_grade <-
     function(version, cmp, ask)
 {
@@ -331,15 +338,33 @@ install <-
     )
     version <- .version_validate(version)
 
-    if (!"BiocVersion" %in% rownames(installed.packages())) {
+    inst <- installed.packages()
+    if (!"BiocVersion" %in% rownames(inst)) {
         pkgs <- unique(c("BiocVersion", pkgs))
     }
 
     cmp <- .version_compare(version, version())
+    action <- if (cmp < 0) "Downgrade" else "Upgrade"
+    repos <- repositories(site_repository, version = version)
+    biocrepos <- repos[names(repos) != "CRAN"]
+
     if (cmp != 0L) {
         .install_ask_up_or_down_grade(version, cmp, ask) ||
             .stop("Bioconductor version not changed")
         pkgs <- unique(c("BiocVersion", pkgs))
+        npkgs <- .resolve_npkgs(inst, biocrepos)
+        if (!length(pkgs)) {
+            .install_ask_up_or_down_grade(version, npkgs, cmp, action) ||
+                .stop("Bioconductor version not changed")
+            pkgs <- unique(c("BiocVersion", pkgs))
+        } else {
+            fmt <- paste0(c(
+                "To use Bioconductor version '%s', %s %d packages with",
+                "\n    \"BiocManager::install(version = '%s')\""))
+            stop(sprintf(fmt, version, tolower(action), npkgs, version),
+                call. = FALSE
+            )
+        }
     }
 
     .message(
@@ -348,7 +373,6 @@ install <-
         sub(" version", "", R.version.string)
     )
 
-    repos <- repositories(site_repository, version = version)
     pkgs <- .install(pkgs, repos = repos, ...)
     if (update && cmp == 0L) {
         .install_update(repos, ask, ...)
