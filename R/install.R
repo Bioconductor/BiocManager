@@ -346,21 +346,16 @@ install <-
     biocrepos <- repos[names(repos) != "CRAN"]
 
     if (cmp != 0L) {
-        .install_ask_up_or_down_grade(version, cmp, ask) ||
-            .stop("Bioconductor version not changed")
         pkgs <- unique(c("BiocVersion", pkgs))
         npkgs <- .resolve_npkgs(inst, biocrepos)
         if (!length(pkgs)) {
-            .install_ask_up_or_down_grade(version, npkgs, cmp, action) ||
+            .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
                 .stop("Bioconductor version not changed")
-            pkgs <- unique(c("BiocVersion", pkgs))
         } else {
             fmt <- paste0(c(
-                "To use Bioconductor version '%s', %s %d packages with",
+                "To use Bioconductor version '%s', first %s %d packages with",
                 "\n    \"BiocManager::install(version = '%s')\""))
-            stop(sprintf(fmt, version, tolower(action), npkgs, version),
-                call. = FALSE
-            )
+            .stop(sprintf(fmt, version, tolower(action), npkgs, version))
         }
     }
 

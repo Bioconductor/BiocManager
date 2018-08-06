@@ -161,3 +161,13 @@ test_that(".install_ask_up_or_down_grade() works non-interactively", {
     expect_equal(FALSE, .install_ask_up_or_down_grade("xx", TRUE, ask = TRUE))
     expect_equal(TRUE, .install_ask_up_or_down_grade("xx", TRUE, ask = FALSE))
 })
+
+test_that("install() works when there is no version bump", {
+    expect_true(valid())
+
+    is_devel <- map[version() == map$Bioc, , drop=FALSE][1, 3] == "devel"
+    incr <- -1L * is_devel
+    version <-
+        package_version(paste(version()$major, version()$minor + incr, sep="."))
+    ## expect_error(install(version = version)
+})
