@@ -138,11 +138,14 @@
 }
 
 .install_ask_up_or_down_grade <-
-    function(version, npkgs, cmp, action)
+    function(version, cmp, ask)
 {
-    txt <- sprintf("%s %d packages to Bioconductor version '%s'? [y/n]: ",
-        action, npkgs, version)
-    .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
+    action <- if (cmp < 0) "Downgrade" else "Upgrade"
+    txt <- sprintf("%s Bioconductor to version '%s'? [y/n]: ", action, version)
+    if (ask) {
+        .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
+    }
+    TRUE
 }
 
 .install <-
@@ -198,7 +201,7 @@
 }
 
 .install_updated_version <-
-    function(update, repos, ...)
+    function(update, repos, ask, ...)
 {
     valid <- valid()
 
@@ -206,16 +209,20 @@
     if (is.null(pkgs) || !update)
         return(pkgs)
 
-    answer <- .getAnswer(
-        sprintf(
-            "reinstall %d packages for Bioconductor version %s? [y/n]: ",
-            length(pkgs), version()
-        ),
-        allowed = c("y", "Y", "n", "N")
-    )
-    if (answer == "y")
-        .install(pkgs, repos, ...)
+    if (ask) {
+        answer <- .getAnswer(
+            sprintf(
+                "reinstall %d packages for Bioconductor version %s? [y/n]: ",
+                length(pkgs), version()
+            ),
+            allowed = c("y", "Y", "n", "N")
+        )
 
+        if (answer == "n")
+            return(pkgs)
+    }
+
+    .install(pkgs, repos, ...)
     pkgs
 }
 
@@ -342,6 +349,9 @@ install <-
     biocrepos <- repos[names(repos) != "CRAN"]
 
     if (cmp != 0L) {
+        .install_ask_up_or_down_grade(version, cmp, ask) ||
+            .stop("Bioconductor version not changed")
+        pkgs <- unique(c("BiocVersion", pkgs))
         npkgs <- .resolve_npkgs(inst, biocrepos)
         if (!length(pkgs)) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, action) ||
@@ -367,7 +377,7 @@ install <-
     if (update && cmp == 0L) {
         .install_update(repos, ask, ...)
     } else if (cmp != 0L) {
-        .install_updated_version(update, repos, ...)
+        .install_updated_version(update, repos, ask, ...)
     }
 
     invisible(pkgs)
