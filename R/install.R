@@ -142,10 +142,7 @@
 {
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     txt <- sprintf("%s Bioconductor to version '%s'? [y/n]: ", action, version)
-    if (ask) {
-        .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
-    }
-    TRUE
+    !ask || .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
 }
 
 .install <-
