@@ -141,7 +141,7 @@
     function(version, npkgs, cmp, ask)
 {
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
-    txt <- sprintf("%s %d Bioconductor packages to version '%s'? [y/n]: ",
+    txt <- sprintf("%s %d packages to Bioconductor version '%s'? [y/n]: ",
         action, npkgs, version)
     !ask || .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
 }
