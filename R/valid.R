@@ -80,21 +80,25 @@ valid <-
         type=type)
     too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
 
-    value <- !nrow(too_new) & is.null(out_of_date)
-    result <- structure(
-        list(out_of_date = out_of_date, too_new = too_new),
-        class="biocValid"
-    )
+    result <- !nrow(too_new) && is.null(out_of_date)
 
-    if (NROW(out_of_date) + NROW(too_new) != 0L) {
-        .warning(
-            "%d packages out-of-date; %d packages too new",
-            NROW(out_of_date), NROW(too_new)
+    if (!result) {
+        result <- structure(
+            list(out_of_date = out_of_date, too_new = too_new),
+            class="biocValid"
         )
+
+        if (NROW(out_of_date) + NROW(too_new) != 0L) {
+            .warning(
+                "%d packages out-of-date; %d packages too new",
+                NROW(out_of_date), NROW(too_new)
+            )
+        }
+
     }
 
-    print(result)
-    return(invisible(value))
+    result
+
 }
 
 #' @rdname valid
