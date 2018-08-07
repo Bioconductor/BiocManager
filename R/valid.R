@@ -80,8 +80,9 @@ valid <-
         type=type)
     too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
 
+    value <- !nrow(too_new) & is.null(out_of_date)
     result <- structure(
-        list(out_of_date=out_of_date, too_new = too_new),
+        list(out_of_date = out_of_date, too_new = too_new),
         class="biocValid"
     )
 
@@ -92,7 +93,8 @@ valid <-
         )
     }
 
-    result
+    print(result)
+    return(invisible(value))
 }
 
 #' @rdname valid
