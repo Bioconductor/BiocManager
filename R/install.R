@@ -138,10 +138,11 @@
 }
 
 .install_ask_up_or_down_grade <-
-    function(version, cmp, ask)
+    function(version, npkgs, cmp, ask)
 {
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
-    txt <- sprintf("%s Bioconductor to version '%s'? [y/n]: ", action, version)
+    txt <- sprintf("%s %d Bioconductor packages to version '%s'? [y/n]: ",
+        action, npkgs, version)
     !ask || .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
 }
 
@@ -348,7 +349,7 @@ install <-
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
         npkgs <- .resolve_npkgs(inst, biocrepos)
-        if (!length(pkgs)) {
+        if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
                 .stop("Bioconductor version not changed")
         } else {
