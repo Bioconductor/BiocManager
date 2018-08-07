@@ -169,8 +169,8 @@ test_that(".install_ask_up_or_down_grade() works non-interactively", {
 })
 
 test_that("install() works when there is no version bump", {
-    # Does not pass when package has higher version
-    # expect_true(valid())
+    expect_lte(1L, NROW(valid()$too_new))
+    expect_equal(0L, NROW(valid()$out_of_date))
 
     map <- BiocManager:::.version_map()
     is_devel <- map[version() == map$Bioc, , drop=FALSE][1, 3] == "devel"
