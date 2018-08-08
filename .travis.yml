@@ -4,7 +4,11 @@ language: r
 sudo: false
 cache: packages
 
-r: bioc-devel
+r:
+  - bioc-devel
+  - oldrel
+  - release
+  - devel
 
 # Strict checks in place
 warnings_are_errors: false
@@ -25,6 +29,7 @@ r_packages:
 
 bioc_packages:
   - BiocVersion
+  - BiocStyle
 
 # Test code coverage
 r_github_packages:
