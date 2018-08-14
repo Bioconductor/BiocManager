@@ -42,6 +42,8 @@
 #'     `\link{available.packages}()`.
 #' @param filters character(1) Filter available packages to check
 #'     validity against; see `\link{available.packages}()`.
+#' @param version `character(1)` _Bioconductor_ version to check against,
+#'     e.g., `version = "3.8"`.
 #' @param \dots Additional arguments, passed to
 #'     `BiocManager::\link{install}()` when `fix=TRUE`.
 #' @return `biocValid` list object with elements `too_new` and
@@ -59,7 +61,7 @@
 valid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-             filters=NULL, ...)
+             filters=NULL, version=BiocManager::version(), ...)
 {
     if (!is.matrix(pkgs)) {
         if (is.character(pkgs)) {
@@ -71,7 +73,8 @@ valid <-
             )
         }
     }
-    repos <- repositories()
+    version <- .version_validate(version)
+    repos <- repositories(version = version)
     contribUrl <- contrib.url(repos, type=type)
 
     availPkgs <- available.packages(contribUrl, type=type, filters=filters)

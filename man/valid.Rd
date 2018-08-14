@@ -7,7 +7,7 @@
 \usage{
 valid(pkgs = installed.packages(lib.loc, priority = priority),
   lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
-  filters = NULL, ...)
+  filters = NULL, version = BiocManager::version(), ...)
 
 \method{print}{biocValid}(x, ...)
 }
@@ -27,6 +27,9 @@ binary, source) to check validity against; see
 
 \item{filters}{character(1) Filter available packages to check
 validity against; see \code{\link{available.packages}()}.}
+
+\item{version}{\code{character(1)} \emph{Bioconductor} version to check against,
+e.g., \code{version = "3.8"}.}
 
 \item{\dots}{Additional arguments, passed to
 \code{BiocManager::\link{install}()} when \code{fix=TRUE}.}
