@@ -11,9 +11,6 @@ USER VISIBLE CHANGES
     o valid() returns TRUE for valid Bioconductor installations otherwise,
     it prints a report of out-of-date and/or too new packages
 
-    o valid() allows user to specify the Bioconductor version from which to
-    check packages against, defaults to the user-installed version
-
 MINOR CHANGES
 
     o updated unit tests for install()
