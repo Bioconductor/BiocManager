@@ -130,11 +130,8 @@
     TRUE
 }
 
-.resolve_npkgs <- function(installed, repos, type = getOption("pkgType")) {
-    contribUrl <- contrib.url(repos, type=type)
-
-    availPkgs <- available.packages(contribUrl, type=type)
-    sum(rownames(installed) %in% availPkgs)
+.resolve_npkgs <- function(valid) {
+    sum(nrow(valid$too_new), nrow(valid$out_of_date))
 }
 
 .install_ask_up_or_down_grade <-
@@ -344,11 +341,11 @@ install <-
     cmp <- .version_compare(version, version())
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     repos <- repositories(site_repository, version = version)
-    biocrepos <- repos[names(repos) != "CRAN"]
 
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
-        npkgs <- .resolve_npkgs(inst, biocrepos)
+        valist <- suppressWarnings(valid(version = version))
+        npkgs <- .resolve_npkgs(valist)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
                 .stop("Bioconductor version not changed")
@@ -370,7 +367,7 @@ install <-
     if (update && cmp == 0L) {
         .install_update(repos, ask, ...)
     } else if (cmp != 0L) {
-        .install_updated_version(update, repos, ask, ...)
+        .install_updated_version(valist, update, repos, ask, ...)
     }
 
     invisible(pkgs)
