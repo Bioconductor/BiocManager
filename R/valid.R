@@ -78,9 +78,10 @@ valid <-
     contribUrl <- contrib.url(repos, type=type)
 
     availPkgs <- available.packages(contribUrl, type=type, filters=filters)
-    out_of_date <- old.packages(lib.loc, repos=repositories(),
-        instPkgs=pkgs, available=availPkgs, checkBuilt=TRUE,
-        type=type)
+
+    out_of_date <- old.packages(lib.loc, repos=repos, instPkgs=pkgs,
+        available=availPkgs, checkBuilt=TRUE, type=type)
+
     too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
 
     result <- !nrow(too_new) && is.null(out_of_date)
