@@ -196,10 +196,8 @@
 }
 
 .install_updated_version <-
-    function(update, repos, ask, ...)
+    function(valid, update, repos, ask, ...)
 {
-    valid <- valid()
-
     pkgs <- c(rownames(valid$too_new), rownames(valid$out_of_date))
     if (is.null(pkgs) || !update)
         return(pkgs)
