@@ -9,6 +9,42 @@
     instPkgs[too_new, c("Version", "LibPath"), drop=FALSE]
 }
 
+.valid <- function(pkgs = installed.packages(lib.loc, priority=priority),
+    lib.loc=NULL, priority="NA", type=getOption("pkgType"),
+    filters=NULL, ..., version = BiocManager::version()) {
+
+    version <- .version_validate(version)
+    repos <- repositories(version = version)
+    contribUrl <- contrib.url(repos, type=type)
+
+    availPkgs <- available.packages(contribUrl, type=type, filters=filters)
+
+    out_of_date <- old.packages(lib.loc, repos=repos, instPkgs=pkgs,
+        available=availPkgs, checkBuilt=TRUE, type=type)
+
+    too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
+
+    result <- !nrow(too_new) && is.null(out_of_date)
+
+    if (!result) {
+        result <- structure(
+            list(out_of_date = out_of_date, too_new = too_new),
+            class="biocValid"
+        )
+
+        if (NROW(out_of_date) + NROW(too_new) != 0L) {
+            .warning(
+                "%d packages out-of-date; %d packages too new",
+                NROW(out_of_date), NROW(too_new)
+            )
+        }
+
+    }
+
+    result
+
+}
+
 #' Validate installed package versions against correct versions.
 #'
 #' Check that installed packages are consistent (neither out-of-date
@@ -42,8 +78,6 @@
 #'     `\link{available.packages}()`.
 #' @param filters character(1) Filter available packages to check
 #'     validity against; see `\link{available.packages}()`.
-#' @param version `character(1)` _Bioconductor_ version to check against,
-#'     e.g., `version = "3.8"`.
 #' @param \dots Additional arguments, passed to
 #'     `BiocManager::\link{install}()` when `fix=TRUE`.
 #' @return `biocValid` list object with elements `too_new` and
@@ -61,7 +95,7 @@
 valid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-             filters=NULL, version=BiocManager::version(), ...)
+             filters=NULL, ...)
 {
     if (!is.matrix(pkgs)) {
         if (is.character(pkgs)) {
@@ -73,36 +107,7 @@ valid <-
             )
         }
     }
-    version <- .version_validate(version)
-    repos <- repositories(version = version)
-    contribUrl <- contrib.url(repos, type=type)
-
-    availPkgs <- available.packages(contribUrl, type=type, filters=filters)
-
-    out_of_date <- old.packages(lib.loc, repos=repos, instPkgs=pkgs,
-        available=availPkgs, checkBuilt=TRUE, type=type)
-
-    too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
-
-    result <- !nrow(too_new) && is.null(out_of_date)
-
-    if (!result) {
-        result <- structure(
-            list(out_of_date = out_of_date, too_new = too_new),
-            class="biocValid"
-        )
-
-        if (NROW(out_of_date) + NROW(too_new) != 0L) {
-            .warning(
-                "%d packages out-of-date; %d packages too new",
-                NROW(out_of_date), NROW(too_new)
-            )
-        }
-
-    }
-
-    result
-
+    .valid(pkgs, lib.loc, priority, type, filters, ...)
 }
 
 #' @rdname valid

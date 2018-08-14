@@ -342,7 +342,7 @@ install <-
 
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
-        valist <- suppressWarnings(valid(version = version))
+        valist <- suppressWarnings(.valid(version = version))
         npkgs <- .resolve_npkgs(valist)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
