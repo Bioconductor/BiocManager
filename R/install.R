@@ -356,7 +356,7 @@ install <-
             fmt <- paste0(c(
                 "To use Bioconductor version '%s', first %s %d packages with",
                 "\n    \"BiocManager::install(version = '%s')\""))
-            .stop(sprintf(fmt, version, tolower(action), npkgs, version))
+            .stop(fmt, version, tolower(action), npkgs, version)
         }
     }
 
