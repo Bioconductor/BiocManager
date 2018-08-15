@@ -6,9 +6,7 @@ cache: packages
 
 r:
   - bioc-devel
-  - oldrel
-  - release
-  - devel
+  - bioc-release
 
 # Strict checks in place
 warnings_are_errors: false
