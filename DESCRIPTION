@@ -20,4 +20,3 @@ BugReports: https://github.com/Bioconductor/BiocManager/issues
 VignetteBuilder: knitr
 License: Artistic-2.0
 RoxygenNote: 6.1.0
-Encoding: UTF-8
