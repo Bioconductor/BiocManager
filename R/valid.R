@@ -31,18 +31,8 @@
             list(out_of_date = out_of_date, too_new = too_new),
             class="biocValid"
         )
-
-        if (NROW(out_of_date) + NROW(too_new) != 0L) {
-            .warning(
-                "%d packages out-of-date; %d packages too new",
-                NROW(out_of_date), NROW(too_new)
-            )
-        }
-
     }
-
     result
-
 }
 
 #' Validate installed package versions against correct versions.
@@ -107,7 +97,18 @@ valid <-
             )
         }
     }
-    .valid(pkgs, lib.loc, priority, type, filters, ...)
+    result <- .valid(pkgs, lib.loc, priority, type, filters, ...)
+    if (!isTRUE(result)) {
+        out_of_date <- result$out_of_date
+        too_new <- result$too_new
+        if (NROW(out_of_date) + NROW(too_new) != 0L) {
+            .warning(
+                "%d packages out-of-date; %d packages too new",
+                NROW(out_of_date), NROW(too_new)
+            )
+        }
+    }
+    result
 }
 
 #' @rdname valid
