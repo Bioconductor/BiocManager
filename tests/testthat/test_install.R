@@ -171,7 +171,7 @@ test_that(".install_ask_up_or_down_grade() works non-interactively", {
 test_that("install() works when there is no version bump", {
     res <- valid()
     if (!isTRUE(res)) {
-        expect_lte(1L, NROW(res$too_new))
+        expect_lte(NROW(res$too_new), 1L)
         expect_equal(0L, NROW(res$out_of_date))
     } else
         expect_true(res)
