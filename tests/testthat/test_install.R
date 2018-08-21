@@ -172,7 +172,7 @@ test_that("install() works when there is no version bump", {
     res <- valid()
     if (!isTRUE(res)) {
         expect_lte(NROW(res$too_new), 1L)
-        expect_equal(0L, NROW(res$out_of_date))
+        expect_lte(NROW(res$out_of_date), 1L)
     } else
         expect_true(res)
 
