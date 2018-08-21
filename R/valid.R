@@ -9,6 +9,32 @@
     instPkgs[too_new, c("Version", "LibPath"), drop=FALSE]
 }
 
+.valid <- function(pkgs = installed.packages(lib.loc, priority=priority),
+    lib.loc=NULL, priority="NA", type=getOption("pkgType"),
+    filters=NULL, ..., version = BiocManager::version()) {
+
+    version <- .version_validate(version)
+    repos <- repositories(version = version)
+    contribUrl <- contrib.url(repos, type=type)
+
+    availPkgs <- available.packages(contribUrl, type=type, filters=filters)
+
+    out_of_date <- old.packages(lib.loc, repos=repos, instPkgs=pkgs,
+        available=availPkgs, checkBuilt=TRUE, type=type)
+
+    too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
+
+    result <- !nrow(too_new) && is.null(out_of_date)
+
+    if (!result) {
+        result <- structure(
+            list(out_of_date = out_of_date, too_new = too_new),
+            class="biocValid"
+        )
+    }
+    result
+}
+
 #' Validate installed package versions against correct versions.
 #'
 #' Check that installed packages are consistent (neither out-of-date
@@ -71,34 +97,18 @@ valid <-
             )
         }
     }
-    repos <- repositories()
-    contribUrl <- contrib.url(repos, type=type)
-
-    availPkgs <- available.packages(contribUrl, type=type, filters=filters)
-    out_of_date <- old.packages(lib.loc, repos=repositories(),
-        instPkgs=pkgs, available=availPkgs, checkBuilt=TRUE,
-        type=type)
-    too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
-
-    result <- !nrow(too_new) && is.null(out_of_date)
-
-    if (!result) {
-        result <- structure(
-            list(out_of_date = out_of_date, too_new = too_new),
-            class="biocValid"
-        )
-
+    result <- .valid(pkgs, lib.loc, priority, type, filters, ...)
+    if (!isTRUE(result)) {
+        out_of_date <- result$out_of_date
+        too_new <- result$too_new
         if (NROW(out_of_date) + NROW(too_new) != 0L) {
             .warning(
                 "%d packages out-of-date; %d packages too new",
                 NROW(out_of_date), NROW(too_new)
             )
         }
-
     }
-
     result
-
 }
 
 #' @rdname valid

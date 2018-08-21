@@ -130,11 +130,8 @@
     TRUE
 }
 
-.resolve_npkgs <- function(installed, repos, type = getOption("pkgType")) {
-    contribUrl <- contrib.url(repos, type=type)
-
-    availPkgs <- available.packages(contribUrl, type=type)
-    sum(rownames(installed) %in% availPkgs)
+.install_n_invalid_pkgs <- function(valid) {
+    sum(nrow(valid$too_new), nrow(valid$out_of_date))
 }
 
 .install_ask_up_or_down_grade <-
@@ -199,10 +196,8 @@
 }
 
 .install_updated_version <-
-    function(update, repos, ask, ...)
+    function(valid, update, repos, ask, ...)
 {
-    valid <- valid()
-
     pkgs <- c(rownames(valid$too_new), rownames(valid$out_of_date))
     if (is.null(pkgs) || !update)
         return(pkgs)
@@ -344,11 +339,11 @@ install <-
     cmp <- .version_compare(version, version())
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     repos <- repositories(site_repository, version = version)
-    biocrepos <- repos[names(repos) != "CRAN"]
 
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
-        npkgs <- .resolve_npkgs(inst, biocrepos)
+        valist <- .valid(version = version)
+        npkgs <- .install_n_invalid_pkgs(valist)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
                 .stop("Bioconductor version not changed")
@@ -356,7 +351,7 @@ install <-
             fmt <- paste0(c(
                 "To use Bioconductor version '%s', first %s %d packages with",
                 "\n    \"BiocManager::install(version = '%s')\""))
-            .stop(sprintf(fmt, version, tolower(action), npkgs, version))
+            .stop(fmt, version, tolower(action), npkgs, version)
         }
     }
 
@@ -370,7 +365,7 @@ install <-
     if (update && cmp == 0L) {
         .install_update(repos, ask, ...)
     } else if (cmp != 0L) {
-        .install_updated_version(update, repos, ask, ...)
+        .install_updated_version(valist, update, repos, ask, ...)
     }
 
     invisible(pkgs)
