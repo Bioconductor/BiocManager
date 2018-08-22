@@ -18,6 +18,11 @@ MINOR CHANGES
     o when changing versions via 'install(version = "x.x")', Bioconductor
     packages to be up or down-graded are now enumerated
 
+BUG FIXES
+
+    o Remove tests that were dependent on system configuration rather
+    than the package itself
+
 CHANGES IN VERSION 1.31.0
 -------------------------
 

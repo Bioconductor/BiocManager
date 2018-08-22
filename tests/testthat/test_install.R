@@ -168,14 +168,7 @@ test_that(".install_ask_up_or_down_grade() works non-interactively", {
     )
 })
 
-test_that("install() works when there is no version bump", {
-    res <- valid()
-    if (!isTRUE(res)) {
-        expect_lte(NROW(res$too_new), 1L)
-        expect_lte(NROW(res$out_of_date), 1L)
-    } else
-        expect_true(res)
-
+test_that("install() fails with different version (non-interactive)", {
     map <- BiocManager:::.version_map()
     incr <- 1L
     version <-
