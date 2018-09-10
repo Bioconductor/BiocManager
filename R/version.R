@@ -6,6 +6,10 @@
 .VERSION_MAP_UNABLE_TO_VALIDATE <-
     "Bioconductor version cannot be validated; no internet connection?"
 
+.NO_ONLINE_VERSION_DIAGNOSIS <-
+    "Bioconductor version online validation disabled;
+    see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+
 .VERSION_SENTINEL <- local({
     version <- package_version(list())
     class(version) <- c("unknown_version", class(version))
@@ -93,6 +97,14 @@
 .version_validity <-
     function(version)
 {
+    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
+    if (is.null(opt)) {
+        opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
+    }
+
+    if (!opt)
+        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
     version <- .package_version(version)
