@@ -287,9 +287,11 @@
 #' `BiocManager::\link{repositories}()` returns the _Bioconductor_ and
 #' CRAN repositories used by `install()`.
 #'
-#' `\link{install.packages}()` installs the packages themselves.
+#' `\link{install.packages}()` installs the packages themselves (used by
+#' `BiocManager::install` internally).
 #'
-#' `\link{update.packages}()` updates all installed packages.
+#' `\link{update.packages}()` updates all installed packages (used by
+#' `BiocManager::install` internally).
 #'
 #' `\link{chooseBioCmirror}()` allows choice of a mirror from all
 #' public _Bioconductor_ mirrors.

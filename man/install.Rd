@@ -95,9 +95,11 @@ BiocManager::install("IRanges", type="source")
 \code{BiocManager::\link{repositories}()} returns the \emph{Bioconductor} and
 CRAN repositories used by \code{install()}.
 
-\code{\link{install.packages}()} installs the packages themselves.
+\code{\link{install.packages}()} installs the packages themselves (used by
+\code{BiocManager::install} internally).
 
-\code{\link{update.packages}()} updates all installed packages.
+\code{\link{update.packages}()} updates all installed packages (used by
+\code{BiocManager::install} internally).
 
 \code{\link{chooseBioCmirror}()} allows choice of a mirror from all
 public \emph{Bioconductor} mirrors.
