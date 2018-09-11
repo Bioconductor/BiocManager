@@ -131,7 +131,10 @@
 }
 
 .install_n_invalid_pkgs <- function(valid) {
-    sum(nrow(valid$too_new), nrow(valid$out_of_date))
+    if (isTRUE(valid))
+        0L
+    else
+        sum(nrow(valid$too_new), nrow(valid$out_of_date))
 }
 
 .install_ask_up_or_down_grade <-
@@ -198,7 +201,11 @@
 .install_updated_version <-
     function(valid, update, repos, ask, ...)
 {
-    pkgs <- c(rownames(valid$too_new), rownames(valid$out_of_date))
+    if (isTRUE(valid))
+        pkgs <- "BiocVersion"
+    else
+        pkgs <- c(rownames(valid$too_new), rownames(valid$out_of_date))
+
     if (is.null(pkgs) || !update)
         return(pkgs)
 
@@ -345,7 +352,7 @@ install <-
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
         valist <- .valid(version = version)
-        npkgs <- .install_n_invalid_pkgs(valist)
+        npkgs <- .install_n_invalid_pkgs(valist) + length(pkgs)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
                 .stop("Bioconductor version not changed")
