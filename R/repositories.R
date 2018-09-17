@@ -1,17 +1,27 @@
+#' .repositories_base
+#'
+#' @description Update the CRAN repository when none selected by default
+#' ('@CRAN@') or when an MRAN snapshot pattern is present. For more info on
+#' MRAN, see the details.
+#'
+#' @details
+#' Microsoft R Open is shipped with getOption("repos")[["CRAN"]]
+#' pointing to a *snapshot* of CRAN (e.g.
+#' https://mran.microsoft.com/snapshot/2017-05-01), and not to a
+#' CRAN mirror that is current. For the current release and devel
+#' BioC versions, repositories() needs to point to a CRAN mirror
+#' that is current so install() and valid() behave the same for
+#' all BioC users, whether they use mainstream R or Microsoft R
+#' Open.  However, since old versions of BioC are frozen, it would
+#' probably make sense to point to a *snapshot* of CRAN instead of
+#' a CRAN mirror that is current.
+#'
+#' @keywords internal
+#'
 .repositories_base <-
     function()
 {
     repos <- getOption("repos")
-    ## Microsoft R Open is shipped with getOption("repos")[["CRAN"]]
-    ## pointing to a *snapshot* of CRAN (e.g.
-    ## https://mran.microsoft.com/snapshot/2017-05-01), and not to a
-    ## CRAN mirror that is current. For the current release and devel
-    ## BioC versions, repositories() needs to point to a CRAN mirror
-    ## that is current so install() and valid() behave the same for
-    ## all BioC users, whether they use mainstream R or Microsoft R
-    ## Open.  However, since old versions of BioC are frozen, it would
-    ## probably make sense to point to a *snapshot* of CRAN instead of
-    ## a CRAN mirror that is current.
     cran <- repos[["CRAN"]]
     snapshot_pattern <- "/snapshot/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
     if (cran == "@CRAN@" || grepl(snapshot_pattern, cran))
