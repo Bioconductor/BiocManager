@@ -24,8 +24,8 @@
     repos <- getOption("repos")
     cran <- repos[["CRAN"]]
     snapshot_pattern <- "/snapshot/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-    if (cran == "@CRAN@" || grepl(snapshot_pattern, cran))
-        repos[["CRAN"]] <- "https://cran.rstudio.com"
+    creps <- "@CRAN@" %in% repos | grepl(snapshot_pattern, repos)
+    repos[creps] <- "https://cran.rstudio.com"
 
     repos
 }
