@@ -22,9 +22,9 @@
     function()
 {
     repos <- getOption("repos")
-    cran <- repos[["CRAN"]]
+
     snapshot_pattern <- "/snapshot/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-    creps <- "@CRAN@" %in% repos | grepl(snapshot_pattern, repos)
+    creps <- repos %in% "@CRAN@" | grepl(snapshot_pattern, repos)
     repos[creps] <- "https://cran.rstudio.com"
 
     repos

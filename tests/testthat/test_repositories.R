@@ -33,3 +33,17 @@ test_that("repositories(version = 'devel') works", {
         repositories(version = "devel")
     )
 })
+
+test_that("repositories helper replaces correct URL", {
+    op <- getOption("repos")
+    repos <- c(CRAN1 = "https://cloud.r-project.org/", CRAN2 = "@CRAN@",
+        CRAN3 = "https://mran.microsoft.com/snapshot/2017-05-01")
+    options(repos = repos)
+    expect_equal(
+        .repositories_base(),
+        c(CRAN1 = "https://cloud.r-project.org/",
+        CRAN2 = "https://cran.rstudio.com",
+        CRAN3 = "https://cran.rstudio.com")
+    )
+    options(repos = op)
+})
