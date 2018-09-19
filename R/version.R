@@ -36,9 +36,24 @@
     else 0L
 }
 
+.version_validity_online_check <-
+    function()
+{
+    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
+    if (is.null(opt)) {
+        opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
+    }
+
+    isTRUE(as.logical(opt))
+}
+
 .version_map_get <-
     function()
 {
+    if (!.version_validity_online_check()) {
+        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+        return(.VERSION_MAP_SENTINEL)
+    }
 
     config <- "https://bioconductor.org/config.yaml"
     txt <- suppressWarnings(tryCatch({
@@ -94,25 +109,13 @@
     }
 })
 
-.version_validity_online_check <-
-    function()
-{
-    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
-    if (is.null(opt)) {
-        opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
-    }
-    opt <- isTRUE(as.logical(opt))
-
-    if (!opt)
-        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
-
-    opt
-}
-
 .version_validity <-
     function(version)
 {
-    .version_validity_online_check()
+    if (!.version_validity_online_check()) {
+        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+        return(TRUE)
+    }
 
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
@@ -141,7 +144,6 @@
             "Bioconductor version '%s' requires R version '%s'; %s",
             version, required, .VERSION_HELP
         ))
-
 
     TRUE
 }
