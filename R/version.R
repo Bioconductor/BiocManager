@@ -7,7 +7,7 @@
     "Bioconductor version cannot be validated; no internet connection?"
 
 .NO_ONLINE_VERSION_DIAGNOSIS <-
-    "Bioconductor version online validation disabled;
+    "Bioconductor online version validation disabled;
     see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
 
 .VERSION_SENTINEL <- local({
