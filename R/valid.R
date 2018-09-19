@@ -11,10 +11,10 @@
 
 .valid <- function(pkgs = installed.packages(lib.loc, priority=priority),
     lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-    filters=NULL, ..., version = BiocManager::version()) {
+    filters=NULL, ..., site_repository, version = BiocManager::version()) {
 
     version <- .version_validate(version)
-    repos <- repositories(version = version)
+    repos <- .repositories(site_repository, version = version)
     contribUrl <- contrib.url(repos, type=type)
 
     availPkgs <- available.packages(contribUrl, type=type, filters=filters)
@@ -70,6 +70,7 @@
 #'     validity against; see `\link{available.packages}()`.
 #' @param \dots Additional arguments, passed to
 #'     `BiocManager::\link{install}()` when `fix=TRUE`.
+#' @param site_repository `character(1)`. See `?install`.
 #' @return `biocValid` list object with elements `too_new` and
 #'     `out_of_date` containing `data.frame`s with packages and their
 #'     installed locations that are too new or out-of-date for the
@@ -85,7 +86,7 @@
 valid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-             filters=NULL, ...)
+             filters=NULL, ..., site_repository = character())
 {
     if (!is.matrix(pkgs)) {
         if (is.character(pkgs)) {
@@ -97,7 +98,10 @@ valid <-
             )
         }
     }
-    result <- .valid(pkgs, lib.loc, priority, type, filters, ...)
+    result <- .valid(
+        pkgs, lib.loc, priority, type, filters, ...,
+        site_repository = site_repository
+    )
     if (!isTRUE(result)) {
         out_of_date <- result$out_of_date
         too_new <- result$too_new
