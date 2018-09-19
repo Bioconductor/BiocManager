@@ -338,7 +338,7 @@ install <-
 
     cmp <- .version_compare(version, version())
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
-    repos <- repositories(site_repository, version = version)
+    repos <- .repositories(site_repository, version = version)
 
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
