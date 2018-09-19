@@ -38,34 +38,70 @@ test_that(".version_recommend() recommends update", {
 
 test_that(".version_validity_online_check() works", {
     ## environment variable
-    withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NA), {
-        expect_identical(.version_validity_online_check(), TRUE)
-    })
-
-    withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=TRUE), {
-        expect_identical(.version_validity_online_check(), TRUE)
-    })
-
-    withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        expect_warning({
-            value <- .version_validity_online_check()
+    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NULL), {
+        withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NA), {
+            expect_identical(.version_validity_online_check(), TRUE)
         })
-        expect_identical(value, FALSE)
+
+        withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=TRUE), {
+            expect_identical(.version_validity_online_check(), TRUE)
+        })
+
+        withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+            expect_identical(.version_validity_online_check(), FALSE)
+        })
     })
 
     ## options
-    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NULL), {
-        expect_identical(.version_validity_online_check(), TRUE)
+    withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NA), {
+        withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NULL), {
+            expect_identical(.version_validity_online_check(), TRUE)
+        })
     })
 
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=TRUE), {
         expect_identical(.version_validity_online_check(), TRUE)
+
+        ## prefer option to env
+        withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+            expect_identical(.version_validity_online_check(), TRUE)
+        })
     })
 
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        expect_warning({
-            value <- .version_validity_online_check()
+        expect_identical(.version_validity_online_check(), FALSE)
+
+        ## prefer option to env
+        withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=TRUE), {
+            expect_identical(.version_validity_online_check(), FALSE)
         })
-        expect_identical(value, FALSE)
+    })
+})
+
+test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
+    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+        expect_warning({
+            value <- .version_validity("1.2")
+        }, "Bioconductor online version validation disabled")
+        expect_identical(value, TRUE)
+    })
+})
+
+test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
+    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+        expect_warning({
+            value <- .version_validate("1.2")
+        }, "Bioconductor online version validation disabled")
+        expect_identical(value, package_version("1.2"))
+    })
+})
+
+
+test_that(".version_map_get() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
+    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+        expect_warning({
+            value <- .version_map_get()
+        }, "Bioconductor online version validation disabled")
+        expect_identical(value, .VERSION_MAP_SENTINEL)
     })
 })
