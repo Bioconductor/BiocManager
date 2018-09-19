@@ -35,8 +35,11 @@ test_that("repositories(version = 'devel') works", {
 })
 
 test_that("repositories helper replaces correct URL", {
-    repos <- c(CRAN1 = "https://cloud.r-project.org/", CRAN2 = "@CRAN@",
-        CRAN3 = "https://mran.microsoft.com/snapshot/2017-05-01")
+    repos <- c(
+        CRAN1 = "https://cloud.r-project.org/",
+        CRAN2 = "@CRAN@",
+        CRAN3 = "https://mran.microsoft.com/snapshot/2017-05-01"
+    )
     withr::with_options(list(repos = repos), {
         expect_equal(
             .repositories_base(),
