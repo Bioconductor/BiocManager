@@ -35,3 +35,37 @@ test_that(".version_recommend() recommends update", {
         "Bioconductor version '2.0' is out-of-date; the current release"
     ))
 })
+
+test_that(".version_validity_online_check() works", {
+    ## environment variable
+    withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NA), {
+        expect_identical(.version_validity_online_check(), TRUE)
+    })
+
+    withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=TRUE), {
+        expect_identical(.version_validity_online_check(), TRUE)
+    })
+
+    withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+        expect_warning({
+            value <- .version_validity_online_check()
+        })
+        expect_identical(value, FALSE)
+    })
+
+    ## options
+    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=NULL), {
+        expect_identical(.version_validity_online_check(), TRUE)
+    })
+
+    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=TRUE), {
+        expect_identical(.version_validity_online_check(), TRUE)
+    })
+
+    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+        expect_warning({
+            value <- .version_validity_online_check()
+        })
+        expect_identical(value, FALSE)
+    })
+})

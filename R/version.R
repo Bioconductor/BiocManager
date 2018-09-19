@@ -94,16 +94,25 @@
     }
 })
 
-.version_validity <-
-    function(version)
+.version_validity_online_check <-
+    function()
 {
     opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
     if (is.null(opt)) {
-        opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
+        opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
     }
+    opt <- isTRUE(as.logical(opt))
 
     if (!opt)
         .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+
+    opt
+}
+
+.version_validity <-
+    function(version)
+{
+    .version_validity_online_check()
 
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
