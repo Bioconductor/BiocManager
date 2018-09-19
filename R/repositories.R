@@ -13,8 +13,11 @@
     ## Open.  However, since old versions of BioC are frozen, it would
     ## probably make sense to point to a *snapshot* of CRAN instead of
     ## a CRAN mirror that is current.
+    name_is_CRAN <- names(repos) == "CRAN"
+    if (length(name_is_CRAN) == 0L)     # NULL names
+        name_is_CRAN <- logical(length(repos))
     snapshot_pattern <- "/snapshot/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-    rename <- names(repos) == "CRAN" & grepl(snapshot_pattern, repos)
+    rename <- name_is_CRAN & grepl(snapshot_pattern, repos)
 
     ## update "@CRAN@" to default
     rename <- rename | (repos == "@CRAN@")

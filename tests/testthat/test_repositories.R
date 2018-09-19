@@ -66,4 +66,15 @@ test_that("repositories helper replaces correct URL", {
     withr::with_options(list(repos = repos), {
         expect_equal(.repositories_base(), repos)
     })
+
+    ## edge cases?
+    repos <- character()                # no repositories
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), repos)
+    })
+
+    repos <- "@CRAN@"                   # unnamed
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), unname(default_repos))
+    })
 })
