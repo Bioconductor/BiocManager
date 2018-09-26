@@ -33,3 +33,48 @@ test_that("repositories(version = 'devel') works", {
         repositories(version = "devel")
     )
 })
+
+test_that("repositories helper replaces correct URL", {
+    default_repos <- c(CRAN = "https://cran.rstudio.com")
+
+    ## https://github.com/Bioconductor/BiocManager/issues/17
+    repos <- "http://cran.cnr.Berkeley.edu"
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), repos)
+    })
+
+    ## works as advertised
+    repos <- c(CRAN = "@CRAN@")         # provide default repo
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), default_repos)
+    })
+
+    repos <-                            # update CRAN-named repo with mran URL
+        c(CRAN = "https://mran.microsoft.com/snapshot/2017-05-01")
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), default_repos)
+    })
+
+    repos <-                            # DO NOT update non-CRAN mran
+        c(FOO = "https://mran.microsoft.com/snapshot/2017-05-01")
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), repos)
+    })
+
+    repos <-                            # DO NOT update non-mran CRAN
+        c(CRAN = "http://cran.cnr.Berkeley.edu")
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), repos)
+    })
+
+    ## edge cases?
+    repos <- character()                # no repositories
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), repos)
+    })
+
+    repos <- "@CRAN@"                   # unnamed
+    withr::with_options(list(repos = repos), {
+        expect_equal(.repositories_base(), unname(default_repos))
+    })
+})
