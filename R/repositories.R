@@ -30,6 +30,16 @@
     setNames(bioc_repos, names(paths))
 }
 
+.repositories <-
+    function(site_repository, version)
+{
+    base <- .repositories_base()
+    bioc <- .repositories_bioc(version)
+
+    repos <- c(site_repository = site_repository, bioc, base)
+    repos[!duplicated(names(repos))]
+}
+
 #' Display current Bioconductor and CRAN repositories.
 #'
 #' `repositories()` reports the URLs from which to install
@@ -77,10 +87,5 @@ repositories <-
         is.character(site_repository), !anyNA(site_repository)
     )
     version <- .version_validate(version)
-
-    base <- .repositories_base()
-    bioc <- .repositories_bioc(version)
-
-    repos <- c(site_repository = site_repository, bioc, base)
-    repos[!duplicated(names(repos))]
+    .repositories(site_repository, version)
 }

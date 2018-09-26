@@ -7,7 +7,7 @@
 \usage{
 valid(pkgs = installed.packages(lib.loc, priority = priority),
   lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
-  filters = NULL, ...)
+  filters = NULL, ..., site_repository = character())
 
 \method{print}{biocValid}(x, ...)
 }
@@ -30,6 +30,8 @@ validity against; see \code{\link{available.packages}()}.}
 
 \item{\dots}{Additional arguments, passed to
 \code{BiocManager::\link{install}()} when \code{fix=TRUE}.}
+
+\item{site_repository}{\code{character(1)}. See \code{?install}.}
 
 \item{x}{A `biocValid` object returned by `BiocManager::valid()`.}
 }
