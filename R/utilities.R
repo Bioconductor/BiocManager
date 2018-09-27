@@ -43,3 +43,15 @@
     warning(.msg(...), call.=call., immediate.=immediate.)
     invisible(TRUE)
 }
+
+isDevel <-
+    function()
+{
+    BiocManager::version() == BiocManager:::.version_bioc("devel")
+}
+
+isRelease <-
+    function()
+{
+    BiocManager::version() == BiocManager:::.version_bioc("release")
+}
