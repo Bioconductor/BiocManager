@@ -11,7 +11,7 @@
 
 .valid <- function(pkgs = installed.packages(lib.loc, priority=priority),
     lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-    filters=NULL, ..., site_repository, version = BiocManager::version()) {
+    filters=NULL, ..., site_repository=character(), version=BiocManager::version()) {
 
     version <- .version_validate(version)
     repos <- .repositories(site_repository, version = version)
