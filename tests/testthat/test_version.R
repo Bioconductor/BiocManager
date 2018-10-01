@@ -99,9 +99,7 @@ test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 
 test_that(".version_map_get() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        expect_warning({
-            value <- .version_map_get()
-        }, "Bioconductor online version validation disabled")
+        value <- .version_map_get()
         expect_identical(value, .VERSION_MAP_SENTINEL)
     })
 })

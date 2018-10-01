@@ -51,7 +51,6 @@
     function()
 {
     if (!.version_validity_online_check()) {
-        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
         return(.VERSION_MAP_SENTINEL)
     }
 
@@ -114,7 +113,7 @@
 {
     if (!.version_validity_online_check()) {
         .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
-        return(TRUE)
+        version <- .local_version()
     }
 
     if (identical(version, "devel"))
@@ -232,6 +231,15 @@
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
     map$R[map$BiocStatus == type]
+}
+
+.local_version <-
+    function()
+{
+    if ("BiocVersion" %in% rownames(installed.packages()))
+        packageVersion("BiocVersion")[, 1:2]
+    else
+        .VERSION_SENTINEL
 }
 
 #' Version of Bioconductor currently in use.
