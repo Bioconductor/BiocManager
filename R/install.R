@@ -199,28 +199,15 @@
 }
 
 .install_updated_version <-
-    function(valid, update, repos, ask, ...)
+    function(valid, update, repos, ...)
 {
     if (isTRUE(valid))
-        pkgs <- "BiocVersion"
+        return(valid)
     else
         pkgs <- c(rownames(valid$too_new), rownames(valid$out_of_date))
 
     if (is.null(pkgs) || !update)
         return(pkgs)
-
-    if (ask) {
-        answer <- .getAnswer(
-            sprintf(
-                "reinstall %d packages for Bioconductor version %s? [y/n]: ",
-                length(pkgs), version()
-            ),
-            allowed = c("y", "Y", "n", "N")
-        )
-
-        if (answer == "n")
-            return(pkgs)
-    }
 
     .install(pkgs, repos, ...)
     pkgs
@@ -374,7 +361,7 @@ install <-
     if (update && cmp == 0L) {
         .install_update(repos, ask, ...)
     } else if (cmp != 0L) {
-        .install_updated_version(valist, update, repos, ask, ...)
+        .install_updated_version(valist, update, repos, ...)
     }
 
     invisible(pkgs)
