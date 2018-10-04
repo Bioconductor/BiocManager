@@ -47,11 +47,11 @@
 isDevel <-
     function()
 {
-    BiocManager::version() == BiocManager:::.version_bioc("devel")
+    version() == .version_bioc("devel")
 }
 
 isRelease <-
     function()
 {
-    BiocManager::version() == BiocManager:::.version_bioc("release")
+    version() == .version_bioc("release")
 }
