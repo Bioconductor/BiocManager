@@ -1,3 +1,30 @@
+CHANGES IN VERSION 1.31.3
+-------------------------
+
+NEW FEATURES
+
+    o 'BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS' option allows users to skip
+    online version map validation. Local installation of 'BiocVersion' will be
+    used when this option is enabled.
+
+MINOR CHANGES
+
+    o Removed extra prompts when switching versions and updating packages
+
+    o Clarified 'See Also' documentation (@lwaldron #16)
+
+    o Added several unit tests to increase robustness (@mtmorgan)
+
+BUG FIXES
+
+    o Obtain CRAN 'repos' option independent of name (@kasperdanielhansen #17)
+
+    o Fixed a bug when switching to 'devel' version of Bioconductor
+    (@kasperdanielhansen #25)
+
+    o When installation is valid, return zero invalid packages rather than
+    accessing non-existent list structure
+
 CHANGES IN VERSION 1.31.2
 -------------------------
 
