@@ -15,7 +15,8 @@ Suggests:
     BiocVersion,
     remotes,
     testthat,
-    knitr
+    knitr,
+    withr
 BugReports: https://github.com/Bioconductor/BiocManager/issues
 VignetteBuilder: knitr
 License: Artistic-2.0

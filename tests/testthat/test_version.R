@@ -92,9 +92,8 @@ test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 
 test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        value <- .version_validate("1.2")
         if ("BiocVersion" %in% rownames(installed.packages()))
-            expect_identical(value, package_version("1.2"))
+            expect_identical(.version_validate("1.2"), package_version("1.2"))
         else
             expect_error(
                 .version_validate("1.2"),

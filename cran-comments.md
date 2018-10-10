@@ -6,7 +6,7 @@
 
 ## R CMD check results
 
-1 error | 0 warnings | 1 note
+1 error (old-rel) | 0 warnings | 1 note
 
 * checking package dependencies ... NOTE
 Packages suggested but not available for checking:
@@ -23,5 +23,5 @@ installed ... [0s/0s] ERROR
 
 ## revdepcheck results
 
-No reverse dependencies.
+No strong reverse dependencies.
 
