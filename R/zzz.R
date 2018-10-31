@@ -11,11 +11,7 @@
     }
 
     valid <- .version_validity(version)
-    if (identical(valid, .VERSION_MAP_UNABLE_TO_VALIDATE)) {
-        .warning(valid)
-        return()
-    }
-    isTRUE(valid) || .stop(valid)
+    isTRUE(valid) || .warning(valid)
 
     fmt <- paste0(
         "Bioconductor version %s (BiocManager %s), ",
