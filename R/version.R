@@ -173,7 +173,7 @@
     version <- .package_version(version)
 
     txt <- .version_validity(version)
-    isTRUE(txt) || .warning(txt)
+    isTRUE(txt) || .stop(txt)
 
     version
 }
