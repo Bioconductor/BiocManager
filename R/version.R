@@ -48,16 +48,20 @@
 }
 
 .version_map_get <-
-    function()
+    function(config = NULL)
 {
     if (!.version_validity_online_check()) {
         return(.VERSION_MAP_SENTINEL)
     }
 
-    config <- "https://bioconductor.org/config.yaml"
-    txt <- suppressWarnings(tryCatch({
-        readLines(config)
-    }, error = identity))
+    if (is.null(config))
+        config <- "https://bioconductor.org/config.yaml"
+
+    txt <- tryCatch(readLines(config), error = identity)
+    if (inherits(txt, "error") && startsWith(config, "https://")) {
+        config <- sub("https", "http", config)
+        txt <- tryCatch(readLines(config), error = identity)
+    }
     if (inherits(txt, "error"))
         return(.VERSION_MAP_SENTINEL)
 
