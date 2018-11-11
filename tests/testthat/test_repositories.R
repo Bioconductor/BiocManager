@@ -28,10 +28,12 @@ test_that("repositories() rejects invalid versions", {
 })
 
 test_that("repositories(version = 'devel') works", {
-    expect_equal(
-        repositories(version = .version_bioc("devel")),
-        repositories(version = "devel")
-    )
+    if (version() == .version_bioc("devel")) {
+        expect_equal(
+            repositories(version = .version_bioc("devel")),
+            repositories(version = "devel")
+        )
+    }
 })
 
 test_that("repositories helper replaces correct URL", {

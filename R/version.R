@@ -142,11 +142,12 @@
         ))
 
     required <- map$R[map$Bioc == version]
-    if (!getRversion()[, 1:2] %in% required)
+    if (!getRversion()[, 1:2] %in% required) {
         return(sprintf(
             "Bioconductor version '%s' requires R version '%s'; %s",
-            version, required, .VERSION_HELP
+            version, head(required, 1), .VERSION_HELP
         ))
+    }
 
     TRUE
 }
