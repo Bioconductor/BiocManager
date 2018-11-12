@@ -161,7 +161,7 @@
 
     r_version <- getRversion()[, 1:2]
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
-    if (status == "future")
+    if (identical(status, "future"))
         return(sprintf(
             "Bioconductor does not yet formally support R version '%s'",
             r_version
