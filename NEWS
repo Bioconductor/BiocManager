@@ -1,4 +1,24 @@
-CHANGES IN VERSION 1.31.3
+CHANGES IN VERSION 1.30.4
+-------------------------
+
+NEW FEATURES
+
+    o Provide an 'http' fallback when 'https' fails for accessing the version
+    map hosted on Bioconductor.org
+
+MINOR CHANGES
+
+    o Conform tests to devel and release R versions
+    o Add tests for the 'http' fallback scenarios
+
+BUG FIXES
+
+    o Fixed issue with multiple error version messages for Bioc version `3.9`
+    'devel' and 'future'
+    o Return a warning message instead of an error when unable to validate
+    a given version
+
+CHANGES IN VERSION 1.30.3
 -------------------------
 
 NEW FEATURES
@@ -25,7 +45,7 @@ BUG FIXES
     o When installation is valid, return zero invalid packages rather than
     accessing non-existent list structure
 
-CHANGES IN VERSION 1.31.2
+CHANGES IN VERSION 1.30.2
 -------------------------
 
 USER VISIBLE CHANGES
@@ -50,7 +70,7 @@ BUG FIXES
     o Remove tests that were dependent on system configuration rather
     than the package itself
 
-CHANGES IN VERSION 1.31.0
+CHANGES IN VERSION 1.30.1
 -------------------------
 
 USER VISIBLE CHANGES

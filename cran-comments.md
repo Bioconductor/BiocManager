@@ -1,8 +1,7 @@
 ## Test environments
-* local Ubuntu 18.04 LTS, R 3.5.1
+* local Ubuntu 18.04 LTS, R 3.5.1, R-devel
 * win-builder.r-project.org (release, devel)
 * travis-ci (linux): R 3.5.1, R-devel
-* appveyor-ci (win): R 3.5.1, R-devel
 
 ## R CMD check results
 
