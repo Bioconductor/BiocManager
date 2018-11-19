@@ -7,7 +7,6 @@ Authors@R: c(
         role = "aut", comment = c(ORCID = "0000-0002-5874-8148")),
     person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
         role = c("ctb", "cre"), comment = c(ORCID = "0000-0002-3242-0582")))
-Depends: R (>= 3.5.0)
 Imports:
     utils
 Suggests: 
