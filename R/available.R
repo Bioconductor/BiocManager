@@ -29,7 +29,7 @@ available <-
     )
     repos <- repositories()
     answer <- rownames(available.packages(repos = repos))
-    answer <- grep(pattern, answer, value = TRUE, ignore.case = TRUE)
+    answer <- sort(grep(pattern, answer, value = TRUE, ignore.case = TRUE))
     if (!include_installed)
         answer <- setdiff(answer, rownames(installed.packages()))
     answer
