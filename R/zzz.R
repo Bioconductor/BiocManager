@@ -1,4 +1,4 @@
-.onAttach <-
+.onLoad <-
     function(libname, pkgname)
 {
     if (!interactive())
