@@ -47,16 +47,9 @@
     isTRUE(as.logical(opt))
 }
 
-.version_map_get <-
-    function(config = NULL)
+.version_map_get_online <-
+    function(config)
 {
-    if (!.version_validity_online_check()) {
-        return(.VERSION_MAP_SENTINEL)
-    }
-
-    if (is.null(config))
-        config <- "https://bioconductor.org/config.yaml"
-
     txt <- tryCatch(readLines(config), error = identity)
     if (inherits(txt, "error") && startsWith(config, "https://")) {
         config <- sub("https", "http", config)
@@ -103,6 +96,38 @@
     ))
 }
 
+.version_map_get_offline <-
+    function()
+{
+    if ("BiocVersion" %in% rownames(installed.packages())) {
+        bioc <- packageVersion("BiocVersion")[, 1:2]
+        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+    } else
+        return(.VERSION_MAP_SENTINEL)
+    r <- package_version(R.Version())[,1:2]
+
+    status <- c("out-of-date", "release", "devel", "future")
+    rbind(.VERSION_MAP_SENTINEL, data.frame(
+        Bioc = bioc, R = r,
+        BiocStatus = factor(
+            NA,
+            levels = c("out-of-date", "release", "devel", "future")
+        )
+    ))
+}
+
+.version_map_get <-
+    function(config = NULL)
+{
+    if (!.version_validity_online_check())
+        .version_map_get_offline()
+    else {
+        if (is.null(config))
+            config <- "https://bioconductor.org/config.yaml"
+        .version_map_get_online(config)
+    }
+}
+
 .version_map <- local({
     version_map <- .VERSION_MAP_SENTINEL
     function() {
@@ -115,11 +140,6 @@
 .version_validity <-
     function(version)
 {
-    if (!.version_validity_online_check()) {
-        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
-        version <- .local_version()
-    }
-
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
     version <- .package_version(version)
@@ -187,7 +207,7 @@
     function(version)
 {
     release <- .version_bioc("release")
-    if (version < release) {
+    if (!is.na(release) && version < release) {
         return(sprintf(
             "Bioconductor version '%s' is out-of-date; the current release
              version '%s' is available with R version '%s'; %s",
