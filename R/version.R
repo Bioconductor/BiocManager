@@ -11,7 +11,7 @@
     see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
 
 .LEGACY_INSTALL_CMD <-
-    "source('https://bioconductor.org/biocLite.R')"
+    "source(\"https://bioconductor.org/biocLite.R\")"
 
 .VERSION_SENTINEL <- local({
     version <- package_version(list())
@@ -201,7 +201,8 @@
             return(sprintf(
                 "Bioconductor version '%s' is out-of-date; BiocManager does
                  not support R version '%s'. For older installations of
-                 Bioconductor, use '%s'",
+                 Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette
+                 on the Bioconductor website",
                 version, getRversion(), .LEGACY_INSTALL_CMD
             ))
         else
