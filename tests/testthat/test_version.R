@@ -32,7 +32,7 @@ test_that(".version_validate() validates version", {
 test_that(".version_recommend() recommends update", {
     expect_true(startsWith(
         .version_recommend("2.0"),
-        "Bioconductor version '2.0' is out-of-date; the current release"
+        "Bioconductor version '2.0' is out-of-date"
     ))
 })
 
@@ -101,14 +101,17 @@ test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 })
 
 test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
-    withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        if ("BiocVersion" %in% rownames(installed.packages()))
-            expect_identical(.version_validate("1.2"), package_version("1.2"))
-        else
-            expect_error(
-                .version_validate("1.2"),
-                .VERSION_MAP_UNABLE_TO_VALIDATE
-            )
+    suppressWarnings({
+        withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+            if ("BiocVersion" %in% rownames(installed.packages()))
+                expect_identical(
+                    .version_validate("1.2"), package_version("1.2")
+                )
+            else
+                expect_error(
+                    .version_validate("1.2"), .VERSION_MAP_UNABLE_TO_VALIDATE
+                )
+            })
     })
 })
 

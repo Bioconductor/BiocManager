@@ -201,8 +201,8 @@
             return(sprintf(
                 "Bioconductor version '%s' is out-of-date; BiocManager does
                  not support R version '%s'. For older installations of
-                 Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette
-                 on the Bioconductor website",
+                 Bioconductor, use '%s' and refer to the 'BiocInstaller'
+                 vignette on the Bioconductor website",
                 version, getRversion(), .LEGACY_INSTALL_CMD
             ))
         else
