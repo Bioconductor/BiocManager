@@ -38,10 +38,23 @@
         }, logical(1))
     } else
         status[status] <- file.access(ulibs[status], 2L) == 0
+    unwritedir <- ulibs[!status]
 ## TODO: Find package duplicated in other writeable directory and remove from
 ##    old_pkgs if up to date
     status <- status[match(libs, ulibs)]
     if (!all(status)) {
+        instpkg <- installed.packages()
+        unpkgs <- instpkg[rownames(instpkg) %in% pkgs[!status, "Package"], ]
+        altpkgs <- unpkgs[!unpkgs[, "LibPath"] %in% unwritedir, , drop = FALSE]
+
+        outofdate <- package_version(altpkgs[, "Version"]) <
+            pkgs[!status, "ReposVer"]
+        if (any(outofdate)) {
+            outs <- pkgs[, "Package"] %in% altpkgs[outofdate, "Package"]
+            pkgs[outs, "LibPath"] <- altpkgs[outofdate, "LibPath"]
+        }
+
+
         .message(
             "installation path not writeable, unable to update packages: %s",
             paste(pkgs[!status, "Package"], collapse=", ")
@@ -50,8 +63,8 @@
             default = FALSE)
         if (isTRUE(ans))
             pkgs[!status, "LibPath"] <-
-                Sys.getenv("R_LIBS_USER") ||
-                    .libPaths()[-match(ulibs, .libPaths())][[1L]]
+                Sys.getenv("R_LIBS_USER")
+#                    .libPaths()[-match(ulibs, .libPaths())][[1L]]
         status[!status] <- TRUE
     }
 
