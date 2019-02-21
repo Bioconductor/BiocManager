@@ -45,9 +45,14 @@
     if (!all(status)) {
         instpkg <- installed.packages()
         unpkgs <- instpkg[rownames(instpkg) %in% pkgs[!status, "Package"], ]
-        altpkgs <- unpkgs[!unpkgs[, "LibPath"] %in% unwritedir, , drop = FALSE]
+        lookups <- unpkgs[!unpkgs[, "LibPath"] %in% unwritedir, , drop = FALSE]
+        ## from all
+        instdup <- instpkg[match(names(lookups[, "Version"]), rownames(instpkg)), ]
+        TODO <- package_version(lookups[, "Version"]) < instdup[, "Version"]
 
-        outofdate <- package_version(altpkgs[, "Version"]) <
+        probpkgs <- unpkgs[unpkgs[, "LibPath"] %in% unwritedir, , drop = FALSE]
+
+        outofdate <- package_version(probpkgs[, "Version"]) <
             pkgs[!status, "ReposVer"]
         if (any(outofdate)) {
             outs <- pkgs[, "Package"] %in% altpkgs[outofdate, "Package"]
