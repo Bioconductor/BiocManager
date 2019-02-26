@@ -44,35 +44,37 @@
     status <- status[match(libs, ulibs)]
     if (!all(status)) {
         instpkg <- installed.packages()
-        unpkgs <- instpkg[rownames(instpkg) %in% pkgs[!status, "Package"], ]
-        lookups <- unpkgs[!unpkgs[, "LibPath"] %in% unwritedir, , drop = FALSE]
+        lookups <- instpkg[rownames(instpkg) %in% pkgs[!status, "Package"] & instpkg[, "LibPath"] != unwritedir, ]
+
+        reposVer <- pkgs[match(lookups[, "Package"], pkgs[, "Package"]), "ReposVer"]
+        reposVer <- sort(reposVer[!duplicated(reposVer)])
+
+        localVer <- lookups[, "Version"]
+        localVer <- sort(localVer[!duplicated(localVer)])
         ## from all
-        instdup <- instpkg[match(names(lookups[, "Version"]), rownames(instpkg)), ]
-        TODO <- package_version(lookups[, "Version"]) < instdup[, "Version"]
+        isOld <- mapply(function(x, y) package_version(x) < y,
+            x = localVer, y = reposVer)
 
-        probpkgs <- unpkgs[unpkgs[, "LibPath"] %in% unwritedir, , drop = FALSE]
+        noreinst <- -match(names(isOld), pkgs[, "Package"])
+        pkgs <- pkgs[noreinst, ]
+        status <- status[noreinst]
 
-        outofdate <- package_version(probpkgs[, "Version"]) <
-            pkgs[!status, "ReposVer"]
-        if (any(outofdate)) {
-            outs <- pkgs[, "Package"] %in% altpkgs[outofdate, "Package"]
-            pkgs[outs, "LibPath"] <- altpkgs[outofdate, "LibPath"]
+        promptReinst <- pkgs[, "LibPath"] %in% unwritedir
+
+        if (any(promptReinst)) {
+            .message(
+                "installation path not writeable, unable to update packages: %s",
+                paste(pkgs[promptReinst, "Package"], collapse=", ")
+            )
+            ans <- askYesNo("Would you like to use a personal library instead?",
+                default = FALSE)
+            if (isTRUE(ans))
+                ## TODO: FIX path used here
+                pkgs[promptReinst, "LibPath"] <- Sys.getenv("R_LIBS_USER")
+            status[!status] <- TRUE
         }
-
-
-        .message(
-            "installation path not writeable, unable to update packages: %s",
-            paste(pkgs[!status, "Package"], collapse=", ")
-        )
-        ans <- askYesNo("Would you like to use a personal library instead?",
-            default = FALSE)
-        if (isTRUE(ans))
-            pkgs[!status, "LibPath"] <-
-                Sys.getenv("R_LIBS_USER")
-#                    .libPaths()[-match(ulibs, .libPaths())][[1L]]
-        status[!status] <- TRUE
     }
-
+    ## TODO: Add packages to IGNORE
     pkgs[status,, drop=FALSE]
 }
 
