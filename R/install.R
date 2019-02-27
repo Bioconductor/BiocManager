@@ -8,10 +8,29 @@
     pkgs[!dup,, drop=FALSE]
 }
 
-.package_filter_unwriteable <-
-    function(pkgs, instlib=NULL)
+.package_filter_file_access_windows <-
+    function(status, ulibs)
 {
-    if (!nrow(pkgs))
+    status[status] <- vapply(ulibs[status], function(lib) {
+        ## from tools::install.R: file.access() unreliable on
+        ## Windows
+        fn <- file.path(lib, paste0("_test_dir", Sys.getpid()))
+        unlink(fn, recursive = TRUE) # precaution
+        res <- try(dir.create(fn, showWarnings = FALSE))
+        if (inherits(res, "try-error") || !res) {
+            FALSE
+        } else {
+            unlink(fn, recursive = TRUE)
+            TRUE
+        }
+    }, logical(1))
+    status
+}
+
+.package_filter_unwriteable <-
+    function(pkgs, instlib = NULL, instpkg = installed.packages())
+{
+    if (!NROW(pkgs))
         return(pkgs)
 
     libs <-
@@ -23,28 +42,25 @@
     status <- dir.exists(ulibs)
 
     if (.Platform$OS.type == "windows") {
-        status[status] <- vapply(ulibs[status], function(lib) {
-            ## from tools::install.R: file.access() unreliable on
-            ## Windows
-            fn <- file.path(lib, paste0("_test_dir", Sys.getpid()))
-            unlink(fn, recursive = TRUE) # precaution
-            res <- try(dir.create(fn, showWarnings = FALSE))
-            if (inherits(res, "try-error") || !res) {
-                FALSE
-            } else {
-                unlink(fn, recursive = TRUE)
-                TRUE
-            }
-        }, logical(1))
-    } else
+        status <- .package_filter_file_access_windows(status, ulibs)
+    } else {
         status[status] <- file.access(ulibs[status], 2L) == 0
+    }
     unwritedir <- ulibs[!status]
-## TODO: Find package duplicated in other writeable directory and remove from
-##    old_pkgs if up to date
+    ## TODO: Find package duplicated in other writeable directory and
+    ##    remove from old_pkgs if up to date
     status <- status[match(libs, ulibs)]
-    if (!all(status)) {
-        instpkg <- installed.packages()
-        lookups <- instpkg[rownames(instpkg) %in% pkgs[!status, "Package"] & instpkg[, "LibPath"] != unwritedir, ]
+    writeable_second_location <-
+        rownames(instpkg) %in% pkgs[!status, "Package"] &
+        instpkg[, "LibPath"] != unwritedir    
+    if (any(writeable_second_location)) {
+        candidates <- rownames(pkgs)[!status]
+        inst_candidates <- rownames(instpkg) %in% candidates
+        inst_writeable <- inst[,"LibPath"] %in% unwriteable
+
+        instpkg[
+        ## which unwriteable packages are also present in a writeable location?
+        lookups <- instpkg[writeable_second_location,,drop = FALSE]
 
         reposVer <- pkgs[match(lookups[, "Package"], pkgs[, "Package"]), "ReposVer"]
         reposVer <- sort(reposVer[!duplicated(reposVer)])
