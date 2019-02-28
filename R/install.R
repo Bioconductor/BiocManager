@@ -46,36 +46,24 @@
     } else {
         status[status] <- file.access(ulibs[status], 2L) == 0
     }
-    unwritedir <- ulibs[!status]
+    unwriteable <- ulibs[!status]
     ## TODO: Find package duplicated in other writeable directory and
     ##    remove from old_pkgs if up to date
     status <- status[match(libs, ulibs)]
     writeable_second_location <-
         rownames(instpkg) %in% pkgs[!status, "Package"] &
-        instpkg[, "LibPath"] != unwritedir    
+        instpkg[, "LibPath"] != unwriteable
     if (any(writeable_second_location)) {
         candidates <- rownames(pkgs)[!status]
-        inst_candidates <- rownames(instpkg) %in% candidates
-        inst_writeable <- inst[,"LibPath"] %in% unwriteable
+        alt_candidates <- rownames(instpkg) %in% candidates &
+            instpkg[, "LibPath"] != unwriteable
+        rm_candidates <- pkgs[, "Package"] %in% names(which(alt_candidates)) &
+            pkgs[, "LibPath"] %in% unwriteable
 
-        instpkg[
-        ## which unwriteable packages are also present in a writeable location?
-        lookups <- instpkg[writeable_second_location,,drop = FALSE]
+        pkgs <- pkgs[!rm_candidates, , drop = FALSE]
+        status <- status[!rm_candidates]
 
-        reposVer <- pkgs[match(lookups[, "Package"], pkgs[, "Package"]), "ReposVer"]
-        reposVer <- sort(reposVer[!duplicated(reposVer)])
-
-        localVer <- lookups[, "Version"]
-        localVer <- sort(localVer[!duplicated(localVer)])
-        ## from all
-        isOld <- mapply(function(x, y) package_version(x) < y,
-            x = localVer, y = reposVer)
-
-        noreinst <- -match(names(isOld), pkgs[, "Package"])
-        pkgs <- pkgs[noreinst, ]
-        status <- status[noreinst]
-
-        promptReinst <- pkgs[, "LibPath"] %in% unwritedir
+        promptReinst <- pkgs[, "LibPath"] %in% unwriteable
 
         if (any(promptReinst)) {
             .message(
