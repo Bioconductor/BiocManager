@@ -112,11 +112,7 @@ test_that("unwriteable packages are not considered", {
     expect_identical(pkgs, .filter(pkgs, p0))
     expect_identical(pkgs0, .filter(pkgs, p1))
 
-    msg <- tryCatch(.filter(pkgs, NULL), message=conditionMessage)
-    expect_identical(
-        "installation path not writeable, unable to update packages: Bar\n",
-        msg)
-
+    # system("attrib -R ", tp <- tempdir())
     if (.Platform$OS.type == "windows")
         ## how to create a read-only directory?
         return(TRUE)
@@ -176,7 +172,8 @@ test_that("install() fails with different version (non-interactive)", {
     expect_error(install(version = version))
 })
 
-context(".package_filter_unwriteable works", {
+test_that(".package_filter_unwriteable works", {
+    .filter <- BiocManager:::.package_filter_unwriteable
     dir.create(writeable_lib <- tempfile())
     dir.create(unwriteable_lib <- tempfile())
     Sys.chmod(unwriteable_lib, "0500")
@@ -186,7 +183,7 @@ context(".package_filter_unwriteable works", {
     instpkg <- structure(
         c(pkgnames,
           writeable_lib, writeable_lib, unwriteable_lib,
-          "1.31.0", "1.4.1", "1.4.1",
+          "1.31.1", "1.5.1", "1.4.1",
           rep(NA, npkgs * 12),
           "3.6.0", "3.6.0", "3.6.0"
           ),
@@ -202,16 +199,17 @@ context(".package_filter_unwriteable works", {
         )
     )
 
-    expect_identical(NULL, .package_filter_unwriteable(NULL, NULL, instpkg))
+    expect_null(.filter(NULL, NULL, instpkg))
 
-    ## old.packages(repos = BiocManager::repos())
+    ## pkgs <- old.packages(repos = BiocManager::repos())
 
+    ## two old packages in writeable directory
     pkgs <- structure(
         c(pkgnames[1:2],
           writeable_lib, writeable_lib,
-          "2.14.2", "1.4.0",
-          "3.5.1", "3.5.1",
-          "2.14.4", "1.4.1",
+          "2.14.1", "1.5.0",
+          "3.6.0", "3.6.0",
+          "2.14.4", "1.5.1",
           "https://bioconductor.org/packages/3.8/bioc/src/contrib",
           "https://bioconductor.org/packages/3.8/bioc/src/contrib"),
         .Dim = c(2L, 6L),
@@ -220,16 +218,15 @@ context(".package_filter_unwriteable works", {
             c("Package", "LibPath", "Installed", "Built", "ReposVer", "Repository")
         )
     )
-    expect_identical(pkgs, .package_filter_unwriteable(pkgs, NULL, instpkg))
-
+    expect_identical(pkgs, .filter(pkgs, NULL, instpkg))
 
     ## one writeable, one unwriteable directory
     pkgs <- structure(
         c("Pkg1", "Pkg3",
           writeable_lib, unwriteable_lib,
-          "2.14.2", "1.4.0",
-          "3.5.1", "3.5.1",
-          "2.14.4", "1.4.1",
+          "1.31.1", "1.4.1",
+          "3.6.0", "3.6.0",
+          "1.31.2", "1.4.2",
           "https://bioconductor.org/packages/3.8/bioc/src/contrib",
           "https://bioconductor.org/packages/3.8/bioc/src/contrib"),
         .Dim = c(2L, 6L),
@@ -238,10 +235,11 @@ context(".package_filter_unwriteable works", {
             c("Package", "LibPath", "Installed", "Built", "ReposVer", "Repository")
         )
     )
-    exp <- pkgs[1, , drop=FALSE]
-    expect_identical(exp, .package_filter_unwriteable(pkgs, NULL, instpkg))
+    exp <- pkgs[1, , drop = FALSE]
 
-    ## two packages in same 'unwriteable' directory
+    expect_identical(exp, .filter(pkgs, NULL, instpkg))
+
+    ## two packages in same 'unwriteable' directory, one in writeable
     pkgnames <- c("Pkg1", "Pkg2", "Pkg3")
     pkgs <- structure(
         c(pkgnames,
@@ -259,7 +257,7 @@ context(".package_filter_unwriteable works", {
         )
     )
     exp <- pkgs[1, , drop=FALSE]
-    expect_identical(exp, .package_filter_unwriteable(pkgs, NULL))
+    expect_identical(exp, .filter(pkgs, NULL))
 
     ## one package in a writeable and an unwriteable library; both
     ## Pkg1 and Pkg2 can be updated
@@ -298,10 +296,93 @@ context(".package_filter_unwriteable works", {
         .Dim = c(length(pkgnames), 6L),
         .Dimnames = list(
             pkgnames,
-            c("Package", "LibPath", "Installed", "Built", "ReposVer", "Repository")
+            c("Package", "LibPath", "Installed",
+            "Built", "ReposVer", "Repository")
         )
     )
 
     exp <- pkgs[2, , drop = FALSE]
-    expect_identical(exp, .package_filter_unwriteable(pkgs, NULL, instpkg))
+    expect_identical(exp, .filter(pkgs, NULL, instpkg))
+
+    ## same package in writeable and unwriteable, another in writeable
+    ## all packages need updating
+    pkgnames <- c("Pkg1", "Pkg1", "Pkg2")
+    npkgs <- length(pkgnames)
+    instpkg <- structure(
+        c(pkgnames,
+          unwriteable_lib, writeable_lib, writeable_lib,
+          "1.31.0", "1.31.1", "1.0.0", # more recent version in writeable
+          rep(NA, npkgs * 12),
+          rep("3.6.0", npkgs)
+          ),
+        .Dim = c(npkgs, 16L),
+        .Dimnames = list(
+            pkgnames,
+            c(
+                "Package", "LibPath", "Version", "Priority", "Depends",
+                "Imports", "LinkingTo", "Suggests", "Enhances", "License",
+                "License_is_FOSS", "License_restricts_use", "OS_type", "MD5sum",
+                "NeedsCompilation", "Built"
+            )
+        )
+    )
+
+    pkgs <- structure(
+        c(
+            pkgnames,
+            unwriteable_lib, writeable_lib, writeable_lib,
+            "1.31.0", "1.31.1", "1.0.0", # more recent version in writeable
+            rep("3.6.0", npkgs),
+            "1.31.2", "1.31.2", "1.0.1",
+            rep(NA, npkgs)
+        ),
+        .Dim = c(length(pkgnames), 6L),
+        .Dimnames = list(
+            pkgnames,
+            c("Package", "LibPath", "Installed", "Built", "ReposVer", "Repository")
+        )
+    )
+    exp <- pkgs[-1, , drop = FALSE]
+    expect_identical(exp, .filter(pkgs, NULL, instpkg))
+
+
+    ## package in unwriteable only, keep silent unless interactive()
+    pkgnames <- c("Pkg1", "Pkg2")
+    npkgs <- length(pkgnames)
+    instpkg <- structure(
+        c(pkgnames,
+          unwriteable_lib, writeable_lib,
+          "1.31.0", "1.0.0", # more recent version in writeable
+          rep(NA, npkgs * 12),
+          rep("3.6.0", npkgs)
+          ),
+        .Dim = c(npkgs, 16L),
+        .Dimnames = list(
+            pkgnames,
+            c(
+                "Package", "LibPath", "Version", "Priority", "Depends",
+                "Imports", "LinkingTo", "Suggests", "Enhances", "License",
+                "License_is_FOSS", "License_restricts_use", "OS_type", "MD5sum",
+                "NeedsCompilation", "Built"
+            )
+        )
+    )
+
+    pkgs <- structure(
+        c(
+            pkgnames,
+            unwriteable_lib, writeable_lib,
+            "1.31.0", "1.0.0", # more recent version in writeable
+            rep("3.6.0", npkgs),
+            "1.31.2", "1.0.1",
+            rep(NA, npkgs)
+        ),
+        .Dim = c(length(pkgnames), 6L),
+        .Dimnames = list(
+            pkgnames,
+            c("Package", "LibPath", "Installed", "Built", "ReposVer", "Repository")
+        )
+    )
+    exp <- pkgs[-1, , drop = FALSE]
+    expect_identical(exp, .filter(pkgs, NULL, instpkg))
 })

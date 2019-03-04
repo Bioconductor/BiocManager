@@ -1,6 +1,6 @@
 #' @importFrom utils packageVersion available.packages contrib.url
 #'     head install.packages installed.packages old.packages
-#'     sessionInfo tail update.packages
+#'     sessionInfo tail update.packages askYesNo
 NULL
 
 #' Install or update Bioconductor, CRAN, or GitHub packages

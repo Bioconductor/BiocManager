@@ -47,39 +47,47 @@
         status[status] <- file.access(ulibs[status], 2L) == 0
     }
     unwriteable <- ulibs[!status]
-    ## TODO: Find package duplicated in other writeable directory and
-    ##    remove from old_pkgs if up to date
+
     status <- status[match(libs, ulibs)]
-    writeable_second_location <-
-        rownames(instpkg) %in% pkgs[!status, "Package"] &
-        instpkg[, "LibPath"] != unwriteable
-    if (any(writeable_second_location)) {
+    if (!all(status)) {
         candidates <- rownames(pkgs)[!status]
-        alt_candidates <- rownames(instpkg) %in% candidates &
+
+        writeable_second_location <- rownames(instpkg) %in% candidates &
             instpkg[, "LibPath"] != unwriteable
-        rm_candidates <- pkgs[, "Package"] %in% names(which(alt_candidates)) &
-            pkgs[, "LibPath"] %in% unwriteable
 
-        pkgs <- pkgs[!rm_candidates, , drop = FALSE]
-        status <- status[!rm_candidates]
+        if (any(writeable_second_location)) {
+            rm_candidates <-
+                rownames(pkgs) %in% names(which(writeable_second_location)) &
+                    pkgs[, "LibPath"] %in% unwriteable
 
+            pkgs <- pkgs[!rm_candidates, , drop = FALSE]
+            status <- status[!rm_candidates]
+        }
         promptReinst <- pkgs[, "LibPath"] %in% unwriteable
 
-        if (any(promptReinst)) {
-            .message(
-                "installation path not writeable, unable to update packages: %s",
-                paste(pkgs[promptReinst, "Package"], collapse=", ")
-            )
-            ans <- askYesNo("Would you like to use a personal library instead?",
-                default = FALSE)
-            if (isTRUE(ans))
-                ## TODO: FIX path used here
-                pkgs[promptReinst, "LibPath"] <- Sys.getenv("R_LIBS_USER")
-            status[!status] <- TRUE
+        userdir <- unlist(strsplit(Sys.getenv("R_LIBS_USER"),
+            .Platform$path.sep))[1L]
+
+        if (interactive()) {
+            if (any(promptReinst) && file.exists(userdir)) {
+                .message(
+                    paste0("installation path not writeable,",
+                        " unable to update packages: %s"),
+                    paste(pkgs[promptReinst, "Package"], collapse=", ")
+                )
+                ans <- askYesNo(
+                    "Would you like to use a personal library instead?",
+                    default = FALSE)
+                if (!isTRUE(ans)) stop("unable to re-install package(s)")
+
+                pkgs[promptReinst, "LibPath"] <- userdir
+                status[!status] <- TRUE
+            }
+        } else {
+            pkgs <- pkgs[status,, drop=FALSE]
         }
     }
-    ## TODO: Add packages to IGNORE
-    pkgs[status,, drop=FALSE]
+    return(pkgs)
 }
 
 .install_filter_r_repos <-
