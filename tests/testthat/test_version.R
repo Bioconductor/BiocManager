@@ -110,7 +110,10 @@ test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 test_that(".version_map_get() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
         value <- .version_map_get()
-        expect_identical(value, .VERSION_MAP_SENTINEL)
+        if ("BiocVersion" %in% rownames(installed.packages()))
+            expect_identical(packageVersion("BiocVersion")[, 1:2], value[1, 1])
+        else
+            expect_identical(value, .VERSION_MAP_SENTINEL)
     })
 })
 
