@@ -68,24 +68,22 @@
         userdir <- unlist(strsplit(Sys.getenv("R_LIBS_USER"),
             .Platform$path.sep))[1L]
 
-        if (interactive()) {
-            if (any(promptReinst) && file.exists(userdir)) {
-                .message(
-                    paste0("installation path not writeable,",
-                        " unable to update packages: %s"),
-                    paste(pkgs[promptReinst, "Package"], collapse=", ")
-                )
-                ans <- askYesNo(
-                    "Would you like to use a personal library instead?",
-                    default = FALSE)
-                if (!isTRUE(ans)) stop("unable to re-install package(s)")
-
+        if (any(promptReinst) && file.exists(userdir)) {
+            .message(
+                paste0("installation path not writeable,",
+                    " unable to update packages: %s"),
+                paste(pkgs[promptReinst, "Package"], collapse=", ")
+            )
+            ans <- .getAnswer(
+                "Would you like to use a personal library instead? [y/n]",
+                allowed = c("y", "Y", "n", "N")
+            )
+            if (identical(ans, "y")) {
                 pkgs[promptReinst, "LibPath"] <- userdir
                 status[!status] <- TRUE
             }
-        } else {
-            pkgs <- pkgs[status,, drop=FALSE]
         }
+        pkgs <- pkgs[status,, drop=FALSE]
     }
     return(pkgs)
 }
