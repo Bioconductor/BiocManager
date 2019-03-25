@@ -32,7 +32,7 @@ test_that(".version_validate() validates version", {
 test_that(".version_recommend() recommends update", {
     expect_true(startsWith(
         .version_recommend("2.0"),
-        "Bioconductor version '2.0' is out-of-date; the current release"
+        "Bioconductor version '2.0' is out-of-date"
     ))
 })
 
