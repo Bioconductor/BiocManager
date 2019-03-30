@@ -102,11 +102,10 @@
 .version_map_get_offline <-
     function()
 {
-    if ("BiocVersion" %in% rownames(installed.packages())) {
-        bioc <- packageVersion("BiocVersion")[, 1:2]
-        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
-    } else
-        return(.VERSION_MAP_SENTINEL)
+    bioc <- tryCatch(packageVersion("BiocVersion")[, 1:2], error = identity)
+    if (inherits(bioc, "error")) return(.VERSION_MAP_SENTINEL)
+    .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+    
     r <- package_version(R.Version())[,1:2]
 
     status <- c("out-of-date", "release", "devel", "future")
@@ -279,10 +278,11 @@
 .local_version <-
     function()
 {
-    if ("BiocVersion" %in% rownames(installed.packages()))
+    tryCatch({
         packageVersion("BiocVersion")[, 1:2]
-    else
+    }, error = function(e) {
         .VERSION_SENTINEL
+    })
 }
 
 #' Version of Bioconductor currently in use.
@@ -307,10 +307,11 @@
 version <-
     function()
 {
-    if ("BiocVersion" %in% rownames(installed.packages()))
+    tryCatch({
         packageVersion("BiocVersion")[, 1:2]
-    else
+    }, error = function(e) {
         .version_choose_best()
+    })	
 }
 
 .package_version <-
