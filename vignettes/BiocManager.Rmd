@@ -163,8 +163,45 @@ cmd /C "set R_LIBS_USER=C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.7 && R"
 
 Click "Next". In the "Type a name for this shortcut" box, type `Bioc-3.7`.
 
+## Offline use
+
+_BiocManager_ expects to be able to connect to online _Bioconductor_
+and _CRAN_ repositories. Off-line use generally requires the following
+steps.
+
+1. Use `rsync` to create local repositories of [CRAN][8] and
+   [Bioconductor][7]. Tell _R_ about these repositories using (e.g.,
+   in a site-wide `.Rprofile`, see `?.Rprofile`).
+
+    ```
+    options(
+        repos = "file:///path/to/CRAN-mirror",
+        BioC_mirror = "file:///path/to/Bioc-mirror"
+    )
+    ```
+
+2. Create an environment variable or option, e.g.,
+
+    ```
+    options(
+        BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS = FALSE
+    )
+    ```
+
+3. Use `install.packages()` to bootstrap the BiocManager installation.
+
+    ```
+    install.package(c("BiocManager", "BiocVersion"))
+    ```
+
+BiocManager can then be used for subsequent installations, e.g.,
+`BiocManager::install(c("ggplot2", "GenomicRanges"))`.
+
+
 [1]: https://cran.r-project.org/package=BiocManager
 [2]: https://bioconductor.org
 [3]: https://support.bioconductor.org
 [5]: https://bioconductor.org/about/release-announcements/
 [6]: https://cran.R-project.org/
+[7]: https://bioconductor.org/about/mirrors/mirror-how-to/
+[8]: https://cran.r-project.org/mirror-howto.html
