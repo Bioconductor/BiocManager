@@ -102,10 +102,13 @@
 .version_map_get_offline <-
     function()
 {
-    bioc <- tryCatch(packageVersion("BiocVersion")[, 1:2], error = identity)
-    if (inherits(bioc, "error")) return(.VERSION_MAP_SENTINEL)
+    bioc <- tryCatch({
+        packageVersion("BiocVersion")[, 1:2]
+    }, error = identity)
+    if (inherits(bioc, "error"))
+        return(.VERSION_MAP_SENTINEL)
     .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
-    
+
     r <- package_version(R.Version())[,1:2]
 
     status <- c("out-of-date", "release", "devel", "future")
@@ -311,7 +314,7 @@ version <-
         packageVersion("BiocVersion")[, 1:2]
     }, error = function(e) {
         .version_choose_best()
-    })	
+    })
 }
 
 .package_version <-
