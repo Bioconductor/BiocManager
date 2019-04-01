@@ -27,6 +27,34 @@
     status
 }
 
+.prompt_reinstall_create <- function(pkgs, reinst, usrdir)
+{
+    .message(
+        paste0("installation path not writeable,",
+               " unable to update packages: %s"),
+        paste(pkgs[reinst, "Package"], collapse=", ")
+    )
+    ans <- .getAnswer(
+        "Would you like to use a personal library instead? [y/n]",
+        allowed = c("y", "Y", "n", "N")
+    )
+    if (identical(ans, "y")) {
+        if (!dir.exists(usrdir)) {
+            ans <- .getAnswer(
+                paste0(
+                    "Would you like to create a personal library\n",
+                    usrdir,
+                    "\nto install packages into? [y/n]"
+                ),
+                allowed = c("y", "Y", "n", "N")
+            )
+            if (identical(ans, "y"))
+                dir.create(usrdir)
+        }
+    }
+    ans
+}
+
 .package_filter_unwriteable <-
     function(pkgs, instlib = NULL, instpkg = installed.packages())
 {
@@ -65,19 +93,10 @@
         }
         promptReinst <- pkgs[, "LibPath"] %in% unwriteable
 
-        userdir <- unlist(strsplit(Sys.getenv("R_LIBS_USER"),
-            .Platform$path.sep))[1L]
-
-        if (any(promptReinst) && file.exists(userdir)) {
-            .message(
-                paste0("installation path not writeable,",
-                    " unable to update packages: %s"),
-                paste(pkgs[promptReinst, "Package"], collapse=", ")
-            )
-            ans <- .getAnswer(
-                "Would you like to use a personal library instead? [y/n]",
-                allowed = c("y", "Y", "n", "N")
-            )
+        if (any(promptReinst)) {
+            userdir <- unlist(strsplit(Sys.getenv("R_LIBS_USER"),
+                .Platform$path.sep))[1L]
+            ans <- .prompt_reinstall_create(pkgs, promptReinst, userdir)
             if (identical(ans, "y")) {
                 pkgs[promptReinst, "LibPath"] <- userdir
                 status[!status] <- TRUE
