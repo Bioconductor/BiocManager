@@ -167,7 +167,7 @@
 }
 
 .install_update <-
-    function(repos, ask, lib.loc = NULL, instlib = NULL, checkBuilt = TRUE, ...)
+    function(repos, ask, lib.loc = NULL, instlib = NULL, checkBuilt = FALSE, ...)
 {
     old_pkgs <- old.packages(lib.loc, repos, checkBuilt = checkBuilt)
     if (is.null(old_pkgs))

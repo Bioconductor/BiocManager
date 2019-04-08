@@ -20,7 +20,7 @@
     availPkgs <- available.packages(contribUrl, type=type, filters=filters)
 
     out_of_date <- old.packages(lib.loc, repos=repos, instPkgs=pkgs,
-        available=availPkgs, checkBuilt=TRUE, type=type)
+        available=availPkgs, checkBuilt=FALSE, type=type)
 
     too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
 
