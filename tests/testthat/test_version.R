@@ -90,25 +90,19 @@ test_that(".version_validity('devel') works", {
 
 test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        expect_warning({
-            value <- .version_validity("1.2")
-        }, "Bioconductor online version validation disabled")
-        if ("BiocVersion" %in% rownames(installed.packages()))
-            expect_identical(value, TRUE)
-        else
-            expect_identical(value, .VERSION_MAP_UNABLE_TO_VALIDATE)
+        expect_match(
+            .version_validity("1.2"),
+            "unknown Bioconductor version '1.2'; .*"
+        )
     })
 })
 
 test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        if ("BiocVersion" %in% rownames(installed.packages()))
-            expect_identical(.version_validate("1.2"), package_version("1.2"))
-        else
-            expect_error(
-                .version_validate("1.2"),
-                .VERSION_MAP_UNABLE_TO_VALIDATE
-            )
+        expect_error(
+            .version_validate("1.2"),
+            "unknown Bioconductor version '1.2'; .*"
+        )
     })
 })
 
