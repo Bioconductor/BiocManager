@@ -167,7 +167,7 @@
 }
 
 .install_update <-
-    function(repos, ask, lib.loc = NULL, instlib = NULL, checkBuilt = FALSE, ...)
+    function(repos, ask, lib.loc = NULL, instlib = NULL, checkBuilt, ...)
 {
     old_pkgs <- old.packages(lib.loc, repos, checkBuilt = checkBuilt)
     if (is.null(old_pkgs))
@@ -271,6 +271,9 @@
 #'     prompting, to pick packages to update, or to cancel updating
 #'     (in a non-interactive session, no packages will be updated
 #'     unless `ask = FALSE`).
+#' @param checkBuilt `logical(1)`. If `TRUE` a package built under an
+#'     earlier major.minor version of R (e.g., 3.4) is considered to
+#'     be old.
 #' @param version `character(1)` _Bioconductor_ version to install,
 #'     e.g., `version = "3.8"`. The special symbol `version = "devel"`
 #'     installs the current 'development' version.
@@ -314,7 +317,8 @@
 #' @export
 install <-
     function(pkgs = character(), ..., site_repository = character(),
-        update = TRUE, ask = TRUE, version = BiocManager::version())
+        update = TRUE, ask = TRUE, checkBuilt = FALSE,
+        version = BiocManager::version())
 {
     stopifnot(
         is.character(pkgs), !anyNA(pkgs),
@@ -323,6 +327,7 @@ install <-
         is.character(site_repository), !any(is.na(site_repository)),
         is.logical(update), length(update) == 1L, !is.na(update),
         is.logical(ask), length(ask) == 1L, !is.na(ask),
+        is.logical(checkBuilt), length(checkBuilt) == 1L, !is.na(checkBuilt),
         length(version) == 1L || identical(version, .VERSION_SENTINEL)
     )
     version <- .version_validate(version)
@@ -338,7 +343,10 @@ install <-
 
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
-        valist <- .valid(site_repository = site_repository, version = version)
+        valist <- .valid(
+            site_repository = site_repository, version = version,
+            checkBuilt = checkBuilt
+        )
         npkgs <- .install_n_invalid_pkgs(valist) + length(pkgs)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
@@ -359,7 +367,7 @@ install <-
 
     pkgs <- .install(pkgs, repos = repos, ...)
     if (update && cmp == 0L) {
-        .install_update(repos, ask, ...)
+        .install_update(repos, ask, checkBuilt = checkBuilt, ...)
     } else if (cmp != 0L) {
         .install_updated_version(valist, update, repos, ...)
     }

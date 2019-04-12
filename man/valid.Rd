@@ -7,7 +7,8 @@
 \usage{
 valid(pkgs = installed.packages(lib.loc, priority = priority),
   lib.loc = NULL, priority = "NA", type = getOption("pkgType"),
-  filters = NULL, ..., site_repository = character())
+  filters = NULL, ..., checkBuilt = FALSE,
+  site_repository = character())
 
 \method{print}{biocValid}(x, ...)
 }
@@ -30,6 +31,10 @@ validity against; see \code{\link{available.packages}()}.}
 
 \item{\dots}{Additional arguments, passed to
 \code{BiocManager::\link{install}()} when \code{fix=TRUE}.}
+
+\item{checkBuilt}{\code{logical(1)}. If \code{TRUE} a package built under an
+earlier major.minor version of R (e.g., 3.4) is considered to
+be old.}
 
 \item{site_repository}{\code{character(1)}. See \code{?install}.}
 

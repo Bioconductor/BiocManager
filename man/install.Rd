@@ -6,7 +6,8 @@
 \title{Install or update Bioconductor, CRAN, and GitHub packages}
 \usage{
 install(pkgs = character(), ..., site_repository = character(),
-  update = TRUE, ask = TRUE, version = BiocManager::version())
+  update = TRUE, ask = TRUE, checkBuilt = FALSE,
+  version = BiocManager::version())
 }
 \arguments{
 \item{pkgs}{\code{character()} vector of package names to install or
@@ -33,6 +34,10 @@ whether to update all outdated packages without further
 prompting, to pick packages to update, or to cancel updating
 (in a non-interactive session, no packages will be updated
 unless \code{ask = FALSE}).}
+
+\item{checkBuilt}{\code{logical(1)}. If \code{TRUE} a package built under an
+earlier major.minor version of R (e.g., 3.4) is considered to
+be old.}
 
 \item{version}{\code{character(1)} \emph{Bioconductor} version to install,
 e.g., \code{version = "3.8"}. The special symbol \code{version = "devel"}
