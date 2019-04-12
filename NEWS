@@ -1,3 +1,23 @@
+CHANGES IN VERSION 1.30.5
+-------------------------
+
+NEW FEATURES
+
+    o Allow users to specify `checkBuilt` when invoking `valid()` or
+    `install()`. Set default `FALSE`.
+
+MINOR CHANGES
+
+    o Allow use of BiocInstaller for R < 3.5, pointing to biocLite()
+    when appropriate.
+
+    o Improve performance of version checking (issue #42 @HenrikBengtsson).
+
+    o Document off-line installation best practices.
+
+    o Warn about out-of-date packages on load (in addition to on
+    attach) (issue #29)
+
 CHANGES IN VERSION 1.30.4
 -------------------------
 

@@ -1,0 +1,73 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    out.width = "100%"
+)
+```
+
+# BiocManager
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/BiocManager)](https://cran.r-project.org/package=BiocManager)
+[![Travis build status](https://travis-ci.org/Bioconductor/BiocManager.svg?branch=master)](https://travis-ci.org/Bioconductor/BiocManager)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/Bioconductor/BiocManager?branch=master&svg=true)](https://ci.appveyor.com/project/Bioconductor/BiocManager)
+[![CRAN release](http://www.r-pkg.org/badges/version-last-release/BiocManager)](https://github.com/Bioconductor/BiocManager/releases)
+[![CRAN downloads](http://cranlogs.r-pkg.org/badges/BiocManager)](https://cran.r-project.org/package=BiocManager)
+<!-- badges: end -->
+
+## Overview
+
+The `BiocManager` package, as the modern successor package to `BiocInstaller`,
+allows users to install and manage packages from the _[Bioconductor][1]_
+project. Bioconductor focuses on the statistical analysis and comprehension of
+high-throughput genomic data.
+
+Current _Bioconductor_ packages are available on a 'release' version intended
+for every-day use, and a 'devel' version where new features are continually
+introduced. A new release version is created every six months. Using the
+`BiocManager` package helps users accurately install packages from the
+appropriate release.
+
+* `available()` shows all packages associated with a search pattern
+* `install()` installs and/or updates packages either CRAN or Bioconductor
+* `repositories()` shows all package repository URL endpoints
+* `valid()` checks and returns packages that are out-of-date or too new
+* `version()` returns the current Bioconductor version number
+
+## Installation
+
+```{r, eval = FALSE}
+install.packages("BiocManager")
+```
+
+## Usage
+
+```{r, message=FALSE}
+library(BiocManager)
+
+version()
+
+install(c("GenomicRanges", "SummarizedExperiment"))
+
+valid()
+```
+
+## More information
+
+Please see the package vignette for more detailed information such as changing
+Bioconductor version, offline use, and other advanced usage.
+
+## Getting help
+
+To report apparent bugs, create a minimal and reproducible example on
+[github][2].
+
+[1]: https://bioconductor.org
+[2]: https://github.com/Bioconductor/BiocManager/issues

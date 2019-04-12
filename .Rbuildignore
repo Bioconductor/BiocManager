@@ -17,6 +17,7 @@
 #----------------------------
 ^TODO\.md$
 ^cran-comments\.md$
+^README\.Rmd$
 
 #----------------------------
 # Continuous Integration
