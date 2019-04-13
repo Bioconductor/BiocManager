@@ -118,6 +118,7 @@ test_that(".version_map_get() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 })
 
 test_that(".version_map_get() falls back to http", {
+    .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- TRUE
     ## better test ideas welcome...
     url <- "https://httpbin.org/status/404"
     msgs <- list()
