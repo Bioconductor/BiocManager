@@ -218,7 +218,7 @@
     function(version)
 {
     release <- .version_bioc("release")
-    if (!is.na(release) && version < release) {
+    if (is.package_version(release) && version < release) {
         if (.r_version_lt_350())
             return(sprintf(
                 "Bioconductor version '%s' is out-of-date; BiocManager does
@@ -265,7 +265,10 @@
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
-    map$Bioc[map$BiocStatus == type]
+    version <- map$Bioc[map$BiocStatus == type]
+    if (is.na(version))
+        version <- .VERSION_UNKNOWN
+    version
 }
 
 .version_R <-
