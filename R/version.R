@@ -39,12 +39,23 @@
     else 0L
 }
 
+.VERSION_MAP <- local({
+    WARN_NO_ONLINE_CONFIG <- TRUE
+    environment()
+})
+
 .version_validity_online_check <-
     function()
 {
     opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
     opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", opt)
-    isTRUE(as.logical(opt))
+    opt <- isTRUE(as.logical(opt))
+
+    if (.VERSION_MAP$WARN_NO_ONLINE_CONFIG && !opt) {
+        .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE
+        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+    }
+    opt
 }
 
 .version_map_get_online_config <-
@@ -61,7 +72,17 @@
 .version_map_get_online <-
     function(config)
 {
-    txt <- .version_map_get_online_config(config)
+    toggle_warning <- FALSE
+    withCallingHandlers({
+        txt <- .version_map_get_online_config(config)
+    }, warning = function(w) {
+        if (!.VERSION_MAP$WARN_NO_ONLINE_CONFIG)
+            invokeRestart("muffleWarning")
+        toggle_warning <<- TRUE
+    })
+    if (toggle_warning)
+        .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE
+
     if (inherits(txt, "error"))
         return(.VERSION_MAP_SENTINEL)
 
@@ -111,7 +132,6 @@
     }, error = identity)
     if (inherits(bioc, "error"))
         return(.VERSION_MAP_SENTINEL)
-    .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
 
     r <- package_version(R.Version())[,1:2]
 
