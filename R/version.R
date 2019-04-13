@@ -42,15 +42,12 @@
 .version_validity_online_check <-
     function()
 {
-    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
-    if (is.null(opt)) {
-        opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
-    }
-
+    opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
+    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", opt)
     isTRUE(as.logical(opt))
 }
 
-.version_map_get_online <-
+.version_map_get_online_config <-
     function(config)
 {
     txt <- tryCatch(readLines(config), error = identity)
@@ -58,6 +55,13 @@
         config <- sub("https", "http", config)
         txt <- tryCatch(readLines(config), error = identity)
     }
+    txt
+}
+
+.version_map_get_online <-
+    function(config)
+{
+    txt <- .version_map_get_online_config(config)
     if (inherits(txt, "error"))
         return(.VERSION_MAP_SENTINEL)
 
