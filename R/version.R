@@ -39,18 +39,26 @@
     else 0L
 }
 
+.VERSION_MAP <- local({
+    WARN_NO_ONLINE_CONFIG <- TRUE
+    environment()
+})
+
 .version_validity_online_check <-
     function()
 {
-    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS")
-    if (is.null(opt)) {
-        opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
-    }
+    opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
+    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", opt)
+    opt <- isTRUE(as.logical(opt))
 
-    isTRUE(as.logical(opt))
+    if (.VERSION_MAP$WARN_NO_ONLINE_CONFIG && !opt) {
+        .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE
+        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+    }
+    opt
 }
 
-.version_map_get_online <-
+.version_map_get_online_config <-
     function(config)
 {
     txt <- tryCatch(readLines(config), error = identity)
@@ -58,6 +66,23 @@
         config <- sub("https", "http", config)
         txt <- tryCatch(readLines(config), error = identity)
     }
+    txt
+}
+
+.version_map_get_online <-
+    function(config)
+{
+    toggle_warning <- FALSE
+    withCallingHandlers({
+        txt <- .version_map_get_online_config(config)
+    }, warning = function(w) {
+        if (!.VERSION_MAP$WARN_NO_ONLINE_CONFIG)
+            invokeRestart("muffleWarning")
+        toggle_warning <<- TRUE
+    })
+    if (toggle_warning)
+        .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE
+
     if (inherits(txt, "error"))
         return(.VERSION_MAP_SENTINEL)
 
@@ -107,7 +132,6 @@
     }, error = identity)
     if (inherits(bioc, "error"))
         return(.VERSION_MAP_SENTINEL)
-    .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
 
     r <- package_version(R.Version())[,1:2]
 
@@ -218,7 +242,7 @@
     function(version)
 {
     release <- .version_bioc("release")
-    if (!is.na(release) && version < release) {
+    if (is.package_version(release) && version < release) {
         if (.r_version_lt_350())
             return(sprintf(
                 "Bioconductor version '%s' is out-of-date; BiocManager does
@@ -265,7 +289,10 @@
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
-    map$Bioc[map$BiocStatus == type]
+    version <- map$Bioc[map$BiocStatus == type]
+    if (is.na(version))
+        version <- .VERSION_UNKNOWN
+    version
 }
 
 .version_R <-

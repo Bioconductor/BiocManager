@@ -20,7 +20,8 @@
     .message(fmt, version, packageVersion("BiocManager"))
 
     txt <- .version_is_not_future(version)
-    isTRUE(txt) || .message(txt)
+    isTRUE(txt) || identical(txt, .VERSION_MAP_UNABLE_TO_VALIDATE) ||
+        .message(txt)
 
     recommend <- .version_recommend(version)
     isTRUE(recommend) || .message(recommend)
