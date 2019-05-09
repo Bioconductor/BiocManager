@@ -351,9 +351,8 @@ install <-
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
                 .stop(
-                    paste0("'install()' failed in non-interactive session;",
-                        "force installation with 'install(..., ask = FALSE)'"
-                    )
+                    "'install()' failed in non-interactive session;
+                    force installation with 'install(..., ask = FALSE)'"
                 )
         } else {
             fmt <- paste0(c(
