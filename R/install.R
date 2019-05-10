@@ -350,7 +350,11 @@ install <-
         npkgs <- .install_n_invalid_pkgs(valist) + length(pkgs)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
-                .stop("Bioconductor version not changed")
+                .stop(paste0(
+                    "Bioconductor version not changed by 'install()'",
+                    if (!interactive() && isTRUE(ask))
+                        "; in non-interactive sessions use 'ask = FALSE'"
+                ))
         } else {
             fmt <- paste0(c(
                 "To use Bioconductor version '%s', first %s %d packages with",
