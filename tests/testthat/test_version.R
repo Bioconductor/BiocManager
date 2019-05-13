@@ -48,7 +48,9 @@ test_that(".version_validity_online_check() works", {
         })
 
         withr::with_envvar(c(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-            expect_identical(.version_validity_online_check(), FALSE)
+            suppressWarnings({
+                expect_identical(.version_validity_online_check(), FALSE)
+            })
         })
     })
 
@@ -80,7 +82,10 @@ test_that(".version_validity_online_check() works", {
 
 test_that(".version_validity('devel') works", {
     devel <- .version_bioc("devel")
-    if (version() == devel) {
+    R_version <- getRversion()[,1:2]
+    map <- .version_map()
+    R_ok <- map$R[map$Bioc == devel]
+    if (version() == devel || R_version %in% R_ok) {
         expect_true(.version_validity("devel"))
     } else {
         test <- paste0("Bioconductor version '", devel, "' requires R version")
