@@ -276,7 +276,10 @@
 #'     be old.
 #' @param version `character(1)` _Bioconductor_ version to install,
 #'     e.g., `version = "3.8"`. The special symbol `version = "devel"`
-#'     installs the current 'development' version.
+#'     installs the current 'development' version. If a user has
+#'     installed a new version of R that is incompatible with their
+#'     Bioconductor installation, setting this to a compatible version
+#'     will update Bioconductor and, optionally, installed packages.
 #'
 #' @return `BiocManager::install()` returns the `pkgs` argument, invisibly.
 #' @seealso
