@@ -124,12 +124,27 @@
     ))
 }
 
+
+.biocversion_handler <- function(type = c("map", "version", "choose")) {
+    type <- match.arg(type, c("map", "version", "choose"))
+    type_handler <- switch(type,
+           map = function(x) { identity(x) },
+           version = function(x) {.VERSION_SENTINEL},
+           choose = function(x) {.version_choose_best()}
+    )
+    bioc <- require("BiocVersion", quietly = TRUE)
+    if (is.logical(bioc) && !isTRUE(bioc)) {
+        result <- tryCatch({
+            library("BiocVersion")
+        }, error = function(x) type_handler(x))
+        return(result)
+    } else packageVersion("BiocVersion")[, 1:2]
+}
+
 .version_map_get_offline <-
     function()
 {
-    bioc <- tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
-    }, error = identity)
+    bioc <- .biocversion_handler("map")
     if (inherits(bioc, "error"))
         return(.VERSION_MAP_SENTINEL)
 
@@ -308,11 +323,7 @@
 .local_version <-
     function()
 {
-    tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
-    }, error = function(e) {
-        .VERSION_SENTINEL
-    })
+    .biocversion_handler("version")
 }
 
 #' Version of Bioconductor currently in use.
@@ -337,11 +348,7 @@
 version <-
     function()
 {
-    tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
-    }, error = function(e) {
-        .version_choose_best()
-    })
+    .biocversion_handler("choose")
 }
 
 .package_version <-
