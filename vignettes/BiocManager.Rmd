@@ -31,6 +31,8 @@ package helps users install packages from the same release.
 
 # Basic use
 
+## Installing BiocManager
+
 Use standard _R_ installation procedures to install the
 [BiocManager][1] package. This command is requried only once per _R_
 installation.
@@ -39,6 +41,8 @@ installation.
 chooseCRANmirror()
 install.packages("BiocManager")
 ```
+
+## Installing _Bioconductor_, _CRAN_, or github packages
 
 Install _Bioconductor_ (or CRAN) packages with
 
@@ -51,6 +55,8 @@ Installed packages can be updated to their current version with
 ```{r, eval = FALSE}
 BiocManager::install()
 ```
+
+## Version and validity of installations
 
 Use `version()` to discover the version of _Bioconductor_ currently in
 use.
@@ -87,17 +93,21 @@ ff  "2.2-13"  "3.5.0" "2.2-14" "https://cran.rstudio.com/src/contrib"
 >
 ```
 
+## Available packages
+
 Packages available for your version of _Bioconductor_ can be
 discovered with `available()`; the first argument can be used to
-filter package names based on a regular expression, e.g., 'BSgenome' package available for _Homo sapiens_
+filter package names based on a regular expression, e.g., 'BSgenome'
+package available for _Homo sapiens_
+
 ```{r}
 avail <- BiocManager::available()
 length(avail)
 BiocManager::available("BSgenome.Hsapiens")
 ```
 
-Questions about installing and managing _Bioconductor_ packages should be
-addressed to the [_Bioconductor_ support site][3].
+Questions about installing and managing _Bioconductor_ packages should
+be addressed to the [_Bioconductor_ support site][3].
 
 # Advanced use
 
