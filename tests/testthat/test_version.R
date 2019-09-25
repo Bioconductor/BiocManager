@@ -1,5 +1,7 @@
 context("version()")
 
+inst_pkgs <- installed.packages()
+
 test_that("version is package_version class", {
     expect_s3_class(version(), "package_version")
     expect_s3_class(version(), "numeric_version")
@@ -85,7 +87,7 @@ test_that(".version_validity('devel') works", {
     R_version <- getRversion()[,1:2]
     map <- .version_map()
     R_ok <- map$R[map$Bioc == devel]
-    if (version() == devel || R_version %in% R_ok) {
+    if (identical(version(), devel) || R_version %in% R_ok) {
         expect_true(.version_validity("devel"))
     } else {
         test <- paste0("Bioconductor version '", devel, "' requires R version")
@@ -115,7 +117,7 @@ test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 test_that(".version_map_get() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
         value <- .version_map_get()
-        if ("BiocVersion" %in% rownames(installed.packages()))
+        if ("BiocVersion" %in% rownames(inst_pkgs))
             expect_identical(packageVersion("BiocVersion")[, 1:2], value[1, 1])
         else
             expect_identical(value, .VERSION_MAP_SENTINEL)
@@ -140,4 +142,24 @@ test_that(".version_map_get() falls back to http", {
     expect_identical(sum(grepl("https://httpbin.org", msgs)), 1L)
     expect_identical(sum(grepl("http://httpbin.org", msgs)), 1L)
     expect_identical(result, .VERSION_MAP_SENTINEL)
+})
+
+test_that("BiocVersion version matches with package", {
+    if (!"BiocVersion" %in% rownames(inst_pkgs))
+        skip("BiocVersion not installed")
+
+    biocver <- packageVersion("BiocVersion")[, 1:2]
+
+    expect_version <- function(object, version) {
+        act <- quasi_label(rlang::enquo(object), arg = "object")
+
+        expect(
+            identical(act$val, version),
+            sprintf("BiocVersion %s does not match BiocManager %s",
+            act$val, version)
+        )
+
+        invisible(act$val)
+    }
+    expect_version(biocver, BiocManager::version())
 })
