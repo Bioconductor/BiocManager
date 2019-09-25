@@ -159,9 +159,9 @@
 
 .version_map <- local({
     version_map <- .VERSION_MAP_SENTINEL
-    function() {
+    function(config = NULL) {
         if (identical(version_map, .VERSION_MAP_SENTINEL))
-            version_map <<- .version_map_get()
+            version_map <<- .version_map_get(config = config)
         version_map
     }
 })
@@ -283,9 +283,9 @@
 }
 
 .version_bioc <-
-    function(type)
+    function(type, config = NULL)
 {
-    map <- .version_map()
+    map <- .version_map(config = config)
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
