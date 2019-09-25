@@ -20,7 +20,7 @@ init:
         Import-Module '..\appveyor-tool.ps1'
 
 install:
-  ps: Bootstrap
+  - ps: Bootstrap
 
 branches:
   only:
@@ -29,6 +29,7 @@ branches:
 environment:
   global:
     _R_CHECK_FORCE_SUGGESTS_: false
+    USE_RTOOLS: true
 
   matrix:
     - R_VERSION: devel
