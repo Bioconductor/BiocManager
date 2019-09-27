@@ -161,5 +161,5 @@ test_that("BiocVersion version matches with package", {
 
         invisible(act$val)
     }
-    expect_version(biocver, BiocManager::version())
+    expect_version(biocver, BiocManager:::.version_choose_best())
 })
