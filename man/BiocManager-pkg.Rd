@@ -34,7 +34,19 @@ are from the same version of \emph{Bioconductor}.}
 \item{\code{BiocManager::repositories()}}{\emph{Bioconductor} and other
 repository URLs to discover packages for installation.}
 
+}\preformatted{The version of _Bioconductor_ in use is determined by the
+installed version of a second package, BiocVersion. BiocVersion
+is installed automatically during first use of
+`BiocManager::install()`. If BiocVersion has not yet been
+installed, the version is determined by code in base R.
 }
+}
+\examples{
+R.version.string
+packageVersion("BiocManager")
+if ("BiocVersion" \%in\% rownames(installed.packages()))
+    packageVersion("BiocVersion")
+BiocManager::version()
 }
 \seealso{
 Useful links:

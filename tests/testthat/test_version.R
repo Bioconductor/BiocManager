@@ -151,30 +151,14 @@ test_that("BiocVersion version matches with package", {
     biocver <- packageVersion("BiocVersion")[, 1:2]
 
     expect_version <- function(object) {
-        act <- quasi_label(rlang::enquo(object), arg = "object")
-
         map <- .version_map()
         map <- map[map$R == getRversion()[, 1:2], ]
-        if (all(c("release", "devel") %in% map$BiocStatus))
-            idx <- map$BiocStatus %in% c("release", "devel")
-        else if ("release" %in% map$BiocStatus)
-            idx <- map$BiocStatus == "release"
-        else if ("devel" %in% map$BiocStatus)
-            idx <- map$BiocStatus == "devel"
-        else if ("out-of-date" %in% map$BiocStatus)
-            idx <- map$BiocStatus == "out-of-date"
-        else
-            idx <- map$BiocStatus == "future"
-        version <- map$Bioc[idx]
-
-        expect(
-            act$val %in% version,
-            sprintf(paste("BiocVersion package version '%s' does not match",
-                "BiocManager::.version_map() '%s'. Check configuration."),
-            act$val, version)
+        failure_message <- paste0(
+            "BiocVersion package version '", object, "' does not match ",
+            "BiocManager::.version_map() '", paste(map$Bioc, collapse="', '"),
+            "'. Check configuration."
         )
-
-        invisible(act$val)
+        expect(object %in% map$Bioc, failure_message)
     }
     expect_version(biocver)
 })

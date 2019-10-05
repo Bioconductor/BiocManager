@@ -1,6 +1,5 @@
-#' @importFrom utils packageVersion available.packages contrib.url
-#'     head install.packages installed.packages old.packages
-#'     sessionInfo tail update.packages
+#' @importFrom utils packageVersion contrib.url head
+#'     installed.packages sessionInfo tail
 NULL
 
 #' Install or update Bioconductor, CRAN, or GitHub packages
@@ -24,7 +23,7 @@ NULL
 #'     of package names available (at `BiocManager::repositories()`)
 #'     for installation.}
 #'
-#' \item{`BiocManager::valid()`}{Determine whether installed packages
+#'   \item{`BiocManager::valid()`}{Determine whether installed packages
 #'     are from the same version of _Bioconductor_.}
 #'
 #'   \item{`BiocManager::repositories()`}{_Bioconductor_ and other
@@ -32,8 +31,21 @@ NULL
 #'
 #' }
 #'
+#'     The version of _Bioconductor_ in use is determined by the
+#'     installed version of a second package, BiocVersion. BiocVersion
+#'     is installed automatically during first use of
+#'     `BiocManager::install()`. If BiocVersion has not yet been
+#'     installed, the version is determined by code in base R.
+#'
 #' @md
 #' @name BiocManager-pkg
 #' @aliases BiocManager
 #' @docType package
+#'
+#' @examples
+#' R.version.string
+#' packageVersion("BiocManager")
+#' if ("BiocVersion" %in% rownames(installed.packages()))
+#'     packageVersion("BiocVersion")
+#' BiocManager::version()
 "_PACKAGE"
