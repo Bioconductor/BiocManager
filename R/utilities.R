@@ -16,6 +16,12 @@
 .sQuote <- function(x)
     sprintf("'%s'", as.character(x))
 
+.url_exists <-
+    function(url)
+{
+    identical(length(.inet_readChar(url, 1L)), 1L)
+}
+
 .msg <-
     function(fmt, ..., width=getOption("width"))
     ## Use this helper to format all error / warning / message text

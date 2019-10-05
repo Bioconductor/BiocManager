@@ -39,6 +39,14 @@
     setNames(bioc_repos, names(paths))
 }
 
+.repositories_filter <-
+    function(repos)
+{
+    urls <- paste0(contrib.url(repos), "/PACKAGES")
+    online <- vapply(urls, .url_exists, logical(1))
+    repos[online]
+}
+
 .repositories <-
     function(site_repository, version)
 {

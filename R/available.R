@@ -27,8 +27,11 @@ available <-
         is.logical(include_installed), length(include_installed) == 1L,
         !is.na(include_installed)
     )
-    repos <- repositories()
-    answer <- rownames(available.packages(repos = repos))
+
+    answer <- character()
+    repos <- .repositories_filter(repositories())
+    if (length(repos))
+        answer <- rownames(.inet_available.packages(repos = repos))
     answer <- sort(grep(pattern, answer, value = TRUE, ignore.case = TRUE))
     if (!include_installed)
         answer <- setdiff(answer, rownames(installed.packages()))

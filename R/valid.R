@@ -16,6 +16,8 @@
 {
     version <- .version_validate(version)
     repos <- .repositories(site_repository, version = version)
+    repos <- .repositories_filter(repos)
+
     contribUrl <- contrib.url(repos, type=type)
 
     availPkgs <- available.packages(contribUrl, type=type, filters=filters)
