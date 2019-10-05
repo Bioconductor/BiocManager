@@ -61,10 +61,10 @@
 .version_map_get_online_config <-
     function(config)
 {
-    txt <- tryCatch(readLines(config), error = identity)
+    txt <- tryCatch(.inet_readLines(config), error = identity)
     if (inherits(txt, "error") && startsWith(config, "https://")) {
         config <- sub("https", "http", config)
-        txt <- tryCatch(readLines(config), error = identity)
+        txt <- tryCatch(.inet_readLines(config), error = identity)
     }
     txt
 }

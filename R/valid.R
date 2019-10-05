@@ -9,10 +9,11 @@
     instPkgs[too_new, c("Version", "LibPath"), drop=FALSE]
 }
 
-.valid <- function(pkgs = installed.packages(lib.loc, priority=priority),
-    lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-    filters=NULL, ..., checkBuilt, site_repository,
-    version=BiocManager::version())
+.valid <-
+    function(pkgs = installed.packages(lib.loc, priority=priority),
+             lib.loc=NULL, priority="NA", type=getOption("pkgType"),
+             filters=NULL, ..., checkBuilt, site_repository,
+             version=BiocManager::version())
 {
     version <- .version_validate(version)
     repos <- .repositories(site_repository, version = version)
@@ -20,14 +21,22 @@
 
     contribUrl <- contrib.url(repos, type=type)
 
-    availPkgs <- available.packages(contribUrl, type=type, filters=filters)
+    available <- out_of_date <- too_new <- character()
+    result <- FALSE
+    if (length(repos)) {
+        available <- .inet_available.packages(
+            contribUrl, type=type, filters=filters
+        )
 
-    out_of_date <- old.packages(lib.loc, repos=repos, instPkgs=pkgs,
-        available=availPkgs, checkBuilt=checkBuilt, type=type)
+        out_of_date <- .inet_old.packages(
+            lib.loc, repos=repos, instPkgs=pkgs,
+            available=available, checkBuilt=checkBuilt, type=type
+        )
 
-    too_new <- .valid_pkgs_too_new(pkgs, availPkgs)
+        too_new <- .valid_pkgs_too_new(pkgs, available)
 
-    result <- !nrow(too_new) && is.null(out_of_date)
+        result <- !nrow(too_new) && is.null(out_of_date)
+    }
 
     if (!result) {
         result <- structure(

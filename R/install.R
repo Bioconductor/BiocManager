@@ -95,7 +95,7 @@
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
-        install.packages(pkgs = doing, lib = lib, repos = repos, ...)
+        .inet_install.packages(pkgs = doing, lib = lib, repos = repos, ...)
     }
     setdiff(pkgs, doing)
 }
@@ -169,7 +169,7 @@
 .install_update <-
     function(repos, ask, lib.loc = NULL, instlib = NULL, checkBuilt, ...)
 {
-    old_pkgs <- old.packages(lib.loc, repos, checkBuilt = checkBuilt)
+    old_pkgs <- .inet_old.packages(lib.loc, repos, checkBuilt = checkBuilt)
     if (is.null(old_pkgs))
         return()
 
@@ -193,7 +193,7 @@
         ask <- answer == "s"
     }
 
-    update.packages(
+    .inet_update.packages(
         lib.loc, repos, oldPkgs = old_pkgs, ask = ask, instlib = instlib
     )
 }
