@@ -1,3 +1,9 @@
+.is_CRAN_check <-
+    function()
+{
+    any(grepl("_CRAN_", names(Sys.getenv())))
+}
+
 .getAnswer <- function(msg, allowed)
 {
     if (interactive()) {

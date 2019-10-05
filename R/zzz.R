@@ -11,7 +11,7 @@
     }
 
     valid <- .version_validity(version)
-    isTRUE(valid) || .warning(valid)
+    isTRUE(valid) || ifelse(.is_CRAN_check(), .message(valid), .stop(valid))
 
     fmt <- paste0(
         "Bioconductor version %s (BiocManager %s), ",

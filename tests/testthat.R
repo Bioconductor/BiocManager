@@ -1,4 +1,5 @@
 library(testthat)
 library(BiocManager)
 
-test_check("BiocManager")
+if (!BiocManager:::.is_CRAN_check())
+    test_check("BiocManager")

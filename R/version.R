@@ -232,7 +232,7 @@
     version <- .package_version(version)
 
     txt <- .version_validity(version)
-    isTRUE(txt) || .stop(txt)
+    isTRUE(txt) || ifelse(.is_CRAN_check(), .message(txt), .stop(txt))
 
     version
 }
