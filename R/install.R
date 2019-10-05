@@ -68,7 +68,7 @@
     if (!"remotes" %in% rownames(installed.packages(lib.loc))) {
         if (is.null(lib.loc))
             lib.loc <- .libPaths()
-        stop(
+        .stop(
             "package 'remotes' not installed in library path(s)",
             "\n    ", paste(lib.loc, collapse="\n    "),
             "\ninstall with 'install(\"remotes\")'",
@@ -79,7 +79,7 @@
     tryCatch({
         loadNamespace("remotes", lib.loc)
     }, error=function(e) {
-        stop(
+        .stop(
             "'loadNamespace(\"remotes\")' failed:",
             "\n    ", conditionMessage(e)
         )
