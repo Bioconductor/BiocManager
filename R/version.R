@@ -112,7 +112,12 @@
         bioc, max(bioc)
         ## package_version(paste(unlist(max(bioc)) + 0:1, collapse = "."))
     )
-    r <- c(r, package_version(paste(unlist(max(r)) + 0:1, collapse = ".")))
+    if (max(r) == package_version("3.6")) {
+        future_r <- package_version("4.0")
+    } else {
+        future_r <- package_version(paste(unlist(max(r)) + 0:1, collapse = "."))
+    }
+    r <- c(r, future_r)
     status <- c(status, "future")
 
     rbind(.VERSION_MAP_SENTINEL, data.frame(
