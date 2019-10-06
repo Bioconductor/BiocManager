@@ -13,6 +13,9 @@ test_that("version has two components", {
 })
 
 test_that(".version_validate() validates version", {
+    if (any(grepl("_CRAN_", names(Sys.getenv()))))
+        skip("not robust to CRAN internet policy")
+
     .version_validate <- BiocManager:::.version_validate
 
     expect_error(
@@ -32,6 +35,8 @@ test_that(".version_validate() validates version", {
 })
 
 test_that(".version_recommend() recommends update", {
+    if (any(grepl("_CRAN_", names(Sys.getenv()))))
+        skip("not robust to CRAN internet policy")
     expect_true(startsWith(
         .version_recommend("2.0"),
         "Bioconductor version '2.0' is out-of-date"
@@ -83,6 +88,8 @@ test_that(".version_validity_online_check() works", {
 })
 
 test_that(".version_validity('devel') works", {
+    if (any(grepl("_CRAN_", names(Sys.getenv()))))
+        skip("not robust to CRAN internet policy")
     devel <- .version_bioc("devel")
     R_version <- getRversion()[,1:2]
     map <- .version_map()
@@ -145,20 +152,29 @@ test_that(".version_map_get() falls back to http", {
 })
 
 test_that("BiocVersion version matches with package", {
-    if (!"BiocVersion" %in% rownames(inst_pkgs))
+    if (!"BiocVersion" %in% rownames(installed.packages()))
         skip("BiocVersion not installed")
 
-    biocver <- packageVersion("BiocVersion")[, 1:2]
+    R_version <- getRversion()
+    bioc_version <- packageVersion("BiocVersion")[, 1:2]
 
-    expect_version <- function(object) {
+    test <- R_version == "4.0.0" &&
+        bioc_version == "3.9" &&
+        any(grepl("_CRAN_", names(Sys.getenv())))
+    if (test)
+        skip("CRAN mis-configuration")
+
+    expect_version <-
+        function(bioc_version, R_version)
+    {
         map <- .version_map()
-        map <- map[map$R == getRversion()[, 1:2], ]
+        map <- map[map$R == R_version[,1:2], ]
         failure_message <- paste0(
-            "BiocVersion package version '", object, "' does not match ",
+            "BiocVersion package version '", bioc_version, "' does not match ",
             "BiocManager::.version_map() '", paste(map$Bioc, collapse="', '"),
             "'. Check configuration."
         )
-        expect(object %in% map$Bioc, failure_message)
+        expect(bioc_version %in% map$Bioc, failure_message)
     }
-    expect_version(biocver)
+    expect_version(bioc_version, R_version)
 })
