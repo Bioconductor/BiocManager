@@ -42,7 +42,7 @@
     status <- status[match(libs, ulibs)]
     if (!all(status))
         .message(
-            "installation path not writeable, unable to update packages: %s",
+            "Installation path not writeable, unable to update packages: %s",
             paste(pkgs[!status, "Package"], collapse=", ")
         )
 
@@ -69,10 +69,12 @@
         if (is.null(lib.loc))
             lib.loc <- .libPaths()
         .stop(
+            "%s\n    %s\n%s",
             "package 'remotes' not installed in library path(s)",
-            "\n    ", paste(lib.loc, collapse="\n    "),
-            "\ninstall with 'install(\"remotes\")'",
-            call.=FALSE
+            paste(lib.loc, collapse="\n    "),
+            "install with 'install(\"remotes\")'",
+            call. = FALSE,
+            wrap. = FALSE
         )
     }
 
@@ -80,8 +82,10 @@
         loadNamespace("remotes", lib.loc)
     }, error=function(e) {
         .stop(
-            "'loadNamespace(\"remotes\")' failed:",
-            "\n    ", conditionMessage(e)
+            "'loadNamespace(\"remotes\")' failed:\n    %s",
+            conditionMessage(e),
+            call. = FALSE,
+            wrap. = FALSE
         )
     })
 
@@ -180,7 +184,7 @@
         return()
 
     pkgs <- paste(old_pkgs[,"Package"], collapse="', '")
-    .message("Update old packages: '%s'", pkgs)
+    .message("Old packages: '%s'", pkgs)
     if (ask) {
         answer <- .getAnswer(
             "Update all/some/none? [a/s/n]: ",
@@ -356,10 +360,12 @@ install <-
                         "; in non-interactive sessions use 'ask = FALSE'"
                 ))
         } else {
-            fmt <- paste0(c(
+            fmt <- paste(c(
                 "To use Bioconductor version '%s', first %s %d packages with",
-                "\n    \"BiocManager::install(version = '%s')\""))
-            .stop(fmt, version, tolower(action), npkgs, version)
+                "\n    BiocManager::install(version = '%s')"),
+                collapse="")
+            action <- tolower(action)
+            .stop(fmt, version, action, npkgs, version, wrap.=FALSE)
         }
     }
 
