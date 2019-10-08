@@ -30,11 +30,16 @@
 }
 
 .msg <-
-    function(fmt, ..., width=getOption("width"))
+    function(fmt, ..., width=getOption("width"), wrap. = TRUE)
     ## Use this helper to format all error / warning / message text
 {
-    txt <- strwrap(sprintf(fmt, ...), width=width, exdent=2)
-    paste(txt, collapse="\n")
+    txt <- sprintf(fmt, ...)
+    if (wrap.) {
+        txt <- strwrap(sprintf(fmt, ...), width=width, exdent=2)
+        paste(txt, collapse="\n")
+    } else {
+        txt
+    }
 }
 
 .message <-
