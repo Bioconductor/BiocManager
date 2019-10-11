@@ -109,6 +109,63 @@ BiocManager::available("BSgenome.Hsapiens")
 Questions about installing and managing _Bioconductor_ packages should
 be addressed to the [_Bioconductor_ support site][3].
 
+# Troubleshooting
+
+## Failure after updating _R_
+
+After updating _R_ (e.g., from _R_ version 3.5.x to _R_ version 3.6.x
+at the time of writing this) and trying to load `BiocManager`, _R_
+replies
+
+```
+Error: .onLoad failed in loadNamespace() for 'BiocManager', details:
+  call: NULL
+  error: Bioconductor version '3.8' requires R version '3.5'; see
+  https://bioconductor.org/install
+```
+
+This problem arises because `BiocManager` uses a second package,
+`BiocVersion`, to indicate the version of _Bioconductor_ in use. In
+the original installation, `BiocManager` had installed `BiocVersion`
+appropriate for _R_ version 3.5. With the update, the version of
+_Bioconductor_ indicated by `BiocVersion` is no longer valid -- you'll
+need to update `BiocVersion` and all _Bioconductor_ packages to the
+most recent version available for your new version of _R_.
+
+The recommended practice is to maintain a separate library for each
+_R_ and _Bioconductor_ version. So instead of installing packages into
+_R_'s system library (e.g., as 'administrator'), install only base _R_
+into the system location. Then use aliases or other approaches to
+create _R_ / _Bioconductor_ version-specific installations. This is
+described in the section on [maintaining multiple
+versions](#multiple-versions) of _R_ and _Bioconductor_.
+
+Alternatively, one could update all _Bioconductor_ packages in the
+previous installation directory. The problem with this is that the
+previous version of _Bioconductor_ is removed, compromising the
+ability to reproduce earlier results. Update all _Bioconductor_
+packages in the previous installation directory by removing _all_
+versions of `BiocVersion`
+
+```
+remove.packages("BiocVersion")  # repeat until all instances removed
+```
+
+Then install the updated `BiocVersion`, and update all _Bioconductor_
+packages; answer 'yes' when you are asked to update a potentially
+large number of _Bioconductor_ packages.
+
+```
+BiocManager::install()
+```
+
+Confirm that the updated _Bioconductor_ is valid for your version of
+_R_
+
+```
+BiocManager::valid()
+```
+
 # Advanced use
 
 ## Changing version
@@ -135,7 +192,7 @@ Error: Bioconductor version '3.9' requires R version '3.6'; see
 A special version, `version="devel"`, allows use of _Bioconductor_
 packages that are under development.
 
-## Managing multiple versions
+## Managing multiple versions {#multiple-versions}
 
 It is possible to have multiple versions of _Bioconductor_ installed on the
 same computer. A best practice is to [create an initial _R_ installation][6].
