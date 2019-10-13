@@ -15,7 +15,7 @@ vignette: |
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = interactive())
 ```
 
 # Introduction
@@ -102,8 +102,8 @@ package available for _Homo sapiens_
 
 ```{r}
 avail <- BiocManager::available()
-length(avail)
-BiocManager::available("BSgenome.Hsapiens")
+length(avail)                               # all CRAN & Bioconductor packages
+BiocManager::available("BSgenome.Hsapiens") # BSgenome.Hsapiens.* packages
 ```
 
 Questions about installing and managing _Bioconductor_ packages should
@@ -155,14 +155,14 @@ Then install the updated `BiocVersion`, and update all _Bioconductor_
 packages; answer 'yes' when you are asked to update a potentially
 large number of _Bioconductor_ packages.
 
-```
+```{r, eval = FALSE}
 BiocManager::install()
 ```
 
 Confirm that the updated _Bioconductor_ is valid for your version of
 _R_
 
-```
+```{r, eval = FALSE}
 BiocManager::valid()
 ```
 
@@ -248,7 +248,7 @@ steps.
    [Bioconductor][7]. Tell _R_ about these repositories using (e.g.,
    in a site-wide `.Rprofile`, see `?.Rprofile`).
 
-    ```
+    ```{r, eval = FALSE}
     options(
         repos = "file:///path/to/CRAN-mirror",
         BioC_mirror = "file:///path/to/Bioc-mirror"
@@ -257,7 +257,7 @@ steps.
 
 2. Create an environment variable or option, e.g.,
 
-    ```
+    ```{r, eval = FALSE}
     options(
         BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS = FALSE
     )
@@ -265,7 +265,7 @@ steps.
 
 3. Use `install.packages()` to bootstrap the BiocManager installation.
 
-    ```
+    ```{r, eval = FALSE}
     install.package(c("BiocManager", "BiocVersion"))
     ```
 
@@ -362,7 +362,7 @@ then installing the desired version.
 
 # `sessionInfo()`
 
-```{r}
+```{r, eval = TRUE}
 sessionInfo()
 ```
 
