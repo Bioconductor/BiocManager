@@ -118,7 +118,7 @@ test_that("unwriteable packages are not considered", {
 
     msg <- tryCatch(.filter(pkgs, NULL), message=conditionMessage)
     expect_identical(
-        "installation path not writeable, unable to update packages: Bar\n",
+        "Installation path not writeable, unable to update packages: Bar\n",
         msg)
 
     if (.Platform$OS.type == "windows")
