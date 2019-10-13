@@ -13,8 +13,7 @@ test_that("version has two components", {
 })
 
 test_that(".version_validate() validates version", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
 
     .version_validate <- BiocManager:::.version_validate
 
@@ -35,8 +34,7 @@ test_that(".version_validate() validates version", {
 })
 
 test_that(".version_recommend() recommends update", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     expect_true(startsWith(
         .version_recommend("2.0"),
         "Bioconductor version '2.0' is out-of-date"
@@ -88,8 +86,7 @@ test_that(".version_validity_online_check() works", {
 })
 
 test_that(".version_validity('devel') works", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     devel <- .version_bioc("devel")
     R_version <- getRversion()[,1:2]
     map <- .version_map()
@@ -152,16 +149,15 @@ test_that(".version_map_get() falls back to http", {
 })
 
 test_that("BiocVersion version matches with package", {
+    skip_if_offline()
+
     if (!"BiocVersion" %in% rownames(installed.packages()))
         skip("BiocVersion not installed")
 
     R_version <- getRversion()
     bioc_version <- packageVersion("BiocVersion")[, 1:2]
 
-    test <- R_version == "4.0.0" &&
-        bioc_version == "3.9" &&
-        any(grepl("_CRAN_", names(Sys.getenv())))
-    if (test)
+    if (R_version == "4.0.0" && bioc_version == "3.9")
         skip("CRAN mis-configuration")
 
     expect_version <-

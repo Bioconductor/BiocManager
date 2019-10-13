@@ -1,35 +1,30 @@
 context("repositories()")
 
 test_that("repositories() returns all repos", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp", "BioCworkflows")
     expect_true(all(allOS %in% names(repositories())))
 })
 
 test_that("repositories() does not return any NA repos", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     expect_true(!anyNA(repositories()))
 })
 
 test_that("repositories() returns expected order", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     expect_identical("BioCsoft", names(repositories())[[1]])
 })
 
 test_that("'site_repository=' inserted correctly", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     site_repository <- "file:///tmp"
     repos <- repositories(site_repository)
     expect_identical(c(site_repository = site_repository), repos[1])
 })
 
 test_that("repositories() rejects invalid versions", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     expect_error(
         repositories(version="2.0"),
         "Bioconductor version '2.0' requires R version '2.5'.*"
@@ -38,8 +33,7 @@ test_that("repositories() rejects invalid versions", {
 })
 
 test_that("repositories(version = 'devel') works", {
-    if (any(grepl("_CRAN_", names(Sys.getenv()))))
-        skip("not robust to CRAN internet policy")
+    skip_if_offline()
     if (version() == .version_bioc("devel")) {
         expect_equal(
             repositories(version = .version_bioc("devel")),
