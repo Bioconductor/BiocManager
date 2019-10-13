@@ -1,8 +1,7 @@
 .is_CRAN_check <-
     function()
 {
-    opt <- getOption("BIOCMANAGER_CRANCHECK_BEHAVIOR", TRUE)
-    opt && any(grepl("_CRAN_", names(Sys.getenv())))
+    !interactive() && ("CheckExEnv" %in% search())
 }
 
 .getAnswer <- function(msg, allowed)
@@ -26,7 +25,7 @@
 .url_exists <-
     function(url)
 {
-    identical(length(.inet_readChar(url, 1L)), 1L)
+    identical(nchar(.inet_readChar(url, 1L)), 1L)
 }
 
 .msg <-
