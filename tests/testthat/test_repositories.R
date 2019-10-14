@@ -1,22 +1,26 @@
 context("repositories()")
 
 test_that("repositories() returns all repos", {
+    .skip_if_misconfigured()
     skip_if_offline()
     allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp", "BioCworkflows")
     expect_true(all(allOS %in% names(repositories())))
 })
 
 test_that("repositories() does not return any NA repos", {
+    .skip_if_misconfigured()
     skip_if_offline()
     expect_true(!anyNA(repositories()))
 })
 
 test_that("repositories() returns expected order", {
+    .skip_if_misconfigured()
     skip_if_offline()
     expect_identical("BioCsoft", names(repositories())[[1]])
 })
 
 test_that("'site_repository=' inserted correctly", {
+    .skip_if_misconfigured()
     skip_if_offline()
     site_repository <- "file:///tmp"
     repos <- repositories(site_repository)

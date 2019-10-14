@@ -148,7 +148,8 @@ test_that(".version_map_get() falls back to http", {
     expect_identical(result, .VERSION_MAP_SENTINEL)
 })
 
-test_that("BiocVersion version matches with package", {
+test_that("BiocVersion version matches with .version_map()", {
+    .skip_if_misconfigured()
     skip_if_offline()
 
     if (!"BiocVersion" %in% rownames(installed.packages()))
@@ -156,9 +157,6 @@ test_that("BiocVersion version matches with package", {
 
     R_version <- getRversion()
     bioc_version <- packageVersion("BiocVersion")[, 1:2]
-
-    if (R_version == "4.0.0" && bioc_version == "3.9")
-        skip("CRAN mis-configuration")
 
     expect_version <-
         function(bioc_version, R_version)

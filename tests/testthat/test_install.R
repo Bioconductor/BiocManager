@@ -23,12 +23,14 @@ test_that("Helpers filter the right packages", {
 })
 
 test_that(".install_repos() works", {
+    .skip_if_misconfigured()
     skip_if_offline()
     repos <- repositories()
     expect_identical(character(0), .install_repos(character(), repos = repos))
 })
 
 test_that(".install_github() works", {
+    .skip_if_misconfigured()
     skip_if_offline()
     repos <- repositories()
     expect_identical(character(0), .install_github(character(), repos = repos))
