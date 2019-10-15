@@ -46,6 +46,13 @@ environment:
     - R_VERSION: release
       GCC_PATH: mingw_32
 
+    - R_VERSION: oldrel
+      R_ARCH: x64
+      GCC_PATH: mingw_64
+
+    - R_VERSION: oldrel
+      GCC_PATH: mingw_32
+
 # Adapt as necessary starting from here
 build_script:
   - echo Current directory=%CD%
