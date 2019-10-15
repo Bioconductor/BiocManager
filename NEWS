@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.30.8
+-------------------------
+
+MINOR CHANGES
+
+    o Tests are skipped if is there is a misconfiguration or the CRAN
+      builder has no internet access.
+
 CHANGES IN VERSION 1.30.7
 -------------------------
 
