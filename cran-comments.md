@@ -9,11 +9,11 @@
 
 * checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  'BiocStyle' 'BiocVersion'
+  'BiocStyle', 'BiocVersion', 'curl'
 
-    These packages are available in Bioconductor.
+    The first two packages are available in Bioconductor.
 
 * checking examples ... NOTE
 Examples with CPU or elapsed time > 5s
            user system elapsed
-available 3.417  0.065   5.614
+available 2.691  0.067   5.087
