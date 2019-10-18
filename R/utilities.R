@@ -42,9 +42,16 @@
 }
 
 .message <-
-    function(..., appendLF=TRUE)
+    function(..., domain = NULL, appendLF=TRUE)
 {
-    message(.msg(...), appendLF=appendLF)
+    message(.msg(...), domain = NULL, appendLF=appendLF)
+    invisible(TRUE)
+}
+
+.packageStartupMessage <-
+    function(..., domain = NULL, appendLF = TRUE)
+{
+    packageStartupMessage(.msg(...), domain = domain, appendLF = appendLF)
     invisible(TRUE)
 }
 

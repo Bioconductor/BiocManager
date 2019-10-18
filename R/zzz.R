@@ -17,12 +17,12 @@
         "Bioconductor version %s (BiocManager %s), ",
         "?BiocManager::install for help"
     )
-    .message(fmt, version, packageVersion("BiocManager"))
+    .packageStartupMessage(fmt, version, packageVersion("BiocManager"))
 
     txt <- .version_is_not_future(version)
     isTRUE(txt) || identical(txt, .VERSION_MAP_UNABLE_TO_VALIDATE) ||
-        .message(txt)
+        .packageStartupMessage(txt)
 
     recommend <- .version_recommend(version)
-    isTRUE(recommend) || .message(recommend)
+    isTRUE(recommend) || .packageStartupMessage(recommend)
 }

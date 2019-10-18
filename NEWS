@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.30.9
+-------------------------
+
+MINOR CHANGES
+
+    o Use `packageStartupMessage()` in .onLoad
+
 CHANGES IN VERSION 1.30.8
 -------------------------
 
