@@ -8,6 +8,7 @@ test_that("version is package_version class", {
 })
 
 test_that("version has two components", {
+    .skip_if_BiocVersion_not_available()
     verNums <- strsplit(as.character(version()), "\\.")[[1L]]
     expect_identical(length(verNums), 2L)
 })
@@ -100,6 +101,7 @@ test_that(".version_validity('devel') works", {
 })
 
 test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
+    .skip_if_BiocVersion_not_available()
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
         expect_match(
             .version_validity("1.2"),
@@ -109,6 +111,7 @@ test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 })
 
 test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
+    .skip_if_BiocVersion_not_available()
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
         expect_error(
             .version_validate("1.2"),

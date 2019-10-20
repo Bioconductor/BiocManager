@@ -332,7 +332,7 @@ install <-
         is.logical(update), length(update) == 1L, !is.na(update),
         is.logical(ask), length(ask) == 1L, !is.na(ask),
         is.logical(checkBuilt), length(checkBuilt) == 1L, !is.na(checkBuilt),
-        length(version) == 1L || identical(version, .VERSION_SENTINEL)
+        length(version) == 1L || inherits(version, "version_sentinel")
     )
     version <- .version_validate(version)
 

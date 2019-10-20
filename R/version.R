@@ -13,20 +13,38 @@
 .LEGACY_INSTALL_CMD <-
     "source(\"https://bioconductor.org/biocLite.R\")"
 
-.VERSION_SENTINEL <- local({
-    version <- package_version(list())
-    class(version) <- c("unknown_version", class(version))
-    version
-})
-
 .VERSION_MAP_SENTINEL <- data.frame(
-    Bioc = .VERSION_SENTINEL,
-    R = .VERSION_SENTINEL,
+    Bioc = package_version(list()),
+    R = package_version(list()),
     BiocStatus = factor(
         factor(),
         levels = c("out-of-date", "release", "devel", "future")
     )
 )
+
+.version_sentinel <-
+    function(msg)
+{
+    version <- package_version(list())
+    structure(
+        unclass(version),
+        msg = msg,
+        class = c("version_sentinel", class(version))
+    )
+}
+
+.version_sentinel_msg <-
+    function(x)
+{
+    attr(x, "msg")
+}
+
+#' @export
+format.version_sentinel <-
+    function(x, ...)
+{
+    paste0("unknown version: ", .version_sentinel_msg(x))
+}
 
 .version_compare <-
     function(v1, v2)
@@ -178,8 +196,8 @@
         version <- .version_bioc("devel")
     version <- .package_version(version)
 
-    if (identical(version, .VERSION_SENTINEL))
-        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+    if (inherits(version, "version_sentinel"))
+        return(.version_sentinel_msg(version))
 
     if (version[, 1:2] != version)
         return(sprintf(
@@ -272,7 +290,7 @@
 {
     map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
-        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+        return(.version_sentinel(.VERSION_MAP_UNABLE_TO_VALIDATE))
 
     map <- map[map$R == getRversion()[, 1:2],]
     if ("release" %in% map$BiocStatus)
@@ -316,7 +334,7 @@
     tryCatch({
         packageVersion("BiocVersion")[, 1:2]
     }, error = function(e) {
-        .VERSION_SENTINEL
+        .version_sentinel("package 'BiocVersion' not installed")
     })
 }
 
