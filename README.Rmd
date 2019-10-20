@@ -50,13 +50,11 @@ install.packages("BiocManager")
 ## Usage
 
 ```{r, message=FALSE}
-library(BiocManager)
+BiocManager::version()
 
-version()
+BiocManager::install(c("GenomicRanges", "SummarizedExperiment"))
 
-install(c("GenomicRanges", "SummarizedExperiment"))
-
-valid()
+BiocManager::valid()
 ```
 
 ## More information
