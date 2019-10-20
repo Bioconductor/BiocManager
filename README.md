@@ -44,14 +44,12 @@ install.packages("BiocManager")
 ## Usage
 
 ``` r
-library(BiocManager)
-
-version()
+BiocManager::version()
 #> [1] '3.8'
 
-install(c("GenomicRanges", "SummarizedExperiment"))
+BiocManager::install(c("GenomicRanges", "SummarizedExperiment"))
 
-valid()
+BiocManager::valid()
 #> Warning: 0 packages out-of-date; 1 packages too new
 #> 
 #> * sessionInfo()
