@@ -385,8 +385,8 @@ version <-
 #'
 #' @md
 #' @export
-print.unknown_version <-
+print.version_sentinel <-
     function(x, ...)
 {
-    cat("'unknown'\n")
+    cat(format(x), "\n")
 }

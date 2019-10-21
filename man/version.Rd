@@ -2,12 +2,12 @@
 % Please edit documentation in R/version.R
 \name{version}
 \alias{version}
-\alias{print.unknown_version}
+\alias{print.version_sentinel}
 \title{Version of Bioconductor currently in use.}
 \usage{
 version()
 
-\method{print}{unknown_version}(x, ...)
+\method{print}{version_sentinel}(x, ...)
 }
 \arguments{
 \item{x}{An \code{unknown_version} instance used to represent the
