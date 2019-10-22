@@ -5,7 +5,7 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 note
 
 * checking package dependencies ... NOTE
 Packages suggested but not available for checking:
@@ -13,7 +13,3 @@ Packages suggested but not available for checking:
 
     The first two packages are available in Bioconductor.
 
-* checking examples ... NOTE
-Examples with CPU or elapsed time > 5s
-           user system elapsed
-available 2.691  0.067   5.087
