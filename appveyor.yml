@@ -22,10 +22,6 @@ init:
 install:
   - ps: Bootstrap
 
-branches:
-  only:
-    - master
-
 environment:
   global:
     _R_CHECK_FORCE_SUGGESTS_: false
