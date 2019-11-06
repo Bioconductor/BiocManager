@@ -26,6 +26,7 @@ environment:
   global:
     _R_CHECK_FORCE_SUGGESTS_: false
     USE_RTOOLS: true
+    PKGTYPE: both
 
   matrix:
     - R_VERSION: devel
