@@ -9,8 +9,18 @@ library(BiocManager)
 
     R_version <- getRversion()
     bioc_version <- packageVersion("BiocVersion")[, 1:2]
-    if (R_version == "4.0.0" && bioc_version == "3.9")
-        skip("mis-configuration, R 4.0, Bioc 3.9")
+
+    test_ver <- tryCatch({
+        BiocManager:::.version_validity(bioc_version)
+    }, error = function(err) {
+        conditionMessage(err)
+    })
+
+    if (!isTRUE(test_ver)) {
+        msg <- sprintf("mis-configuration, R %s, Bioc %s, Reason %s",
+            R_version, bioc_version, test_ver)
+        skip(msg)
+    }
 }
 
 .skip_if_BiocVersion_not_available <-
