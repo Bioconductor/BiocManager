@@ -11,6 +11,10 @@ status](https://www.r-pkg.org/badges/version/BiocManager)](https://cran.r-projec
 release](http://www.r-pkg.org/badges/version-last-release/BiocManager)](https://github.com/Bioconductor/BiocManager/releases)
 [![CRAN
 downloads](http://cranlogs.r-pkg.org/badges/BiocManager)](https://cran.r-project.org/package=BiocManager)
+<br> [![Travis build
+status](https://travis-ci.org/Bioconductor/BiocManager.svg?branch=master)](https://travis-ci.org/Bioconductor/BiocManager)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/Bioconductor/BiocManager?branch=master&svg=true)](https://ci.appveyor.com/project/Bioconductor/BiocManager)
 <!-- badges: end -->
 
 ## Overview
@@ -38,29 +42,39 @@ packages from the appropriate release.
 ## Installation
 
 ``` r
-install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 ```
 
 ## Usage
 
+### Checking Bioconductor version currently installed
+
 ``` r
 BiocManager::version()
-#> [1] '3.8'
+#> [1] '3.11'
+```
 
+### Installing Bioconductor packages
+
+``` r
 BiocManager::install(c("GenomicRanges", "SummarizedExperiment"))
+```
 
+### Verifying a valid Bioconductor installation
+
+``` r
 BiocManager::valid()
 #> Warning: 0 packages out-of-date; 1 packages too new
 #> 
 #> * sessionInfo()
 #> 
-#> R version 3.5.2 Patched (2019-02-12 r76095)
+#> R Under development (unstable) (2019-10-07 r77258)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
-#> Running under: Ubuntu 18.10
+#> Running under: Ubuntu 18.04.3 LTS
 #> 
 #> Matrix products: default
-#> BLAS: /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.8.0
-#> LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.8.0
+#> BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
 #> 
 #> locale:
 #>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -73,23 +87,21 @@ BiocManager::valid()
 #> attached base packages:
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
-#> other attached packages:
-#> [1] BiocManager_1.30.5
-#> 
 #> loaded via a namespace (and not attached):
-#>  [1] compiler_3.5.1  magrittr_1.5    tools_3.5.1     htmltools_0.3.6
-#>  [5] yaml_2.2.0      Rcpp_1.0.1      stringi_1.4.3   rmarkdown_1.12 
-#>  [9] knitr_1.22      stringr_1.4.0   xfun_0.6        digest_0.6.18  
-#> [13] evaluate_0.13  
+#>  [1] BiocManager_1.30.9 compiler_4.0.0     magrittr_1.5      
+#>  [4] tools_4.0.0        htmltools_0.4.0    yaml_2.2.0        
+#>  [7] Rcpp_1.0.2         stringi_1.4.3      rmarkdown_1.16    
+#> [10] knitr_1.25         stringr_1.4.0      xfun_0.10         
+#> [13] digest_0.6.22      rlang_0.4.1        evaluate_0.14     
 #> 
-#> Bioconductor version '3.8'
+#> Bioconductor version '3.11'
 #> 
 #>   * 0 packages out-of-date
 #>   * 1 packages too new
 #> 
 #> create a valid installation with
 #> 
-#>   BiocManager::install("BiocManager", update = TRUE, ask = FALSE)
+#>   BiocManager::install("rapiclient", update = TRUE, ask = FALSE)
 #> 
 #> more details: BiocManager::valid()$too_new, BiocManager::valid()$out_of_date
 ```
@@ -102,4 +114,4 @@ changing Bioconductor version, offline use, and other advanced usage.
 ## Getting help
 
 To report apparent bugs, create a minimal and reproducible example on
-[github](https://github.com/Bioconductor/BiocManager/issues)
+[github](https://github.com/Bioconductor/BiocManager/issues).
