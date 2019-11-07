@@ -87,6 +87,7 @@ test_that(".version_validity_online_check() works", {
 })
 
 test_that(".version_validity('devel') works", {
+    .skip_if_misconfigured()
     skip_if_offline()
     devel <- .version_bioc("devel")
     R_version <- getRversion()[,1:2]

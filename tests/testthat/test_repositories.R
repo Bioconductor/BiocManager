@@ -37,6 +37,7 @@ test_that("repositories() rejects invalid versions", {
 })
 
 test_that("repositories(version = 'devel') works", {
+    .skip_if_misconfigured()
     skip_if_offline()
     if (version() == .version_bioc("devel")) {
         expect_equal(
