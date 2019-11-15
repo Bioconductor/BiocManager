@@ -10,4 +10,7 @@
         )
         .packageStartupMessage(fmt, version, packageVersion("BiocManager"))
     }
+
+    recommend <- .version_recommend(version)
+    isTRUE(recommend) || .packageStartupMessage(recommend)
 }
