@@ -1,7 +1,9 @@
 ## Test environments
-* local Ubuntu 18.10, R 3.6.1 Patched, R 3.5.3 Patched, R-devel 4.0.0
-* win-builder.r-project.org (oldrel, release, devel)
-* travis-ci (linux): R 3.6.1
+* local Ubuntu 19.10 (linux): R 3.6.1 Patched, R 3.5.3 Patched, R-devel 4.0.0
+* win-builder.r-project.org (windows): oldrel, release, devel
+* appveyor (windows): bioc-devel, bioc-release, bioc-oldrel,
+    oldrel, release, devel
+* travis-ci (linux): bioc-devel, bioc-release, oldrel, release, devel
 
 ## R CMD check results
 
