@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.30.10
+-------------------------
+
+MINOR CHANGES
+
+    o Restore startup message with recommended version
+
+    o Update mis-configuration skip in tests
+
 CHANGES IN VERSION 1.30.9
 -------------------------
 
