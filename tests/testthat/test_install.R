@@ -179,3 +179,23 @@ test_that("install() fails with different version (non-interactive)", {
         package_version(paste(version()$major, version()$minor + incr, sep="."))
     expect_error(install(version = version))
 })
+
+test_that("install() without package names passes ... to install.packages", {
+    with_mock(
+        old.packages = function(...) {
+            ## claim that BiocGenerics is out-of-date
+            cbind(
+                Package = "BiocGenerics", Version = "0.32.0",
+                LibPath = character(1)
+            )
+        },
+        install.packages = function(pkgs, ..., INSTALL_opts) {
+            stop("oops")
+            object <-
+                identical(pkgs, c(Package = "BiocGenerics")) &&
+                identical(INSTALL_opts, "--build")
+            expect_true(!object)
+        },
+        install(ask = FALSE, INSTALL_opts = "--build")
+    )
+})

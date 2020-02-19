@@ -198,7 +198,7 @@
     }
 
     .inet_update.packages(
-        lib.loc, repos, oldPkgs = old_pkgs, ask = ask, instlib = instlib
+        lib.loc, repos, oldPkgs = old_pkgs, ask = ask, instlib = instlib, ...
     )
 }
 
