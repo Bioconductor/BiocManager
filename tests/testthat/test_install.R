@@ -160,8 +160,7 @@ test_that("packages can be written", {
 context("install(version =, ask=...) works")
 
 test_that(".install_ask_up_or_down_grade() works non-interactively", {
-    if (interactive())
-        return(TRUE)
+    skip_if(interactive())
     expect_equal(
         FALSE,
         .install_ask_up_or_down_grade("xx", npkgs = 1L, cmp = 1L, ask = TRUE)
@@ -181,21 +180,27 @@ test_that("install() fails with different version (non-interactive)", {
 })
 
 test_that("install() without package names passes ... to install.packages", {
+    object <- FALSE
     with_mock(
+        available.packages = function(...) {
+            cbind(
+                Package = "BiocGenerics", Version = "0.33.0",
+                LibPath = .libPaths()[1]
+            )
+        },
         old.packages = function(...) {
             ## claim that BiocGenerics is out-of-date
             cbind(
                 Package = "BiocGenerics", Version = "0.32.0",
-                LibPath = character(1)
+                LibPath = .libPaths()[1]
             )
         },
         install.packages = function(pkgs, ..., INSTALL_opts) {
-            stop("oops")
-            object <-
+            object <<-
                 identical(pkgs, c(Package = "BiocGenerics")) &&
                 identical(INSTALL_opts, "--build")
-            expect_true(!object)
         },
         install(ask = FALSE, INSTALL_opts = "--build")
     )
+    expect_true(object)
 })
