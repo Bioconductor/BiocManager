@@ -72,7 +72,7 @@
             "%s\n    %s\n%s",
             "package 'remotes' not installed in library path(s)",
             paste(lib.loc, collapse="\n    "),
-            "install with 'install(\"remotes\")'",
+            "install with 'BiocManager::install(\"remotes\")'",
             call. = FALSE,
             wrap. = FALSE
         )
