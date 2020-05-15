@@ -17,10 +17,18 @@
     if (length(name_is_CRAN) == 0L)     # NULL names
         name_is_CRAN <- logical(length(repos))
     snapshot_pattern <- "/snapshot/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-    rename <- name_is_CRAN & grepl(snapshot_pattern, repos)
+    warnmran <- name_is_CRAN & grepl(snapshot_pattern, repos)
+
+    if (warnmran)
+        warning(
+            "'getOption(\"repos\")' is set to an unsupported MRAN repository.",
+            "\n The snapshot date, ", basename(repos), ", may not agree with",
+            " the current\n Bioconductor installation, use at your own risk.",
+            call. = FALSE
+        )
 
     ## update "@CRAN@" to default
-    rename <- rename | (repos == "@CRAN@")
+    rename <- repos == "@CRAN@"
 
     repos[rename] <- "https://cran.rstudio.com"
     repos
