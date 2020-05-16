@@ -1,35 +1,52 @@
+.repositories_check_repos <-
+    function(repos)
+{
+    conflict <-
+        names(repos) %in% c(names(.repositories_bioc(version())), "CRAN")
+    conflict <- conflict & repos != "@CRAN@"
+    conflicts <- repos[conflict]
+
+    ## FIXME: allow for MRAN repositories from appropriate dates for
+    ## BiocManager::version()
+    ##
+    ## pattern <-
+    ##     "snapshot/(20[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{2})/*$"
+    ## is_snapshot <- grepl(pattern, repos)
+    ## if (any(is_snapshot)) {
+    ##     ...
+    ## }
+
+    if (length(conflicts)) {
+        txt <- paste(
+            "'getOption(\"repos\")' replaces Bioconductor standard ",
+            "repositories, see '?repositories' for details"
+        )
+        fmt <- paste0(
+            .msg(txt, exdent = 0),
+            "\n\nreplacement repositories:",
+            "\n    %s\n"
+        )
+        repos_string <- paste0(
+            names(conflicts), ": ", unname(conflicts),
+            collapse = "\n    "
+        )
+
+        FUN <- ifelse(
+            getOption("BiocManager.check_repositories", TRUE),
+            .stop, .message
+        )
+        FUN(fmt, repos_string, call. = FALSE, wrap. = FALSE)
+    }
+
+    repos
+}
+
 .repositories_base <-
     function()
 {
     repos <- getOption("repos")
-
-    ## Microsoft R Open is shipped with getOption("repos")[["CRAN"]]
-    ## pointing to a *snapshot* of CRAN (e.g.
-    ## https://mran.microsoft.com/snapshot/2017-05-01), and not to a
-    ## CRAN mirror that is current. For the current release and devel
-    ## BioC versions, repositories() needs to point to a CRAN mirror
-    ## that is current so install() and valid() behave the same for
-    ## all BioC users, whether they use mainstream R or Microsoft R
-    ## Open.  However, since old versions of BioC are frozen, it would
-    ## probably make sense to point to a *snapshot* of CRAN instead of
-    ## a CRAN mirror that is current.
-    name_is_CRAN <- names(repos) == "CRAN"
-    if (length(name_is_CRAN) == 0L)     # NULL names
-        name_is_CRAN <- logical(length(repos))
-    snapshot_pattern <- "/snapshot/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-    warnmran <- name_is_CRAN & grepl(snapshot_pattern, repos)
-
-    if (warnmran)
-        warning(
-            "'getOption(\"repos\")' is set to an unsupported MRAN repository.",
-            "\n The snapshot date, ", basename(repos), ", may not agree with",
-            " the current\n Bioconductor installation, use at your own risk.",
-            call. = FALSE
-        )
-
-    ## update "@CRAN@" to default
+    repos <- .repositories_check_repos(repos)
     rename <- repos == "@CRAN@"
-
     repos[rename] <- "https://cran.rstudio.com"
     repos
 }
@@ -79,7 +96,52 @@
 #' @param version (Optional) `character(1)` or `package_version`
 #'     indicating the _Bioconductor_ version (e.g., "3.8") for which
 #'     repositories are required.
+#'
+#' @details
+#'
+#' _Bioconductor_ has a 'release' and a 'devel' semi-annual release
+#' cycle. Packages within a release have been tested against each
+#' other and the current version of packages on CRAN. _Bioconductor_
+#' best practice is to use packages from the same release, and from
+#' the appropriate CRAN repository. `repositories()` returns the
+#' appropriate package repositories for your version of
+#' _Bioconductor_.
+#'
+#' It may be desireable to specify different default repositories,
+#' especially CRAN, for intentionally out-of-date _Bioconductor_
+#' releases (e.g., to support reproducible research). Use the approach
+#' provided by base _R_ to specify alternative repositories, e.g.,
+#' `options(repos = c(CRAN =
+#' "https://mran.microsoft.com/snapshot/2020-02-08"))`. This is
+#' supported, but generates a warning because specification of an
+#' inappropriate CRAN repository (one providing packages not
+#' consistent with the dates of the _Bioconductor_ release) results in
+#' use of CRAN packages not consistent with _Bioconductor_ best
+#' practices.
+#'
+#' If alternative default repositories are known to provide
+#' appropriate version of CRAN or _Bioconductor_ packages, the warning
+#' may be silenced (displayed as a message) with
+#' `options(BiocManager.check_repositories = FALSE)`. A message is
+#' still printed, to serve as a reminder when debugging problems
+#' related to incompatible pacakge installation.
+#'
+#' The intended use of `site_repository =` is to enable installation of
+#' packages not available in the default repositories, e.g., packages
+#' internal to an organization and not yet publicly available. A
+#' secondary use might provide alternative versions (e.g., compiled
+#' binaries) of packages available in the default repositories. Note
+#' that _R_'s standard rules of package selection apply, so the most
+#' recent version of candidate packages is selected independent of the
+#' location of the repository in the vector returned by `repositories()`.
+#'
+#' For greater flexiblity in installing packages while still adhering
+#' as much as possible to _Bioconductor_ best practices, use
+#' `repositories()` as a basis for constructing the `repos =` argument
+#' to `install.packages()` and related functions.
+#'
 #' @return Named `character()` of repositories.
+#'
 #' @seealso
 #'
 #' `BiocManager::\link{install}()` Installs or updates Bioconductor,

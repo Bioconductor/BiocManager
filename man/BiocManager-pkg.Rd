@@ -5,7 +5,6 @@
 \alias{BiocManager-pkg}
 \alias{_PACKAGE}
 \alias{BiocManager}
-\alias{BiocManager-pkg-package}
 \title{Install or update Bioconductor, CRAN, or GitHub packages}
 \description{
 This package provides tools for managing \emph{Bioconductor} and other
@@ -56,11 +55,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Marcel Ramos \email{marcel.ramos@roswellpark.org} (0000-0002-3242-0582) [contributor]
+\strong{Maintainer}: Marcel Ramos \email{marcel.ramos@roswellpark.org} (\href{https://orcid.org/0000-0002-3242-0582}{ORCID}) [contributor]
 
 Authors:
 \itemize{
-  \item Martin Morgan \email{martin.morgan@roswellpark.org} (0000-0002-5874-8148)
+  \item Martin Morgan \email{martin.morgan@roswellpark.org} (\href{https://orcid.org/0000-0002-5874-8148}{ORCID})
 }
 
 }

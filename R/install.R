@@ -246,6 +246,9 @@
 #' and `remotes:::install()`. A typical use is to build vignettes, via
 #' `dependencies=TRUE, build_vignettes=TRUE`.
 #'
+#' See `?repositories` for additional detail on customizing where
+#' BiocManager searches for package installation.
+#'
 #' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
 #' variable or global `options()` which, when set to `FALSE`, avoids
 #' the R and _Bioconductor_ version checks that are done by querying

@@ -29,12 +29,12 @@
 }
 
 .msg <-
-    function(fmt, ..., width=getOption("width"), wrap. = TRUE)
+    function(fmt, ..., width=getOption("width"), exdent = 2, wrap. = TRUE)
     ## Use this helper to format all error / warning / message text
 {
     txt <- sprintf(fmt, ...)
     if (wrap.) {
-        txt <- strwrap(sprintf(fmt, ...), width=width, exdent=2)
+        txt <- strwrap(sprintf(fmt, ...), width=width, exdent=exdent)
         paste(txt, collapse="\n")
     } else {
         txt
@@ -78,4 +78,35 @@ isRelease <-
     function()
 {
     version() == .version_bioc("release")
+}
+
+## testthat helper functions
+
+.skip_if_misconfigured <-
+    function()
+{
+    if (!"BiocVersion" %in% rownames(installed.packages()))
+        return(NULL)
+
+    R_version <- getRversion()
+    bioc_version <- packageVersion("BiocVersion")[, 1:2]
+
+    test_ver <- tryCatch({
+        BiocManager:::.version_validity(bioc_version)
+    }, error = function(err) {
+        conditionMessage(err)
+    })
+
+    if (!isTRUE(test_ver)) {
+        msg <- sprintf("mis-configuration, R %s, Bioc %s, Reason %s",
+            R_version, bioc_version, test_ver)
+        skip(msg)
+    }
+}
+
+.skip_if_BiocVersion_not_available <-
+    function()
+{
+    if (!"BiocVersion" %in% rownames(installed.packages()))
+        skip("BiocVersion not installed")
 }

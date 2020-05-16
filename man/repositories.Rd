@@ -4,8 +4,7 @@
 \alias{repositories}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
-repositories(site_repository = character(),
-  version = BiocManager::version())
+repositories(site_repository = character(), version = BiocManager::version())
 }
 \arguments{
 \item{site_repository}{(Optional) \code{character(1)} representing an
@@ -26,6 +25,47 @@ Named \code{character()} of repositories.
 \emph{Bioconductor} and CRAN packages. It is used by
 \code{BiocManager::install()} and other functions.
 }
+\details{
+\emph{Bioconductor} has a 'release' and a 'devel' semi-annual release
+cycle. Packages within a release have been tested against each
+other and the current version of packages on CRAN. \emph{Bioconductor}
+best practice is to use packages from the same release, and from
+the appropriate CRAN repository. \code{repositories()} returns the
+appropriate package repositories for your version of
+\emph{Bioconductor}.
+
+It may be desireable to specify different default repositories,
+especially CRAN, for intentionally out-of-date \emph{Bioconductor}
+releases (e.g., to support reproducible research). Use the approach
+provided by base \emph{R} to specify alternative repositories, e.g.,
+\code{options(repos = c(CRAN = "https://mran.microsoft.com/snapshot/2020-02-08"))}. This is
+supported, but generates a warning because specification of an
+inappropriate CRAN repository (one providing packages not
+consistent with the dates of the \emph{Bioconductor} release) results in
+use of CRAN packages not consistent with \emph{Bioconductor} best
+practices.
+
+If alternative default repositories are known to provide
+appropriate version of CRAN or \emph{Bioconductor} packages, the warning
+may be silenced (displayed as a message) with
+\code{options(BiocManager.check_repositories = FALSE)}. A message is
+still printed, to serve as a reminder when debugging problems
+related to incompatible pacakge installation.
+
+The intended use of \verb{site_repository =} is to enable installation of
+packages not available in the default repositories, e.g., packages
+internal to an organization and not yet publicly available. A
+secondary use might provide alternative versions (e.g., compiled
+binaries) of packages available in the default repositories. Note
+that \emph{R}'s standard rules of package selection apply, so the most
+recent version of candidate packages is selected independent of the
+location of the repository in the vector returned by \code{repositories()}.
+
+For greater flexiblity in installing packages while still adhering
+as much as possible to \emph{Bioconductor} best practices, use
+\code{repositories()} as a basis for constructing the \verb{repos =} argument
+to \code{install.packages()} and related functions.
+}
 \examples{
 BiocManager::repositories()
 \dontrun{
@@ -34,16 +74,16 @@ BiocManager::repositories(version="3.8")
 
 }
 \seealso{
-\code{BiocManager::\link{install}()} Installs or updates Bioconductor,
+\verb{BiocManager::\link{install}()} Installs or updates Bioconductor,
 CRAN, and GitHub packages.
 
-\code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
+\verb{\link{chooseBioCmirror}()} choose an alternative Bioconductor
 mirror; not usually necessary.
 
-\code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
+\verb{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
 usually necessary.
 
-\code{\link{setRepositories}()} Select additional repositories for
+\verb{\link{setRepositories}()} Select additional repositories for
 searching.
 }
 \keyword{environment}
