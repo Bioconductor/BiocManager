@@ -92,7 +92,7 @@ isRelease <-
     bioc_version <- packageVersion("BiocVersion")[, 1:2]
 
     test_ver <- tryCatch({
-        BiocManager:::.version_validity(bioc_version)
+        .version_validity(bioc_version)
     }, error = function(err) {
         conditionMessage(err)
     })
@@ -100,7 +100,7 @@ isRelease <-
     if (!isTRUE(test_ver)) {
         msg <- sprintf("mis-configuration, R %s, Bioc %s, Reason %s",
             R_version, bioc_version, test_ver)
-        skip(msg)
+        testthat::skip(msg)
     }
 }
 
@@ -108,5 +108,5 @@ isRelease <-
     function()
 {
     if (!"BiocVersion" %in% rownames(installed.packages()))
-        skip("BiocVersion not installed")
+        testthat::skip("BiocVersion not installed")
 }
