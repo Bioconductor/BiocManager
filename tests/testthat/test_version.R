@@ -108,40 +108,29 @@ test_that(".version_validity(...) works", {
 
     .version_validity <- BiocManager:::.version_validity
 
-    .getRv = function(ver = "4.3.0") {
+    .get_R_ver = function(ver = "4.3.0") {
         rver <- package_version(ver)
         class(rver) <- c("R_system_version", class(rver))
         rver
     }
 
-    .v_map = function() {
-        data.frame(
-            Bioc = package_version(list("4.0", "4.1", "4.1")),
-            R = package_version(list("4.3", "4.4", "4.5")),
-            BiocStatus = c("release", "devel", "future")
-        )
-    }
+    .ver_map <- data.frame(
+        Bioc = package_version(list("4.0", "4.1", "4.1")),
+        R = package_version(list("4.3", "4.4", "4.5")),
+        BiocStatus = c("release", "devel", "future")
+    )
 
     expect_true(
-        # with_mock(
-            # .version_map = .v_map, .getRver = .getRv, .version_validity("4.0")
-            .version_validity("4.0", .v_map(), .getRv())
-        # )
+        .version_validity("4.0", .ver_map, .get_R_ver())
     )
 
     expect_match(
-        # with_mock(
-            # .version_map = .v_map, .getRver = .getRv, .version_validity("4.1")
-            .version_validity("4.1", .v_map(), .getRv()),
-        # ),
+        .version_validity("4.1", .ver_map, .get_R_ver()),
         "BiocManager::install"
     )
 
     expect_match(
-        # with_mock(
-            # .version_map = .v_map, .getRver = .getRv2, .version_validity("4.1")
-            .version_validity("4.1", .v_map(), .getRv("4.5.0")),
-        # ),
+        .version_validity("4.1", .ver_map, .get_R_ver("4.5.0")),
         "R version is too.*new"
     )
 })

@@ -189,12 +189,12 @@ format.version_sentinel <-
     }
 })
 
-.getRver <- function()
+.get_R_version <- function()
     getRversion()
 
 
 .version_validity <-
-    function(version, map = .version_map(), rver = .getRver())
+    function(version, map = .version_map(), r_version = .get_R_version())
 {
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
@@ -208,7 +208,6 @@ format.version_sentinel <-
             "version '%s' must have two components, e.g., '3.7'", version
         ))
 
-#    map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
@@ -218,23 +217,22 @@ format.version_sentinel <-
         ))
 
     required <- map$R[map$Bioc == version & map$BiocStatus != "future"]
-#    rver <- .getRver()[, 1:2]
-    rver <- rver[, 1:2]
-    if (!rver %in% required) {
-        rec <- map[map$R == rver, , drop = FALSE]
-        recFUN <- ifelse("devel" %in% rec$BiocStatus, head, tail)
+    r_version <- r_version[, 1:2]
+    if (!r_version %in% required) {
+        rec <- map[map$R == r_version, , drop = FALSE]
+        rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
 
-        recmsg <- if ("future" %in% rec$BiocStatus)
+        rec_msg <- if ("future" %in% rec$BiocStatus)
             "R version is too new"
         else
             sprintf(
                 "use `BiocManager::install(version = '%s')` with R version %s",
-                recFUN(rec$Bioc, 1), rver
+                rec_fun(rec$Bioc, 1), r_version
             )
 
         return(.msg(
             "Bioconductor version '%s' requires R version '%s'; %s; %s",
-            version, head(required, 1), recmsg, .VERSION_HELP
+            version, head(required, 1), rec_msg, .VERSION_HELP
         ))
     }
 
