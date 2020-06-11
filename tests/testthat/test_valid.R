@@ -4,7 +4,7 @@ test_that("valid returns an empty list without internet", {
     .skip_if_misconfigured()
 
     result <- with_mock(
-        .repositories_filter = function(...) {
+        `BiocManager:::.repositories_filter` = function(...) {
             ..1[FALSE]
         }, BiocManager::valid()
     )
