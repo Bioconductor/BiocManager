@@ -13,9 +13,8 @@ test_that("valid returns an empty list without internet", {
         is(result, "biocValid")
     )
 
-    res <- vapply(result, length, integer(1L))
     expect_identical(
-        res,
+        lengths(result),
         c(out_of_date = 0L, too_new = 0L)
     )
 })
