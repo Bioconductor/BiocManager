@@ -40,11 +40,26 @@
         status[status] <- file.access(ulibs[status], 2L) == 0
 
     status <- status[match(libs, ulibs)]
-    if (!all(status))
-        .message(
-            "Installation path not writeable, unable to update packages: %s",
-            paste(pkgs[!status, "Package"], collapse=", ")
+    if (!all(status)) {
+        failed_pkgs <- pkgs[!status, "Package"]
+        failed_lib <- pkgs[!status, "LibPath"]
+        failed <- split(failed_pkgs, failed_lib)
+        detail <- paste(
+            mapply(function(lib, pkg) {
+                paste0(
+                    "  path: ", lib, "\n",
+                    "  packages:\n",
+                    .msg(paste(pkg, collapse = ", "), indent = 4, exdent = 4)
+                )
+            }, names(failed), unname(failed), USE.NAMES = FALSE),
+            collapse = "\n"
         )
+        message(
+            .msg("Installation paths not writeable, unable to update packages"),
+            "\n",
+            detail
+        )
+    }
 
     pkgs[status,, drop=FALSE]
 }

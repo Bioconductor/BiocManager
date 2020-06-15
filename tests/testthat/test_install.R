@@ -116,10 +116,7 @@ test_that("unwriteable packages are not considered", {
     expect_identical(pkgs, .filter(pkgs, p0))
     expect_identical(pkgs0, .filter(pkgs, p1))
 
-    msg <- tryCatch(.filter(pkgs, NULL), message=conditionMessage)
-    expect_identical(
-        "Installation path not writeable, unable to update packages: Bar\n",
-        msg)
+    expect_message(.filter(pkgs, NULL), "^Installation paths not writeable")
 
     if (.Platform$OS.type == "windows")
         ## how to create a read-only directory?
