@@ -32,6 +32,7 @@ test_that(".version_validate() validates version", {
         .version_validate("100.1"),
         "unknown Bioconductor version '100.1'; .*"
     )
+
 })
 
 test_that(".version_recommend() recommends update", {
@@ -99,6 +100,39 @@ test_that(".version_validity('devel') works", {
         test <- paste0("Bioconductor version '", devel, "' requires R version")
         expect_true(startsWith(.version_validity("devel"), test))
     }
+})
+
+test_that(".version_validity(...) works", {
+    .skip_if_misconfigured()
+    skip_if_offline()
+
+    .version_validity <- BiocManager:::.version_validity
+
+    .get_R_ver = function(ver = "4.3.0") {
+        rver <- package_version(ver)
+        class(rver) <- c("R_system_version", class(rver))
+        rver
+    }
+
+    .ver_map <- data.frame(
+        Bioc = package_version(list("4.0", "4.1", "4.1")),
+        R = package_version(list("4.3", "4.4", "4.5")),
+        BiocStatus = c("release", "devel", "future")
+    )
+
+    expect_true(
+        .version_validity("4.0", .ver_map, .get_R_ver())
+    )
+
+    expect_match(
+        .version_validity("4.1", .ver_map, .get_R_ver()),
+        "BiocManager::install"
+    )
+
+    expect_match(
+        .version_validity("4.1", .ver_map, .get_R_ver("4.5.0")),
+        "R version is too.*new"
+    )
 })
 
 test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
