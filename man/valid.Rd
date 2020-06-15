@@ -50,7 +50,9 @@ be old.}
 \code{biocValid} list object with elements \code{too_new} and
 \code{out_of_date} containing \code{data.frame}s with packages and their
 installed locations that are too new or out-of-date for the
-current version of \emph{Bioconductor}.
+current version of \emph{Bioconductor}. When internet access
+is unavailable, an empty 'biocValid' list is returned. If all
+packages ('pkgs') are up to date, then TRUE is returned.
 
 `print()` is invoked for its side effect.
 }

@@ -89,7 +89,9 @@
 #' @return `biocValid` list object with elements `too_new` and
 #'     `out_of_date` containing `data.frame`s with packages and their
 #'     installed locations that are too new or out-of-date for the
-#'     current version of _Bioconductor_.
+#'     current version of _Bioconductor_. When internet access
+#'     is unavailable, an empty 'biocValid' list is returned. If all
+#'     packages ('pkgs') are up to date, then TRUE is returned.
 #' @author Martin Morgan \email{martin.morgan@@roswellpark.org}
 #' @seealso `BiocManager::\link{install}()` to update installed
 #'     packages.
