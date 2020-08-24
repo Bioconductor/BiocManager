@@ -174,8 +174,13 @@ format.version_sentinel <-
     if (!.version_validity_online_check())
         .version_map_get_offline()
     else {
-        if (is.null(config))
-            config <- "https://bioconductor.org/config.yaml"
+        if (is.null(config)) {
+            mirror <- getOption("BioC_mirror", "https://bioconductor.org")
+            config <- file.path(mirror, "config.yaml")
+            if (!tryCatch(.url_exists(config), warning = function(w) FALSE)) {
+                config <- "https://bioconductor.org/config.yaml"
+            }
+        }
         .version_map_get_online(config)
     }
 }

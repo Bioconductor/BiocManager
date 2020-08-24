@@ -186,6 +186,27 @@ test_that(".version_map_get() falls back to http", {
     expect_identical(result, .VERSION_MAP_SENTINEL)
 })
 
+test_that(".version_map_get() works with default mirror", {
+    skip_if_offline()
+    map <- .version_map_get_online("https://bioconductor.org/config.yaml")
+    expect_identical(.version_map_get(), map)
+})
+
+test_that(".version_map_get() works with custom mirror", {
+    map <- .version_map_get_online("bioc-mirror/config.yaml")
+    withr::with_options(list(BioC_mirror = "bioc-mirror"), {
+        expect_identical(.version_map_get(), map)
+    })
+})
+
+test_that(".version_map_get() falls back to default mirror", {
+    skip_if_offline()
+    map <- .version_map_get_online("https://bioconductor.org/config.yaml")
+    withr::with_options(list(BioC_mirror = "bioc-mirror-does-not-exist"), {
+        expect_identical(.version_map_get(), map)
+    })
+})
+
 test_that("BiocVersion version matches with .version_map()", {
     .skip_if_misconfigured()
     skip_if_offline()
