@@ -148,8 +148,10 @@ format.version_sentinel <-
 }
 
 .version_map_get_offline <-
-    function()
+    function(config)
 {
+    if (file.exists(config))
+        return(.version_map_get_online(config))
     bioc <- tryCatch({
         packageVersion("BiocVersion")[, 1:2]
     }, error = identity)
@@ -171,15 +173,15 @@ format.version_sentinel <-
 .version_map_get <-
     function(config = NULL)
 {
+    if (is.null(config)) {
+        mirror <- getOption("BioC_mirror", "https://bioconductor.org")
+        config <- file.path(mirror, "config.yaml")
+    }
     if (!.version_validity_online_check())
-        .version_map_get_offline()
+        .version_map_get_offline(config)
     else {
-        if (is.null(config)) {
-            mirror <- getOption("BioC_mirror", "https://bioconductor.org")
-            config <- file.path(mirror, "config.yaml")
-            if (!tryCatch(.url_exists(config), warning = function(w) FALSE)) {
-                config <- "https://bioconductor.org/config.yaml"
-            }
+        if (!tryCatch(.url_exists(config), warning = function(w) FALSE)) {
+            config <- "https://bioconductor.org/config.yaml"
         }
         .version_map_get_online(config)
     }

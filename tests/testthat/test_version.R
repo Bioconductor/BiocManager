@@ -166,7 +166,8 @@ test_that(".version_map_get() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     })
 })
 
-test_that(".version_map_get() falls back to http", {
+test_that(".version_map_get() falls back to original when online", {
+    skip_if_offline()
     .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- TRUE
     ## better test ideas welcome...
     url <- "https://httpbin.org/status/404"
@@ -177,32 +178,23 @@ test_that(".version_map_get() falls back to http", {
         msgs <<- c(msgs, list(w))
         invokeRestart("muffleWarning")
     })
-    ## did we generate warnings and eventually fail gracefully?
-    expect_identical(length(msgs), 2L)
-    expect_true(all(vapply(msgs, is, logical(1), "simpleWarning")))
-    msgs <- vapply(msgs, conditionMessage, character(1))
-    expect_identical(sum(grepl("https://httpbin.org", msgs)), 1L)
-    expect_identical(sum(grepl("http://httpbin.org", msgs)), 1L)
-    expect_identical(result, .VERSION_MAP_SENTINEL)
-})
 
-test_that(".version_map_get() works with default mirror", {
-    skip_if_offline()
+    expect_identical(length(msgs), 0L)
     map <- .version_map_get_online("https://bioconductor.org/config.yaml")
     expect_identical(.version_map_get(), map)
+})
+
+test_that(".version_map_get() uses local map when offline", {
+    map <- .version_map_get_online("bioc-mirror/config.yaml")
+    withr::with_options(list(BioC_mirror = "bioc-mirror",
+        BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
+        expect_identical(.version_map_get(), map)
+    })
 })
 
 test_that(".version_map_get() works with custom mirror", {
     map <- .version_map_get_online("bioc-mirror/config.yaml")
     withr::with_options(list(BioC_mirror = "bioc-mirror"), {
-        expect_identical(.version_map_get(), map)
-    })
-})
-
-test_that(".version_map_get() falls back to default mirror", {
-    skip_if_offline()
-    map <- .version_map_get_online("https://bioconductor.org/config.yaml")
-    withr::with_options(list(BioC_mirror = "bioc-mirror-does-not-exist"), {
         expect_identical(.version_map_get(), map)
     })
 })
