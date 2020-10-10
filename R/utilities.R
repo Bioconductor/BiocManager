@@ -25,7 +25,11 @@
 .url_exists <-
     function(url)
 {
-    identical(nchar(.inet_readChar(url, 1L)), 1L)
+    suppressWarnings(tryCatch({
+        identical(nchar(.inet_readChar(url, 1L)), 1L)
+    }, error = function(...) {
+        FALSE
+    }))
 }
 
 .msg <-

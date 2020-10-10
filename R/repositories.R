@@ -67,8 +67,15 @@
 .repositories_filter <-
     function(repos)
 {
-    urls <- paste0(contrib.url(repos), "/PACKAGES")
-    online <- vapply(urls, .url_exists, logical(1))
+    ext <- c(".rds", ".gz", "")
+    pkg_files <- paste0("/PACKAGES", ext)
+    online <- logical(length(repos))
+    for (pkg_file in pkg_files) {
+        if (all(online))
+            next
+        urls <- paste0(contrib.url(repos[!online]), pkg_file)
+        online[!online] <- vapply(urls, .url_exists, logical(1))
+    }
     repos[online]
 }
 

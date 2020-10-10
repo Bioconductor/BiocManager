@@ -109,3 +109,12 @@ test_that("repositories helper replaces correct URL", {
                expect_equal(.repositories_base(), unname(default_repos))
            })
 })
+
+test_that("'.repositories_filter()' works", {
+    skip_on_cran()
+    skip_if_offline("bioconductor.org")
+    repos0 <- BiocManager::repositories()
+    expect_equal(.repositories_filter(repos), repos0)
+    repos  <- c(repos0, "https://bioconductor.org")
+    expect_equal(.repositories_filter(repos), repos0)
+})
