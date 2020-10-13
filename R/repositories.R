@@ -124,7 +124,7 @@
 #' may be silenced (displayed as a message) with
 #' `options(BiocManager.check_repositories = FALSE)`. A message is
 #' still printed, to serve as a reminder when debugging problems
-#' related to incompatible pacakge installation.
+#' related to incompatible package installation.
 #'
 #' The intended use of `site_repository =` is to enable installation of
 #' packages not available in the default repositories, e.g., packages
