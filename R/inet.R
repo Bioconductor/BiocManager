@@ -72,6 +72,13 @@ NULL
 .inet_install.packages <-
     function(...)
 {
+    ## More generous timeout for large package download, see
+    ## `?download.file` and, for instance,
+    ## https://stat.ethz.ch/pipermail/bioc-devel/2020-November/017448.html
+    if (identical(as.integer(getOption("timeout")), 60L)) { # change default only
+        otimeout <- options(timeout = 180L)
+        on.exit(options(otimeout))
+    }
     withCallingHandlers({
         tryCatch({
             install.packages(...)
@@ -98,6 +105,11 @@ NULL
 .inet_update.packages <-
     function(...)
 {
+    ## see .inet_old.packages for implementation note
+    if (identical(as.integer(getOption("timeout")), 60L)) {
+        otimeout <- options(timeout = 180L)
+        on.exit(options(otimeout))
+    }
     withCallingHandlers({
         tryCatch({
             update.packages(...)
