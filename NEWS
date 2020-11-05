@@ -6,6 +6,11 @@ USER VISIBLE CHANGES
     o Respect `options(repos = c(CRAN = "..."))`. See
       https://github.com/Bioconductor/BiocManager/issues/69
 
+BUG FIXES
+
+    o Increase timeout from 1 to 3 minutes to make download of large
+      packages more robust.
+
 CHANGES IN VERSION 1.30.10
 -------------------------
 
