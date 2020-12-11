@@ -76,7 +76,7 @@ NULL
     ## `?download.file` and, for instance,
     ## https://stat.ethz.ch/pipermail/bioc-devel/2020-November/017448.html
     if (identical(as.integer(getOption("timeout")), 60L)) { # change default only
-        otimeout <- options(timeout = 180L)
+        otimeout <- options(timeout = 300L)
         on.exit(options(otimeout))
     }
     withCallingHandlers({
@@ -107,7 +107,7 @@ NULL
 {
     ## see .inet_old.packages for implementation note
     if (identical(as.integer(getOption("timeout")), 60L)) {
-        otimeout <- options(timeout = 180L)
+        otimeout <- options(timeout = 300L)
         on.exit(options(otimeout))
     }
     withCallingHandlers({
