@@ -57,8 +57,11 @@
 {
     mirror <- getOption("BioC_mirror", "https://bioconductor.org")
     paths <- c(
-        BioCsoft = "bioc", BioCann = "data/annotation",
-        BioCexp = "data/experiment", BioCworkflows = "workflows"
+        BioCsoft = "bioc",
+        BioCann = "data/annotation",
+        BioCexp = "data/experiment",
+        BioCworkflows = "workflows",
+        BioCbooks= "books"
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
     setNames(bioc_repos, names(paths))
