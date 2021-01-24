@@ -61,7 +61,7 @@
         BioCann = "data/annotation",
         BioCexp = "data/experiment",
         BioCworkflows = "workflows",
-        BioCbooks= "books"
+        BioCbooks = if (version() >= "3.12") "books" else NULL
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
     setNames(bioc_repos, names(paths))
