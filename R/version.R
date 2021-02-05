@@ -174,7 +174,7 @@ format.version_sentinel <-
     if (!.version_validity_online_check())
         .version_map_get_offline()
     else {
-        if (is.null(config))
+        if (is.null(config) || !nchar(config))
             config <- "https://bioconductor.org/config.yaml"
         .version_map_get_online(config)
     }
@@ -183,8 +183,10 @@ format.version_sentinel <-
 .version_map <- local({
     version_map <- .VERSION_MAP_SENTINEL
     function() {
+        config <- Sys.getenv("BIOCONDUCTOR_CONFIG_FILE")
+        config <- getOption("BIOCONDUCTOR_CONFIG_FILE", config)
         if (identical(version_map, .VERSION_MAP_SENTINEL))
-            version_map <<- .version_map_get()
+            version_map <<- .version_map_get(config)
         version_map
     }
 })

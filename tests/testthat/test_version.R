@@ -156,6 +156,30 @@ test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 })
 
 
+test_that(".version_map() and BIOCONDUCTOR_CONFIG_FILE work", {
+    config <- tempfile(fileext = ".yaml")
+    file.create(config)
+    expect_true(
+        !length(
+            .version_map_get_online_config(config)
+        )
+    )
+    expect_true(
+        is.character(
+            .version_map_get_online_config(config)
+        )
+    )
+    expect_warning(
+            .version_map_get_online_config("./fake/address/path/file.yaml")
+    )
+    skip_if_offline()
+    expect_true(
+        is.data.frame(
+            .version_map_get_online("https://bioconductor.org/config.yaml")
+        )
+    )
+})
+
 test_that(".version_map_get() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
         value <- .version_map_get()
