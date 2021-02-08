@@ -1,6 +1,11 @@
 CHANGES IN VERSION 1.30.11
 -------------------------
 
+NEW FEATURES
+
+    o 'BIOCONDUCTOR_CONFIG_FILE' option allows users to provide an offline
+    and local configuration file (config.yaml) for version validation.
+
 USER VISIBLE CHANGES
 
     o Respect `options(repos = c(CRAN = "..."))`. See

@@ -299,6 +299,21 @@ steps.
 BiocManager can then be used for subsequent installations, e.g.,
 `BiocManager::install(c("ggplot2", "GenomicRanges"))`.
 
+### Offline config.yaml
+
+_BiocManager_ also expects to reference an online configuration yaml
+file for Bioconductor version validation at
+https://bioconductor.org/config.yaml. With offline use, users are
+expected to either host this file locally or provide their `config.yaml`
+version. The package allows either an environment variable or R-specific
+option to locate this file, e.g.,
+
+    ```{r, eval = FALSE}
+    options(
+        BIOCONDUCTOR_CONFIG_FILE = "file:///path/to/config.yaml"
+    )
+    ```
+
 # How it works -- details for advanced trouble-shooting
 
 BiocManager's job is to make sure that all packages are installed from
