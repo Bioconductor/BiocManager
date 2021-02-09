@@ -123,7 +123,7 @@
 #' provided by base _R_ to specify alternative repositories, e.g.,
 #' `options(repos = c(CRAN =
 #' "https://mran.microsoft.com/snapshot/2020-02-08"))`. This is
-#' supported, but generates a warning because specification of an
+#' supported, but generates an error because specification of an
 #' inappropriate CRAN repository (one providing packages not
 #' consistent with the dates of the _Bioconductor_ release) results in
 #' use of CRAN packages not consistent with _Bioconductor_ best

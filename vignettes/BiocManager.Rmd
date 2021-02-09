@@ -166,6 +166,31 @@ _R_
 BiocManager::valid()
 ```
 
+## Timeout during package download
+
+Large packages can take a long time to downloaded over poor internet
+connects. The BiocManager package sets the time limit to 300 seconds,
+using `options(timeout = 300)`. Only part of a package may download,
+e.g., only 15.1 of 79.4 MB in the example below
+
+```
+trying URL 'https://bioconductor.org/packages/3.12/data/annotation/src/contrib/org.Hs.eg.db_3.12.0.tar.gz'
+Content type 'application/x-gzip' length 83225518 bytes (79.4 MB)
+=========
+downloaded 15.1 MB
+```
+
+or perhaps with a warning (often difficult to see in the output)
+
+```
+Error in download.file(url, destfile, method, mode = "wb", ...) :
+...
+...: Timeout of 300 seconds was reached
+...
+```
+
+Try increasing the download timeout, e.g, `options(timeout = 600)`.
+
 # Advanced use
 
 ## Changing version
@@ -250,10 +275,12 @@ steps.
 
     ```{r, eval = FALSE}
     options(
-        repos = "file:///path/to/CRAN-mirror",
+        repos = c(CRAN_mirror = "file:///path/to/CRAN-mirror"),
         BioC_mirror = "file:///path/to/Bioc-mirror"
     )
     ```
+
+   Validate repository setting by reviewing the output of `repositories()`.
 
 2. Create an environment variable or option, e.g.,
 
@@ -305,7 +332,7 @@ BiocManager could write information to a cache on the user disk, but
 this is not a robust solution for a number of reasons. Is there any
 other way that _R_ could keep track of version information? Yes, by
 installing a _Bioconductor_ package (BiocVersion) whose sole purpose is
-to indicate the version of _Bioconductor_ in use. 
+to indicate the version of _Bioconductor_ in use.
 
 By default, BiocManager installs the BiocVersion package corresponding
 to the most recent released version of _Bioconductor_ for the version

@@ -51,8 +51,9 @@
 }
 
 .message <-
-    function(..., domain = NULL, appendLF=TRUE)
+    function(..., call. = FALSE, domain = NULL, appendLF=TRUE)
 {
+    ## call. = FALSE provides compatibility with .stop(), but is ignored
     message(.msg(...), domain = NULL, appendLF=appendLF)
     invisible(TRUE)
 }

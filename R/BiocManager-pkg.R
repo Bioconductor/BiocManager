@@ -8,34 +8,48 @@ NULL
 #' packages in a manner consistent with _Bioconductor_'s package
 #' versioning and release system.
 #'
-#' @details Main functions are as follows; additional help is
-#'     available for each function, e.g., `?BiocManager::version`.
+#' @details
 #'
-#' \describe{
+#' Main functions are as follows; additional help is available for
+#' each function, e.g., `?BiocManager::version`.
 #'
-#'   \item{`BiocManager::install()`}{Install or update packages from
-#'     _Bioconductor_, CRAN, and GitHub.}
+#' - `BiocManager::install()`: Install or update packages from
+#'   _Bioconductor_, CRAN, and GitHub.
 #'
-#'   \item{`BiocManager::version()`}{Report the version of
-#'     _Bioconductor_ in use.}
+#' - `BiocManager::version()`: Report the version of _Bioconductor_ in
+#'     use.
 #'
-#'   \item{`BiocManager::available()`}{Return a `character()` vector
-#'     of package names available (at `BiocManager::repositories()`)
-#'     for installation.}
+#' - `BiocManager::available()`: Return a `character()` vector of
+#'   package names available (at `BiocManager::repositories()`) for
+#'   installation.
 #'
-#'   \item{`BiocManager::valid()`}{Determine whether installed packages
-#'     are from the same version of _Bioconductor_.}
+#' - `BiocManager::valid()`: Determine whether installed packages are
+#'     from the same version of _Bioconductor_.
 #'
-#'   \item{`BiocManager::repositories()`}{_Bioconductor_ and other
-#'     repository URLs to discover packages for installation.}
+#' - `BiocManager::repositories()`: _Bioconductor_ and other
+#'    repository URLs to discover packages for installation.
 #'
-#' }
+#' The version of _Bioconductor_ in use is determined by the installed
+#' version of a second package, BiocVersion. BiocVersion is installed
+#' automatically during first use of `BiocManager::install()`. If
+#' BiocVersion has not yet been installed, the version is determined
+#' by code in base R.
 #'
-#'     The version of _Bioconductor_ in use is determined by the
-#'     installed version of a second package, BiocVersion. BiocVersion
-#'     is installed automatically during first use of
-#'     `BiocManager::install()`. If BiocVersion has not yet been
-#'     installed, the version is determined by code in base R.
+#' Options influencing package behavior (see `?options`, `?getOption`)
+#' include:
+#'
+#' - `"pkgType"`: The default type of packages to be downloaded and
+#'   installed; see `?install.packages`.
+#'
+#' - `"timeout"`: The maximum time allowed for download of a single
+#'   package, in seconds. _BiocManager_ increases this to 300 seconds
+#'   to accommodate download of large BSgenome and other packages.
+#'
+#' System environment variables influencing package behavior include:
+#'
+#' - \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} advanced
+#'   configuration to avoid _Bioconductor_ version checks. See
+#'   `?install`.
 #'
 #' @md
 #' @name BiocManager-pkg
@@ -45,7 +59,7 @@ NULL
 #' @examples
 #' R.version.string
 #' packageVersion("BiocManager")
-#' if ("BiocVersion" %in% rownames(installed.packages()))
+#' if (requireNamespace("BiocVersion", quietly = TRUE))
 #'     packageVersion("BiocVersion")
 #' BiocManager::version()
 "_PACKAGE"

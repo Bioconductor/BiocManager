@@ -12,38 +12,52 @@ packages in a manner consistent with \emph{Bioconductor}'s package
 versioning and release system.
 }
 \details{
-Main functions are as follows; additional help is
-available for each function, e.g., \code{?BiocManager::version}.
+Main functions are as follows; additional help is available for
+each function, e.g., \code{?BiocManager::version}.
+\itemize{
+\item \code{BiocManager::install()}: Install or update packages from
+\emph{Bioconductor}, CRAN, and GitHub.
+\item \code{BiocManager::version()}: Report the version of \emph{Bioconductor} in
+use.
+\item \code{BiocManager::available()}: Return a \code{character()} vector of
+package names available (at \code{BiocManager::repositories()}) for
+installation.
+\item \code{BiocManager::valid()}: Determine whether installed packages are
+from the same version of \emph{Bioconductor}.
+\item \code{BiocManager::repositories()}: \emph{Bioconductor} and other
+repository URLs to discover packages for installation.
+}
 
-\describe{
+The version of \emph{Bioconductor} in use is determined by the installed
+version of a second package, BiocVersion. BiocVersion is installed
+automatically during first use of \code{BiocManager::install()}. If
+BiocVersion has not yet been installed, the version is determined
+by code in base R.
 
-\item{\code{BiocManager::install()}}{Install or update packages from
-\emph{Bioconductor}, CRAN, and GitHub.}
+Options influencing package behavior (see \code{?options}, \code{?getOption})
+include:
+\itemize{
+\item \code{"repos"}, \code{"BiocManager.check_repositories"},
+\code{"BiocManager.snapshot"}: URLs of additional repositories for use
+by \code{BiocManger::install()}. See \code{?repositories}.
+\item \code{"pkgType"}: The default type of packages to be downloaded and
+installed; see \code{?install.packages}.
+\item \code{"timeout"}: The maximum time allowed for download of a single
+package, in seconds. \emph{BiocManager} increases this to 300 seconds
+to accommodate download of large BSgenome and other packages.
+}
 
-\item{\code{BiocManager::version()}}{Report the version of
-\emph{Bioconductor} in use.}
-
-\item{\code{BiocManager::available()}}{Return a \code{character()} vector
-of package names available (at \code{BiocManager::repositories()})
-for installation.}
-
-\item{\code{BiocManager::valid()}}{Determine whether installed packages
-are from the same version of \emph{Bioconductor}.}
-
-\item{\code{BiocManager::repositories()}}{\emph{Bioconductor} and other
-repository URLs to discover packages for installation.}
-
-}\preformatted{The version of _Bioconductor_ in use is determined by the
-installed version of a second package, BiocVersion. BiocVersion
-is installed automatically during first use of
-`BiocManager::install()`. If BiocVersion has not yet been
-installed, the version is determined by code in base R.
+System environment variables influencing package behavior include:
+\itemize{
+\item \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} advanced
+configuration to avoid \emph{Bioconductor} version checks. See
+\code{?install}.
 }
 }
 \examples{
 R.version.string
 packageVersion("BiocManager")
-if ("BiocVersion" \%in\% rownames(installed.packages()))
+if (requireNamespace("BiocVersion", quietly = TRUE))
     packageVersion("BiocVersion")
 BiocManager::version()
 }

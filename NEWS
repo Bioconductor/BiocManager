@@ -8,8 +8,8 @@ USER VISIBLE CHANGES
 
 BUG FIXES
 
-    o Increase timeout from 1 to 3 minutes to make download of large
-      packages more robust.
+    o Increase timeout from 1 to 5 minutes (300 seconds) to make
+      download of large packages more robust.
 
 CHANGES IN VERSION 1.30.10
 -------------------------
