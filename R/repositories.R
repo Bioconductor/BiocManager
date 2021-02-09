@@ -41,13 +41,55 @@
     repos
 }
 
+.repositories_rspm <-
+    function(cran)
+{
+    rspm_version <- .version_field("RSPM")
+    if (is.na(rspm_version)) {
+        cran
+    } else {
+        rspm_version <- format(as.Date(rspm_version, "%m/%d/%Y"), "%Y-%m-%d")
+        paste0("https://packagemanager.rstudio.com/cran/", rspm_version)
+    }
+}
+
+.repositories_mran <-
+    function(cran)
+{
+    mran_version <- .version_field("MRAN")
+    if (is.na(mran_version)) {
+        cran
+    } else {
+        mran_version <- format(as.Date(mran_version, "%m/%d/%Y"), "%Y-%m-%d")
+        paste0("https://mran.microsoft.com/snapshot/", mran_version)
+    }
+}
+
 .repositories_base <-
     function()
 {
     repos <- getOption("repos")
     repos <- .repositories_check_repos(repos)
     rename <- repos == "@CRAN@"
-    repos[rename] <- "https://cran.rstudio.com"
+    if (any(rename)) {
+        default <- if (version() > "3.11") "MRAN" else "CRAN"
+        opt <- getOption("BiocManager.snapshot", default)
+        valid <- c("CRAN", "MRAN", "RSPM")
+        if (length(opt) != 1L || !opt %in% valid)
+            .stop(
+                "'getOption(\"BiocManager.snapshot\")' must be one of %s",
+                paste0("'", valid, "'", collapse = " ")
+            )
+        cran <- "https://cran.rstudio.com"
+        repos[rename] <- switch(
+            opt,
+            RSPM = .repositories_rspm(cran),
+            MRAN = .repositories_mran(cran),
+            CRAN = cran,
+            .stop("unknown option 'BiocManager.snapshot = \"%s\"'", opt)
+        )
+    }
+
     repos
 }
 
@@ -92,11 +134,13 @@
     repos[!duplicated(names(repos))]
 }
 
-#' Display current Bioconductor and CRAN repositories.
+#' @title Display current Bioconductor and CRAN repositories.
 #'
-#' `repositories()` reports the URLs from which to install
-#' _Bioconductor_ and CRAN packages. It is used by
-#' `BiocManager::install()` and other functions.
+#' @aliases BiocManager.snapshot BiocManager.check_repositories
+#'
+#' @description `repositories()` reports the URLs from which to
+#'     install _Bioconductor_ and CRAN packages. It is used by
+#'     `BiocManager::install()` and other functions.
 #'
 #' @param site_repository (Optional) `character(1)` representing an
 #'     additional repository (e.g., a URL to an organization's
@@ -109,13 +153,31 @@
 #'
 #' @details
 #'
+#' `repositories()` returns the appropriate softwarepackage
+#' repositories for your version of _Bioconductor_.
+#'
 #' _Bioconductor_ has a 'release' and a 'devel' semi-annual release
 #' cycle. Packages within a release have been tested against each
 #' other and the current version of packages on CRAN. _Bioconductor_
 #' best practice is to use packages from the same release, and from
-#' the appropriate CRAN repository. `repositories()` returns the
-#' appropriate package repositories for your version of
-#' _Bioconductor_.
+#' the appropriate CRAN repository.
+#'
+#' CRAN packages for out-of-date _Bioconductor_ installations are
+#' installed from historical 'snapshots' consistent with the last date
+#' the Bioconductor version was current.  This behavior is the default
+#' for _Bioconductor_ version 3.12 and later, but specification of
+#' `BiocManager.snapshot` is respected for earlier _Bioconductor_
+#' releases.  For example, _Bioconductor_ version 3.11 was current
+#' until October 28, 2020; CRAN packages are therefore installed from
+#' a snapshot created on 2020-10-28. By default, the snapshots are
+#' from 'MRAN', the [Microsoft R Archive Network][MRAN]. Use
+#' `options(BiocManager.snapshot = "RSPM")` to instead use the
+#' [RStudio Package Manager][RSPM], or `options(BiocManager.snapshot =
+#' "CRAN")` to use the current CRAN repository (i.e., disabling the
+#' snapshot feature).
+#'
+#' [MRAN]: https://mran.microsoft.com/timemachine
+#' [RSPM]: https://packagemanager.rstudio.com/client/#/repos/2/overview
 #'
 #' It may be desireable to specify different default repositories,
 #' especially CRAN, for intentionally out-of-date _Bioconductor_

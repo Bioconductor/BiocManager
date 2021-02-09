@@ -114,7 +114,18 @@ test_that("'.repositories_filter()' works", {
     skip_on_cran()
     skip_if_offline("bioconductor.org")
     repos0 <- BiocManager::repositories()
-    expect_equal(.repositories_filter(repos), repos0)
+    expect_equal(.repositories_filter(repos0), repos0)
     repos  <- c(repos0, "https://bioconductor.org")
     expect_equal(.repositories_filter(repos), repos0)
+})
+
+test_that("'.repositories_base()' respects BiocManager.snapshot", {
+    withr::with_options(
+               list(BiocManager.snapshot = "FOO"),
+               expect_error(.repositories_base(), "BiocManager.snapshot")
+           )
+    withr::with_options(
+               list(BiocManager.snapshot = c("RSPM", "CRAN")),
+               expect_error(.repositories_base(), "BiocManager.snapshot")
+           )
 })

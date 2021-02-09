@@ -8,6 +8,10 @@ NEW FEATURES
 
 USER VISIBLE CHANGES
 
+    o Use historical snapshots (MRAN by default; RSPM via
+      `options(BiocManager.snapshots=)`) to install CRAN packages for
+      out-of-date Bioconductor versions.
+
     o Respect `options(repos = c(CRAN = "..."))`. See
       https://github.com/Bioconductor/BiocManager/issues/69
 

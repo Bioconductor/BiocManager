@@ -19,7 +19,9 @@
     BiocStatus = factor(
         factor(),
         levels = c("out-of-date", "release", "devel", "future")
-    )
+    ),
+    RPSM = character(),
+    MRAN = character()
 )
 
 .version_sentinel <-
@@ -87,6 +89,23 @@ format.version_sentinel <-
     txt
 }
 
+.version_map_config_element <-
+    function(txt, tag)
+{
+    grps <- grep("^[^[:blank:]]", txt)
+    start <- match(grep(tag, txt), grps)
+    if (!length(start))
+        return(setNames(character(), character()))
+    end <- ifelse(length(grps) < start + 1L, length(txt), grps[start + 1] - 1L)
+    map <- txt[seq(grps[start] + 1, end)]
+    map <- trimws(gsub("\"", "", sub(" #.*", "", map)))
+
+    pattern <- "(.*): (.*)"
+    key <- sub(pattern, "\\1", map)
+    value <- sub(pattern, "\\2", map)
+    setNames(value, key)
+}
+
 .version_map_get_online <-
     function(config)
 {
@@ -104,14 +123,12 @@ format.version_sentinel <-
     if (inherits(txt, "error"))
         return(.VERSION_MAP_SENTINEL)
 
-    grps <- grep("^[^[:blank:]]", txt)
-    start <- match(grep("r_ver_for_bioc_ver", txt), grps)
-    map <- txt[seq(grps[start] + 1, grps[start + 1] - 1)]
-    map <- trimws(gsub("\"", "", sub(" #.*", "", map)))
+    bioc_r_map <- .version_map_config_element(txt, "r_ver_for_bioc_ver")
+    bioc <- package_version(names(bioc_r_map))
+    r <- package_version(unname(bioc_r_map))
 
-    pattern <- "(.*): (.*)"
-    bioc <- package_version(sub(pattern, "\\1", map))
-    r <- package_version(sub(pattern, "\\2", map))
+    bioc_rspm_map <- .version_map_config_element(txt, "rspm_ver_for_bioc_ver")
+    bioc_mran_map <- .version_map_config_element(txt, "mran_ver_for_bioc_ver")
 
     pattern <- "^release_version: \"(.*)\""
     release <- package_version(
@@ -143,8 +160,10 @@ format.version_sentinel <-
         BiocStatus = factor(
             status,
             levels = c("out-of-date", "release", "devel", "future")
-        )
-    ))
+        ),
+        RSPM = unname(bioc_rspm_map[as.character(bioc)]),
+        MRAN = unname(bioc_mran_map[as.character(bioc)])
+   ))
 }
 
 .version_map_get_offline <-
@@ -164,7 +183,9 @@ format.version_sentinel <-
         BiocStatus = factor(
             NA,
             levels = c("out-of-date", "release", "devel", "future")
-        )
+        ),
+        RSPM = NA_character_,
+        MRAN = NA_character_
     ))
 }
 
@@ -190,6 +211,16 @@ format.version_sentinel <-
         version_map
     }
 })
+
+.version_field <-
+    function(field)
+{
+    map <- .version_map()
+    if (identical(map, .VERSION_MAP_SENTINEL))
+        return(NA)
+    idx <- match(version(), map[["Bioc"]])
+    map[idx, field]
+}
 
 .get_R_version <- function()
     getRversion()

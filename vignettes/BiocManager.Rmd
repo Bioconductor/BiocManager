@@ -56,6 +56,10 @@ Installed packages can be updated to their current version with
 BiocManager::install()
 ```
 
+CRAN packages for out-of-date _Bioconductor_ releases are installed
+from the [Microsoft _R_ Application Network][MRAN]; see
+`?BiocManager.snapshot` to change this behavior.
+
 ## Version and validity of installations
 
 Use `version()` to discover the version of _Bioconductor_ currently in
