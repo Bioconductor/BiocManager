@@ -72,8 +72,8 @@
     repos <- .repositories_check_repos(repos)
     rename <- repos == "@CRAN@"
     if (any(rename)) {
-        default <- if (version() > "3.11") "MRAN" else "CRAN"
-        opt <- getOption("BiocManager.snapshot", default)
+        ## default <- if (version() > "3.11") "MRAN" else "CRAN"
+        opt <- getOption("BiocManager.snapshot", "CRAN")
         valid <- c("CRAN", "MRAN", "RSPM")
         if (length(opt) != 1L || !opt %in% valid)
             .stop(
@@ -153,7 +153,7 @@
 #'
 #' @details
 #'
-#' `repositories()` returns the appropriate softwarepackage
+#' `repositories()` returns the appropriate software package
 #' repositories for your version of _Bioconductor_.
 #'
 #' _Bioconductor_ has a 'release' and a 'devel' semi-annual release
@@ -162,12 +162,10 @@
 #' best practice is to use packages from the same release, and from
 #' the appropriate CRAN repository.
 #'
-#' CRAN packages for out-of-date _Bioconductor_ installations are
+#' CRAN packages for out-of-date _Bioconductor_ installations can be
 #' installed from historical 'snapshots' consistent with the last date
-#' the Bioconductor version was current.  This behavior is the default
-#' for _Bioconductor_ version 3.12 and later, but specification of
-#' `BiocManager.snapshot` is respected for earlier _Bioconductor_
-#' releases.  For example, _Bioconductor_ version 3.11 was current
+#' the Bioconductor version was current.  This behavior can be specified with
+#' `BiocManager.snapshot` For example, _Bioconductor_ version 3.11 was current
 #' until October 28, 2020; CRAN packages are therefore installed from
 #' a snapshot created on 2020-10-28. By default, the snapshots are
 #' from 'MRAN', the [Microsoft R Archive Network][MRAN]. Use
