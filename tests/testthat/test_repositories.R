@@ -3,7 +3,9 @@ context("repositories()")
 test_that("repositories() returns all repos", {
     .skip_if_misconfigured()
     skip_if_offline()
-    allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp", "BioCworkflows", "BioCbooks")
+    allOS <- c("BioCsoft", "CRAN", "BioCann", "BioCexp", "BioCworkflows")
+    if (version() >= "3.12")
+        allOS <- c(allOS, "BioCbooks")
     expect_true(all(allOS %in% names(repositories())))
 })
 
