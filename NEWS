@@ -4,7 +4,10 @@ CHANGES IN VERSION 1.30.11
 NEW FEATURES
 
     o 'BIOCONDUCTOR_CONFIG_FILE' option allows users to provide an offline
-    and local configuration file (config.yaml) for version validation.
+      and local configuration file (config.yaml) for version validation.
+
+    o Bioconductor 'BioCbooks' repository now available in Bioconductor
+      versions >= "3.12"
 
 USER VISIBLE CHANGES
 
