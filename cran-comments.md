@@ -1,9 +1,8 @@
 ## Test environments
-* local Ubuntu 19.10 (linux): R 3.6.1 Patched, R 3.5.3 Patched, R-devel 4.0.0
+* local Ubuntu 20.10 (linux): R 3.6.3, R 4.0.3 patched, R-devel 4.1.0
 * win-builder.r-project.org (windows): oldrel, release, devel
 * appveyor (windows): bioc-devel, bioc-release, bioc-oldrel,
     oldrel, release, devel
-* travis-ci (linux): bioc-devel, bioc-release, oldrel, release, devel
 
 ## R CMD check results
 
@@ -11,7 +10,7 @@
 
 * checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  'BiocStyle', 'BiocVersion', 'curl'
+  'BiocVersion', 'remotes', 'rmarkdown', 'curl'
 
-    The first two packages are available in Bioconductor.
+`BiocVersion` is only available in Bioconductor.
 
