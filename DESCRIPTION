@@ -10,9 +10,9 @@ Authors@R: c(
 Imports:
     utils
 Suggests: 
-    BiocStyle,
     BiocVersion,
     remotes,
+    rmarkdown,
     testthat,
     withr,
     curl,

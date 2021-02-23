@@ -6,7 +6,7 @@ author:
 - name: Martin Morgan
   affiliation: Roswell Park Comprehensive Cancer Center, Buffalo, NY
 output:
-  BiocStyle::html_document:
+  html_document:
       toc: true
 vignette: |
   %\VignetteIndexEntry{Installing and Managing Bioconductor Packages}
