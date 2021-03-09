@@ -28,7 +28,7 @@ install \emph{Bioconductor} and CRAN packages. It is used by
 \code{BiocManager::install()} and other functions.
 }
 \details{
-\code{repositories()} returns the appropriate softwarepackage
+\code{repositories()} returns the appropriate software package
 repositories for your version of \emph{Bioconductor}.
 
 \emph{Bioconductor} has a 'release' and a 'devel' semi-annual release
@@ -37,12 +37,10 @@ other and the current version of packages on CRAN. \emph{Bioconductor}
 best practice is to use packages from the same release, and from
 the appropriate CRAN repository.
 
-CRAN packages for out-of-date \emph{Bioconductor} installations are
+CRAN packages for out-of-date \emph{Bioconductor} installations can be
 installed from historical 'snapshots' consistent with the last date
-the Bioconductor version was current.  This behavior is the default
-for \emph{Bioconductor} version 3.12 and later, but specification of
-\code{BiocManager.snapshot} is respected for earlier \emph{Bioconductor}
-releases.  For example, \emph{Bioconductor} version 3.11 was current
+the Bioconductor version was current.  This behavior can be specified with
+\code{BiocManager.snapshot} For example, \emph{Bioconductor} version 3.11 was current
 until October 28, 2020; CRAN packages are therefore installed from
 a snapshot created on 2020-10-28. By default, the snapshots are
 from 'MRAN', the \href{https://mran.microsoft.com/timemachine}{Microsoft R Archive Network}. Use
@@ -50,7 +48,7 @@ from 'MRAN', the \href{https://mran.microsoft.com/timemachine}{Microsoft R Archi
 \href{https://packagemanager.rstudio.com/client/#/repos/2/overview}{RStudio Package Manager}, or \code{options(BiocManager.snapshot = "CRAN")} to use the current CRAN repository (i.e., disabling the
 snapshot feature).
 
-It may be desireable to specify different default repositories,
+It may be desirable to specify different default repositories,
 especially CRAN, for intentionally out-of-date \emph{Bioconductor}
 releases (e.g., to support reproducible research). Use the approach
 provided by base \emph{R} to specify alternative repositories, e.g.,
@@ -62,7 +60,7 @@ use of CRAN packages not consistent with \emph{Bioconductor} best
 practices.
 
 If alternative default repositories are known to provide
-appropriate version of CRAN or \emph{Bioconductor} packages, the warning
+appropriate versions of CRAN or \emph{Bioconductor} packages, the warning
 may be silenced (displayed as a message) with
 \code{options(BiocManager.check_repositories = FALSE)}. A message is
 still printed, to serve as a reminder when debugging problems

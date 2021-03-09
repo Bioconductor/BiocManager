@@ -33,7 +33,7 @@
 
         FUN <- ifelse(
             getOption("BiocManager.check_repositories", TRUE),
-            .stop, .message
+            .warning, .message
         )
         FUN(fmt, repos_string, call. = FALSE, wrap. = FALSE)
     }
@@ -177,7 +177,7 @@
 #' [MRAN]: https://mran.microsoft.com/timemachine
 #' [RSPM]: https://packagemanager.rstudio.com/client/#/repos/2/overview
 #'
-#' It may be desireable to specify different default repositories,
+#' It may be desirable to specify different default repositories,
 #' especially CRAN, for intentionally out-of-date _Bioconductor_
 #' releases (e.g., to support reproducible research). Use the approach
 #' provided by base _R_ to specify alternative repositories, e.g.,
@@ -190,7 +190,7 @@
 #' practices.
 #'
 #' If alternative default repositories are known to provide
-#' appropriate version of CRAN or _Bioconductor_ packages, the warning
+#' appropriate versions of CRAN or _Bioconductor_ packages, the warning
 #' may be silenced (displayed as a message) with
 #' `options(BiocManager.check_repositories = FALSE)`. A message is
 #' still printed, to serve as a reminder when debugging problems

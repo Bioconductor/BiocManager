@@ -69,7 +69,7 @@ test_that("repositories helper replaces correct URL", {
     withr::with_options(list(
                repos = repos
            ), {
-               expect_error(.repositories_base())
+               expect_warning(.repositories_base())
            })
 
     ## ...unless BiocManager.check_repositories == TRUE
@@ -85,7 +85,7 @@ test_that("repositories helper replaces correct URL", {
     withr::with_options(list(
                repos = c(BioCsoft = "foo.bar")
            ), {
-               expect_error(.repositories_base())
+               expect_warning(.repositories_base())
            })
 
     ## ...unless BiocManager.check_repositories == FALSE
