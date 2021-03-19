@@ -30,12 +30,8 @@
             names(conflicts), ": ", unname(conflicts),
             collapse = "\n    "
         )
-
-        FUN <- ifelse(
-            getOption("BiocManager.check_repositories", TRUE),
-            .warning, .message
-        )
-        FUN(fmt, repos_string, call. = FALSE, wrap. = FALSE)
+        if (getOption("BiocManager.check_repositories", TRUE))
+            .message(fmt, repos_string, call. = FALSE, wrap. = FALSE)
     }
 
     repos

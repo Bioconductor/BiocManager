@@ -69,7 +69,9 @@ test_that("repositories helper replaces correct URL", {
     withr::with_options(list(
                repos = repos
            ), {
-               expect_warning(.repositories_base())
+               expect_message(.repositories_base())
+               expect_equal(.repositories_base(), repos)
+               expect_message(repositories(), "'getOption\\(\"repos\"\\)'")
            })
 
     ## ...unless BiocManager.check_repositories == TRUE
@@ -78,14 +80,13 @@ test_that("repositories helper replaces correct URL", {
                BiocManager.check_repositories = FALSE
            ), {
                expect_equal(.repositories_base(), repos)
-               expect_message(repositories(), "'getOption\\(\"repos\"\\)'")
            })
 
     ## DO NOT update other repositories...
     withr::with_options(list(
                repos = c(BioCsoft = "foo.bar")
            ), {
-               expect_warning(.repositories_base())
+               expect_message(.repositories_base())
            })
 
     ## ...unless BiocManager.check_repositories == FALSE
@@ -95,7 +96,6 @@ test_that("repositories helper replaces correct URL", {
                BiocManager.check_repositories = FALSE
            ), {
                expect_equal(.repositories_base(), repos)
-               expect_message(repositories(), "'getOption\\(\"repos\"\\)'")
            })
 
     ## edge cases?
