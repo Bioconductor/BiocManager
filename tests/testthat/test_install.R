@@ -177,6 +177,7 @@ test_that("install() fails with different version (non-interactive)", {
 })
 
 test_that("install() without package names passes ... to install.packages", {
+    .skip_if_misconfigured()
     object <- FALSE
     with_mock(
         available.packages = function(...) {
