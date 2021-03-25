@@ -70,7 +70,7 @@
     grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
 }
 
-.install_filter_current <-
+.install_filter_up_to_date <-
     function(pkgs, repos, lib.loc=NULL, type=getOption("pkgType"),
         filters=NULL, checkBuilt, force)
 {
@@ -81,11 +81,18 @@
         )
 
         out_of_date <- .inet_old.packages(
-            lib.loc, repos=repos, instPkgs=pkgs,
+            lib.loc, repos=repos,
+            instPkgs=installed.packages(lib.loc, priority = "NA"),
             available=available, checkBuilt=checkBuilt, type=type
         )
-        if (!force)
-            pkgs <- pkgs[pkgs %in% out_of_date]
+        if (!force) {
+            noInst <- !pkgs %in% rownames(out_of_date)
+            .message(
+                "Packages not updated; new version(s) same as current: \n'%s'",
+                pkgs[noInst]
+            )
+            pkgs <- pkgs[!noInst]
+        }
     }
     pkgs
 }
@@ -131,7 +138,7 @@
     function(pkgs, lib, repos, lib.loc, checkBuilt, force, ...)
 {
     doing <- .install_filter_r_repos(pkgs)
-    doing <- .install_filter_current(
+    doing <- .install_filter_up_to_date(
         pkgs = doing, repos = repos, lib.loc = lib.loc,
         checkBuilt = checkBuilt, force = force
     )
