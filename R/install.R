@@ -70,6 +70,26 @@
     grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
 }
 
+.install_filter_current <-
+    function(pkgs, repos, lib.loc=NULL, type=getOption("pkgType"),
+        filters=NULL, checkBuilt, force)
+{
+    contribUrl <- contrib.url(repos, type=type)
+    if (length(repos)) {
+        available <- .inet_available.packages(
+            contribUrl, type=type, filters=filters
+        )
+
+        out_of_date <- .inet_old.packages(
+            lib.loc, repos=repos, instPkgs=pkgs,
+            available=available, checkBuilt=checkBuilt, type=type
+        )
+        if (!force)
+            pkgs <- pkgs[pkgs %in% out_of_date]
+    }
+    pkgs
+}
+
 .install_filter_github_repos <-
     function(pkgs)
 {
@@ -108,9 +128,13 @@
 }
 
 .install_repos <-
-    function(pkgs, lib, repos, ...)
+    function(pkgs, lib, repos, lib.loc, checkBuilt, force, ...)
 {
     doing <- .install_filter_r_repos(pkgs)
+    doing <- .install_filter_current(
+        pkgs = doing, repos = repos, lib.loc = lib.loc,
+        checkBuilt = checkBuilt, force = force
+    )
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
@@ -166,12 +190,16 @@
 }
 
 .install <-
-    function(pkgs, repos, lib.loc=NULL, lib=.libPaths()[1], ...)
+    function(pkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
+        checkBuilt, force, ...)
 {
     requireNamespace("utils", quietly=TRUE) ||
         .stop("failed to load package 'utils'")
 
-    todo <- .install_repos(pkgs, lib = lib, repos = repos, ...)
+    todo <- .install_repos(
+        pkgs, lib = lib, repos = repos, lib.loc = lib.loc,
+        checkBuilt = checkBuilt, force = force, ...
+    )
     todo <- .install_github(
         todo, lib = lib, lib.loc = lib.loc, repos = repos, ...
     )
@@ -296,6 +324,8 @@
 #' @param checkBuilt `logical(1)`. If `TRUE` a package built under an
 #'     earlier major.minor version of R (e.g., 3.4) is considered to
 #'     be old.
+#' @param force `logical(1)`. If `TRUE` re-download a package that is
+#'     currently up-to-date.
 #' @param version `character(1)` _Bioconductor_ version to install,
 #'     e.g., `version = "3.8"`. The special symbol `version = "devel"`
 #'     installs the current 'development' version.
@@ -339,7 +369,7 @@
 #' @export
 install <-
     function(pkgs = character(), ..., site_repository = character(),
-        update = TRUE, ask = TRUE, checkBuilt = FALSE,
+        update = TRUE, ask = TRUE, checkBuilt = FALSE, force = FALSE,
         version = BiocManager::version())
 {
     stopifnot(
@@ -393,7 +423,9 @@ install <-
         sub(" version", "", R.version.string)
     )
 
-    pkgs <- .install(pkgs, repos = repos, ...)
+    pkgs <- .install(
+        pkgs, repos = repos, checkBuilt = checkBuilt, force = force, ...
+    )
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)
     } else if (cmp != 0L) {

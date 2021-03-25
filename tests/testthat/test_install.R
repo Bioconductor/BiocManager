@@ -51,6 +51,10 @@ test_that("Versions are checked in install", {
     expect_error(install(version = "3.4.2"))
 })
 
+test_that("pkgs are not re-downloaded when force=FALSE", {
+
+})
+
 context("install(update = TRUE) filters un-updatable packages")
 
 test_that("masked packages are filtered", {
