@@ -71,28 +71,18 @@
 }
 
 .install_filter_up_to_date <-
-    function(pkgs, repos, lib.loc=NULL, type=getOption("pkgType"),
-        filters=NULL, checkBuilt, force)
+    function(pkgs, avail_out, force)
 {
-    contribUrl <- contrib.url(repos, type=type)
-    if (length(repos)) {
-        available <- .inet_available.packages(
-            contribUrl, type=type, filters=filters
-        )
-
-        out_of_date <- .inet_old.packages(
-            lib.loc, repos=repos,
-            instPkgs=installed.packages(lib.loc, priority = "NA"),
-            available=available, checkBuilt=checkBuilt, type=type
-        )
-        if (!force) {
-            noInst <- !pkgs %in% rownames(out_of_date)
+    out_of_date <- avail_out[["out_of_date"]]
+    if (!force) {
+        noInst <- !pkgs %in% rownames(out_of_date)
+        if (any(!noInst))
             .message(
-                "Packages not updated; new version(s) same as current: \n'%s'",
+                paste0("Package(s) not installed when version(s) same",
+                    " as current; use force=TRUE to re-install: \n'%s'"),
                 pkgs[noInst]
             )
-            pkgs <- pkgs[!noInst]
-        }
+        pkgs <- pkgs[!noInst]
     }
     pkgs
 }
@@ -135,13 +125,15 @@
 }
 
 .install_repos <-
-    function(pkgs, lib, repos, lib.loc, checkBuilt, force, ...)
+    function(pkgs, avail_out, lib, repos, type = getOption("pkgType"),
+             force, ...)
 {
+    if (length(repos)) {
+        doing <- .install_filter_up_to_date(
+            pkgs = pkgs, avail_out = avail_out, force = force
+        )
+    }
     doing <- .install_filter_r_repos(pkgs)
-    doing <- .install_filter_up_to_date(
-        pkgs = doing, repos = repos, lib.loc = lib.loc,
-        checkBuilt = checkBuilt, force = force
-    )
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
@@ -197,14 +189,14 @@
 }
 
 .install <-
-    function(pkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
+    function(pkgs, avail_out, repos, lib.loc=NULL, lib=.libPaths()[1],
         checkBuilt, force, ...)
 {
     requireNamespace("utils", quietly=TRUE) ||
         .stop("failed to load package 'utils'")
 
     todo <- .install_repos(
-        pkgs, lib = lib, repos = repos, lib.loc = lib.loc,
+        pkgs, avail_out, lib = lib, repos = repos, lib.loc = lib.loc,
         checkBuilt = checkBuilt, force = force, ...
     )
     todo <- .install_github(
@@ -400,12 +392,13 @@ install <-
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     repos <- .repositories(site_repository, version = version)
 
+    vout <- .valid_out_of_date_pkgs(pkgs = inst,
+        repos = repos, ..., checkBuilt = checkBuilt,
+        site_repository = site_repository)
+
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
-        valist <- .valid(
-            site_repository = site_repository, version = version,
-            checkBuilt = checkBuilt
-        )
+        valist <- .valid_result(vout, pkgs = inst)
         npkgs <- .install_n_invalid_pkgs(valist) + length(pkgs)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
@@ -431,7 +424,7 @@ install <-
     )
 
     pkgs <- .install(
-        pkgs, repos = repos, checkBuilt = checkBuilt, force = force, ...
+        pkgs, vout, repos = repos, checkBuilt = checkBuilt, force = force, ...
     )
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)

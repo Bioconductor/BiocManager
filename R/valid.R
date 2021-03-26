@@ -9,34 +9,33 @@
     instPkgs[too_new, c("Version", "LibPath"), drop=FALSE]
 }
 
-.valid <-
-    function(pkgs = installed.packages(lib.loc, priority=priority),
+.valid_out_of_date_pkgs <-
+    function(pkgs = installed.packages(lib.loc, priority=priority), repos,
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
-             filters=NULL, ..., checkBuilt, site_repository,
-             version=BiocManager::version())
+             filters=NULL, ..., checkBuilt, site_repository)
 {
-    version <- .version_validate(version)
-    repos <- .repositories(site_repository, version = version)
-    repos <- .repositories_filter(repos)
-
     contribUrl <- contrib.url(repos, type=type)
 
     available <- out_of_date <- too_new <- character()
     result <- FALSE
-    if (length(repos)) {
-        available <- .inet_available.packages(
-            contribUrl, type=type, filters=filters
-        )
+    available <- .inet_available.packages(
+        contribUrl, type=type, filters=filters
+    )
+    out_of_date <- .inet_old.packages(
+        lib.loc, repos=repos, instPkgs=pkgs,
+        available=available, checkBuilt=checkBuilt, type=type
+    )
+    list(available = available, out_of_date = out_of_date)
+}
 
-        out_of_date <- .inet_old.packages(
-            lib.loc, repos=repos, instPkgs=pkgs,
-            available=available, checkBuilt=checkBuilt, type=type
-        )
+.valid_result <-
+    function(avail_out, pkgs = installed.packages(lib.loc, priority=priority),
+             lib.loc=NULL, priority="NA")
+{
+    too_new <- .valid_pkgs_too_new(pkgs, avail_out[["available"]])
+    out_of_date <- avail_out[["out_of_date"]]
 
-        too_new <- .valid_pkgs_too_new(pkgs, available)
-
-        result <- !nrow(too_new) && is.null(out_of_date)
-    }
+    result <- !nrow(too_new) && is.null(out_of_date)
 
     if (!result) {
         result <- structure(
@@ -119,10 +118,17 @@ valid <-
             )
         }
     }
-    result <- .valid(
-        pkgs, lib.loc, priority, type, filters, ...,
-        checkBuilt = checkBuilt, site_repository = site_repository
-    )
+    version <- .version_validate(version())
+    repos <- .repositories(site_repository, version = version)
+    repos <- .repositories_filter(repos)
+
+    vout <- .valid_out_of_date_pkgs(pkgs = pkgs, lib.loc = lib.loc,
+        repos = repos, priority = priority, type = type, filters=filters, ...,
+        checkBuilt = checkBuilt, site_repository = site_repository)
+
+    result <-
+        .valid_result(vout, pkgs = pkgs, lib.loc = lib.loc, priority = priority)
+
     if (!isTRUE(result)) {
         out_of_date <- result$out_of_date
         too_new <- result$too_new
