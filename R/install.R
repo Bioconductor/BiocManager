@@ -76,11 +76,13 @@
     out_of_date <- avail_out[["out_of_date"]]
     if (!force) {
         noInst <- !pkgs %in% rownames(out_of_date)
-        if (any(!noInst))
-            .message(
-                paste0("Package(s) not installed when version(s) same",
-                    " as current; use force=TRUE to re-install: \n'%s'"),
-                pkgs[noInst]
+        if (any(noInst))
+            .warning(
+                paste(
+                    "package(s) not installed when version(s) same",
+                    "as current; use `force = TRUE` to re-install: \n'%s'"
+                ),
+                paste(pkgs[noInst], collapse = "' '")
             )
         pkgs <- pkgs[!noInst]
     }
@@ -128,18 +130,17 @@
     function(pkgs, avail_out, lib, repos, type = getOption("pkgType"),
              force, ...)
 {
-    if (length(repos)) {
-        doing <- .install_filter_up_to_date(
-            pkgs = pkgs, avail_out = avail_out, force = force
-        )
-    }
-    doing <- .install_filter_r_repos(pkgs)
+    doing <- .install_filter_up_to_date(
+        pkgs = pkgs, avail_out = avail_out, force = force
+    )
+    up_to_date <- setdiff(pkgs, doing)
+    doing <- .install_filter_r_repos(doing)
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
         .inet_install.packages(pkgs = doing, lib = lib, repos = repos, ...)
     }
-    setdiff(pkgs, doing)
+    setdiff(pkgs, c(doing, up_to_date))
 }
 
 .install_github <-
@@ -196,7 +197,7 @@
         .stop("failed to load package 'utils'")
 
     todo <- .install_repos(
-        pkgs, avail_out, lib = lib, repos = repos, lib.loc = lib.loc,
+        pkgs, avail_out, lib = lib, repos = repos,
         checkBuilt = checkBuilt, force = force, ...
     )
     todo <- .install_github(
@@ -205,8 +206,8 @@
 
     if (length(todo))
         .warning(
-            "packages not installed (unknown repository)",
-            "\n    ", paste(.sQuote(todo), collapse = ", ")
+            "packages not installed (unknown repository)\n  '%s'",
+            paste(.sQuote(todo), collapse = "' '")
         )
 
     setdiff(pkgs, todo)
