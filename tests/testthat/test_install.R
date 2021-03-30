@@ -52,7 +52,27 @@ test_that("Versions are checked in install", {
 })
 
 test_that("pkgs are not re-downloaded when force=FALSE", {
+    .filter <- BiocManager:::.install_filter_up_to_date
 
+    pkgs0 <- matrix(
+        c("pkgB", "/home/user/dir"), 1, 2,
+        dimnames=list("pkgB", c("Package", "LibPath")))
+
+    expect_warning(
+        .filter("pkgA", list(out_of_date = pkgs0), FALSE)
+    )
+    expect_identical(
+        .filter("pkgA", list(out_of_date = pkgs0), TRUE),
+        "pkgA"
+    )
+    expect_identical(
+        .filter("pkgB", list(out_of_date = pkgs0), FALSE),
+        "pkgB"
+    )
+    expect_identical(
+        .filter("pkgB", list(out_of_date = pkgs0), TRUE),
+        "pkgB"
+    )
 })
 
 context("install(update = TRUE) filters un-updatable packages")
