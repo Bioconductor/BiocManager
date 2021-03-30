@@ -26,7 +26,15 @@ test_that(".install_repos() works", {
     .skip_if_misconfigured()
     skip_if_offline()
     repos <- repositories()
-    expect_identical(character(0), .install_repos(character(), repos = repos))
+    vout <- .valid_out_of_date_pkgs(
+        repos = repos, checkBuilt = FALSE, site_repository = character()
+    )
+    expect_identical(
+        character(0),
+        .install_repos(
+            character(), avail_out = vout, repos = repos, force = FALSE
+        )
+    )
 })
 
 test_that(".install_github() works", {
