@@ -25,7 +25,11 @@
         lib.loc, repos=repos, instPkgs=pkgs,
         available=available, checkBuilt=checkBuilt, type=type
     )
-    list(available = available, out_of_date = out_of_date)
+    list(
+        available = available,
+        out_of_date = out_of_date,
+        noRepos = !length(repos)
+    )
 }
 
 .valid_result <-
@@ -37,7 +41,7 @@
 
     result <- !nrow(too_new) && is.null(out_of_date)
 
-    if (!result) {
+    if (!result || avail_out[["noRepos"]]) {
         result <- structure(
             list(out_of_date = out_of_date, too_new = too_new),
             class="biocValid"
