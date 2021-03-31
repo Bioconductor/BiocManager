@@ -26,13 +26,13 @@ test_that(".install_repos() works", {
     .skip_if_misconfigured()
     skip_if_offline()
     repos <- repositories()
-    vout <- .valid_out_of_date_pkgs(
-        repos = repos, checkBuilt = FALSE, site_repository = character()
-    )
+    pkgs0 <- matrix(
+        c("pkgB", "/home/user/dir"), 1, 2,
+        dimnames=list("pkgB", c("Package", "LibPath")))
     expect_identical(
         character(0),
         .install_repos(
-            character(), avail_out = vout, repos = repos, force = FALSE
+            character(), old_pkgs = pkgs0, repos = repos, force = FALSE
         )
     )
 })
@@ -66,21 +66,11 @@ test_that("pkgs are not re-downloaded when force=FALSE", {
         c("pkgB", "/home/user/dir"), 1, 2,
         dimnames=list("pkgB", c("Package", "LibPath")))
 
-    expect_warning(
-        .filter("pkgA", list(out_of_date = pkgs0), FALSE)
-    )
-    expect_identical(
-        .filter("pkgA", list(out_of_date = pkgs0), TRUE),
-        "pkgA"
-    )
-    expect_identical(
-        .filter("pkgB", list(out_of_date = pkgs0), FALSE),
-        "pkgB"
-    )
-    expect_identical(
-        .filter("pkgB", list(out_of_date = pkgs0), TRUE),
-        "pkgB"
-    )
+    expect_warning(.filter("pkgA", pkgs0, FALSE))
+
+    expect_identical(.filter("pkgA", pkgs0, TRUE), "pkgA")
+    expect_identical(.filter("pkgB", pkgs0, FALSE), "pkgB")
+    expect_identical(.filter("pkgB", pkgs0, TRUE), "pkgB")
 })
 
 context("install(update = TRUE) filters un-updatable packages")
