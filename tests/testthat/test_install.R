@@ -69,14 +69,20 @@ test_that("pkgs are not re-downloaded when force=FALSE", {
         c("pkgB", "/home/user/dir"), 1, 2,
         dimnames=list("pkgB", c("Package", "LibPath")))
     inst_pkgs <- matrix(
-        c("pkgA", "/home/user/dir"), 1, 2,
-        dimnames=list("pkgA", c("Package", "LibPath")))
+        c("pkgA", "pkgB", "/home/user/dir", "/home/user/dir"), 2, 2,
+        dimnames=list(c("pkgA", "pkgB"), c("Package", "LibPath")))
 
+    # installed and not old
     expect_warning(.filter("pkgA", inst_pkgs, old_pkgs, FALSE))
-
+    # installed and not old but force
     expect_identical(.filter("pkgA", inst_pkgs, old_pkgs, TRUE), "pkgA")
+
+    # installed and old
     expect_identical(.filter("pkgB", inst_pkgs, old_pkgs, FALSE), "pkgB")
     expect_identical(.filter("pkgB", inst_pkgs, old_pkgs, TRUE), "pkgB")
+
+    # not installed and no info on old
+    expect_identical(.filter("pkgC", inst_pkgs, old_pkgs, FALSE), "pkgC")
 })
 
 context("install(update = TRUE) filters un-updatable packages")
