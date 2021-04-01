@@ -271,7 +271,10 @@
 #' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} to `FALSE` can speed
 #' package loading when internet access is slow or non-existent, but
 #' may result in out-of-date information about the current release and
-#' development versions of _Bioconductor_.
+#' development versions of _Bioconductor_. Offline users should
+#' set the \env{BIOCONDUCTOR_CONFIG_FILE} environment variable or option
+#' to a `.yaml` file similar to \url{https://bioconductor.org/config.yaml}
+#' for full offline use and version validation.
 #'
 #' @param pkgs `character()` vector of package names to install or
 #'     update.  A missing value updates installed packages according
