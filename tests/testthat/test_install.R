@@ -26,13 +26,16 @@ test_that(".install_repos() works", {
     .skip_if_misconfigured()
     skip_if_offline()
     repos <- repositories()
-    pkgs0 <- matrix(
+    old_pkgs <- matrix(
         c("pkgB", "/home/user/dir"), 1, 2,
         dimnames=list("pkgB", c("Package", "LibPath")))
+    inst_pkgs <- matrix(
+        c("pkgA", "/home/user/dir"), 1, 2,
+        dimnames=list("pkgA", c("Package", "LibPath")))
     expect_identical(
         character(0),
         .install_repos(
-            character(), old_pkgs = pkgs0, repos = repos, force = FALSE
+            character(), old_pkgs, inst_pkgs, repos = repos, force = FALSE
         )
     )
 })
@@ -62,15 +65,18 @@ test_that("Versions are checked in install", {
 test_that("pkgs are not re-downloaded when force=FALSE", {
     .filter <- BiocManager:::.install_filter_up_to_date
 
-    pkgs0 <- matrix(
+    old_pkgs <- matrix(
         c("pkgB", "/home/user/dir"), 1, 2,
         dimnames=list("pkgB", c("Package", "LibPath")))
+    inst_pkgs <- matrix(
+        c("pkgA", "/home/user/dir"), 1, 2,
+        dimnames=list("pkgA", c("Package", "LibPath")))
 
-    expect_warning(.filter("pkgA", pkgs0, FALSE))
+    expect_warning(.filter("pkgA", inst_pkgs, old_pkgs, FALSE))
 
-    expect_identical(.filter("pkgA", pkgs0, TRUE), "pkgA")
-    expect_identical(.filter("pkgB", pkgs0, FALSE), "pkgB")
-    expect_identical(.filter("pkgB", pkgs0, TRUE), "pkgB")
+    expect_identical(.filter("pkgA", inst_pkgs, old_pkgs, TRUE), "pkgA")
+    expect_identical(.filter("pkgB", inst_pkgs, old_pkgs, FALSE), "pkgB")
+    expect_identical(.filter("pkgB", inst_pkgs, old_pkgs, TRUE), "pkgB")
 })
 
 context("install(update = TRUE) filters un-updatable packages")
