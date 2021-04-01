@@ -71,10 +71,10 @@
 }
 
 .install_filter_up_to_date <-
-    function(pkgs, old_pkgs, force)
+    function(pkgs, instPkgs, old_pkgs, force)
 {
     if (!force) {
-        noInst <- !pkgs %in% rownames(old_pkgs)
+        noInst <- !pkgs %in% rownames(old_pkgs) & pkgs %in% rownames(instPkgs)
         if (any(noInst))
             .warning(
                 paste(
@@ -126,11 +126,11 @@
 }
 
 .install_repos <-
-    function(pkgs, old_pkgs, lib, repos, type = getOption("pkgType"),
+    function(pkgs, old_pkgs, instPkgs, lib, repos, type = getOption("pkgType"),
              force, ...)
 {
     doing <- .install_filter_up_to_date(
-        pkgs = pkgs, old_pkgs = old_pkgs, force = force
+        pkgs = pkgs, instPkgs = instPkgs, old_pkgs = old_pkgs, force = force
     )
     up_to_date <- setdiff(pkgs, doing)
     doing <- .install_filter_r_repos(doing)
@@ -189,14 +189,14 @@
 }
 
 .install <-
-    function(pkgs, old_pkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
+    function(pkgs, old_pkgs, instPkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
         checkBuilt, force, ...)
 {
     requireNamespace("utils", quietly=TRUE) ||
         .stop("failed to load package 'utils'")
 
     todo <- .install_repos(
-        pkgs, old_pkgs, lib = lib, repos = repos,
+        pkgs, old_pkgs, instPkgs = instPkgs, lib = lib, repos = repos,
         checkBuilt = checkBuilt, force = force, ...
     )
     todo <- .install_github(
@@ -424,8 +424,8 @@ install <-
     )
 
     pkgs <- .install(
-        pkgs, vout[["out_of_date"]], repos = repos, checkBuilt = checkBuilt,
-        force = force, ...
+        pkgs, vout[["out_of_date"]], instPkgs = inst, repos = repos,
+        checkBuilt = checkBuilt, force = force, ...
     )
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)
