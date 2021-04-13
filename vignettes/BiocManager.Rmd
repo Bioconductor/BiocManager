@@ -95,8 +95,8 @@ Warning message:
 bit "bit"   "/home/mtmorgan/R/x86_64-pc-linux-gnu-library/3.5-Bioc-3.8"
 ff  "ff"    "/home/mtmorgan/R/x86_64-pc-linux-gnu-library/3.5-Bioc-3.8"
     Installed Built   ReposVer Repository
-bit "1.1-12"  "3.5.0" "1.1-13" "https://cran.rstudio.com/src/contrib"
-ff  "2.2-13"  "3.5.0" "2.2-14" "https://cran.rstudio.com/src/contrib"
+bit "1.1-12"  "3.5.0" "1.1-13" "https://cloud.r-project.org/src/contrib"
+ff  "2.2-13"  "3.5.0" "2.2-14" "https://cloud.r-project.org/src/contrib"
 >
 ```
 
