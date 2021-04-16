@@ -406,7 +406,7 @@ with more than one BiocVersion package installed. This might occur for
 instance if a 'system administrator' installed BiocVersion, and then a
 user installed their own version. In this circumstance, it seems
 appropriate to standardize the installation by repeatedly calling
-`remove.pacakges("BiocVersion")` until all versions are removed, and
+`remove.packages("BiocVersion")` until all versions are removed, and
 then installing the desired version.
 
 # `sessionInfo()`
