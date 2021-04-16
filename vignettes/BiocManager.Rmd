@@ -244,7 +244,7 @@ Set the environment variable `R_LIBS_USER` to this directory, and invoke _R_.
 Command line examples for Linux are
 
 - Linux: `R_LIBS_USER=~/R/3.5-Bioc-3.7 R`
-- macOS: `R_LIBS_USER=~~/Library/R/3.5-Bioc-3.7/library R`
+- macOS: `R_LIBS_USER=~/Library/R/3.5-Bioc-3.7/library R`
 - Windows: `cmd /C "set R_LIBS_USER=C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.7 && R"`
 
 Once in _R_, confirm that the version-specific library path has been set
