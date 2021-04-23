@@ -129,9 +129,13 @@ test_that(".version_validity(...) works", {
         "BiocManager::install"
     )
 
-    expect_match(
+    expect_true(
+        .version_validity("4.1", .ver_map, .get_R_ver("4.5.0"))
+    )
+
+    expect_message(
         .version_validity("4.1", .ver_map, .get_R_ver("4.5.0")),
-        "R version is too.*new"
+        "R version is too new"
     )
 })
 

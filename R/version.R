@@ -182,7 +182,7 @@ format.version_sentinel <-
         Bioc = bioc, R = r,
         BiocStatus = factor(
             NA,
-            levels = c("out-of-date", "release", "devel", "future")
+            levels = status
         ),
         RSPM = NA_character_,
         MRAN = NA_character_
@@ -253,20 +253,26 @@ format.version_sentinel <-
     r_version <- r_version[, 1:2]
     if (!r_version %in% required) {
         rec <- map[map$R == r_version, , drop = FALSE]
-        rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
-
-        rec_msg <- if ("future" %in% rec$BiocStatus)
-            "R version is too new"
-        else
-            sprintf(
+        one_up <- required
+        one_up[, 2] <- as.integer(required[, 2]) + 1L
+        if (r_version == one_up && "future" %in% rec$BiocStatus)
+            .message(
+                "Bioconductor version '%s' requires R version '%s'; %s; %s",
+                version, head(required, 1), "R version is too new",
+                .VERSION_HELP
+            )
+        else {
+            rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
+            rec_msg <- sprintf(
                 "use `BiocManager::install(version = '%s')` with R version %s",
                 rec_fun(rec$Bioc, 1), r_version
             )
 
-        return(.msg(
-            "Bioconductor version '%s' requires R version '%s'; %s; %s",
-            version, head(required, 1), rec_msg, .VERSION_HELP
-        ))
+            return(.msg(
+                "Bioconductor version '%s' requires R version '%s'; %s; %s",
+                version, head(required, 1), rec_msg, .VERSION_HELP
+            ))
+        }
     }
 
     TRUE
