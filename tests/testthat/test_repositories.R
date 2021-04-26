@@ -51,7 +51,7 @@ test_that("repositories(version = 'devel') works", {
 
 test_that("repositories helper replaces correct URL", {
     .skip_if_misconfigured()
-    default_repos <- c(CRAN = "https://cran.rstudio.com")
+    default_repos <- c(CRAN = "https://cloud.r-project.org")
 
     ## https://github.com/Bioconductor/BiocManager/issues/17
     repos <- "http://cran.cnr.Berkeley.edu"

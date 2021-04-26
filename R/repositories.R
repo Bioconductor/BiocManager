@@ -76,7 +76,7 @@
                 "'getOption(\"BiocManager.snapshot\")' must be one of %s",
                 paste0("'", valid, "'", collapse = " ")
             )
-        cran <- "https://cran.rstudio.com"
+        cran <- "https://cloud.r-project.org"
         repos[rename] <- switch(
             opt,
             RSPM = .repositories_rspm(cran),
