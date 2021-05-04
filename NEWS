@@ -11,6 +11,15 @@ USER VISIBLE CHANGES
     o Devel users on a newer version of R will not get an error when the minor
       version of R is +1 of the recommended
 
+BUG FIXES
+
+    o Added a warning and informative message when a package is 'not available'
+      (#85, @LTLA).
+    o `BIOCONDUCTOR_CONFIG_FILE` now included in the documentation for
+      `install` (#93, @glin).
+
+
+
 CHANGES IN VERSION 1.30.12
 -------------------------
 
