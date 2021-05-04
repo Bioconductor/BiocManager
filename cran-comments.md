@@ -1,5 +1,5 @@
 ## Test environments
-* local Ubuntu 20.10 (linux): R 3.6.3, R 4.0.3 patched, R-devel 4.1.0
+* local Ubuntu 20.10 (linux): R 3.6.3, R 4.0.5 patched, R-devel 4.2.0
 * win-builder.r-project.org (windows): oldrel, release, devel
 * appveyor (windows): bioc-devel, bioc-release, bioc-oldrel,
     oldrel, release, devel
