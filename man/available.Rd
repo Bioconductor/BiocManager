@@ -26,6 +26,10 @@ Discover packages available for installation.
 avail <- BiocManager::available()
 length(avail)
 
-BiocManager::available("bs.*hsapiens")
+grep("bs.*hsapiens", avail, value = TRUE, ignore.case = TRUE)
+
+\dontrun{
+  BiocManager::available("bs.*hsapiens")
+}
 
 }
