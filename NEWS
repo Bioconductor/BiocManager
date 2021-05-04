@@ -1,3 +1,16 @@
+CHANGES IN VERSION 1.30.13
+-------------------------
+
+NEW FEATURES
+
+    o Downloading the same version of a remote package already installed will
+      be avoided unless the user supplies `force=TRUE` to `install`.
+
+USER VISIBLE CHANGES
+
+    o Devel users on a newer version of R will not get an error when the minor
+      version of R is +1 of the recommended
+
 CHANGES IN VERSION 1.30.12
 -------------------------
 
