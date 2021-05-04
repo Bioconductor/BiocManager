@@ -70,6 +70,24 @@
     grep("^(https?://.*|[^/]+)$", pkgs, invert = invert, value=TRUE)
 }
 
+.install_filter_up_to_date <-
+    function(pkgs, instPkgs, old_pkgs, force)
+{
+    if (!force) {
+        noInst <- !pkgs %in% rownames(old_pkgs) & pkgs %in% rownames(instPkgs)
+        if (any(noInst))
+            .warning(
+                paste(
+                    "package(s) not installed when version(s) same",
+                    "as current; use `force = TRUE` to re-install: \n'%s'"
+                ),
+                paste(pkgs[noInst], collapse = "' '")
+            )
+        pkgs <- pkgs[!noInst]
+    }
+    pkgs
+}
+
 .install_filter_github_repos <-
     function(pkgs)
 {
@@ -108,15 +126,20 @@
 }
 
 .install_repos <-
-    function(pkgs, lib, repos, ...)
+    function(pkgs, old_pkgs, instPkgs, lib, repos, type = getOption("pkgType"),
+             force, ...)
 {
-    doing <- .install_filter_r_repos(pkgs)
+    doing <- .install_filter_up_to_date(
+        pkgs = pkgs, instPkgs = instPkgs, old_pkgs = old_pkgs, force = force
+    )
+    up_to_date <- setdiff(pkgs, doing)
+    doing <- .install_filter_r_repos(doing)
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
         .message("Installing package(s) %s", pkgNames)
         .inet_install.packages(pkgs = doing, lib = lib, repos = repos, ...)
     }
-    setdiff(pkgs, doing)
+    setdiff(pkgs, c(doing, up_to_date))
 }
 
 .install_github <-
@@ -166,20 +189,24 @@
 }
 
 .install <-
-    function(pkgs, repos, lib.loc=NULL, lib=.libPaths()[1], ...)
+    function(pkgs, old_pkgs, instPkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
+        checkBuilt, force, ...)
 {
     requireNamespace("utils", quietly=TRUE) ||
         .stop("failed to load package 'utils'")
 
-    todo <- .install_repos(pkgs, lib = lib, repos = repos, ...)
+    todo <- .install_repos(
+        pkgs, old_pkgs, instPkgs = instPkgs, lib = lib, repos = repos,
+        checkBuilt = checkBuilt, force = force, ...
+    )
     todo <- .install_github(
         todo, lib = lib, lib.loc = lib.loc, repos = repos, ...
     )
 
     if (length(todo))
         .warning(
-            "packages not installed (unknown repository)",
-            "\n    ", paste(.sQuote(todo), collapse = ", ")
+            "packages not installed (unknown repository)\n  '%s'",
+            paste(.sQuote(todo), collapse = "' '")
         )
 
     setdiff(pkgs, todo)
@@ -299,6 +326,8 @@
 #' @param checkBuilt `logical(1)`. If `TRUE` a package built under an
 #'     earlier major.minor version of R (e.g., 3.4) is considered to
 #'     be old.
+#' @param force `logical(1)`. If `TRUE` re-download a package that is
+#'     currently up-to-date.
 #' @param version `character(1)` _Bioconductor_ version to install,
 #'     e.g., `version = "3.8"`. The special symbol `version = "devel"`
 #'     installs the current 'development' version.
@@ -342,7 +371,7 @@
 #' @export
 install <-
     function(pkgs = character(), ..., site_repository = character(),
-        update = TRUE, ask = TRUE, checkBuilt = FALSE,
+        update = TRUE, ask = TRUE, checkBuilt = FALSE, force = FALSE,
         version = BiocManager::version())
 {
     stopifnot(
@@ -366,12 +395,13 @@ install <-
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     repos <- .repositories(site_repository, version = version)
 
+    vout <- .valid_out_of_date_pkgs(pkgs = inst,
+        repos = repos, ..., checkBuilt = checkBuilt,
+        site_repository = site_repository)
+
     if (cmp != 0L) {
         pkgs <- unique(c("BiocVersion", pkgs))
-        valist <- .valid(
-            site_repository = site_repository, version = version,
-            checkBuilt = checkBuilt
-        )
+        valist <- .valid_result(vout, pkgs = inst)
         npkgs <- .install_n_invalid_pkgs(valist) + length(pkgs)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
@@ -396,7 +426,10 @@ install <-
         sub(" version", "", R.version.string)
     )
 
-    pkgs <- .install(pkgs, repos = repos, ...)
+    pkgs <- .install(
+        pkgs, vout[["out_of_date"]], instPkgs = inst, repos = repos,
+        checkBuilt = checkBuilt, force = force, ...
+    )
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)
     } else if (cmp != 0L) {

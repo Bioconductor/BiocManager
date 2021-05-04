@@ -12,6 +12,7 @@ install(
   update = TRUE,
   ask = TRUE,
   checkBuilt = FALSE,
+  force = FALSE,
   version = BiocManager::version()
 )
 }
@@ -44,6 +45,9 @@ unless \code{ask = FALSE}).}
 \item{checkBuilt}{\code{logical(1)}. If \code{TRUE} a package built under an
 earlier major.minor version of R (e.g., 3.4) is considered to
 be old.}
+
+\item{force}{\code{logical(1)}. If \code{TRUE} re-download a package that is
+currently up-to-date.}
 
 \item{version}{\code{character(1)} \emph{Bioconductor} version to install,
 e.g., \code{version = "3.8"}. The special symbol \code{version = "devel"}
