@@ -59,7 +59,7 @@ environment:
 # Adapt as necessary starting from here
 build_script:
   - echo Current directory=%CD%
-  - travis-tool.sh github_package r-lib/covr
+  - travis-tool.sh github_package r-lib/covr Bioconductor/BiocManager
   - travis-tool.sh install_r testthat knitr
   - travis-tool.sh install_bioc BiocVersion BiocStyle
   - travis-tool.sh install_bioc_deps
