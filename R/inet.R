@@ -85,16 +85,18 @@ NULL
         }, error = function(e) {
             .inet_error(e)
             invisible(NULL)
-        }, warning = function(w) {
-            msg <- conditionMessage(w)
-            if (grepl("not available", msg))
-                msg <- gsub("this version of R",
-                    paste0("Bioconductor version ", "'", version(), "'"),
-                    msg)
-            .warning(msg)
         })
-    }, warning = .inet_warning)
-}        
+    }, warning = function(w) {
+        msg <- conditionMessage(w)
+        if (grepl("not available", msg))
+            msg <- gsub(
+                "this version of R",
+                paste0("Bioconductor version ", "'", version(), "'"),
+                msg
+            )
+        .inet_warning(msg)
+    })
+}
 
 .inet_old.packages <-
     function(...)
