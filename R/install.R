@@ -143,7 +143,7 @@
 }
 
 .install_github <-
-    function(pkgs, lib, lib.loc, repos = repos, ...)
+    function(pkgs, lib, lib.loc, repos, force, ...)
 {
     doing <- .install_filter_github_repos(pkgs)
 
@@ -154,7 +154,7 @@
         .message("Installing github package(s) %s", pkgNames)
         .install_github_load_remotes(pkgs, lib.loc = lib.loc)
         for (repo in doing)
-            remotes::install_github(repo, lib = lib, ...)
+            remotes::install_github(repo, lib = lib, force = force, ...)
     }
     setdiff(pkgs, doing)
 }
@@ -200,7 +200,7 @@
         checkBuilt = checkBuilt, force = force, ...
     )
     todo <- .install_github(
-        todo, lib = lib, lib.loc = lib.loc, repos = repos, ...
+        todo, lib = lib, lib.loc = lib.loc, repos = repos, force = force, ...
     )
 
     if (length(todo))
