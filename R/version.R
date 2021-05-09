@@ -225,7 +225,10 @@ format.version_sentinel <-
 .get_R_version <- function()
     getRversion()
 
-
+## .version_validity() returns TRUE if the version is valid for this
+## version of R, or a text string (created with sprintf()) explaining why
+## the version is invalid. It does NOT call message / warning / etc
+## directly.
 .version_validity <-
     function(version, map = .version_map(), r_version = .get_R_version())
 {
@@ -256,11 +259,10 @@ format.version_sentinel <-
         one_up <- required
         one_up[, 2] <- as.integer(required[, 2]) + 1L
         if (r_version == one_up && "future" %in% rec$BiocStatus)
-            .message(
-                "Bioconductor version '%s' requires R version '%s'; %s; %s",
-                version, head(required, 1), "R version is too new",
-                .VERSION_HELP
-            )
+            return(sprintf(
+                "Bioconductor does not yet build and check packages for R version '%s'; %s",
+                r_version, .VERSION_HELP
+            ))
         else {
             rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
             rec_msg <- sprintf(
@@ -268,7 +270,7 @@ format.version_sentinel <-
                 rec_fun(rec$Bioc, 1), r_version
             )
 
-            return(.msg(
+            return(sprintf(
                 "Bioconductor version '%s' requires R version '%s'; %s; %s",
                 version, head(required, 1), rec_msg, .VERSION_HELP
             ))
