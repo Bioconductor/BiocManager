@@ -1,3 +1,14 @@
+CHANGES IN VERSION 1.30.14
+-------------------------
+
+BUG FIXES
+
+    o `install` now passes the `force` argument to `install_github`
+      (#101, @lgeistlinger)
+    o Treat warnings as warnings internally in `install.packages()`
+      (#100, @biobenkj)
+    o Check version validity `.onAttach` rather than `.onLoad`
+
 CHANGES IN VERSION 1.30.13
 -------------------------
 
