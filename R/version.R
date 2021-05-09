@@ -225,6 +225,16 @@ format.version_sentinel <-
 .get_R_version <- function()
     getRversion()
 
+.version_string <-
+    function(bioc_version = version())
+{
+    sprintf(
+        "Bioconductor version %s (BiocManager %s), %s",
+        bioc_version, packageVersion("BiocManager"),
+        sub(" version", "", R.version.string)
+    )
+}
+
 ## .version_validity() returns TRUE if the version is valid for this
 ## version of R, or a text string (created with sprintf()) explaining why
 ## the version is invalid. It does NOT call message / warning / etc
@@ -260,7 +270,8 @@ format.version_sentinel <-
         one_up[, 2] <- as.integer(required[, 2]) + 1L
         if (r_version == one_up && "future" %in% rec$BiocStatus)
             return(sprintf(
-                "Bioconductor does not yet build and check packages for R version '%s'; %s",
+                "Bioconductor does not yet build and check packages for R
+                 version %s; %s",
                 r_version, .VERSION_HELP
             ))
         else {
@@ -291,8 +302,9 @@ format.version_sentinel <-
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
     if (identical(status, "future"))
         return(sprintf(
-            "Bioconductor does not yet formally support R version '%s'",
-            r_version
+            "Bioconductor does not yet build and check packages for R version
+             %s; %s",
+            r_version, .VERSION_HELP
         ))
 
     TRUE

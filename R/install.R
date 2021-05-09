@@ -420,11 +420,7 @@ install <-
         }
     }
 
-    .message(
-        "Bioconductor version %s (BiocManager %s), %s",
-        version, packageVersion("BiocManager"),
-        sub(" version", "", R.version.string)
-    )
+    .message(.version_string(version))
 
     pkgs <- .install(
         pkgs, vout[["out_of_date"]], instPkgs = inst, repos = repos,
