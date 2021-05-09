@@ -1,5 +1,5 @@
 .onAttach <-
-    function(libame, pkgname)
+    function(libname, pkgname)
 {
     version <- version()
 
