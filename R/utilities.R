@@ -95,11 +95,8 @@ isRelease <-
 .skip_if_misconfigured <-
     function()
 {
-    if (!"BiocVersion" %in% rownames(installed.packages()))
-        return(NULL)
-
     R_version <- getRversion()
-    bioc_version <- packageVersion("BiocVersion")[, 1:2]
+    bioc_version <- version()
 
     test_ver <- tryCatch({
         .version_validity(bioc_version)
@@ -108,8 +105,9 @@ isRelease <-
     })
 
     if (!isTRUE(test_ver)) {
-        msg <- sprintf("mis-configuration, R %s, Bioc %s, Reason %s",
-            R_version, bioc_version, test_ver)
+        msg <- sprintf(
+            "mis-configuration, R %s, Bioconductor %s", R_version, bioc_version
+        )
         testthat::skip(msg)
     }
 }

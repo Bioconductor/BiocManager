@@ -114,6 +114,7 @@ test_that("repositories helper replaces correct URL", {
 })
 
 test_that("'.repositories_filter()' works", {
+    .skip_if_misconfigured()
     skip_on_cran()
     skip_if_offline("bioconductor.org")
     repos0 <- BiocManager::repositories()
