@@ -12,15 +12,12 @@
 #'     installation.
 #'
 #' @examples
-#' avail <- BiocManager::available()
-#' length(avail)
+#' if (interactive()) {
+#'   avail <- BiocManager::available()
+#'   length(avail)
 #'
-#' grep("bs.*hsapiens", avail, value = TRUE, ignore.case = TRUE)
-#'
-#' \dontrun{
 #'   BiocManager::available("bs.*hsapiens")
 #' }
-#'
 #' @md
 #' @export
 available <-

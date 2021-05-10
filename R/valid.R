@@ -100,7 +100,9 @@
 #'     packages.
 #' @keywords environment
 #' @examples
-#' BiocManager::valid()
+#' if (interactive()) {
+#'   BiocManager::valid()
+#' }
 #' @md
 #' @export valid
 valid <-

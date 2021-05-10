@@ -78,7 +78,9 @@ this in the future.
 }
 }
 \examples{
-BiocManager::valid()
+if (interactive()) {
+  BiocManager::valid()
+}
 }
 \seealso{
 \verb{BiocManager::\link{install}()} to update installed
