@@ -1,3 +1,7 @@
+Tested with `_R_CHECK_DEPENDS_ONLY=true` flag for Fedora.
+We also checked for any major issues with `revdepcheck::revdep_check()` and
+found none.
+
 ## Test environments
 * local Ubuntu 20.10 (linux): R 3.6.3, R 4.0.5 patched, R-devel 4.2.0
 * win-builder.r-project.org (windows): oldrel, release, devel
