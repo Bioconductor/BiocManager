@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.30.15
+-------------------------
+
+BUG FIXES
+
+    o `.skip_if_misconfigured` function should work with
+      `_R_CHECK_DEPENDS_ONLY=true`
+    o Switch to `interactive()` only examples for `available()`
+
 CHANGES IN VERSION 1.30.14
 -------------------------
 
