@@ -126,8 +126,7 @@
 }
 
 .install_repos <-
-    function(pkgs, old_pkgs, instPkgs, lib, repos, type = getOption("pkgType"),
-             force, ...)
+    function(pkgs, old_pkgs, instPkgs, lib, repos, force, ...)
 {
     doing <- .install_filter_up_to_date(
         pkgs = pkgs, instPkgs = instPkgs, old_pkgs = old_pkgs, force = force
