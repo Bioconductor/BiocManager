@@ -210,6 +210,17 @@ test_that(".version_map_get() falls back to http", {
     expect_identical(result, .VERSION_MAP_SENTINEL)
 })
 
+test_that(".VERSION_MAP_SENTINEL class and colnames", {
+    expect_true(
+        is.data.frame(.VERSION_MAP_SENTINEL)
+    )
+    ## check column names
+    expect_identical(
+        c("Bioc", "R", "BiocStatus", "RSPM", "MRAN"),
+        names(.VERSION_MAP_SENTINEL)
+    )
+})
+
 test_that("BiocVersion version matches with .version_map()", {
     .skip_if_misconfigured()
     skip_if_offline()
