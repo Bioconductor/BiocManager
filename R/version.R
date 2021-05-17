@@ -20,7 +20,7 @@
         factor(),
         levels = c("out-of-date", "release", "devel", "future")
     ),
-    RPSM = character(),
+    RSPM = character(),
     MRAN = character()
 )
 
