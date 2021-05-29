@@ -270,8 +270,7 @@ format.version_sentinel <-
         one_up[, 2] <- as.integer(required[, 2]) + 1L
         if (r_version == one_up && "future" %in% rec$BiocStatus)
             return(sprintf(
-                "Bioconductor does not yet build and check packages for R
-                 version %s; %s",
+                "Bioconductor does not yet build and check packages for R version %s; %s",
                 r_version, .VERSION_HELP
             ))
         else {
@@ -302,8 +301,7 @@ format.version_sentinel <-
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
     if (identical(status, "future"))
         return(sprintf(
-            "Bioconductor does not yet build and check packages for R version
-             %s; %s",
+            "Bioconductor does not yet build and check packages for R version %s; %s",
             r_version, .VERSION_HELP
         ))
 
@@ -336,16 +334,12 @@ format.version_sentinel <-
     if (is.package_version(release) && version < release) {
         if (.r_version_lt_350())
             return(sprintf(
-                "Bioconductor version '%s' is out-of-date; BiocManager does
-                 not support R version '%s'. For older installations of
-                 Bioconductor, use '%s' and refer to the 'BiocInstaller'
-                 vignette on the Bioconductor website",
+                "Bioconductor version '%s' is out-of-date; BiocManager does not support R version '%s'. For older installations of Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor website",
                 version, getRversion(), .LEGACY_INSTALL_CMD
             ))
         else
             return(sprintf(
-                "Bioconductor version '%s' is out-of-date; the current release
-                 version '%s' is available with R version '%s'; %s",
+                "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; %s",
                 version, release, .version_R("release"), .VERSION_HELP
             ))
     }

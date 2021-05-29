@@ -17,15 +17,8 @@
     ## }
 
     if (length(conflicts)) {
-        txt <- paste(
-            "'getOption(\"repos\")' replaces Bioconductor standard ",
-            "repositories, see '?repositories' for details"
-        )
-        fmt <- paste0(
-            .msg(txt, exdent = 0),
-            "\n\nreplacement repositories:",
-            "\n    %s\n"
-        )
+        fmt <-
+            "'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?repositories' for details. Replacement repositories:\n    %s"
         repos_string <- paste0(
             names(conflicts), ": ", unname(conflicts),
             collapse = "\n    "
