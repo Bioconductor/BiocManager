@@ -39,6 +39,7 @@
     )
     ## Use this helper to format all error / warning / message text
 {
+    fmt <- gettext(fmt) # translate, via 'po/R-BiocManager.pot'
     txt <- sprintf(fmt, ...)
     if (wrap.) {
         txt <- strwrap(
