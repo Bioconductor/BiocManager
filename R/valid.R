@@ -119,8 +119,7 @@ valid <-
             pkgs <- installed.packages(pkgs, lib.loc=lib.loc)
         } else {
             .stop(
-                "'pkgs' must be a character vector of package names,
-                 or a matrix like that returned by 'installed.packages()'"
+                "'pkgs' must be a character vector of package names, or a matrix like that returned by 'installed.packages()'"
             )
         }
     }

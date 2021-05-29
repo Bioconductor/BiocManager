@@ -54,9 +54,8 @@
             }, names(failed), unname(failed), USE.NAMES = FALSE),
             collapse = "\n"
         )
-        message(
-            .msg("Installation paths not writeable, unable to update packages"),
-            "\n",
+        .message(
+            "installation paths not writeable, unable to update packages\n%s",
             detail
         )
     }
@@ -77,10 +76,7 @@
         noInst <- !pkgs %in% rownames(old_pkgs) & pkgs %in% rownames(instPkgs)
         if (any(noInst))
             .warning(
-                paste(
-                    "package(s) not installed when version(s) same",
-                    "as current; use `force = TRUE` to re-install: \n'%s'"
-                ),
+                "package(s) not installed when version(s) same as current; use `force = TRUE` to re-install: \n'%s'",
                 paste(pkgs[noInst], collapse = "' '")
             )
         pkgs <- pkgs[!noInst]
@@ -102,10 +98,8 @@
         if (is.null(lib.loc))
             lib.loc <- .libPaths()
         .stop(
-            "%s\n    %s\n%s",
-            "package 'remotes' not installed in library path(s)",
+            "package 'remotes' not installed in library path(s)\n  %s\ninstall with 'BiocManager::install(\"remotes\")'",
             paste(lib.loc, collapse="\n    "),
-            "install with 'BiocManager::install(\"remotes\")'",
             call. = FALSE,
             wrap. = FALSE
         )
@@ -135,7 +129,7 @@
     doing <- .install_filter_r_repos(doing)
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
-        .message("Installing package(s) %s", pkgNames)
+        .message("installing package(s) %s", pkgNames)
         .inet_install.packages(pkgs = doing, lib = lib, repos = repos, ...)
     }
     setdiff(pkgs, c(doing, up_to_date))
@@ -150,7 +144,7 @@
     on.exit(options(oopts))
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
-        .message("Installing github package(s) %s", pkgNames)
+        .message("installing github package(s) %s", pkgNames)
         .install_github_load_remotes(pkgs, lib.loc = lib.loc)
         for (repo in doing)
             remotes::install_github(repo, lib = lib, force = force, ...)
@@ -225,7 +219,7 @@
         return()
 
     pkgs <- paste(old_pkgs[,"Package"], collapse="', '")
-    .message("Old packages: '%s'", pkgs)
+    .message("old packages: '%s'", pkgs)
     if (ask) {
         answer <- .getAnswer(
             "Update all/some/none? [a/s/n]: ",
@@ -404,16 +398,12 @@ install <-
         npkgs <- .install_n_invalid_pkgs(valist) + length(pkgs)
         if (!length(pkgs)-1L) {
             .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
-                .stop(paste0(
-                    "Bioconductor version not changed by 'install()'",
-                    if (!interactive() && isTRUE(ask))
-                        "; in non-interactive sessions use 'ask = FALSE'"
-                ))
+                .stop(
+                    "Bioconductor version not changed by 'install()'; in non-interactive sessions use 'ask = FALSE'"
+                )
         } else {
-            fmt <- paste(c(
-                "To use Bioconductor version '%s', first %s %d packages with",
-                "\n    BiocManager::install(version = '%s')"),
-                collapse="")
+            fmt <-
+                "To use Bioconductor version '%s', first %s %d packages with\n    BiocManager::install(version = '%s')"
             action <- tolower(action)
             .stop(fmt, version, action, npkgs, version, wrap.=FALSE)
         }
