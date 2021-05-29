@@ -111,7 +111,7 @@ R CMD INSTALL .
 And then I gave it a whirl
 
 ```
- bioc-devel -e "BiocManager::install(repos = 'foo')"
+$ R -e "BiocManager::install(repos = 'foo')"
 > BiocManager::install(repos = 'foo')
 Error: Ola! 'repos' argument to 'install()' not allowed
 Execution halted
@@ -121,7 +121,7 @@ Note the `Ola!` -- my translation has been successfully installed!
 
 ## What to target?
 
-My understanding is that languages and dialects are treated hierarchically -- `es` provides a 'spanish' translation, whereas `es_CA` is Catalan. I believe that if the user is in `es_CA`, but the only translation available is `es`, then they would recieve the `es` translation. Thus it seems like the greatest value comes from providing base translations, with dialects pursued on a second iteration.
+My understanding is that languages and dialects are treated hierarchically -- `es` provides a 'Spanish' translation, whereas `es_CA` is Catalan. I believe that if the user is in `es_CA`, but the only translation available is `es`, then they would recieve the `es` translation. Thus it seems like the greatest value comes from providing base translations, with dialects pursued on a second iteration.
 
 # Next steps
 
