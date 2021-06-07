@@ -333,12 +333,12 @@ format.version_sentinel <-
     release <- .version_bioc("release")
     if (is.package_version(release) && version < release) {
         if (.r_version_lt_350())
-            return(sprintf(
+            return(.msg(
                 "Bioconductor version '%s' is out-of-date; BiocManager does not support R version '%s'. For older installations of Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor website",
                 version, getRversion(), .LEGACY_INSTALL_CMD
             ))
         else
-            return(sprintf(
+            return(.msg(
                 "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; %s",
                 version, release, .version_R("release"), .VERSION_HELP
             ))
