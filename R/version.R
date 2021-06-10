@@ -1,4 +1,4 @@
-.VERSION_HELP <- "see https://bioconductor.org/install"
+.VERSION_HELP <- "https://bioconductor.org/install"
 
 .VERSION_UNKNOWN <-
     "Bioconductor version cannot be determined; no internet connection?"
@@ -250,7 +250,7 @@ format.version_sentinel <-
         return(.version_sentinel_msg(version))
 
     if (version[, 1:2] != version)
-        return(sprintf(
+        return(.msg(
             "version '%s' must have two components, e.g., '3.7'", version
         ))
 
@@ -258,8 +258,8 @@ format.version_sentinel <-
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
     if (!version %in% map$Bioc)
-        return(sprintf(
-            "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP
+        return(.msg(
+            "unknown Bioconductor version '%s'; see %s", version, .VERSION_HELP
         ))
 
     required <- map$R[map$Bioc == version & map$BiocStatus != "future"]
@@ -269,19 +269,19 @@ format.version_sentinel <-
         one_up <- required
         one_up[, 2] <- as.integer(required[, 2]) + 1L
         if (r_version == one_up && "future" %in% rec$BiocStatus)
-            return(sprintf(
-                "Bioconductor does not yet build and check packages for R version %s; %s",
+            return(.msg(
+                "Bioconductor does not yet build and check packages for R version %s; see %s",
                 r_version, .VERSION_HELP
             ))
         else {
             rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
-            rec_msg <- sprintf(
+            rec_msg <- .msg(
                 "use `BiocManager::install(version = '%s')` with R version %s",
                 rec_fun(rec$Bioc, 1), r_version
             )
 
-            return(sprintf(
-                "Bioconductor version '%s' requires R version '%s'; %s; %s",
+            return(.msg(
+                "Bioconductor version '%s' requires R version '%s'; %s; see %s",
                 version, head(required, 1), rec_msg, .VERSION_HELP
             ))
         }
@@ -300,8 +300,8 @@ format.version_sentinel <-
     r_version <- getRversion()[, 1:2]
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
     if (identical(status, "future"))
-        return(sprintf(
-            "Bioconductor does not yet build and check packages for R version %s; %s",
+        return(.msg(
+            "Bioconductor does not yet build and check packages for R version %s; see %s",
             r_version, .VERSION_HELP
         ))
 
@@ -333,13 +333,13 @@ format.version_sentinel <-
     release <- .version_bioc("release")
     if (is.package_version(release) && version < release) {
         if (.r_version_lt_350())
-            return(sprintf(
+            return(.msg(
                 "Bioconductor version '%s' is out-of-date; BiocManager does not support R version '%s'. For older installations of Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor website",
                 version, getRversion(), .LEGACY_INSTALL_CMD
             ))
         else
-            return(sprintf(
-                "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; %s",
+            return(.msg(
+                "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; see %s",
                 version, release, .version_R("release"), .VERSION_HELP
             ))
     }
