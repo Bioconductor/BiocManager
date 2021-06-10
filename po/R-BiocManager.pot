@@ -83,22 +83,22 @@ msgstr ""
 msgid "version '%s' must have two components, e.g., '3.7'"
 msgstr ""
 
-msgid "unknown Bioconductor version '%s'; %s"
+msgid "unknown Bioconductor version '%s'; see %s"
 msgstr ""
 
-msgid "Bioconductor does not yet build and check packages for R version %s; %s"
+msgid "Bioconductor does not yet build and check packages for R version %s; see %s"
 msgstr ""
 
 msgid "use `BiocManager::install(version = '%s')` with R version %s"
 msgstr ""
 
-msgid "Bioconductor version '%s' requires R version '%s'; %s; %s"
+msgid "Bioconductor version '%s' requires R version '%s'; %s; see %s"
 msgstr ""
 
 msgid "Bioconductor version '%s' is out-of-date; BiocManager does not support R version '%s'. For older installations of Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor website"
 msgstr ""
 
-msgid "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; %s"
+msgid "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; see %s"
 msgstr ""
 
 msgid "see https://bioconductor.org/install"
