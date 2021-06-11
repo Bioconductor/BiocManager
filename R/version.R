@@ -1,14 +1,22 @@
-.VERSION_HELP <- "see https://bioconductor.org/install"
+.VERSION_HELP <- gettext(
+    "see https://bioconductor.org/install",
+    domain = "R-BiocManager"
+)
 
-.VERSION_UNKNOWN <-
-    "Bioconductor version cannot be determined; no internet connection?"
+.VERSION_UNKNOWN <- gettext(
+    "Bioconductor version cannot be determined; no internet connection?",
+    domain = "R-BiocManager"
+)
 
-.VERSION_MAP_UNABLE_TO_VALIDATE <-
-    "Bioconductor version cannot be validated; no internet connection?"
+.VERSION_MAP_UNABLE_TO_VALIDATE <- gettext(
+    "Bioconductor version cannot be validated; no internet connection?",
+    domain = "R-BiocManager"
+)
 
-.NO_ONLINE_VERSION_DIAGNOSIS <-
-    "Bioconductor online version validation disabled;
-    see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+.NO_ONLINE_VERSION_DIAGNOSIS <- gettext(
+    "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS",
+    domain = "R-BiocManager"
+)
 
 .LEGACY_INSTALL_CMD <-
     "source(\"https://bioconductor.org/biocLite.R\")"

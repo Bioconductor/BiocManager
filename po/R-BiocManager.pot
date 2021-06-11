@@ -69,7 +69,7 @@ msgstr ""
 msgid "'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?repositories' for details. Replacement repositories:\n    %s"
 msgstr ""
 
-# sprintf()
+# sprintf() / gettextf
 
 msgid "%s %d packages to Bioconductor version '%s'? [y/n]: "
 msgstr ""
@@ -99,4 +99,16 @@ msgid "Bioconductor version '%s' is out-of-date; BiocManager does not support R 
 msgstr ""
 
 msgid "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; %s"
+msgstr ""
+
+msgid "see https://bioconductor.org/install"
+msgstr ""
+
+msgid "Bioconductor version cannot be determined; no internet connection?"
+msgstr ""
+
+msgid "Bioconductor version cannot be validated; no internet connection?"
+msgstr ""
+
+msgid "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
 msgstr ""
