@@ -39,12 +39,9 @@
     )
     ## Use this helper to format all error / warning / message text
 {
-    fmt <- gettext(fmt) # translate, via 'po/R-BiocManager.pot'
-    txt <- sprintf(fmt, ...)
+    txt <- gettextf(fmt, ..., domain = "R-BiocManager")
     if (wrap.) {
-        txt <- strwrap(
-            sprintf(fmt, ...), width=width, indent = indent, exdent=exdent
-        )
+        txt <- strwrap(txt, width=width, indent = indent, exdent=exdent)
         paste(txt, collapse="\n")
     } else {
         txt
@@ -106,8 +103,9 @@ isRelease <-
     })
 
     if (!isTRUE(test_ver)) {
-        msg <- sprintf(
-            "mis-configuration, R %s, Bioconductor %s", R_version, bioc_version
+        msg <- gettextf(
+            "mis-configuration, R %s, Bioconductor %s", R_version, bioc_version,
+            domain = "R-BiocManager"
         )
         testthat::skip(msg)
     }
@@ -116,6 +114,8 @@ isRelease <-
 .skip_if_BiocVersion_not_available <-
     function()
 {
-    if (!"BiocVersion" %in% rownames(installed.packages()))
-        testthat::skip("BiocVersion not installed")
+    if (!"BiocVersion" %in% rownames(installed.packages())) {
+        msg <- gettext("BiocVersion not installed", domain = "R-BiocManager")
+        testthat::skip(msg)
+    }
 }

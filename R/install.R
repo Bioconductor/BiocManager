@@ -176,8 +176,11 @@
     function(version, npkgs, cmp, ask)
 {
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
-    txt <- sprintf("%s %d packages to Bioconductor version '%s'? [y/n]: ",
-        action, npkgs, version)
+    txt <- gettextf(
+        "%s %d packages to Bioconductor version '%s'? [y/n]: ",
+        action, npkgs, version,
+        domain = "R-BiocManager"
+    )
     !ask || .getAnswer(txt, allowed = c("y", "Y", "n", "N")) == "y"
 }
 
