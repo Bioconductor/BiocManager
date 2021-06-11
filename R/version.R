@@ -228,17 +228,18 @@ format.version_sentinel <-
 .version_string <-
     function(bioc_version = version())
 {
-    sprintf(
+    gettextf(
         "Bioconductor version %s (BiocManager %s), %s",
         bioc_version, packageVersion("BiocManager"),
-        sub(" version", "", R.version.string)
+        sub(" version", "", R.version.string),
+        domain = "R-BiocManager"
     )
 }
 
 ## .version_validity() returns TRUE if the version is valid for this
-## version of R, or a text string (created with sprintf()) explaining why
-## the version is invalid. It does NOT call message / warning / etc
-## directly.
+## version of R, or a text string (created with gettextf()) explaining
+## why the version is invalid. It does NOT call message / warning /
+## etc directly.
 .version_validity <-
     function(version, map = .version_map(), r_version = .get_R_version())
 {
@@ -250,16 +251,18 @@ format.version_sentinel <-
         return(.version_sentinel_msg(version))
 
     if (version[, 1:2] != version)
-        return(sprintf(
-            "version '%s' must have two components, e.g., '3.7'", version
+        return(gettextf(
+            "version '%s' must have two components, e.g., '3.7'", version,
+            domain = "R-BiocManager"
         ))
 
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
     if (!version %in% map$Bioc)
-        return(sprintf(
-            "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP
+        return(gettextf(
+            "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP,
+            domain = "R-BiocManager"
         ))
 
     required <- map$R[map$Bioc == version & map$BiocStatus != "future"]
@@ -269,20 +272,23 @@ format.version_sentinel <-
         one_up <- required
         one_up[, 2] <- as.integer(required[, 2]) + 1L
         if (r_version == one_up && "future" %in% rec$BiocStatus)
-            return(sprintf(
+            return(gettextf(
                 "Bioconductor does not yet build and check packages for R version %s; %s",
-                r_version, .VERSION_HELP
+                r_version, .VERSION_HELP,
+                domain = "R-BiocManager"
             ))
         else {
             rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
-            rec_msg <- sprintf(
+            rec_msg <- gettextf(
                 "use `BiocManager::install(version = '%s')` with R version %s",
-                rec_fun(rec$Bioc, 1), r_version
+                rec_fun(rec$Bioc, 1), r_version,
+                domain = "R-BiocManager"
             )
 
-            return(sprintf(
+            return(gettextf(
                 "Bioconductor version '%s' requires R version '%s'; %s; %s",
-                version, head(required, 1), rec_msg, .VERSION_HELP
+                version, head(required, 1), rec_msg, .VERSION_HELP,
+                domain = "R-BiocManager"
             ))
         }
     }
@@ -300,9 +306,10 @@ format.version_sentinel <-
     r_version <- getRversion()[, 1:2]
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
     if (identical(status, "future"))
-        return(sprintf(
+        return(gettextf(
             "Bioconductor does not yet build and check packages for R version %s; %s",
-            r_version, .VERSION_HELP
+            r_version, .VERSION_HELP,
+            domain = "R-BiocManager"
         ))
 
     TRUE
@@ -333,14 +340,15 @@ format.version_sentinel <-
     release <- .version_bioc("release")
     if (is.package_version(release) && version < release) {
         if (.r_version_lt_350())
-            return(sprintf(
+            return(gettextf(
                 "Bioconductor version '%s' is out-of-date; BiocManager does not support R version '%s'. For older installations of Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor website",
                 version, getRversion(), .LEGACY_INSTALL_CMD
-            ))
+            ), domain = "R-BiocManager")
         else
-            return(sprintf(
+            return(gettextf(
                 "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; %s",
-                version, release, .version_R("release"), .VERSION_HELP
+                version, release, .version_R("release"), .VERSION_HELP,
+                domain = "R-BiocManager"
             ))
     }
 
