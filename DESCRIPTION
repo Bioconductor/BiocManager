@@ -1,12 +1,15 @@
 Package: BiocManager
 Title: Access the Bioconductor Project Package Repository
 Description: A convenient tool to install and update Bioconductor packages.
-Version: 1.30.15.3
+Version: 1.30.15.3.1
 Authors@R: c(
     person("Martin", "Morgan", email = "martin.morgan@roswellpark.org",
         role = "aut", comment = c(ORCID = "0000-0002-5874-8148")),
     person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
-        role = c("ctb", "cre"), comment = c(ORCID = "0000-0002-3242-0582")))
+        role = c("trl", "ctb", "cre"),
+        comment = c(ORCID = "0000-0002-3242-0582")),
+    person("Robert", "Castelo", role = "trl"),
+    person("Jiefei", "Wang",role = "trl"))
 Imports:
     utils
 Suggests: 
