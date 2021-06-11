@@ -1,0 +1,154 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BiocManager 1.30.15.3\n"
+"POT-Creation-Date: 2021-05-28 09:56\n"
+"PO-Revision-Date: 2021-06-08 18:07+0800\n"
+"Last-Translator:  Jiefei <szwjf08@gmail.com>\n"
+"Language-Team: Chinese\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# stop()
+msgid ""
+"package 'remotes' not installed in library path(s)\n"
+"  %s\n"
+"install with 'BiocManager::install(\"remotes\")'"
+msgstr "在下面的搜寻路径中没有找到 'remotes' 包\n"
+"  %s\n"
+"可以用 'BiocManager::install(\"remotes\")' 来安装这个包"
+
+msgid ""
+"'loadNamespace(\"remotes\")' failed:\n"
+"    %s"
+msgstr "运行 'loadNamespace(\"remotes\")' 失败:"
+"    %s"
+
+msgid "'repos' argument to 'install()' not allowed"
+msgstr "'install()' 函数不接受 `repos` 参数"
+
+msgid "all '...' arguments to 'install()' must be named"
+msgstr "所有传入的参数都必须有命名"
+
+msgid "failed to load package 'utils'"
+msgstr "无法载入 `utils` 包"
+
+msgid ""
+"Bioconductor version not changed by 'install()'; in non-interactive sessions "
+"use 'ask = FALSE'"
+msgstr ""
+"Bioconductor 版本号没有被 'install()' 改变; 在非交互界面使用的时候 "
+"请添加参数 'ask = FALSE'"
+
+msgid ""
+"To use Bioconductor version '%s', first %s %d packages with\n"
+"    BiocManager::install(version = '%s')"
+msgstr ""
+"如果要用 Bioconductor '%s' 版本, 首先需要 %s %d 包\n"
+"    使用 BiocManager::install(version = '%s') 来完成"
+
+msgid "'getOption(\"BiocManager.snapshot\")' must be one of %s"
+msgstr "'getOption(\"BiocManager.snapshot\")' 必须是下面其中一个: %s"
+
+msgid "unknown option 'BiocManager.snapshot = \"%s\"'"
+msgstr "未知参数 'BiocManager.snapshot = \"%s\"'"
+
+msgid ""
+"'pkgs' must be a character vector of package names, or a matrix like that "
+"returned by 'installed.packages()'"
+msgstr ""
+"'pkgs' 必须是包的名字的字符串, 或者是和 'installed.packages()' "
+"返回的格式相同的矩阵"
+
+# warning()
+msgid ""
+"package(s) not installed when version(s) same as current; use `force = TRUE` "
+"to re-install: \n"
+"'%s'"
+msgstr ""
+"因为版本号相同，包将不会被安装; 使用 `force = TRUE` "
+"来强行重装: \n"
+"'%s'"
+
+msgid ""
+"packages not installed (unknown repository)\n"
+"  '%s'"
+msgstr ""
+"包无法被安装 (无法识别的库)\n"
+"  '%s'"
+
+msgid ""
+"Bioconductor online version validation disabled; see ?"
+"BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+msgstr ""
+"Bioconductor 网络版本号验证被禁用; 请参考 ?"
+"BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+
+# message()
+msgid ""
+"installation paths not writeable, unable to update packages\n"
+"%s"
+msgstr ""
+"安装路径不可写入，无法更新包\n"
+"%s"
+
+msgid "installing package(s) %s"
+msgstr "正在安装下列包 %s"
+
+msgid "installing github package(s) %s"
+msgstr "正在安装下列Github包 %s"
+
+msgid "old packages: '%s'"
+msgstr "旧的包: '%s'"
+
+msgid ""
+"'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?"
+"repositories' for details. Replacement repositories:\n"
+"    %s"
+msgstr ""
+"'getOption(\"repos\")' 替换了 Bioconductor 标准库, 请参阅 '?"
+"repositories'. 目前使用的库:\n"
+"    %s"
+
+# sprintf()
+msgid "%s %d packages to Bioconductor version '%s'? [y/n]: "
+msgstr "%s %d 包更新到 Bioconductor 版本 '%s'? [y/n]: "
+
+msgid "mis-configuration, R %s, Bioconductor %s"
+msgstr "错误的版本组合, R %s, Bioconductor %s"
+
+msgid "Bioconductor version %s (BiocManager %s), %s"
+msgstr "Bioconductor 版本 %s (BiocManager %s), %s"
+
+msgid "version '%s' must have two components, e.g., '3.7'"
+msgstr "版本号 '%s' 必须由两个数字组成, e.g., '3.7'"
+
+msgid "unknown Bioconductor version '%s'; %s"
+msgstr "未知 Bioconductor 版本号 '%s'; %s"
+
+msgid "Bioconductor does not yet build and check packages for R version %s; %s"
+msgstr "Bioconductor 并没有在R版本 %s 下进行安装和测试; %s"
+
+msgid "use `BiocManager::install(version = '%s')` with R version %s"
+msgstr "请在R版本 %s 下使用 `BiocManager::install(version = '%s')`"
+
+msgid "Bioconductor version '%s' requires R version '%s'; %s; %s"
+msgstr "Bioconductor 版本 '%s' 需要匹配R版本 '%s'; %s; %s"
+
+msgid ""
+"Bioconductor version '%s' is out-of-date; BiocManager does not support R "
+"version '%s'. For older installations of Bioconductor, use '%s' and refer to "
+"the 'BiocInstaller' vignette on the Bioconductor website"
+msgstr ""
+"Bioconductor 版本 '%s' 已经过时; BiocManager 不支持 R "
+"版本 '%s'. 对于早期 Bioconductor 版本, 使用 '%s' 并参考 "
+"Bioconductor网页上的'BiocInstaller'概述"
+
+msgid ""
+"Bioconductor version '%s' is out-of-date; the current release version '%s' "
+"is available with R version '%s'; %s"
+msgstr ""
+"Bioconductor 版本 '%s' 已经过时; 目前的版本 '%s' "
+"已经发布并且兼容R版本 '%s'; %s"
