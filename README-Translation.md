@@ -177,6 +177,6 @@ Languages and varieties are treated hierarchically -- `es` provides a 'Spanish' 
 
 1. (from [hpages][]) It's easy for users to enter messages in Google Translate instead.
 
-1. (from [hpages][]) Having users report errors in non-English languages increases the 
+1. (from [hpages][]) Having users report errors in non-English languages increases the amount of work required to understand problems reported on the support site, etc.
 
 [hpages]: https://github.com/Bioconductor/BiocManager/pull/109#issuecomment-859101361
