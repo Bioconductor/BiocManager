@@ -84,6 +84,15 @@ msgstr "Ola! 'repos' argument to 'install()' not allowed"
 
 Note that I did not have to provide a translation for all messages.
 
+The language field in the beginning of the po file does not have to be correct, so in the beginning of the file I can say
+
+```
+"Language-Team: nonsense\n"
+"Language: nonsense\n"
+```
+
+as long as the file name is correct, R has no problem finding the translation.
+
 ## Installing the translation
 
 Still following [Translating R Messages, R >= 3.0.0][translations30], 
