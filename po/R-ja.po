@@ -80,7 +80,7 @@ msgid "mis-configuration, R %s, Bioconductor %s"
 msgstr "設定ミス, R %s, Bioconductor %s"
 
 msgid "Bioconductor version %s (BiocManager %s), %s"
-msgstr "Bioconductorのバージョン" %s (BiocManager %s), %s"
+msgstr "Bioconductorのバージョンは %s (BiocManagerは %s), %s"
 
 msgid "version '%s' must have two components, e.g., '3.7'"
 msgstr "バージョン '%s' には2つのコンポーネントが必要です, 例えば, '3.7'"
