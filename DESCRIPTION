@@ -9,7 +9,8 @@ Authors@R: c(
         role = c("trl", "ctb", "cre"),
         comment = c(ORCID = "0000-0002-3242-0582")),
     person("Robert", "Castelo", role = "trl"),
-    person("Jiefei", "Wang",role = "trl"))
+    person("Jiefei", "Wang", role = "trl"),
+    person("Kozo", "Nishida", role = "trl"))
 Imports:
     utils
 Suggests: 

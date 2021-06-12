@@ -5,6 +5,7 @@ Translation contributors:
 - Robert Castelo (Spanish)
 - Jiefei Wang (Chinese)
 - Marcel Ramos (French)
+- Kozo Nishida (Japanese)
 
 ## Orientation
 
