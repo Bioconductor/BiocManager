@@ -49,9 +49,6 @@ msgstr ""
 msgid "packages not installed (unknown repository)\n  '%s'"
 msgstr ""
 
-msgid "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
-msgstr ""
-
 # message()
 
 msgid "installation paths not writeable, unable to update packages\n%s"

@@ -51,9 +51,6 @@ msgstr "現在のバージョンと同じ場合、パッケージはインスト
 msgid "packages not installed (unknown repository)\n  '%s'"
 msgstr "パッケージはインストールされません (不明なリポジトリ)\n  '%s'"
 
-msgid "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
-msgstr "Bioconductorのオンラインバージョンの検証が無効になっています; ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS の内容をご覧ください"
-
 # message()
 
 msgid "installation paths not writeable, unable to update packages\n%s"
