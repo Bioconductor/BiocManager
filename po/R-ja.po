@@ -1,0 +1,116 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BiocManager 1.30.15.3\n"
+"POT-Creation-Date: 2021-05-28 09:56\n"
+"PO-Revision-Date: 2021-06-12 15:30+0900\n"
+"Last-Translator: Kozo Nishida <kozo.nishida@gmail.com>\n"
+"Language-Team: Japanese\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# stop()
+
+msgid "package 'remotes' not installed in library path(s)\n  %s\ninstall with 'BiocManager::install(\"remotes\")'"
+msgstr "パッケージ 'remotes' がライブラリパスにインストールされていません\n  %s\n 'BiocManager::install(\"remotes\")' でインストールしてください"
+
+msgid "'loadNamespace(\"remotes\")' failed:\n    %s"
+msgstr "'loadNamespace(\"remotes\")' が失敗しました:\n    %s"
+
+msgid "'repos' argument to 'install()' not allowed"
+msgstr "'install()'への'repos'引数は許されていません"
+
+msgid "all '...' arguments to 'install()' must be named"
+msgstr "'install()'へのすべての'...'引数は名前を付ける必要があります"
+
+msgid "failed to load package 'utils'"
+msgstr "パッケージ'utils'のロードに失敗しました"
+
+msgid "Bioconductor version not changed by 'install()'; in non-interactive sessions use 'ask = FALSE'"
+msgstr "Bioconductorのバージョンは'install()'によって変更されません; 非対話型セッションでは'ask = FALSE'を使ってください"
+
+msgid "To use Bioconductor version '%s', first %s %d packages with\n    BiocManager::install(version = '%s')"
+msgstr "Bioconductorのバージョン '%s' を使うには、まず %s %d パッケージを下記でインストールしてください\n    BiocManager::install(version = '%s')"
+
+msgid "'getOption(\"BiocManager.snapshot\")' must be one of %s"
+msgstr "'getOption(\"BiocManager.snapshot\")' は %s のいずれかである必要があります"
+
+msgid "unknown option 'BiocManager.snapshot = \"%s\"'"
+msgstr "'BiocManager.snapshot = \"%s\"' は不明なオプションです"
+
+msgid "'pkgs' must be a character vector of package names, or a matrix like that returned by 'installed.packages()'"
+msgstr "'pkgs' はパッケージ名の文字ベクトル, または 'installed.packages()' によって返されるような行列である必要があります"
+
+# warning()
+
+msgid "package(s) not installed when version(s) same as current; use `force = TRUE` to re-install: \n'%s'"
+msgstr "現在のバージョンと同じ場合、パッケージはインストールされません; 再インストールするには `force = TRUE` を使ってください: \n'%s'"
+
+msgid "packages not installed (unknown repository)\n  '%s'"
+msgstr "パッケージはインストールされません (不明なリポジトリ)\n  '%s'"
+
+msgid "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+msgstr "Bioconductorのオンラインバージョンの検証が無効になっています; ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS の内容をご覧ください"
+
+# message()
+
+msgid "installation paths not writeable, unable to update packages\n%s"
+msgstr "インストールパスの書き込みができず、パッケージを更新できません\n%s"
+
+msgid "installing package(s) %s"
+msgstr "パッケージをインストールしています %s"
+
+msgid "installing github package(s) %s"
+msgstr "githubパッケージをインストールしています %s"
+
+msgid "old packages: '%s'"
+msgstr "古いパッケージ: '%s'"
+
+msgid "'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?repositories' for details. Replacement repositories:\n    %s"
+msgstr "'getOption(\"repos\")' はBioconductorの標準のリポジトリを取り換えます, 詳しくは '?repositories' をご覧ください. 取り換え用リポジトリ:\n    %s"
+
+# sprintf() / gettextf
+
+msgid "%s %d packages to Bioconductor version '%s'? [y/n]: "
+msgstr "%s %d パッケージを Bioconductor version '%s' にしますか? [y/n]: "
+
+msgid "mis-configuration, R %s, Bioconductor %s"
+msgstr "設定ミス, R %s, Bioconductor %s"
+
+msgid "Bioconductor version %s (BiocManager %s), %s"
+msgstr "Bioconductorのバージョン" %s (BiocManager %s), %s"
+
+msgid "version '%s' must have two components, e.g., '3.7'"
+msgstr "バージョン '%s' には2つのコンポーネントが必要です, 例えば, '3.7'"
+
+msgid "unknown Bioconductor version '%s'; see %s"
+msgstr "未知の Bioconductor のバージョン '%s'; %s を確かめてください"
+
+msgid "Bioconductor does not yet build and check packages for R version %s; see %s"
+msgstr "Bioconductor はまだ R バージョン %s のパッケージをビルドしてチェックしていません; %s を確かめてください"
+
+msgid "use `BiocManager::install(version = '%s')` with R version %s"
+msgstr "R のバージョン %s には `BiocManager::install(version = '%s')` を使ってください"
+
+msgid "Bioconductor version '%s' requires R version '%s'; %s; see %s"
+msgstr "Bioconductorのバージョン '%s' には R のバージョン '%s' が必要です; %s; %s を確かめてください"
+
+msgid "Bioconductor version '%s' is out-of-date; BiocManager does not support R version '%s'. For older installations of Bioconductor, use '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor website"
+msgstr "Bioconductor バージョン '%s' は期限切れです; BiocManager は Rのバージョン '%s' をサポートしていません. Bioconductorの古いインストールについては, '%s' を使用し, Bioconductor のウェブサイトで 'BiocInstaller' のビネットを参照してください"
+
+msgid "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; see %s"
+msgstr "Bioconductor バージョン '%s' は期限切れです; 現在のリリースバージョン '%s' はRのバージョン '%s' で利用可能です; %s を確かめてください"
+
+msgid "see https://bioconductor.org/install"
+msgstr "https://bioconductor.org/install をご覧ください"
+
+msgid "Bioconductor version cannot be determined; no internet connection?"
+msgstr "Bioconductorのバージョンを特定することができません; インターネットに接続していないですか?"
+
+msgid "Bioconductor version cannot be validated; no internet connection?"
+msgstr "Bioconductorのバージョンが検証できません; インターネットに接続していないですか?"
+
+msgid "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+msgstr "Bioconductorのオンラインバージョン検証が無効になっています; ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS をご覧ください"
