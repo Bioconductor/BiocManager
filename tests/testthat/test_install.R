@@ -210,6 +210,75 @@ test_that("install() fails with different version (non-interactive)", {
     expect_error(install(version = version))
 })
 
+test_that("install() passes the force argument to .install", {
+    .skip_if_misconfigured()
+    skip_if_offline()
+    expect_true(
+        with_mock(
+            `BiocManager:::.install` = function(...) {
+                list(...)[['force']]
+            },
+            `BiocManager:::.version_compare` = function(...) {
+                0L
+            },
+            suppressMessages(
+                install(force = TRUE, update = FALSE)
+            )
+        )
+    )
+    expect_false(
+        with_mock(
+            `BiocManager:::.install` = function(...) {
+                list(...)[['force']]
+            },
+            `BiocManager:::.version_compare` = function(...) {
+                0L
+            },
+            suppressMessages(
+                install(force = FALSE, update = FALSE)
+            )
+        )
+    )
+    expect_true(
+        with_mock(
+            `BiocManager:::.install` = function(...) {
+                list(...)[['force']]
+            },
+            `BiocManager:::.version_compare` = function(...) {
+                1L
+            },
+            `BiocManager:::.install_n_invalid_pkgs` = function(...) {
+                0L
+            },
+            `BiocManager:::.install_updated_version` = function(...) {
+                pkgs <<- list(...)[['force']]
+            },
+            suppressMessages(
+                install(force = TRUE, update = FALSE, ask = FALSE)
+            )
+        )
+    )
+    expect_false(
+        with_mock(
+            `BiocManager:::.install` = function(...) {
+                list(...)[['force']]
+            },
+            `BiocManager:::.version_compare` = function(...) {
+                1L
+            },
+            `BiocManager:::.install_n_invalid_pkgs` = function(...) {
+                0L
+            },
+            `BiocManager:::.install_updated_version` = function(...) {
+                pkgs <<- list(...)[['force']]
+            },
+            suppressMessages(
+                install(force = FALSE, update = FALSE, ask = FALSE)
+            )
+        )
+    )
+})
+
 test_that("install() without package names passes ... to install.packages", {
     .skip_if_misconfigured()
     object <- FALSE
