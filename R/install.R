@@ -244,7 +244,7 @@
 }
 
 .install_updated_version <-
-    function(valid, update, repos, ...)
+    function(valid, update, old_pkgs, instPkgs, repos, ...)
 {
     if (isTRUE(valid))
         return(valid)
@@ -254,7 +254,7 @@
     if (is.null(pkgs) || !update)
         return(pkgs)
 
-    .install(pkgs, repos, ...)
+    .install(pkgs, old_pkgs, instPkgs, repos, ...)
     pkgs
 }
 
@@ -428,7 +428,10 @@ install <-
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)
     } else if (cmp != 0L) {
-        .install_updated_version(valist, update, repos, ...)
+        .install_updated_version(
+            valist, update, vout[["out_of_date"]], inst, repos, force = force,
+            ...
+        )
     }
 
     invisible(pkgs)
