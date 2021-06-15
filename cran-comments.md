@@ -3,7 +3,7 @@ We also checked for any major issues with `revdepcheck::revdep_check()` and
 found none.
 
 ## Test environments
-* local Ubuntu 20.10 (linux): R 3.6.3, R 4.0.5 patched, R-devel 4.2.0
+* local Ubuntu 20.10 (linux): R 4.0.5 patched, R 4.1.0 beta, R-devel 4.2.0
 * win-builder.r-project.org (windows): oldrel, release, devel
 * appveyor (windows): bioc-devel, bioc-release, bioc-oldrel,
     oldrel, release, devel
@@ -20,7 +20,8 @@ Packages suggested but not available for checking:
 
 ## revdepcheck results
 
-We checked 136 reverse dependencies (0 from CRAN + 136 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 137 reverse dependencies (0 from CRAN + 137 from Bioconductor),
+comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems
  * We failed to check 0 packages

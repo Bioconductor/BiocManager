@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.30.16
+-------------------------
+
+BUG FIXES
+
+    o Ensure that the `force` argument is passed along after installation of
+      `BiocVersion` (#105, @lshep, @jwokaty)
+    o Fix typo in `.VERSION_MAP_SENTINEL` (`RSPM` column name).
+
 CHANGES IN VERSION 1.30.15
 -------------------------
 
