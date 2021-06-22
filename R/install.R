@@ -44,20 +44,23 @@
         failed_pkgs <- pkgs[!status, "Package"]
         failed_lib <- pkgs[!status, "LibPath"]
         failed <- split(failed_pkgs, failed_lib)
+        library_path_txt <- sprintf("  %s: ", gettext("library path"))
+        packages_txt <- sprintf("  %s:\n", gettext("packages"))
         detail <- paste(
             mapply(function(lib, pkg) {
                 paste0(
-                    "  path: ", lib, "\n",
-                    "  packages:\n",
+                    library_path_txt, lib, "\n",
+                    packages_txt,
                     .msg(paste(pkg, collapse = ", "), indent = 4, exdent = 4)
                 )
             }, names(failed), unname(failed), USE.NAMES = FALSE),
             collapse = "\n"
         )
-        .message(
+        txt <- gettextf(
             "installation paths not writeable, unable to update packages\n%s",
             detail
         )
+        .message(txt)
     }
 
     pkgs[status,, drop=FALSE]
@@ -74,11 +77,13 @@
 {
     if (!force) {
         noInst <- !pkgs %in% rownames(old_pkgs) & pkgs %in% rownames(instPkgs)
-        if (any(noInst))
-            .warning(
+        if (any(noInst)) {
+            txt <- gettextf(
                 "package(s) not installed when version(s) same as current; use `force = TRUE` to re-install: \n'%s'",
                 paste(pkgs[noInst], collapse = "' '")
             )
+            .warning(txt)
+        }
         pkgs <- pkgs[!noInst]
     }
     pkgs
@@ -97,23 +102,21 @@
     if (!"remotes" %in% rownames(installed.packages(lib.loc))) {
         if (is.null(lib.loc))
             lib.loc <- .libPaths()
-        .stop(
+        txt <- gettextf(
             "package 'remotes' not installed in library path(s)\n  %s\ninstall with 'BiocManager::install(\"remotes\")'",
-            paste(lib.loc, collapse="\n    "),
-            call. = FALSE,
-            wrap. = FALSE
+            paste(lib.loc, collapse="\n    ")
         )
+        .stop(txt, call. = FALSE, wrap. = FALSE)
     }
 
     tryCatch({
         loadNamespace("remotes", lib.loc)
     }, error=function(e) {
-        .stop(
+        txt <- gettextf(
             "'loadNamespace(\"remotes\")' failed:\n    %s",
-            conditionMessage(e),
-            call. = FALSE,
-            wrap. = FALSE
+            conditionMessage(e)
         )
+        .stop(txt, call. = FALSE, wrap. = FALSE)
     })
 
     TRUE
@@ -129,7 +132,8 @@
     doing <- .install_filter_r_repos(doing)
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
-        .message("installing package(s) %s", pkgNames)
+        txt <- gettext("installing package(s) %s", pkgNames)
+        .message(txt)
         .inet_install.packages(pkgs = doing, lib = lib, repos = repos, ...)
     }
     setdiff(pkgs, c(doing, up_to_date))
@@ -144,7 +148,8 @@
     on.exit(options(oopts))
     if (length(doing)) {
         pkgNames <- paste(.sQuote(doing), collapse=", ")
-        .message("installing github package(s) %s", pkgNames)
+        txt <- gettextf("installing github package(s) %s", pkgNames)
+        .message(txt)
         .install_github_load_remotes(pkgs, lib.loc = lib.loc)
         for (repo in doing)
             remotes::install_github(repo, lib = lib, force = force, ...)
@@ -155,12 +160,16 @@
 .install_validate_dots <-
     function(..., repos)
 {
-    if (!missing(repos))
-        .stop("'repos' argument to 'install()' not allowed")
+    if (!missing(repos)) {
+        txt <- gettext("'repos' argument to 'install()' not allowed")
+        .stop(txt)
+    }
     args <- list(...)
     nms <- sum(nzchar(names(args)))
-    if (nms != length(args))
-        .stop("all '...' arguments to 'install()' must be named")
+    if (nms != length(args)) {
+        txt <- gettext("all '...' arguments to 'install()' must be named")
+        .stop(txt)
+    }
 
     TRUE
 }
@@ -188,8 +197,10 @@
     function(pkgs, old_pkgs, instPkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
         checkBuilt, force, ...)
 {
-    requireNamespace("utils", quietly=TRUE) ||
-        .stop("failed to load package 'utils'")
+    if (!requireNamespace("utils", quietly=TRUE)) {
+        txt <- gettext("failed to load package 'utils'")
+        .stop(txt)
+    }
 
     todo <- .install_repos(
         pkgs, old_pkgs, instPkgs = instPkgs, lib = lib, repos = repos,
@@ -199,12 +210,13 @@
         todo, lib = lib, lib.loc = lib.loc, repos = repos, force = force, ...
     )
 
-    if (length(todo))
-        .warning(
+    if (length(todo)) {
+        txt <- gettextf(
             "packages not installed (unknown repository)\n  '%s'",
-            paste(.sQuote(todo), collapse = "' '")
+            paste(.sQuote(todo), collapse = " ")
         )
-
+        .warning(txt)
+    }
     setdiff(pkgs, todo)
 }
 
@@ -222,7 +234,8 @@
         return()
 
     pkgs <- paste(old_pkgs[,"Package"], collapse="', '")
-    .message("old packages: '%s'", pkgs)
+    txt <- gettextf("old packages: '%s'", pkgs)
+    .message(txt)
     if (ask) {
         answer <- .getAnswer(
             "Update all/some/none? [a/s/n]: ",
@@ -400,15 +413,20 @@ install <-
         valist <- .valid_result(vout, pkgs = inst)
         npkgs <- .install_n_invalid_pkgs(valist) + length(pkgs)
         if (!length(pkgs)-1L) {
-            .install_ask_up_or_down_grade(version, npkgs, cmp, ask) ||
-                .stop(
-                    "Bioconductor version not changed by 'install()'; in non-interactive sessions use 'ask = FALSE'"
-                )
+            if (!.install_ask_up_or_down_grade(version, npkgs, cmp, ask)) {
+                txt <- gettext("Bioconductor version not changed by 'install()'; in non-interactive sessions use 'ask = FALSE'")
+                .stop(txt)
+            }
         } else {
-            fmt <-
-                "To use Bioconductor version '%s', first %s %d packages with\n    BiocManager::install(version = '%s')"
-            action <- tolower(action)
-            .stop(fmt, version, action, npkgs, version, wrap.=FALSE)
+            if (identical(action, "Downgrade")) {
+                fmt <- gettext(
+                    "To use Bioconductor version '%s', first downgrade %d packages with\n    BiocManager::install(version = '%s')")
+            } else {
+                fmt <- gettext(
+                    "To use Bioconductor version '%s', first upgrade %d packages with\n    BiocManager::install(version = '%s')")
+            }
+            txt <- sprintf(fmt, version, npkgs, version)
+            .stop(txt, wrap.=FALSE)
         }
     }
 

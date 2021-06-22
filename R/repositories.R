@@ -16,15 +16,16 @@
     ##     ...
     ## }
 
-    if (length(conflicts)) {
-        fmt <-
-            "'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?repositories' for details. Replacement repositories:\n    %s"
+    if (length(conflicts) && getOption("BiocManager.check_repositories", TRUE)) {
         repos_string <- paste0(
             names(conflicts), ": ", unname(conflicts),
             collapse = "\n    "
         )
-        if (getOption("BiocManager.check_repositories", TRUE))
-            .message(fmt, repos_string, call. = FALSE, wrap. = FALSE)
+        txt <- gettextf(
+            "'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?repositories' for details. Replacement repositories:\n    %s",
+            repos_string
+        )
+        .message(txt, call. = FALSE, wrap. = FALSE)
     }
 
     repos
@@ -64,18 +65,25 @@
         ## default <- if (version() > "3.11") "MRAN" else "CRAN"
         opt <- getOption("BiocManager.snapshot", "CRAN")
         valid <- c("CRAN", "MRAN", "RSPM")
-        if (length(opt) != 1L || !opt %in% valid)
-            .stop(
+        if (length(opt) != 1L || !opt %in% valid) {
+            txt <- gettextf(
                 "'getOption(\"BiocManager.snapshot\")' must be one of %s",
                 paste0("'", valid, "'", collapse = " ")
             )
+            .stop(txt)
+        }
         cran <- "https://cloud.r-project.org"
         repos[rename] <- switch(
             opt,
             RSPM = .repositories_rspm(cran),
             MRAN = .repositories_mran(cran),
             CRAN = cran,
-            .stop("unknown option 'BiocManager.snapshot = \"%s\"'", opt)
+            {
+                txt <- gettextf(
+                    "unknown option 'BiocManager.snapshot = \"%s\"'", opt
+                )
+                .stop(txt)
+            }
         )
     }
 

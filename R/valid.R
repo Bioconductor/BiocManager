@@ -118,9 +118,10 @@ valid <-
         if (is.character(pkgs)) {
             pkgs <- installed.packages(pkgs, lib.loc=lib.loc)
         } else {
-            .stop(
+            txt <- gettext(
                 "'pkgs' must be a character vector of package names, or a matrix like that returned by 'installed.packages()'"
             )
+            .stop(txt)
         }
     }
     version <- .version_validate(version())
@@ -138,10 +139,11 @@ valid <-
         out_of_date <- result$out_of_date
         too_new <- result$too_new
         if (NROW(out_of_date) + NROW(too_new) != 0L) {
-            .warning(
+            txt <- gettextf(
                 "%d packages out-of-date; %d packages too new",
                 NROW(out_of_date), NROW(too_new)
             )
+            .warning(txt)
         }
     }
     result

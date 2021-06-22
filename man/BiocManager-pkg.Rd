@@ -69,11 +69,18 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Marcel Ramos \email{marcel.ramos@roswellpark.org} (\href{https://orcid.org/0000-0002-3242-0582}{ORCID}) [contributor]
+\strong{Maintainer}: Marcel Ramos \email{marcel.ramos@roswellpark.org} (\href{https://orcid.org/0000-0002-3242-0582}{ORCID}) [translator, contributor]
 
 Authors:
 \itemize{
   \item Martin Morgan \email{martin.morgan@roswellpark.org} (\href{https://orcid.org/0000-0002-5874-8148}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Robert Castelo [translator]
+  \item Jiefei Wang [translator]
+  \item Kozo Nishida [translator]
 }
 
 }

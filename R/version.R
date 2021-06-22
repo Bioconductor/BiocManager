@@ -1,22 +1,30 @@
-.VERSION_HELP <- gettext(
-    "see https://bioconductor.org/install",
-    domain = "R-BiocManager"
-)
+.VERSION_HELP <- function() {
+    gettext(
+        "see https://bioconductor.org/install",
+        domain = "R-BiocManager"
+    )
+}
 
-.VERSION_UNKNOWN <- gettext(
-    "Bioconductor version cannot be determined; no internet connection?",
-    domain = "R-BiocManager"
-)
+.VERSION_UNKNOWN <- function() {
+    gettext(
+        "Bioconductor version cannot be determined; no internet connection?",
+        domain = "R-BiocManager"
+    )
+}
 
-.VERSION_MAP_UNABLE_TO_VALIDATE <- gettext(
-    "Bioconductor version cannot be validated; no internet connection?",
-    domain = "R-BiocManager"
-)
+.VERSION_MAP_UNABLE_TO_VALIDATE <- function() {
+    gettext(
+        "Bioconductor version cannot be validated; no internet connection?",
+        domain = "R-BiocManager"
+    )
+}
 
-.NO_ONLINE_VERSION_DIAGNOSIS <- gettext(
-    "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS",
-    domain = "R-BiocManager"
-)
+.NO_ONLINE_VERSION_DIAGNOSIS <- function() {
+    gettext(
+        "Bioconductor online version validation disabled; see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS",
+        domain = "R-BiocManager"
+    )
+}
 
 .LEGACY_INSTALL_CMD <-
     "source(\"https://bioconductor.org/biocLite.R\")"
@@ -53,7 +61,7 @@
 format.version_sentinel <-
     function(x, ...)
 {
-    paste0("unknown version: ", .version_sentinel_msg(x))
+    paste0(gettext("unknown version"), ": ", .version_sentinel_msg(x))
 }
 
 .version_compare <-
@@ -81,7 +89,7 @@ format.version_sentinel <-
 
     if (.VERSION_MAP$WARN_NO_ONLINE_CONFIG && !opt) {
         .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE
-        .warning(.NO_ONLINE_VERSION_DIAGNOSIS)
+        .warning(.NO_ONLINE_VERSION_DIAGNOSIS())
     }
     opt
 }
@@ -265,11 +273,11 @@ format.version_sentinel <-
         ))
 
     if (identical(map, .VERSION_MAP_SENTINEL))
-        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE())
 
     if (!version %in% map$Bioc)
         return(gettextf(
-            "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP,
+            "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP(),
             domain = "R-BiocManager"
         ))
 
@@ -282,7 +290,7 @@ format.version_sentinel <-
         if (r_version == one_up && "future" %in% rec$BiocStatus)
             return(gettextf(
                 "Bioconductor does not yet build and check packages for R version %s; %s",
-                r_version, .VERSION_HELP,
+                r_version, .VERSION_HELP(),
                 domain = "R-BiocManager"
             ))
         else {
@@ -295,7 +303,7 @@ format.version_sentinel <-
 
             return(gettextf(
                 "Bioconductor version '%s' requires R version '%s'; %s; %s",
-                version, head(required, 1), rec_msg, .VERSION_HELP,
+                version, head(required, 1), rec_msg, .VERSION_HELP(),
                 domain = "R-BiocManager"
             ))
         }
@@ -309,14 +317,14 @@ format.version_sentinel <-
 {
     map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
-        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE())
 
     r_version <- getRversion()[, 1:2]
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
     if (identical(status, "future"))
         return(gettextf(
             "Bioconductor does not yet build and check packages for R version %s; %s",
-            r_version, .VERSION_HELP,
+            r_version, .VERSION_HELP(),
             domain = "R-BiocManager"
         ))
 
@@ -355,7 +363,7 @@ format.version_sentinel <-
         else
             return(gettextf(
                 "Bioconductor version '%s' is out-of-date; the current release version '%s' is available with R version '%s'; %s",
-                version, release, .version_R("release"), .VERSION_HELP,
+                version, release, .version_R("release"), .VERSION_HELP(),
                 domain = "R-BiocManager"
             ))
     }
@@ -368,7 +376,7 @@ format.version_sentinel <-
 {
     map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
-        return(.version_sentinel(.VERSION_MAP_UNABLE_TO_VALIDATE))
+        return(.version_sentinel(.VERSION_MAP_UNABLE_TO_VALIDATE()))
 
     map <- map[map$R == getRversion()[, 1:2],]
     if ("release" %in% map$BiocStatus)
@@ -388,11 +396,11 @@ format.version_sentinel <-
 {
     map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
-        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE())
 
     version <- map$Bioc[map$BiocStatus == type]
     if (is.na(version))
-        version <- .VERSION_UNKNOWN
+        version <- .VERSION_UNKNOWN()
     version
 }
 
@@ -401,7 +409,7 @@ format.version_sentinel <-
 {
     map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
-        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+        return(.VERSION_MAP_UNABLE_TO_VALIDATE())
 
     map$R[map$BiocStatus == type]
 }

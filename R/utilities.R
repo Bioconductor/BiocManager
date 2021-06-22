@@ -34,12 +34,12 @@
 
 .msg <-
     function(
-        fmt, ...,
-        width=getOption("width"), indent = 0, exdent = 2, wrap. = TRUE
+        txt,
+        width=getOption("width"), indent = 0, exdent = 2,
+        wrap. = TRUE
     )
     ## Use this helper to format all error / warning / message text
 {
-    txt <- gettextf(fmt, ..., domain = "R-BiocManager")
     if (wrap.) {
         txt <- strwrap(txt, width=width, indent = indent, exdent=exdent)
         paste(txt, collapse="\n")
@@ -49,30 +49,30 @@
 }
 
 .message <-
-    function(..., call. = FALSE, domain = NULL, appendLF=TRUE)
+    function(txt, ..., call. = FALSE, domain = NULL, appendLF=TRUE)
 {
     ## call. = FALSE provides compatibility with .stop(), but is ignored
-    message(.msg(...), domain = NULL, appendLF=appendLF)
+    message(.msg(txt, ...), domain = NULL, appendLF=appendLF)
     invisible(TRUE)
 }
 
 .packageStartupMessage <-
-    function(..., domain = NULL, appendLF = TRUE)
+    function(txt, ..., domain = NULL, appendLF = TRUE)
 {
-    packageStartupMessage(.msg(...), domain = domain, appendLF = appendLF)
+    packageStartupMessage(.msg(txt, ...), domain = domain, appendLF = appendLF)
     invisible(TRUE)
 }
 
 .stop <-
-    function(..., call.=FALSE)
+    function(txt, ..., call.=FALSE)
 {
-    stop(.msg(...), call.=call.)
+    stop(.msg(txt, ...), call.=call.)
 }
 
 .warning <-
-    function(..., call.=FALSE, immediate.=FALSE)
+    function(txt, ..., call.=FALSE, immediate.=FALSE)
 {
-    warning(.msg(...), call.=call., immediate.=immediate.)
+    warning(.msg(txt, ...), call.=call., immediate.=immediate.)
     invisible(TRUE)
 }
 
@@ -103,11 +103,11 @@ isRelease <-
     })
 
     if (!isTRUE(test_ver)) {
-        msg <- gettextf(
+        txt <- gettextf(
             "mis-configuration, R %s, Bioconductor %s", R_version, bioc_version,
             domain = "R-BiocManager"
         )
-        testthat::skip(msg)
+        testthat::skip(txt)
     }
 }
 
