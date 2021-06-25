@@ -104,7 +104,8 @@ isRelease <-
 
     if (!isTRUE(test_ver)) {
         txt <- gettextf(
-            "mis-configuration, R %s, Bioconductor %s", R_version, bioc_version,
+            "This session is mis-configured. It has R version '%s' and Bioconductor version '%s'.",
+            R_version, bioc_version,
             domain = "R-BiocManager"
         )
         testthat::skip(txt)
@@ -115,7 +116,10 @@ isRelease <-
     function()
 {
     if (!"BiocVersion" %in% rownames(installed.packages())) {
-        msg <- gettext("BiocVersion not installed", domain = "R-BiocManager")
+        msg <- gettext(
+            "The 'BiocVersion' package is not installed.",
+            domain = "R-BiocManager"
+        )
         testthat::skip(msg)
     }
 }

@@ -119,7 +119,8 @@ valid <-
             pkgs <- installed.packages(pkgs, lib.loc=lib.loc)
         } else {
             txt <- gettext(
-                "'pkgs' must be a character vector of package names, or a matrix like that returned by 'installed.packages()'"
+                "The 'pkgs' argument of 'valid()' must be a character vector of package names, or a matrix like that returned by 'installed.packages()'.",
+                domain = "R-BiocManager"
             )
             .stop(txt)
         }
@@ -139,9 +140,15 @@ valid <-
         out_of_date <- result$out_of_date
         too_new <- result$too_new
         if (NROW(out_of_date) + NROW(too_new) != 0L) {
-            txt <- gettextf(
-                "%d packages out-of-date; %d packages too new",
-                NROW(out_of_date), NROW(too_new)
+            txt <- paste(
+                gettextf(
+                    "%d packages are out-of-date.", NROW(out_of_date),
+                    domain = "R-BiocManager"
+                ),
+                gettextf(
+                    "%d packages are too new.", NROW(too_new),
+                    domain = "R-BiocManager"
+                )
             )
             .warning(txt)
         }

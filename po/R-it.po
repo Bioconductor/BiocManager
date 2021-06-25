@@ -1,167 +1,267 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BiocManager 1.30.15.3\n"
-"POT-Creation-Date: 2021-05-28 09:56\n"
+"POT-Creation-Date: 2021-06-25 09:52\n"
 "PO-Revision-Date: 2021-06-15 11:35-0400\n"
 "Last-Translator: Marcel Ramos <marcel.ramosperez@roswellpark.org>\n"
 "Language-Team: Italian\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-# stop()
+msgid "Library paths: '%s'."
+msgstr ""
+
+#, fuzzy
+msgid "Out-of-date packages: '%s'."
+msgstr "pacchetti non aggiornati: '%s'"
+
+# message()
+#, fuzzy
 msgid ""
-"package 'remotes' not installed in library path(s)\n"
-"  %s\n"
-"install with 'BiocManager::install(\"remotes\")'"
+"Some library paths are not writeable, so 'install()' is not able to update "
+"all packages."
+msgstr ""
+"percorsi di installazione non scrivibili, pacchetti non aggiornabili\n"
+"%s"
+
+msgid ""
+"Use `force = TRUE` to re-install packages whose available version is the "
+"same as the installed version."
+msgstr ""
+
+#, fuzzy
+msgid "Packages: '%s'."
+msgstr "pacchetti non aggiornati: '%s'"
+
+# stop()
+#, fuzzy
+msgid ""
+"Package 'remotes' is not installed in known library paths; install with "
+"'BiocManager::install(\"remotes\")'."
 msgstr ""
 "il pacchetto 'remotes' non è installato nel percorso delle librerie\n"
 "  %s\n"
 "installarlo con 'BiocManager::install(\"remotes\")'"
 
-msgid ""
-"'loadNamespace(\"remotes\")' failed:\n"
-"    %s"
+#, fuzzy
+msgid "'loadNamespace(\"remotes\")' failed: %s."
 msgstr ""
 "'loadNamespace(\"remotes\")' ha fallito:\n"
 "    %s"
 
-msgid "'repos' argument to 'install()' not allowed"
+#, fuzzy
+msgid "Installing package(s) '%s'."
+msgstr "installando i pacchetti %s"
+
+#, fuzzy
+msgid "Installing GitHub package(s) '%s'."
+msgstr "installando i pacchetti github %s"
+
+#, fuzzy
+msgid "Using 'repos' as an argument to 'install()' is not allowed."
 msgstr "l'argomento 'repos' per la funzione 'install()' non è permesso"
 
-msgid "all '...' arguments to 'install()' must be named"
+#, fuzzy
+msgid "All '...' arguments to 'install()' must be named."
 msgstr "tutti gli argomenti '...' per 'install()' devono essere nominati"
 
-msgid "failed to load package 'utils'"
+# sprintf() / gettextf
+#, fuzzy
+msgid "Downgrade %d packages to Bioconductor version '%s'?"
+msgstr "%s %d pacchetti per la versione Bioconductor '%s'? [y/n]: "
+
+# sprintf() / gettextf
+#, fuzzy
+msgid "Upgrade %d packages to Bioconductor version '%s'?"
+msgstr "%s %d pacchetti per la versione Bioconductor '%s'? [y/n]: "
+
+#, fuzzy
+msgid "Failed to load package 'utils'."
 msgstr "errore nel caricamento del pacchetto 'utils'"
 
+#, fuzzy
 msgid ""
-"Bioconductor version not changed by 'install()'; in non-interactive sessions "
-"use 'ask = FALSE'"
-msgstr ""
-"La versione di Bioconductor non è stata cambiata da 'install()'; in sessioni non-interattivi "
-"utilizzare 'ask = FALSE'"
-
-msgid ""
-"To use Bioconductor version '%s', first %s %d packages with\n"
-"    BiocManager::install(version = '%s')"
-msgstr ""
-"Per usare la versione Bioconductor '%s', prima %s %d pacchetti con\n"
-"    BiocManager::install(version = '%s')"
-
-msgid "'getOption(\"BiocManager.snapshot\")' must be one of %s"
-msgstr "'getOption(\"BiocManager.snapshot\")' deve essere una tra %s"
-
-msgid "unknown option 'BiocManager.snapshot = \"%s\"'"
-msgstr "opzione sconosciuta 'BiocManager.snapshot = \"%s\"'"
-
-msgid ""
-"'pkgs' must be a character vector of package names, or a matrix like that "
-"returned by 'installed.packages()'"
-msgstr ""
-"'pkgs' deve essere un vettore di caratteri contenente i nomi dei pacchetti, o una matrice come quella "
-"ritornata tramite 'installed.packages()'"
-
-# warning()
-msgid ""
-"package(s) not installed when version(s) same as current; use `force = TRUE` "
-"to re-install: \n"
-"'%s'"
-msgstr ""
-"i pacchetti non sono installati quando le versioni sono le stesse di quelle attuali; usare `force = TRUE` "
-"per reinstallare: \n"
-"'%s'"
-
-msgid ""
-"packages not installed (unknown repository)\n"
-"  '%s'"
+"Some packages were not installed because they were not found in a known "
+"repository."
 msgstr ""
 "pachetti non installati (repository sconosciuto)\n"
 "  '%s'"
 
-# message()
-msgid ""
-"installation paths not writeable, unable to update packages\n"
-"%s"
-msgstr ""
-"percorsi di installazione non scrivibili, pacchetti non aggiornabili\n"
-"%s"
-
-msgid "installing package(s) %s"
-msgstr "installando i pacchetti %s"
-
-msgid "installing github package(s) %s"
-msgstr "installando i pacchetti github %s"
-
-msgid "old packages: '%s'"
+#, fuzzy
+msgid "Out-of-date packages: '%s'"
 msgstr "pacchetti non aggiornati: '%s'"
 
 msgid ""
-"'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?"
-"repositories' for details. Replacement repositories:\n"
+"Update all [a], some [s], or none [n] of the out-of-date packages? [a/s/n]"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"To update Bioconductor to version '%s' in a non-interactive session, use "
+"'install(ask = FALSE)'."
+msgstr ""
+"La versione di Bioconductor non è stata cambiata da 'install()'; in sessioni "
+"non-interattivi utilizzare 'ask = FALSE'"
+
+#, fuzzy
+msgid "The Bioconductor version will not be changed by 'install()'."
+msgstr ""
+"La versione di Bioconductor non può essere convalidata; non c'è connessione "
+"internet?"
+
+#, fuzzy
+msgid ""
+"To use Bioconductor version '%s', first downgrade %d packages with "
+"'BiocManager::install(version = '%s')'."
+msgstr ""
+"Per usare la versione Bioconductor '%s', prima %s %d pacchetti con\n"
+"    BiocManager::install(version = '%s')"
+
+#, fuzzy
+msgid ""
+"To use Bioconductor version '%s', first upgrade %d packages with "
+"BiocManager::install(version = '%s')."
+msgstr ""
+"Per usare la versione Bioconductor '%s', prima %s %d pacchetti con\n"
+"    BiocManager::install(version = '%s')"
+
+#, fuzzy
+msgid ""
+"Some of the values in 'getOption(\"repos\")' replace standard Bioconductor "
+"repositories, see '?repositories' for details."
+msgstr ""
+"'getOption(\"repos\")' rimpiazza i repository standard di Bioconductor, "
+"consultare '?repositories' per i dettagli. Repository rimpiazzati:\n"
 "    %s"
+
+msgid "Repositories: '%s'"
 msgstr ""
-"'getOption(\"repos\")' rimpiazza i repository standard di Bioconductor, consultare '?"
-"repositories' per i dettagli. Repository rimpiazzati:\n"
-"    %s"
 
-# sprintf() / gettextf
-msgid "%s %d packages to Bioconductor version '%s'? [y/n]: "
-msgstr "%s %d pacchetti per la versione Bioconductor '%s'? [y/n]: "
+#, fuzzy
+msgid "The value of 'getOption(\"BiocManager.snapshot\")' must be one of '%s'."
+msgstr "'getOption(\"BiocManager.snapshot\")' deve essere una tra %s"
 
-msgid "mis-configuration, R %s, Bioconductor %s"
-msgstr "configurazione errata, R %s, Bioconductor %s"
-
-msgid "Bioconductor version %s (BiocManager %s), %s"
-msgstr "versione Bioconductor %s (BiocManager %s), %s"
-
-msgid "version '%s' must have two components, e.g., '3.7'"
-msgstr "versione '%s' deve avere due componenti, per esempio, '3.7'"
-
-msgid "unknown Bioconductor version '%s'; see %s"
-msgstr "versione Bioconductor sconosciuta '%s'; vedere %s"
+#, fuzzy
+msgid "Unknown option 'BiocManager.snapshot = \"%s\"'."
+msgstr "opzione sconosciuta 'BiocManager.snapshot = \"%s\"'"
 
 msgid ""
-"Bioconductor does not yet build and check packages for R version %s; see %s"
+"This session is mis-configured. It has R version '%s' and Bioconductor "
+"version '%s'."
 msgstr ""
-"Bioconductor non realizza ancora build e check per i pacchetti di versione R %s; vedere %s"
 
-msgid "use `BiocManager::install(version = '%s')` with R version %s"
-msgstr "utilizzare `BiocManager::install(version = '%s')` con versione R %s"
+msgid "The 'BiocVersion' package is not installed."
+msgstr ""
 
-msgid "Bioconductor version '%s' requires R version '%s'; %s; see %s"
-msgstr "La versione di Bioconductor '%s' richiede la versione R '%s'; %s; vedere %s"
-
+#, fuzzy
 msgid ""
-"Bioconductor version '%s' is out-of-date; BiocManager does not support R "
-"version '%s'. For older installations of Bioconductor, use '%s' and refer to "
-"the 'BiocInstaller' vignette on the Bioconductor website"
+"The 'pkgs' argument of 'valid()' must be a character vector of package "
+"names, or a matrix like that returned by 'installed.packages()'."
 msgstr ""
-"La versione di Bioconductor '%s' è obsoleta; BiocManager non supporta la versione di R "
-"'%s'. Per installazioni precedenti di Bioconductor, usare '%s' e consultare "
-"la vignette 'BiocInstaller' sul sitio internet di Bioconductor"
+"'pkgs' deve essere un vettore di caratteri contenente i nomi dei pacchetti, "
+"o una matrice come quella ritornata tramite 'installed.packages()'"
 
-msgid ""
-"Bioconductor version '%s' is out-of-date; the current release version '%s' "
-"is available with R version '%s'; see %s"
+msgid "%d packages are out-of-date."
 msgstr ""
-"La versione di Bioconductor '%s' è obsoleta; la versione attuale '%s' "
-"è disponibile con la versione R '%s'; vedere %s"
 
-msgid "see https://bioconductor.org/install"
+msgid "%d packages are too new."
+msgstr ""
+
+#, fuzzy
+msgid "For help, see https://bioconductor.org/install."
 msgstr "vedere https://bioconductor.org/install"
 
-msgid "Bioconductor version cannot be determined; no internet connection?"
-msgstr "La versione di Bioconductor non può essere determinata; non c'è connessione internet?"
+#, fuzzy
+msgid "The Bioconductor version cannot be determined; no internet connection?"
+msgstr ""
+"La versione di Bioconductor non può essere determinata; non c'è connessione "
+"internet?"
 
-msgid "Bioconductor version cannot be validated; no internet connection?"
-msgstr "La versione di Bioconductor non può essere convalidata; non c'è connessione internet?"
+#, fuzzy
+msgid "The Bioconductor version cannot be validated; no internet connection?"
+msgstr ""
+"La versione di Bioconductor non può essere convalidata; non c'è connessione "
+"internet?"
 
+#, fuzzy
 msgid ""
-"Bioconductor online version validation disabled; see ?"
-"BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+"Bioconductor online version validation is disabled. See ?"
+"BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS."
 msgstr ""
 "La verifica di versione Bioconductor è disabilitata; consultare ?"
 "BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
+
+#, fuzzy
+msgid "Unknown Bioconductor version '%s'."
+msgstr "versione Bioconductor sconosciuta '%s'; vedere %s"
+
+#, fuzzy
+msgid "Bioconductor version %s (BiocManager %s), R version %s"
+msgstr "versione Bioconductor %s (BiocManager %s), %s"
+
+#, fuzzy
+msgid "The Bioconductor version '%s' must have two components, e.g., '3.7'."
+msgstr "versione '%s' deve avere due componenti, per esempio, '3.7'"
+
+#, fuzzy
+msgid "Bioconductor does not yet build and check packages for R version '%s'."
+msgstr ""
+"Bioconductor non realizza ancora build e check per i pacchetti di versione R "
+"%s; vedere %s"
+
+#, fuzzy
+msgid "Use `BiocManager::install(version = '%s')` with R version '%s'."
+msgstr "utilizzare `BiocManager::install(version = '%s')` con versione R %s"
+
+#, fuzzy
+msgid "Bioconductor version '%s' requires R version '%s'."
+msgstr ""
+"La versione di Bioconductor '%s' richiede la versione R '%s'; %s; vedere %s"
+
+#, fuzzy
+msgid "Bioconductor version '%s' is out-of-date."
+msgstr "versione Bioconductor %s (BiocManager %s), %s"
+
+#, fuzzy
+msgid "BiocManager does not support R version '%s'."
+msgstr ""
+"La versione di Bioconductor '%s' è obsoleta; la versione attuale '%s' è "
+"disponibile con la versione R '%s'; vedere %s"
+
+#, fuzzy
+msgid ""
+"For older installations of Bioconductor, use the command '%s' and refer to "
+"the 'BiocInstaller' vignette on the Bioconductor web site."
+msgstr ""
+"La versione di Bioconductor '%s' è obsoleta; BiocManager non supporta la "
+"versione di R '%s'. Per installazioni precedenti di Bioconductor, usare '%s' "
+"e consultare la vignette 'BiocInstaller' sul sitio internet di Bioconductor"
+
+#, fuzzy
+msgid ""
+"The current Bioconductor release version is '%s'. It is available with R "
+"version '%s'."
+msgstr ""
+"La versione di Bioconductor '%s' è obsoleta; la versione attuale '%s' è "
+"disponibile con la versione R '%s'; vedere %s"
+
+# warning()
+#, fuzzy
+#~ msgid ""
+#~ "Package(s) are not installed when their available version(s) are the same "
+#~ "as installed versions. Use `force = TRUE` to re-install these packages: "
+#~ "'%s'."
+#~ msgstr ""
+#~ "i pacchetti non sono installati quando le versioni sono le stesse di "
+#~ "quelle attuali; usare `force = TRUE` per reinstallare: \n"
+#~ "'%s'"
+
+#, fuzzy
+#~ msgid "Unknown version: '%s'"
+#~ msgstr "versione Bioconductor sconosciuta '%s'; vedere %s"
+
+#~ msgid "mis-configuration, R %s, Bioconductor %s"
+#~ msgstr "configurazione errata, R %s, Bioconductor %s"

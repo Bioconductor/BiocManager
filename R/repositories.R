@@ -18,12 +18,19 @@
 
     if (length(conflicts) && getOption("BiocManager.check_repositories", TRUE)) {
         repos_string <- paste0(
-            names(conflicts), ": ", unname(conflicts),
-            collapse = "\n    "
+            names(conflicts), ' = "', unname(conflicts), '"',
+            collapse = "', '"
         )
-        txt <- gettextf(
-            "'getOption(\"repos\")' replaces Bioconductor standard repositories, see '?repositories' for details. Replacement repositories:\n    %s",
-            repos_string
+        txt <- paste(
+            .msg(gettext(
+                "Some of the values in 'getOption(\"repos\")' replace standard Bioconductor repositories, see '?repositories' for details.",
+                domain = "R-BiocManager"
+            )),
+            gettextf(
+                "Repositories: '%s'",
+                repos_string,
+                domain = "R-BiocManager"
+            )
         )
         .message(txt, call. = FALSE, wrap. = FALSE)
     }
@@ -67,8 +74,9 @@
         valid <- c("CRAN", "MRAN", "RSPM")
         if (length(opt) != 1L || !opt %in% valid) {
             txt <- gettextf(
-                "'getOption(\"BiocManager.snapshot\")' must be one of %s",
-                paste0("'", valid, "'", collapse = " ")
+                "The value of 'getOption(\"BiocManager.snapshot\")' must be one of '%s'.",
+                paste0(valid, collapse = "' '"),
+                domain = "R-BiocManager"
             )
             .stop(txt)
         }
@@ -80,7 +88,8 @@
             CRAN = cran,
             {
                 txt <- gettextf(
-                    "unknown option 'BiocManager.snapshot = \"%s\"'", opt
+                    "Unknown option 'BiocManager.snapshot = \"%s\"'.", opt,
+                    domain = "R-BiocManager"
                 )
                 .stop(txt)
             }
