@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BiocManager 1.30.15.4\n"
-"POT-Creation-Date: 2021-06-25 09:52\n"
+"POT-Creation-Date: 2021-07-05 10:28\n"
 "PO-Revision-Date: 2021-06-07 18:25+0200\n"
 "Last-Translator: Robert Castelo <robert.castelo@upf.edu>\n"
 "Language-Team: Spanish\n"
@@ -211,19 +211,10 @@ msgid "Bioconductor version '%s' requires R version '%s'."
 msgstr "Bioconductor versión '%s' requiere R versión '%s'; %s; %s"
 
 #, fuzzy
-msgid "Bioconductor version '%s' is out-of-date."
-msgstr "Bioconductor versión %s (BiocManager %s), %s"
-
-#, fuzzy
-msgid "BiocManager does not support R version '%s'."
-msgstr ""
-"la versión '%s' de Bioconductor está obsoleta; la versión actual (\"release"
-"\") '%s' está disponible en R versión '%s'; %s"
-
-#, fuzzy
 msgid ""
-"For older installations of Bioconductor, use the command '%s' and refer to "
-"the 'BiocInstaller' vignette on the Bioconductor web site."
+"BiocManager does not support R version '%s'. For this older version of R, "
+"use the command '%s' and refer to the 'BiocInstaller' vignette on the "
+"Bioconductor web site."
 msgstr ""
 "la versión '%s' de Bioconductor está obsoleta; BiocManager no soporta "
 "Rversión '%s'. Para instalaciones anteriores de Bioconductor, utiliza '%s' y "
@@ -231,11 +222,21 @@ msgstr ""
 
 #, fuzzy
 msgid ""
-"The current Bioconductor release version is '%s'. It is available with R "
-"version '%s'."
+"Bioconductor version '%s' is out-of-date. The current Bioconductor release "
+"version is '%s'. It is available with R version '%s'."
 msgstr ""
 "la versión '%s' de Bioconductor está obsoleta; la versión actual (\"release"
 "\") '%s' está disponible en R versión '%s'; %s"
+
+#, fuzzy
+#~ msgid "Bioconductor version '%s' is out-of-date."
+#~ msgstr "Bioconductor versión %s (BiocManager %s), %s"
+
+#, fuzzy
+#~ msgid "BiocManager does not support R version '%s'."
+#~ msgstr ""
+#~ "la versión '%s' de Bioconductor está obsoleta; la versión actual "
+#~ "(\"release\") '%s' está disponible en R versión '%s'; %s"
 
 # warning()
 #, fuzzy

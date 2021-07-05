@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BiocManager 1.30.15.3\n"
-"POT-Creation-Date: 2021-06-25 09:52\n"
+"POT-Creation-Date: 2021-07-05 10:28\n"
 "PO-Revision-Date: 2021-06-15 11:35-0400\n"
 "Last-Translator: Marcel Ramos <marcel.ramosperez@roswellpark.org>\n"
 "Language-Team: Italian\n"
@@ -222,19 +222,10 @@ msgstr ""
 "La versione di Bioconductor '%s' richiede la versione R '%s'; %s; vedere %s"
 
 #, fuzzy
-msgid "Bioconductor version '%s' is out-of-date."
-msgstr "versione Bioconductor %s (BiocManager %s), %s"
-
-#, fuzzy
-msgid "BiocManager does not support R version '%s'."
-msgstr ""
-"La versione di Bioconductor '%s' è obsoleta; la versione attuale '%s' è "
-"disponibile con la versione R '%s'; vedere %s"
-
-#, fuzzy
 msgid ""
-"For older installations of Bioconductor, use the command '%s' and refer to "
-"the 'BiocInstaller' vignette on the Bioconductor web site."
+"BiocManager does not support R version '%s'. For this older version of R, "
+"use the command '%s' and refer to the 'BiocInstaller' vignette on the "
+"Bioconductor web site."
 msgstr ""
 "La versione di Bioconductor '%s' è obsoleta; BiocManager non supporta la "
 "versione di R '%s'. Per installazioni precedenti di Bioconductor, usare '%s' "
@@ -242,11 +233,21 @@ msgstr ""
 
 #, fuzzy
 msgid ""
-"The current Bioconductor release version is '%s'. It is available with R "
-"version '%s'."
+"Bioconductor version '%s' is out-of-date. The current Bioconductor release "
+"version is '%s'. It is available with R version '%s'."
 msgstr ""
 "La versione di Bioconductor '%s' è obsoleta; la versione attuale '%s' è "
 "disponibile con la versione R '%s'; vedere %s"
+
+#, fuzzy
+#~ msgid "Bioconductor version '%s' is out-of-date."
+#~ msgstr "versione Bioconductor %s (BiocManager %s), %s"
+
+#, fuzzy
+#~ msgid "BiocManager does not support R version '%s'."
+#~ msgstr ""
+#~ "La versione di Bioconductor '%s' è obsoleta; la versione attuale '%s' è "
+#~ "disponibile con la versione R '%s'; vedere %s"
 
 # warning()
 #, fuzzy

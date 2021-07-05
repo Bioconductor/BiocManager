@@ -29,7 +29,8 @@
             gettextf(
                 "Repositories: '%s'",
                 repos_string,
-                domain = "R-BiocManager"
+                domain = "R-BiocManager",
+                digest = FALSE
             )
         )
         .message(txt, call. = FALSE, wrap. = FALSE)

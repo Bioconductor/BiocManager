@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BiocManager 1.30.15.3\n"
-"POT-Creation-Date: 2021-06-25 09:52\n"
+"POT-Creation-Date: 2021-07-05 10:28\n"
 "PO-Revision-Date: 2021-06-12 15:30+0900\n"
 "Last-Translator: Kozo Nishida <kozo.nishida@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -228,19 +228,10 @@ msgstr ""
 "確かめてください"
 
 #, fuzzy
-msgid "Bioconductor version '%s' is out-of-date."
-msgstr "Bioconductorのバージョンは %s (BiocManagerは %s), %s"
-
-#, fuzzy
-msgid "BiocManager does not support R version '%s'."
-msgstr ""
-"Bioconductor バージョン '%s' は期限切れです; 現在のリリースバージョン '%s' は"
-"Rのバージョン '%s' で利用可能です; %s を確かめてください"
-
-#, fuzzy
 msgid ""
-"For older installations of Bioconductor, use the command '%s' and refer to "
-"the 'BiocInstaller' vignette on the Bioconductor web site."
+"BiocManager does not support R version '%s'. For this older version of R, "
+"use the command '%s' and refer to the 'BiocInstaller' vignette on the "
+"Bioconductor web site."
 msgstr ""
 "Bioconductor バージョン '%s' は期限切れです; BiocManager は Rのバージョン "
 "'%s' をサポートしていません. Bioconductorの古いインストールについては, '%s' "
@@ -249,11 +240,21 @@ msgstr ""
 
 #, fuzzy
 msgid ""
-"The current Bioconductor release version is '%s'. It is available with R "
-"version '%s'."
+"Bioconductor version '%s' is out-of-date. The current Bioconductor release "
+"version is '%s'. It is available with R version '%s'."
 msgstr ""
 "Bioconductor バージョン '%s' は期限切れです; 現在のリリースバージョン '%s' は"
 "Rのバージョン '%s' で利用可能です; %s を確かめてください"
+
+#, fuzzy
+#~ msgid "Bioconductor version '%s' is out-of-date."
+#~ msgstr "Bioconductorのバージョンは %s (BiocManagerは %s), %s"
+
+#, fuzzy
+#~ msgid "BiocManager does not support R version '%s'."
+#~ msgstr ""
+#~ "Bioconductor バージョン '%s' は期限切れです; 現在のリリースバージョン "
+#~ "'%s' はRのバージョン '%s' で利用可能です; %s を確かめてください"
 
 # warning()
 #, fuzzy

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: BiocManager 1.30.16.1\n"
-"POT-Creation-Date: 2021-06-25 09:52\n"
+"Project-Id-Version: BiocManager 1.30.16.2\n"
+"POT-Creation-Date: 2021-07-05 10:28\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,14 +130,8 @@ msgstr ""
 msgid "Bioconductor version '%s' requires R version '%s'."
 msgstr ""
 
-msgid "Bioconductor version '%s' is out-of-date."
+msgid "BiocManager does not support R version '%s'. For this older version of R, use the command '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor web site."
 msgstr ""
 
-msgid "BiocManager does not support R version '%s'."
-msgstr ""
-
-msgid "For older installations of Bioconductor, use the command '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor web site."
-msgstr ""
-
-msgid "The current Bioconductor release version is '%s'. It is available with R version '%s'."
+msgid "Bioconductor version '%s' is out-of-date. The current Bioconductor release version is '%s'. It is available with R version '%s'."
 msgstr ""

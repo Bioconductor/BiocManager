@@ -45,9 +45,15 @@
         failed_lib <- pkgs[!status, "LibPath"]
         failed <- split(failed_pkgs, failed_lib)
         library_path_txt <-
-            gettextf("Library paths: '%s'.", domain = "R-BiocManager")
+            gettextf(
+                "Library paths: '%s'.", domain = "R-BiocManager",
+                digest = FALSE
+            )
         packages_txt <-
-            gettext("Out-of-date packages: '%s'.", domain = "R-BiocManager")
+            gettext(
+                "Out-of-date packages: '%s'.", domain = "R-BiocManager",
+                digest = FALSE
+            )
         detail <- paste(
             mapply(function(lib, pkg) {
                 library_path <- sprintf(library_path_txt, lib)
@@ -89,7 +95,8 @@
                 gettextf(
                     "Packages: '%s'.",
                     paste(pkgs[noInst], collapse = "', '"),
-                    domain = "R-BiocManager"
+                    domain = "R-BiocManager",
+                    digest = FALSE
                 )
             )
             .warning(txt)
@@ -120,7 +127,8 @@
             gettextf(
                 "Library paths: '%s'.",
                 paste(lib.loc, collapse="', '"),
-                domain = "R-BiocManager"
+                domain = "R-BiocManager",
+                digest = FALSE
             )
         )
 
@@ -260,7 +268,8 @@
             gettextf(
                 "Packages: '%s'.",
                 paste(todo, collapse = "', '"),
-                domain = "R-BiocManager"
+                domain = "R-BiocManager",
+                digest = FALSE
             )
         )
 

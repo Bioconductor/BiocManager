@@ -246,13 +246,14 @@ format.version_sentinel <-
     getRversion()
 
 .version_string <-
-    function(bioc_version = version())
+    function(bioc_version = version(), digest = TRUE)
 {
     gettextf(
         "Bioconductor version %s (BiocManager %s), R version %s",
         bioc_version, packageVersion("BiocManager"),
         sub("R version ", "", R.version.string),
-        domain = "R-BiocManager"
+        domain = "R-BiocManager",
+        digest = digest
     )
 }
 
@@ -375,36 +376,19 @@ format.version_sentinel <-
     release <- .version_bioc("release")
     if (is.package_version(release) && version < release) {
         if (.r_version_lt_350()) {
-            return(paste(
-                gettextf(
-                    "Bioconductor version '%s' is out-of-date.",
-                    version,
-                    domain = "R-BiocManager"
-                ),
-                gettextf(
-                    "BiocManager does not support R version '%s'.",
-                    getRversion(),
-                    domain = "R-BiocManager"
-                ),
-                gettextf(
-                    "For older installations of Bioconductor, use the command '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor web site.",
-                    .LEGACY_INSTALL_CMD,
-                    domain = "R-BiocManager"
-                )
+            return(gettextf(
+                "BiocManager does not support R version '%s'. For this older version of R, use the command '%s' and refer to the 'BiocInstaller' vignette on the Bioconductor web site.",
+                getRversion(), .LEGACY_INSTALL_CMD,
+                domain = "R-BiocManager"
             ))
         } else {
             return(paste(
                 gettextf(
-                    "Bioconductor version '%s' is out-of-date.",
-                    version,
+                    "Bioconductor version '%s' is out-of-date. The current Bioconductor release version is '%s'. It is available with R version '%s'.",
+                    version, release, .version_R("release"),
                     domain = "R-BiocManager"
                 ),
-                gettextf(
-                    "The current Bioconductor release version is '%s'. It is available with R version '%s'.",
-                    release, .version_R("release"),
-                    domain = "R-BiocManager"
-                ),
-                 .VERSION_HELP()
+                .VERSION_HELP()
             ))
         }
     }
