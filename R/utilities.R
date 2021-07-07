@@ -32,17 +32,11 @@
     }))
 }
 
+#' @useDynLib BiocManager, .registration=TRUE
 .hash <-
     function(x)
 {
-    ## simple string hash, modified from https://opendsa-server.cs.vt.edu/ODSA/Books/Everything/html/HashFuncExamp.html#string-folding
-    if (nchar(x) < 4)
-        x <- sprintf("%-4s", x)
-    i <- as.integer(charToRaw(x))
-    multiplier <- rep(256^(0:3), length.out = length(i))
-    sum <- sum(i * multiplier)
-    ## represent key in hex mode; loss of high-order bits is not important
-    as.hexmode(sum %% .Machine$integer.max)
+    .Call(.hash_impl, x)
 }
 
 .gettext_add_digest_prefix <-
