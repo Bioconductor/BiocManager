@@ -45,6 +45,11 @@ installed; see \code{?install.packages}.
 \item \code{"timeout"}: The maximum time allowed for download of a single
 package, in seconds. \emph{BiocManager} increases this to 300 seconds
 to accommodate download of large BSgenome and other packages.
+\item \code{"BiocManager.add_translation_digest"}: The default (\code{TRUE}) adds
+a short string, e.g., \verb{[id:01f2f4]} to uniquely identify errors,
+warnings, and messages produced by BiocManager. These identifiers
+are constant, regardless of the language to which the message has
+translated. Use \code{options(BiocManager.add_translation_digest = FALSE)} to suppress these identifiers.
 }
 
 System environment variables influencing package behavior include:

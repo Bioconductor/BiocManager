@@ -42,7 +42,16 @@
 .gettext_add_digest_prefix <-
     function(msg, translation, digest)
 {
-    if (digest) {
+    value <- getOption("BiocManager.add_translation_digest", TRUE)
+    digest_option <- as.logical(value)
+    if (digest && !(isTRUE(digest_option) || isFALSE(digest_option))) {
+        msg <- base::gettextf(
+            "The value of 'getOption(\"BiocManager.add_translation_digest\")' could not be coerced to `TRUE` or `FALSE`. See the help page `?BiocManager` for more information. The value of the option was: '%s'.",
+            value
+        )
+        .stop(msg)
+    }
+    if (digest && digest_option) {
         hash <- .hash(msg)
         sprintf("[id:%s] %s", hash, translation)
     } else {
@@ -68,7 +77,7 @@ gettextf <-
 .msg <-
     function(
         txt,
-        width=getOption("width"), indent = 0, exdent = 2,
+        width=getOption("width") - 8L, indent = 0, exdent = 2,
         wrap. = TRUE
     )
     ## Use this helper to format all error / warning / message text
