@@ -39,19 +39,30 @@
     .Call(.hash_impl, x)
 }
 
-.gettext_add_digest_prefix <-
-    function(msg, translation, digest)
+.gettext_digest_option <-
+    function()
 {
     value <- getOption("BiocManager.add_translation_digest", TRUE)
     digest_option <- as.logical(value)
-    if (digest && !(isTRUE(digest_option) || isFALSE(digest_option))) {
-        msg <- base::gettextf(
-            "The value of 'getOption(\"BiocManager.add_translation_digest\")' could not be coerced to `TRUE` or `FALSE`. See the help page `?BiocManager` for more information. The value of the option was: '%s'.",
-            value
+    if (!(isTRUE(digest_option) || isFALSE(digest_option))) {
+        value <- as.character(value)
+        if (!(is.character(value) && length(value) == 1L))
+            value <- "???"
+        msg <- gettextf(
+            "The value of 'getOption(\"BiocManager.add_translation_digest\")' could not be coerced to `TRUE` or `FALSE`. See the help page `?BiocManager` for more information. The value of the option is: '%s'.",
+            value,
+            digest = TRUE
         )
         .stop(msg)
     }
-    if (digest && digest_option) {
+
+    digest_option
+}
+
+.gettext_add_digest_prefix <-
+    function(msg, translation, digest)
+{
+    if (digest) {
         hash <- .hash(msg)
         sprintf("[id:%s] %s", hash, translation)
     } else {
@@ -61,14 +72,14 @@
 }
 
 gettext <-
-    function(msg, domain = NULL, digest = TRUE)
+    function(msg, domain = NULL, digest = .gettext_digest_option())
 {
     translation <- base::gettext(msg, domain = domain)
     .gettext_add_digest_prefix(msg, translation, digest)
 }
 
 gettextf <-
-    function(fmt, ..., domain = NULL, digest = TRUE)
+    function(fmt, ..., domain = NULL, digest = .gettext_digest_option())
 {
     translation <- base::gettextf(fmt, ..., domain = domain)
     .gettext_add_digest_prefix(fmt, translation, digest)
@@ -77,7 +88,7 @@ gettextf <-
 .msg <-
     function(
         txt,
-        width=getOption("width") - 8L, indent = 0, exdent = 2,
+        width=getOption("width") - 7L, indent = 0, exdent = 2,
         wrap. = TRUE
     )
     ## Use this helper to format all error / warning / message text
