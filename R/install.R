@@ -45,7 +45,7 @@
         failed_lib <- pkgs[!status, "LibPath"]
         failed <- split(failed_pkgs, failed_lib)
         library_path_txt <-
-            gettextf(
+            gettext(
                 "Library paths: '%s'.", domain = "R-BiocManager",
                 digest = FALSE
             )

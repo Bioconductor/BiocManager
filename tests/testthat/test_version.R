@@ -18,29 +18,14 @@ test_that(".version_validate() validates version", {
 
     .version_validate <- BiocManager:::.version_validate
 
-    expect_error(
-        .version_validate("2.0"),
-        "Bioconductor version '2.0' requires R version '2.5'; .*"
-    )
-
-    expect_error(
-        .version_validate("1.2.3"),
-        "version '1.2.3' must have two components, e.g., '3.7'"
-    )
-
-    expect_error(
-        .version_validate("100.1"),
-        "unknown Bioconductor version '100.1'; .*"
-    )
-
+    expect_error(.version_validate("2.0"),   "^\\[id:077d8\\]")
+    expect_error(.version_validate("1.2.3"), "^\\[id:0719e\\]")
+    expect_error(.version_validate("100.1"), "^\\[id:0479a\\]")
 })
 
 test_that(".version_recommend() recommends update", {
     skip_if_offline()
-    expect_true(startsWith(
-        .version_recommend("2.0"),
-        "Bioconductor version '2.0' is out-of-date"
-    ))
+    expect_match(.version_recommend("2.0"), "^\\[id:02773\\]")
 })
 
 test_that(".version_validity_online_check() works", {
@@ -138,20 +123,14 @@ test_that(".version_validity(...) works", {
 test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     .skip_if_BiocVersion_not_available()
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        expect_match(
-            .version_validity("1.2"),
-            "unknown Bioconductor version '1.2'; .*"
-        )
+        expect_match(.version_validity("1.2"), "^\\[id:0479a\\]")
     })
 })
 
 test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
     .skip_if_BiocVersion_not_available()
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
-        expect_error(
-            .version_validate("1.2"),
-            "unknown Bioconductor version '1.2'; .*"
-        )
+        expect_error(.version_validate("1.2"), "^\\[id:0479a\\]")
     })
 })
 
