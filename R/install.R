@@ -292,11 +292,13 @@
         return()
 
     pkgs <- paste(old_pkgs[,"Package"], collapse="', '")
-    txt <- gettextf("Out-of-date packages: '%s'", pkgs, domain = "R-BiocManager")
+    txt <- gettextf(
+        "Out-of-date packages: '%s'.", pkgs, domain = "R-BiocManager"
+    )
     .message(txt)
     if (ask) {
         txt <- gettextf(
-            "Update all [a], some [s], or none [n] of the out-of-date packages? [a/s/n]",
+            "Update all [a], some [s], or none [n] of the out-of-date packages?",
             domain = "R-BiocManager"
         )
 

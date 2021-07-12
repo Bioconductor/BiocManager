@@ -7,6 +7,9 @@
 .getAnswer <- function(msg, allowed)
 {
     if (interactive()) {
+        allowed_values <- unique(tolower(allowed))
+        allowed_string <- paste(allowed_values, collapse = "/")
+        msg <- sprintf("%s [%s] ", trimws(msg), allowed_string)
         repeat {
             cat(msg)
             answer <- readLines(n = 1)
