@@ -118,7 +118,7 @@
         BioCworkflows = "workflows",
         BioCbooks = if (version() >= "3.12") "books" else NULL
     )
-    # BBU - https://storage.googleapis.com/bioconductor_docker
+    # Google - https://storage.googleapis.com/bioconductor_docker
     # Azure - https://bioconductordocker.blob.core.windows.net
     binary_base_url <- Sys.getenv("BIOCONDUCTOR_BINARY_URL")
     binary_base_url <- getOption("BIOCONDUCTOR_BINARY_URL", binary_base_url)
