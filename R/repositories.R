@@ -89,6 +89,23 @@
     repos
 }
 
+.repositories_validate_binary_url <- function(version, binary_base_url) {
+    if (!nzchar(binary_base_url))
+        return(NULL)
+    bin_repos <- paste(binary_base_url, "packages", version, "bioc", sep = "/")
+        ## validate binary_repos is available
+    packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
+    url <- url(packages)
+    tryCatch({
+        suppressWarnings(open(url, "rb"))
+        close(url)
+        bin_repos
+    }, error = function(...) {
+        close(url)
+        NULL
+    })
+}
+
 #' @importFrom stats setNames
 .repositories_bioc <-
     function(version)
@@ -101,8 +118,16 @@
         BioCworkflows = "workflows",
         BioCbooks = if (version() >= "3.12") "books" else NULL
     )
+    # BBU - https://storage.googleapis.com/bioconductor_docker
+    # Azure - https://bioconductordocker.blob.core.windows.net
+    binary_base_url <- Sys.getenv("BIOCONDUCTOR_BINARY_URL")
+    binary_base_url <- getOption("BIOCONDUCTOR_BINARY_URL", binary_base_url)
+    binary_location <- .repositories_validate_binary_url(
+        version, binary_base_url
+    )
+
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
-    setNames(bioc_repos, names(paths))
+    c(binary_location, setNames(bioc_repos, names(paths)))
 }
 
 .repositories_filter <-
