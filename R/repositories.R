@@ -93,7 +93,7 @@
     if (!nzchar(binary_base_url))
         return(NULL)
     bin_repos <- paste(binary_base_url, "packages", version, "bioc", sep = "/")
-        ## validate binary_repos is available
+    ## validate binary_repos is available
     packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({
