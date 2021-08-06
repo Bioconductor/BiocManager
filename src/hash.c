@@ -13,7 +13,7 @@ SEXP hash_impl(SEXP txt) {
     while ((c = *str++))
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
-    sprintf(hex, "%05x", (unsigned int) (hash % 32768L));
+    sprintf(hex, "%05X", (unsigned int) (hash % 32768L));
 
     return Rf_ScalarString(mkChar(hex));
 }

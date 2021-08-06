@@ -1,7 +1,7 @@
 context("install()")
 
 test_that("Arguments are validated", {
-    expect_error(install("foo", "bar"), "^\\[id:055a8\\]")
+    expect_error(install("foo", "bar"), "^\\[055A8\\]")
     expect_error(install(TRUE), "is.character\\(pkgs\\) is not TRUE")
     expect_error(install(ask="foo"), "is.logical\\(ask\\) is not TRUE")
 })
@@ -147,7 +147,7 @@ test_that("unwriteable packages are not considered", {
     expect_identical(pkgs, .filter(pkgs, p0))
     expect_identical(pkgs0, .filter(pkgs, p1))
 
-    expect_message(.filter(pkgs, NULL), "^\\[id:077c7\\]")
+    expect_message(.filter(pkgs, NULL), "^\\[077C7\\]")
 
     if (.Platform$OS.type == "windows")
         ## how to create a read-only directory?

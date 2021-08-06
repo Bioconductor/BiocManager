@@ -67,7 +67,7 @@
 {
     if (digest) {
         hash <- .hash(msg)
-        sprintf("[id:%s] %s", hash, translation)
+        sprintf("[%s] %s", hash, translation)
     } else {
         ## no-op
         translation

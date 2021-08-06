@@ -50,7 +50,7 @@ NULL
 #'   to accommodate download of large BSgenome and other packages.
 #'
 #' - `"BiocManager.add_translation_digest"`: The default (`TRUE`) adds
-#'   a short string, e.g., `[id:01f2f4]` to uniquely identify errors,
+#'   a short string, e.g., `[01F2F4]` to uniquely identify errors,
 #'   warnings, and messages produced by BiocManager. These identifiers
 #'   are constant, regardless of the language to which the message has
 #'   translated. Use `options(BiocManager.add_translation_digest =
