@@ -136,7 +136,7 @@
 #'
 #' @description `repositories()` reports the URLs from which to
 #'     install _Bioconductor_ and CRAN packages. It is used by
-#'     `BiocManager::install()` and other functions.
+#'     [`BiocManager::install()`] and other functions.
 #'
 #' @param site_repository (Optional) `character(1)` representing an
 #'     additional repository (e.g., a URL to an organization's
@@ -210,16 +210,16 @@
 #'
 #' @seealso
 #'
-#' `BiocManager::\link{install}()` Installs or updates Bioconductor,
+#' [`BiocManager::install()`] Installs or updates Bioconductor,
 #'  CRAN, and GitHub packages.
 #'
-#' `\link{chooseBioCmirror}()` choose an alternative Bioconductor
+#' [`chooseBioCmirror()`] choose an alternative Bioconductor
 #' mirror; not usually necessary.
 #'
-#' `\link{chooseCRANmirror}()` choose an alternative CRAN mirror; not
+#' [`chooseCRANmirror()`] choose an alternative CRAN mirror; not
 #' usually necessary.
 #'
-#' `\link{setRepositories}()` Select additional repositories for
+#' [`setRepositories()`] Select additional repositories for
 #' searching.
 #'
 #' @keywords environment
