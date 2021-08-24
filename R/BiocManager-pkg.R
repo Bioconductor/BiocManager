@@ -13,25 +13,25 @@ NULL
 #' Main functions are as follows; additional help is available for
 #' each function, e.g., `?BiocManager::version`.
 #'
-#' - `BiocManager::install()`: Install or update packages from
+#' - [`BiocManager::install()`]: Install or update packages from
 #'   _Bioconductor_, CRAN, and GitHub.
 #'
-#' - `BiocManager::version()`: Report the version of _Bioconductor_ in
+#' - [`BiocManager::version()`]: Report the version of _Bioconductor_ in
 #'     use.
 #'
-#' - `BiocManager::available()`: Return a `character()` vector of
-#'   package names available (at `BiocManager::repositories()`) for
+#' - [`BiocManager::available()`]: Return a `character()` vector of
+#'   package names available (at [`BiocManager::repositories()`]) for
 #'   installation.
 #'
-#' - `BiocManager::valid()`: Determine whether installed packages are
+#' - [`BiocManager::valid()`]: Determine whether installed packages are
 #'     from the same version of _Bioconductor_.
 #'
-#' - `BiocManager::repositories()`: _Bioconductor_ and other
+#' - [`BiocManager::repositories()`]: _Bioconductor_ and other
 #'    repository URLs to discover packages for installation.
 #'
 #' The version of _Bioconductor_ in use is determined by the installed
 #' version of a second package, BiocVersion. BiocVersion is installed
-#' automatically during first use of `BiocManager::install()`. If
+#' automatically during first use of [`BiocManager::install()`]. If
 #' BiocVersion has not yet been installed, the version is determined
 #' by code in base R.
 #'
@@ -40,10 +40,10 @@ NULL
 #'
 #' - `"repos"`, `"BiocManager.check_repositories"`,
 #'   `"BiocManager.snapshot"`: URLs of additional repositories for use
-#'   by `BiocManger::install()`. See `?repositories`.
+#'   by [`BiocManager::install()`]. See `?repositories`.
 #'
 #' - `"pkgType"`: The default type of packages to be downloaded and
-#'   installed; see `?install.packages`.
+#'   installed; see [`install.packages`].
 #'
 #' - `"timeout"`: The maximum time allowed for download of a single
 #'   package, in seconds. _BiocManager_ increases this to 300 seconds
