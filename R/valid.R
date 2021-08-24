@@ -73,22 +73,22 @@
 #' this in the future.
 #'
 #' @param pkgs A character() vector of package names for checking, or
-#'     a matrix as returned by `\link{installed.packages}`.
+#' a matrix as returned by [`installed.packages`].
 #' @param lib.loc A character() vector of library location(s) of
-#'     packages to be validated; see `\link{installed.packages}()`.
+#'     packages to be validated; see [`installed.packages()`].
 #' @param priority character(1) Check validity of all, "base", or
-#'     "recommended" packages; see `\link{installed.packages}()`.
+#'     "recommended" packages; see [`installed.packages()`].
 #' @param type character(1) The type of available package (e.g.,
 #'     binary, source) to check validity against; see
-#'     `\link{available.packages}()`.
+#'     [`available.packages()`].
 #' @param filters character(1) Filter available packages to check
-#'     validity against; see `\link{available.packages}()`.
+#'     validity against; see [`available.packages()`].
 #' @param \dots Additional arguments, passed to
-#'     `BiocManager::\link{install}()` when `fix=TRUE`.
+#'     [`BiocManager::install()`] when `fix=TRUE`.
 #' @param checkBuilt `logical(1)`. If `TRUE` a package built under an
 #'     earlier major.minor version of R (e.g., 3.4) is considered to
 #'     be old.
-#' @param site_repository `character(1)`. See `?install`.
+#' @param site_repository `character(1)`. See [`install`].
 #' @return `biocValid` list object with elements `too_new` and
 #'     `out_of_date` containing `data.frame`s with packages and their
 #'     installed locations that are too new or out-of-date for the
@@ -96,7 +96,7 @@
 #'     is unavailable, an empty 'biocValid' list is returned. If all
 #'     packages ('pkgs') are up to date, then TRUE is returned.
 #' @author Martin Morgan \email{martin.morgan@@roswellpark.org}
-#' @seealso `BiocManager::\link{install}()` to update installed
+#' @seealso [`BiocManager::install()`] to update installed
 #'     packages.
 #' @keywords environment
 #' @examples
