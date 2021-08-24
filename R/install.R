@@ -274,16 +274,16 @@
 #' Installation of _Bioconductor_ and CRAN packages use R's standard
 #' functions for library management -- `install.packages()`,
 #' `available.packages()`, `update.packages()`. Installation of GitHub
-#' packages uses the `remotes::install_github()`.
+#' packages uses the [`remotes::install_github()`].
 #'
 #' When installing CRAN or _Bioconductor_ packages, typical arguments
-#' include: `lib.loc`, passed to `\link{old.packages}()` and used to
+#' include: `lib.loc`, passed to [`old.packages()`] and used to
 #' determine the library location of installed packages to be updated;
-#' and `lib`, passed to `\link{install.packages}()` to determine the
+#' and `lib`, passed to [`install.packages()`] to determine the
 #' library location where `pkgs` are to be installed.
 #'
 #' When installing GitHub packages, `...` is passed to the
-#' \pkg{remotes} package functions `\link[remotes]{install_github}()`
+#' \pkg{remotes} package functions [`remotes::install_github()`]
 #' and `remotes:::install()`. A typical use is to build vignettes, via
 #' `dependencies=TRUE, build_vignettes=TRUE`.
 #'
@@ -306,13 +306,13 @@
 #'     update.  A missing value updates installed packages according
 #'     to `update =` and `ask =`. Package names containing a '/' are
 #'     treated as GitHub repositories and installed using
-#'     `remotes::install_github()`.
-#' @param ... Additional arguments used by `install.packages()`.
+#'     [`remotes::install_github()`].
+#' @param ... Additional arguments used by [`install.packages()`].
 #' @param site_repository (Optional) `character(1)` vector
 #'     representing an additional repository in which to look for
 #'     packages to install. This repository will be prepended to the
 #'     default repositories (which you can see with
-#'     `BiocManager::\link{repositories}()`).
+#'     [`BiocManager::repositories()`]).
 #' @param update `logical(1)`. When `FALSE`, `BiocManager::install()`
 #'     does not attempt to update old packages. When `TRUE`, update
 #'     old packages according to `ask`.
@@ -334,19 +334,19 @@
 #' @return `BiocManager::install()` returns the `pkgs` argument, invisibly.
 #' @seealso
 #'
-#' `BiocManager::\link{repositories}()` returns the _Bioconductor_ and
+#' [`BiocManager::repositories()`] returns the _Bioconductor_ and
 #' CRAN repositories used by `install()`.
 #'
-#' `\link{install.packages}()` installs the packages themselves (used by
+#' [`install.packages()`] installs the packages themselves (used by
 #' `BiocManager::install` internally).
 #'
-#' `\link{update.packages}()` updates all installed packages (used by
+#' [`update.packages()`] updates all installed packages (used by
 #' `BiocManager::install` internally).
 #'
-#' `\link{chooseBioCmirror}()` allows choice of a mirror from all
+#' [`chooseBioCmirror()`] allows choice of a mirror from all
 #' public _Bioconductor_ mirrors.
 #'
-#' `\link{chooseCRANmirror}()` allows choice of a mirror from all
+#' [`chooseCRANmirror()`] allows choice of a mirror from all
 #' public CRAN mirrors.
 #'
 #' @keywords environment
