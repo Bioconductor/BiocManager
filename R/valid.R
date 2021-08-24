@@ -151,6 +151,7 @@ valid <-
 #' @rdname valid
 #' @param x A `biocValid` object returned by `BiocManager::valid()`.
 #' @return `print()` is invoked for its side effect.
+#' @md
 #' @export
 print.biocValid <-
     function(x, ...)
