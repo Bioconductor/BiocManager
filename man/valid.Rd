@@ -20,31 +20,31 @@ valid(
 }
 \arguments{
 \item{pkgs}{A character() vector of package names for checking, or
-a matrix as returned by \verb{\link{installed.packages}}.}
+a matrix as returned by \code{\link{installed.packages}}.}
 
 \item{lib.loc}{A character() vector of library location(s) of
-packages to be validated; see \verb{\link{installed.packages}()}.}
+packages to be validated; see \code{\link[=installed.packages]{installed.packages()}}.}
 
 \item{priority}{character(1) Check validity of all, "base", or
-"recommended" packages; see \verb{\link{installed.packages}()}.}
+"recommended" packages; see \code{\link[=installed.packages]{installed.packages()}}.}
 
 \item{type}{character(1) The type of available package (e.g.,
 binary, source) to check validity against; see
-\verb{\link{available.packages}()}.}
+\code{\link[=available.packages]{available.packages()}}.}
 
 \item{filters}{character(1) Filter available packages to check
-validity against; see \verb{\link{available.packages}()}.}
+validity against; see \code{\link[=available.packages]{available.packages()}}.}
 
 \item{\dots}{Additional arguments, passed to
-\verb{BiocManager::\link{install}()} when \code{fix=TRUE}.}
+\code{\link[=install]{install()}} when \code{fix=TRUE}.}
 
 \item{checkBuilt}{\code{logical(1)}. If \code{TRUE} a package built under an
 earlier major.minor version of R (e.g., 3.4) is considered to
 be old.}
 
-\item{site_repository}{\code{character(1)}. See \code{?install}.}
+\item{site_repository}{\code{character(1)}. See \code{\link{install}}.}
 
-\item{x}{A `biocValid` object returned by `BiocManager::valid()`.}
+\item{x}{A \code{biocValid} object returned by \code{BiocManager::valid()}.}
 }
 \value{
 \code{biocValid} list object with elements \code{too_new} and
@@ -54,7 +54,7 @@ current version of \emph{Bioconductor}. When internet access
 is unavailable, an empty 'biocValid' list is returned. If all
 packages ('pkgs') are up to date, then TRUE is returned.
 
-`print()` is invoked for its side effect.
+\code{print()} is invoked for its side effect.
 }
 \description{
 Check that installed packages are consistent (neither out-of-date
@@ -63,19 +63,20 @@ nor too new) with the version of R and \emph{Bioconductor} in use.
 \details{
 This function compares the version of installed packages
 to the version of packages associated with the version of \emph{R}
-and \emph{Bioconductor} currently in use.\preformatted{Packages are reported as 'out-of-date' if a more recent version
+and \emph{Bioconductor} currently in use.
+
+Packages are reported as 'out-of-date' if a more recent version
 is available at the repositories specified by
-`BiocManager::repositories()`.  Usually, `BiocManager::install()` is
+\code{\link[=repositories]{repositories()}}.  Usually, \code{\link[=install]{install()}} is
 sufficient to update packages to their most recent version.
 
 Packages are reported as 'too new' if the installed version is
 more recent than the most recent available in the
-`BiocManager::repositories()`. It is possible to down-grade by
+\code{\link[=repositories]{repositories()}}. It is possible to down-grade by
 re-installing a too new package "PkgA" with
-`BiocManger::install("PkgA")`. It is important for the user to
+\code{BiocManger::install("PkgA")}. It is important for the user to
 understand how their installation became too new, and to avoid
 this in the future.
-}
 }
 \examples{
 if (interactive()) {
@@ -83,7 +84,7 @@ if (interactive()) {
 }
 }
 \seealso{
-\verb{BiocManager::\link{install}()} to update installed
+\code{\link[=install]{install()}} to update installed
 packages.
 }
 \author{

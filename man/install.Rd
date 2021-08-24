@@ -21,15 +21,15 @@ install(
 update.  A missing value updates installed packages according
 to \verb{update =} and \verb{ask =}. Package names containing a '/' are
 treated as GitHub repositories and installed using
-\code{remotes::install_github()}.}
+\code{\link[remotes:install_github]{remotes::install_github()}}.}
 
-\item{...}{Additional arguments used by \code{install.packages()}.}
+\item{...}{Additional arguments used by \code{\link[=install.packages]{install.packages()}}.}
 
 \item{site_repository}{(Optional) \code{character(1)} vector
 representing an additional repository in which to look for
 packages to install. This repository will be prepended to the
 default repositories (which you can see with
-\verb{BiocManager::\link{repositories}()}).}
+\code{\link[=repositories]{repositories()}}).}
 
 \item{update}{\code{logical(1)}. When \code{FALSE}, \code{BiocManager::install()}
 does not attempt to update old packages. When \code{TRUE}, update
@@ -66,20 +66,20 @@ additional steps; see \url{https://bioconductor.org/install}.
 Installation of \emph{Bioconductor} and CRAN packages use R's standard
 functions for library management -- \code{install.packages()},
 \code{available.packages()}, \code{update.packages()}. Installation of GitHub
-packages uses the \code{remotes::install_github()}.
+packages uses the \code{\link[remotes:install_github]{remotes::install_github()}}.
 
 When installing CRAN or \emph{Bioconductor} packages, typical arguments
-include: \code{lib.loc}, passed to \verb{\link{old.packages}()} and used to
+include: \code{lib.loc}, passed to \code{\link[=old.packages]{old.packages()}} and used to
 determine the library location of installed packages to be updated;
-and \code{lib}, passed to \verb{\link{install.packages}()} to determine the
+and \code{lib}, passed to \code{\link[=install.packages]{install.packages()}} to determine the
 library location where \code{pkgs} are to be installed.
 
 When installing GitHub packages, \code{...} is passed to the
-\pkg{remotes} package functions \verb{\link[remotes]\{install_github\}()}
+\pkg{remotes} package functions \code{\link[remotes:install_github]{remotes::install_github()}}
 and \code{remotes:::install()}. A typical use is to build vignettes, via
 \verb{dependencies=TRUE, build_vignettes=TRUE}.
 
-See \code{?repositories} for additional detail on customizing where
+See \code{\link{repositories}} for additional detail on customizing where
 BiocManager searches for package installation.
 
 \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
@@ -113,19 +113,19 @@ BiocManager::install("IRanges", type="source")
 
 }
 \seealso{
-\verb{BiocManager::\link{repositories}()} returns the \emph{Bioconductor} and
+\code{\link[=repositories]{repositories()}} returns the \emph{Bioconductor} and
 CRAN repositories used by \code{install()}.
 
-\verb{\link{install.packages}()} installs the packages themselves (used by
+\code{\link[=install.packages]{install.packages()}} installs the packages themselves (used by
 \code{BiocManager::install} internally).
 
-\verb{\link{update.packages}()} updates all installed packages (used by
+\code{\link[=update.packages]{update.packages()}} updates all installed packages (used by
 \code{BiocManager::install} internally).
 
-\verb{\link{chooseBioCmirror}()} allows choice of a mirror from all
+\code{\link[=chooseBioCmirror]{chooseBioCmirror()}} allows choice of a mirror from all
 public \emph{Bioconductor} mirrors.
 
-\verb{\link{chooseCRANmirror}()} allows choice of a mirror from all
+\code{\link[=chooseCRANmirror]{chooseCRANmirror()}} allows choice of a mirror from all
 public CRAN mirrors.
 }
 \keyword{environment}

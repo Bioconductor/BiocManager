@@ -25,7 +25,7 @@ Named \code{character()} of repositories.
 \description{
 \code{repositories()} reports the URLs from which to
 install \emph{Bioconductor} and CRAN packages. It is used by
-\code{BiocManager::install()} and other functions.
+\code{\link[=install]{install()}} and other functions.
 }
 \details{
 \code{repositories()} returns the appropriate software package
@@ -88,16 +88,16 @@ BiocManager::repositories(version="3.8")
 
 }
 \seealso{
-\verb{BiocManager::\link{install}()} Installs or updates Bioconductor,
+\code{\link[=install]{install()}} Installs or updates Bioconductor,
 CRAN, and GitHub packages.
 
-\verb{\link{chooseBioCmirror}()} choose an alternative Bioconductor
+\code{\link[=chooseBioCmirror]{chooseBioCmirror()}} choose an alternative Bioconductor
 mirror; not usually necessary.
 
-\verb{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
+\code{\link[=chooseCRANmirror]{chooseCRANmirror()}} choose an alternative CRAN mirror; not
 usually necessary.
 
-\verb{\link{setRepositories}()} Select additional repositories for
+\code{\link[=setRepositories]{setRepositories()}} Select additional repositories for
 searching.
 }
 \keyword{environment}

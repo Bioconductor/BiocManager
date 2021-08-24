@@ -15,22 +15,22 @@ versioning and release system.
 Main functions are as follows; additional help is available for
 each function, e.g., \code{?BiocManager::version}.
 \itemize{
-\item \code{BiocManager::install()}: Install or update packages from
+\item \code{\link[=install]{install()}}: Install or update packages from
 \emph{Bioconductor}, CRAN, and GitHub.
-\item \code{BiocManager::version()}: Report the version of \emph{Bioconductor} in
+\item \code{\link[=version]{version()}}: Report the version of \emph{Bioconductor} in
 use.
-\item \code{BiocManager::available()}: Return a \code{character()} vector of
-package names available (at \code{BiocManager::repositories()}) for
+\item \code{\link[=available]{available()}}: Return a \code{character()} vector of
+package names available (at \code{\link[=repositories]{repositories()}}) for
 installation.
-\item \code{BiocManager::valid()}: Determine whether installed packages are
+\item \code{\link[=valid]{valid()}}: Determine whether installed packages are
 from the same version of \emph{Bioconductor}.
-\item \code{BiocManager::repositories()}: \emph{Bioconductor} and other
+\item \code{\link[=repositories]{repositories()}}: \emph{Bioconductor} and other
 repository URLs to discover packages for installation.
 }
 
 The version of \emph{Bioconductor} in use is determined by the installed
 version of a second package, BiocVersion. BiocVersion is installed
-automatically during first use of \code{BiocManager::install()}. If
+automatically during first use of \code{\link[=install]{install()}}. If
 BiocVersion has not yet been installed, the version is determined
 by code in base R.
 
@@ -39,9 +39,9 @@ include:
 \itemize{
 \item \code{"repos"}, \code{"BiocManager.check_repositories"},
 \code{"BiocManager.snapshot"}: URLs of additional repositories for use
-by \code{BiocManger::install()}. See \code{?repositories}.
+by \code{\link[=install]{install()}}. See \code{?repositories}.
 \item \code{"pkgType"}: The default type of packages to be downloaded and
-installed; see \code{?install.packages}.
+installed; see \code{\link{install.packages}}.
 \item \code{"timeout"}: The maximum time allowed for download of a single
 package, in seconds. \emph{BiocManager} increases this to 300 seconds
 to accommodate download of large BSgenome and other packages.
