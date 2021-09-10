@@ -210,6 +210,16 @@
 #' use of CRAN packages not consistent with _Bioconductor_ best
 #' practices.
 #'
+#' To install binary packages on Linux, a default binary package location url
+#' can be set with the `BIOCONDUCTOR_BINARY_URL` environment variable.
+#' This environment variable can point to one of a couple of locations:
+#' 1) Google - https://storage.googleapis.com/bioconductor_docker
+#' 2) Azure - https://bioconductordocker.blob.core.windows.net
+#' Note that the availability of Bioconductor package binaries is still
+#' experimental and that binary installations are intended to be used
+#' with `Bioconductor/bioconductor_docker` images where such installations
+#' correspond to a specific version(s) of Linux / Ubuntu.
+#'
 #' If alternative default repositories are known to provide
 #' appropriate versions of CRAN or _Bioconductor_ packages, the warning
 #' may be silenced (displayed as a message) with
