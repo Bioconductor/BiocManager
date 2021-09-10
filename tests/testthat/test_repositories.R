@@ -133,3 +133,23 @@ test_that("'.repositories_base()' respects BiocManager.snapshot", {
                expect_error(.repositories_base(), "BiocManager.snapshot")
            )
 })
+
+test_that("'.repositories_validate_binary_url' & '.repositories_bioc' works", {
+    skip_if_offline()
+    bin_url <- "https://storage.googleapis.com/bioconductor_docker"
+    ver <- "3.13"
+    expected_url <- paste(bin_url, "packages", ver, "bioc", sep = "/")
+    expect_identical(
+        .repositories_validate_binary_url(
+            version = ver,
+            binary_base_url = bin_url
+        ),
+        expected_url
+    )
+    withr::with_envvar(
+        list("BIOCONDUCTOR_BINARY_URL" = bin_url),
+        expect_identical(
+          unname(.repositories_bioc(ver)[1])
+        , expected_url)
+    )
+})
