@@ -88,13 +88,15 @@ NULL
         })
     }, warning = function(w) {
         msg <- conditionMessage(w)
-        if (grepl("not available", msg))
+        if (grepl("not available", msg)) {
             msg <- gsub(
                 "this version of R",
                 paste0("Bioconductor version ", "'", version(), "'"),
                 msg
             )
-        .inet_warning(msg)
+            w <- simpleWarning(msg, conditionCall(w))
+        }
+        .inet_warning(w)
     })
 }
 
