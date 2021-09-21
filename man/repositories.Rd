@@ -59,6 +59,18 @@ consistent with the dates of the \emph{Bioconductor} release) results in
 use of CRAN packages not consistent with \emph{Bioconductor} best
 practices.
 
+To install binary packages on Linux, a default binary package location url
+can be set with the \code{BIOCONDUCTOR_BINARY_URL} environment variable.
+This environment variable can point to one of a couple of locations:
+\enumerate{
+\item Google - https://storage.googleapis.com/bioconductor_docker
+\item Azure - https://bioconductordocker.blob.core.windows.net
+Note that the availability of Bioconductor package binaries is still
+experimental and that binary installations are intended to be used
+with \code{Bioconductor/bioconductor_docker} images where such installations
+correspond to a specific version(s) of Linux / Ubuntu.
+}
+
 If alternative default repositories are known to provide
 appropriate versions of CRAN or \emph{Bioconductor} packages, the warning
 may be silenced (displayed as a message) with
