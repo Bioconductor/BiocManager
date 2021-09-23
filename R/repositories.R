@@ -89,26 +89,29 @@
     repos
 }
 
-.repositories_container_binaries <- function(version, binary_base_url) {
-    # Google - https://storage.googleapis.com/bioconductor_docker
-    # Azure - https://bioconductordocker.blob.core.windows.net
-    binary_base_url <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_URL")
-    binary_base_url <- getOption(
-        "BIOCONDUCTOR_CONTAINER_BINARY_URL", binary_base_url
-    )
-    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
+.repositories_container_binaries <- function(version) {
+    base_url <- "https://bioconductor.org/packages"
 
-    if (!nzchar(binary_base_url) || !nzchar(container_version))
+    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
+    binary_base_url <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
+    binary_base_url <- getOption(
+        "BiocManager.container_binary_repos",
+        if (!nzchar(binary_base_url)) binary_base_url else base_url
+    )
+
+    if (!nzchar(container_version) || !nzchar(binary_base_url))
         return(NULL)
 
-    bin_repos <- paste(binary_base_url, "packages", version, "bioc", sep = "/")
+    bin_repos <- paste(
+        binary_base_url, version, "container-binaries", sep = "/"
+    )
     ## validate binary_repos is available
     packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({
         suppressWarnings(open(url, "rb"))
         close(url)
-        setNames(bin_repos, "BioCbinaries")
+        setNames(bin_repos, "container-binaries")
     }, error = function(...) {
         close(url)
         NULL
