@@ -134,22 +134,39 @@ test_that("'.repositories_base()' respects BiocManager.snapshot", {
            )
 })
 
-test_that("'.repositories_validate_binary_url' & '.repositories_bioc' works", {
+test_that("'.repositories_container_binaries' & '.repositories_bioc' works", {
     skip_if_offline()
     bin_url <- "https://storage.googleapis.com/bioconductor_docker"
     ver <- "3.13"
     expected_url <- paste(bin_url, "packages", ver, "bioc", sep = "/")
-    expect_identical(
-        .repositories_validate_binary_url(
-            version = ver,
-            binary_base_url = bin_url
+    expected_url <- setNames(expected_url, "BioCbinaries")
+    withr::with_envvar(
+        list(
+            "BIOCONDUCTOR_CONTAINER_BINARY_URL" = bin_url,
+            "BIOCONDUCTOR_DOCKER_VERSION" = ver
         ),
-        expected_url
+        expect_identical(
+            .repositories_container_binaries(
+                version = ver,
+                binary_base_url = bin_url
+            ),
+            expected_url
+        )
     )
     withr::with_envvar(
-        list("BIOCONDUCTOR_BINARY_URL" = bin_url),
+        list("BIOCONDUCTOR_CONTAINER_BINARY_URL" = bin_url),
+        expect_true(
+          !"BioCbinaries" %in% names(.repositories_bioc(ver))
+        )
+    )
+    withr::with_envvar(
+        list("BIOCONDUCTOR_CONTAINER_BINARY_URL" = bin_url),
         expect_identical(
-          unname(.repositories_bioc(ver)[1])
-        , expected_url)
+            .repositories_container_binaries(
+                version = ver,
+                binary_base_url = bin_url
+            ),
+            NULL
+        )
     )
 })

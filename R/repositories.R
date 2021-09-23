@@ -89,9 +89,18 @@
     repos
 }
 
-.repositories_validate_binary_url <- function(version, binary_base_url) {
-    if (!nzchar(binary_base_url))
+.repositories_container_binaries <- function(version, binary_base_url) {
+    # Google - https://storage.googleapis.com/bioconductor_docker
+    # Azure - https://bioconductordocker.blob.core.windows.net
+    binary_base_url <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_URL")
+    binary_base_url <- getOption(
+        "BIOCONDUCTOR_CONTAINER_BINARY_URL", binary_base_url
+    )
+    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
+
+    if (!nzchar(binary_base_url) || !nzchar(container_version))
         return(NULL)
+
     bin_repos <- paste(binary_base_url, "packages", version, "bioc", sep = "/")
     ## validate binary_repos is available
     packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
@@ -99,7 +108,7 @@
     tryCatch({
         suppressWarnings(open(url, "rb"))
         close(url)
-        bin_repos
+        setNames(bin_repos, "BioCbinaries")
     }, error = function(...) {
         close(url)
         NULL
@@ -118,16 +127,8 @@
         BioCworkflows = "workflows",
         BioCbooks = if (version() >= "3.12") "books" else NULL
     )
-    # Google - https://storage.googleapis.com/bioconductor_docker
-    # Azure - https://bioconductordocker.blob.core.windows.net
-    binary_base_url <- Sys.getenv("BIOCONDUCTOR_BINARY_URL")
-    binary_base_url <- getOption("BIOCONDUCTOR_BINARY_URL", binary_base_url)
-    binary_location <- .repositories_validate_binary_url(
-        version, binary_base_url
-    )
-
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
-    c(binary_location, setNames(bioc_repos, names(paths)))
+    c(.repositories_container_binaries(), setNames(bioc_repos, names(paths)))
 }
 
 .repositories_filter <-
@@ -211,7 +212,7 @@
 #' practices.
 #'
 #' To install binary packages on Linux, a default binary package location url
-#' can be set with the `BIOCONDUCTOR_BINARY_URL` environment variable.
+#' can be set with the `BIOCONDUCTOR_CONTAINER_BINARY_URL` environment variable.
 #' This environment variable can point to one of a couple of locations:
 #' 1) Google - https://storage.googleapis.com/bioconductor_docker
 #' 2) Azure - https://bioconductordocker.blob.core.windows.net

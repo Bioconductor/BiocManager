@@ -60,7 +60,7 @@ use of CRAN packages not consistent with \emph{Bioconductor} best
 practices.
 
 To install binary packages on Linux, a default binary package location url
-can be set with the \code{BIOCONDUCTOR_BINARY_URL} environment variable.
+can be set with the \code{BIOCONDUCTOR_CONTAINER_BINARY_URL} environment variable.
 This environment variable can point to one of a couple of locations:
 \enumerate{
 \item Google - https://storage.googleapis.com/bioconductor_docker
