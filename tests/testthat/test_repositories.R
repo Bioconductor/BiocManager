@@ -136,35 +136,37 @@ test_that("'.repositories_base()' respects BiocManager.snapshot", {
 
 test_that("'.repositories_container_binaries' & '.repositories_bioc' works", {
     skip_if_offline()
-    bin_url <- "https://storage.googleapis.com/bioconductor_docker"
+    bin_url <- "https://bioconductor.org/packages"
     ver <- "3.13"
-    expected_url <- paste(bin_url, "packages", ver, "bioc", sep = "/")
+    expected_url <- paste(
+        bin_url, ver, "container-binaries", sep = "/"
+    )
     expected_url <- setNames(expected_url, "BioCbinaries")
+    # NULL until service is set up
+    expected_url <- NULL
     withr::with_envvar(
         list(
-            "BIOCONDUCTOR_CONTAINER_BINARY_URL" = bin_url,
+            "BIOCONDUCTOR_CONTAINER_BINARY_REPOS" = bin_url,
             "BIOCONDUCTOR_DOCKER_VERSION" = ver
         ),
         expect_identical(
             .repositories_container_binaries(
-                version = ver,
-                binary_base_url = bin_url
+                version = ver
             ),
             expected_url
         )
     )
     withr::with_envvar(
-        list("BIOCONDUCTOR_CONTAINER_BINARY_URL" = bin_url),
+        list("BIOCONDUCTOR_CONTAINER_BINARY_REPOS" = bin_url),
         expect_true(
           !"BioCbinaries" %in% names(.repositories_bioc(ver))
         )
     )
     withr::with_envvar(
-        list("BIOCONDUCTOR_CONTAINER_BINARY_URL" = bin_url),
+        list("BIOCONDUCTOR_CONTAINER_BINARY_REPOS" = bin_url),
         expect_identical(
             .repositories_container_binaries(
-                version = ver,
-                binary_base_url = bin_url
+                version = ver
             ),
             NULL
         )

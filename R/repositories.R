@@ -111,7 +111,7 @@
     tryCatch({
         suppressWarnings(open(url, "rb"))
         close(url)
-        setNames(bin_repos, "container-binaries")
+        setNames(bin_repos, "BioCcontainer")
     }, error = function(...) {
         close(url)
         NULL
@@ -162,6 +162,7 @@
 #' @title Display current Bioconductor and CRAN repositories.
 #'
 #' @aliases BiocManager.snapshot BiocManager.check_repositories
+#'     BiocManager.container_binary_repos BIOCONDUCTOR_CONTAINER_BINARY_REPOS
 #'
 #' @description `repositories()` reports the URLs from which to
 #'     install _Bioconductor_ and CRAN packages. It is used by
@@ -214,15 +215,17 @@
 #' use of CRAN packages not consistent with _Bioconductor_ best
 #' practices.
 #'
-#' To install binary packages on Linux, a default binary package location url
-#' can be set with the `BIOCONDUCTOR_CONTAINER_BINARY_URL` environment variable.
-#' This environment variable can point to one of a couple of locations:
-#' 1) Google - https://storage.googleapis.com/bioconductor_docker
-#' 2) Azure - https://bioconductordocker.blob.core.windows.net
-#' Note that the availability of Bioconductor package binaries is still
-#' experimental and that binary installations are intended to be used
-#' with `Bioconductor/bioconductor_docker` images where such installations
-#' correspond to a specific version(s) of Linux / Ubuntu.
+#' To install binary packages on containerized versions of Bioconductor,
+#' a default binary package location url can be set with the
+#' `BIOCONDUCTOR_CONTAINER_BINARY_REPOS` environment variable or the
+#' `BiocManager.container_binary_repos` option. Binary package installations
+#' are enabled by default for Bioconductor Docker containers. Anyone
+#' wishing to opt out of the binary package installation can set either the
+#' variable or the option to a `NULL` or `""` value. Note that the availability
+#' of Bioconductor package binaries is still experimental and that binary
+#' installations are intended to be used with
+#' `Bioconductor/bioconductor_docker` images where such installations
+#' correspond to specific versions of Linux / Ubuntu.
 #'
 #' If alternative default repositories are known to provide
 #' appropriate versions of CRAN or _Bioconductor_ packages, the warning
