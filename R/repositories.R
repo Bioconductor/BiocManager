@@ -90,13 +90,12 @@
 }
 
 .repositories_container_binaries <- function(version) {
-    base_url <- "https://bioconductor.org/packages"
 
     container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
     binary_base_url <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
     binary_base_url <- getOption(
         "BiocManager.container_binary_repos",
-        if (!nzchar(binary_base_url)) binary_base_url else base_url
+        binary_base_url
     )
 
     if (!nzchar(container_version) || !nzchar(binary_base_url))

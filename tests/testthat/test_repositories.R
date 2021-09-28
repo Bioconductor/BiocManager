@@ -153,7 +153,8 @@ test_that("'.repositories_container_binaries' & '.repositories_bioc' works", {
             .repositories_container_binaries(
                 version = ver
             ),
-            expected_url
+            # expect NULL until expected_url is valid
+            NULL
         )
     )
     withr::with_envvar(
