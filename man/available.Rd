@@ -20,7 +20,11 @@ installed packages.}
 installation.
 }
 \description{
-Discover packages available for installation.
+The function lists all packages available from \code{repositories()} when
+no pattern is provided. This usually includes CRAN and Bioconductor
+packages. The function can also be used to check for package name
+availability. Common use cases include annotation package lookups by
+organism short name (e.g., "hsapiens").
 }
 \examples{
 if (interactive()) {

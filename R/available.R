@@ -1,5 +1,11 @@
 #' Discover packages available for installation.
 #'
+#' The function lists all packages available from \code{repositories()} when
+#' no pattern is provided. This usually includes CRAN and Bioconductor
+#' packages. The function can also be used to check for package name
+#' availability. Common use cases include annotation package lookups by
+#' organism short name (e.g., "hsapiens").
+#'
 #' @param pattern character(1) pattern to filter (via
 #'     `grep(pattern=...)`) available packages; the filter is not case
 #'     sensitive.
