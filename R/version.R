@@ -262,7 +262,7 @@ format.version_sentinel <-
             "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP
         ))
 
-    required <- map$R[map$Bioc == version & map$BiocStatus != "future"]
+    required <- map$R[map$Bioc == version & !map$BiocStatus %in% "future"]
     r_version <- r_version[, 1:2]
     if (!r_version %in% required) {
         rec <- map[map$R == r_version, , drop = FALSE]
