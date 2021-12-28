@@ -89,21 +89,40 @@
     repos
 }
 
-.repositories_container_binaries <- function(version) {
+BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries"
 
+.test_container_bioc_versions <- function(version, container_version) {
+    bioconductor_version <- package_version(version)
+    docker_version <- package_version(container_version)
+    (bioconductor_version$major == docker_version$major) &
+        (bioconductor_version$minor == docker_version$minor)
+}
+
+.repositories_container_binaries <-
+    function(version, binary_base_url = BINARY_BASE_URL)
+{
+    platform <- ""
     container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
-    binary_base_url <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
-    binary_base_url <- getOption(
+    if (!nzchar(container_version)) {
+        platform <- Sys.getenv("TERRA_R_PLATFORM")
+        container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
+    }
+    if (!nzchar(container_version))
+        return(character())
+
+    if (!.test_container_bioc_versions(version, container_version))
+        return(character())
+
+    bin_repos <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
+    bin_repos <- getOption(
         "BiocManager.container_binary_repos",
-        binary_base_url
+        bin_repos
     )
 
-    if (!nzchar(container_version) || !nzchar(binary_base_url))
-        return(NULL)
-
-    bin_repos <- paste(
-        binary_base_url, version, "container-binaries", sep = "/"
-    )
+    if (!nzchar(bin_repos)) {
+        bin_repos <- sprintf(binary_base_url, version)
+        bin_repos <- paste0(bin_repos, platform, sep = "/")
+    }
     ## validate binary_repos is available
     packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
     url <- url(packages)
@@ -113,7 +132,7 @@
         setNames(bin_repos, "BioCcontainer")
     }, error = function(...) {
         close(url)
-        NULL
+        character()
     })
 }
 
@@ -127,7 +146,7 @@
         BioCann = "data/annotation",
         BioCexp = "data/experiment",
         BioCworkflows = "workflows",
-        BioCbooks = if (version() >= "3.12") "books" else NULL
+        BioCbooks = if (version() >= "3.12") "books" else character()
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
     c(.repositories_container_binaries(), setNames(bioc_repos, names(paths)))
