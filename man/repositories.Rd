@@ -33,7 +33,7 @@ package 'CRAN-style' repository; not usually required by the
 end-user.}
 }
 \value{
-Named \code{character()} of repositories.
+\code{repositories()}: named \code{character()} of repositories.
 
 \code{binary_repository()}: character(1) location of binary repository,
 if available, or character(0) if not.
@@ -120,7 +120,7 @@ BiocManager::repositories()
 BiocManager::repositories(version="3.8")
 }
 
-binary_repository()
+binary_repository() # character(0) if not within a Bioconductor container
 
 }
 \seealso{

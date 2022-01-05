@@ -221,7 +221,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries"
 #' `repositories()` as a basis for constructing the `repos =` argument
 #' to `install.packages()` and related functions.
 #'
-#' @return Named `character()` of repositories.
+#' @return `repositories()`: named `character()` of repositories.
 #'
 #' @seealso
 #'
@@ -283,7 +283,7 @@ repositories <-
 #'     if available, or character(0) if not.
 #'
 #' @examples
-#' binary_repository()
+#' binary_repository() # character(0) if not within a Bioconductor container
 #'
 #' @importFrom utils contrib.url
 #'
