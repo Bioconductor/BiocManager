@@ -6,9 +6,16 @@
 \alias{BiocManager.check_repositories}
 \alias{BiocManager.container_binary_repos}
 \alias{BIOCONDUCTOR_CONTAINER_BINARY_REPOS}
+\alias{binary_repository}
+\alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
 repositories(site_repository = character(), version = BiocManager::version())
+
+binary_repository(
+  version = BiocManager::version(),
+  binary_base_url = BINARY_BASE_URL
+)
 }
 \arguments{
 \item{site_repository}{(Optional) \code{character(1)} representing an
@@ -20,14 +27,24 @@ repositories returned by the function.}
 \item{version}{(Optional) \code{character(1)} or \code{package_version}
 indicating the \emph{Bioconductor} version (e.g., "3.8") for which
 repositories are required.}
+
+\item{binary_base_url}{\code{character(1)} host and base path for binary
+package 'CRAN-style' repository; not usually required by the
+end-user.}
 }
 \value{
 Named \code{character()} of repositories.
+
+\code{binary_repository()}: character(1) location of binary repository,
+if available, or character(0) if not.
 }
 \description{
 \code{repositories()} reports the URLs from which to
 install \emph{Bioconductor} and CRAN packages. It is used by
 \code{BiocManager::install()} and other functions.
+
+\code{binary_repository()}reports the location of the repository of
+binary packages for fast installation, if available.
 }
 \details{
 \code{repositories()} returns the appropriate software package
@@ -93,12 +110,17 @@ For greater flexiblity in installing packages while still adhering
 as much as possible to \emph{Bioconductor} best practices, use
 \code{repositories()} as a basis for constructing the \verb{repos =} argument
 to \code{install.packages()} and related functions.
+
+The unexported URL to the base repository is available
+with \code{BiocManager:::BINARY_BASE_URL}.
 }
 \examples{
 BiocManager::repositories()
 \dontrun{
 BiocManager::repositories(version="3.8")
 }
+
+binary_repository()
 
 }
 \seealso{

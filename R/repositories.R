@@ -1,3 +1,5 @@
+BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries"
+
 .repositories_check_repos <-
     function(repos)
 {
@@ -87,53 +89,6 @@
     }
 
     repos
-}
-
-BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries"
-
-.test_container_bioc_versions <- function(version, container_version) {
-    bioconductor_version <- package_version(version)
-    docker_version <- package_version(container_version)
-    (bioconductor_version$major == docker_version$major) &
-        (bioconductor_version$minor == docker_version$minor)
-}
-
-.repositories_container_binaries <-
-    function(version, binary_base_url = BINARY_BASE_URL)
-{
-    platform <- ""
-    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
-    if (!nzchar(container_version)) {
-        platform <- Sys.getenv("TERRA_R_PLATFORM")
-        container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
-    }
-    if (!nzchar(container_version))
-        return(character())
-
-    if (!.test_container_bioc_versions(version, container_version))
-        return(character())
-
-    bin_repos <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
-    bin_repos <- getOption(
-        "BiocManager.container_binary_repos",
-        bin_repos
-    )
-
-    if (!nzchar(bin_repos)) {
-        bin_repos <- sprintf(binary_base_url, version)
-        bin_repos <- paste0(bin_repos, platform, sep = "/")
-    }
-    ## validate binary_repos is available
-    packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
-    url <- url(packages)
-    tryCatch({
-        suppressWarnings(open(url, "rb"))
-        close(url)
-        setNames(bin_repos, "BioCcontainer")
-    }, error = function(...) {
-        close(url)
-        character()
-    })
 }
 
 #' @importFrom stats setNames
@@ -301,4 +256,75 @@ repositories <-
     )
     version <- .version_validate(version)
     .repositories(site_repository, version)
+}
+
+.test_container_bioc_versions <- function(version, container_version) {
+    bioconductor_version <- package_version(version)
+    docker_version <- package_version(container_version)
+    (bioconductor_version$major == docker_version$major) &
+        (bioconductor_version$minor == docker_version$minor)
+}
+
+#' @rdname repositories
+#'
+#' @aliases BINARY_BASE_URL
+#'
+#' @description `binary_repository()`reports the location of the repository of
+#'     binary packages for fast installation, if available.
+#'
+#' @details The unexported URL to the base repository is available
+#'     with `BiocManager:::BINARY_BASE_URL`.
+#'
+#' @param binary_base_url `character(1)` host and base path for binary
+#'     package 'CRAN-style' repository; not usually required by the
+#'     end-user.
+#'
+#' @return `binary_repository()`: character(1) location of binary repository,
+#'     if available, or character(0) if not.
+#'
+#' @examples
+#' binary_repository()
+#'
+#' @importFrom utils contrib.url
+#'
+#' @md
+#' @export
+binary_repository <-
+    function(
+        version = BiocManager::version(), binary_base_url = BINARY_BASE_URL
+    )
+{
+    platform <- ""
+    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
+    if (!nzchar(container_version)) {
+        platform <- Sys.getenv("TERRA_R_PLATFORM")
+        container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
+    }
+    if (!nzchar(container_version))
+        return(character())
+
+    if (!.test_container_bioc_versions(version, container_version))
+        return(character())
+
+    bin_repos <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
+    bin_repos <- getOption(
+        "BiocManager.container_binary_repos",
+        bin_repos
+    )
+
+    if (!nzchar(bin_repos)) {
+        bin_repos <- sprintf(binary_base_url, version)
+        bin_repos <- paste0(bin_repos, platform, sep = "/")
+    }
+    ## validate binary_repos is available
+    packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
+    url <- url(packages)
+    tryCatch({
+        suppressWarnings(open(url, "rb"))
+        close(url)
+        setNames(bin_repos, "BioCcontainer")
+    }, error = function(...) {
+        close(url)
+        character()
+    })
 }
