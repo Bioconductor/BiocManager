@@ -104,7 +104,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries"
         BioCbooks = if (version() >= "3.12") "books" else character()
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
-    c(.repositories_container_binaries(), setNames(bioc_repos, names(paths)))
+    c(binary_repository(), setNames(bioc_repos, names(paths)))
 }
 
 .repositories_filter <-

@@ -134,7 +134,7 @@ test_that("'.repositories_base()' respects BiocManager.snapshot", {
            )
 })
 
-test_that("'.repositories_container_binaries' & '.repositories_bioc' works", {
+test_that("'binary_repository' & '.repositories_bioc' works", {
     skip_if_offline()
     bin_url <- "https://bioconductor.org/packages/%s/container-binaries"
     ver <- "3.13"
@@ -146,7 +146,7 @@ test_that("'.repositories_container_binaries' & '.repositories_bioc' works", {
             "BIOCONDUCTOR_DOCKER_VERSION" = ver
         ),
         expect_identical(
-            .repositories_container_binaries(version = ver),
+            binary_repository(version = ver),
             expected_url
         )
     )
@@ -159,7 +159,7 @@ test_that("'.repositories_container_binaries' & '.repositories_bioc' works", {
     withr::with_envvar(
         c("BIOCONDUCTOR_CONTAINER_BINARY_REPOS" = bin_url),
         expect_identical(
-            .repositories_container_binaries(
+            binary_repository(
                 version = ver
             ),
             character(0L)
