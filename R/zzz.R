@@ -12,13 +12,3 @@
     recommend <- .version_recommend(version)
     isTRUE(recommend) || .packageStartupMessage(recommend)
 }
-
-.onLoad <- function(libname, pkgname) {
-
-    bin_url <- getOption(
-        "BiocManager.container_binary_repos",
-        "https://bioconductor.org/packages"
-    )
-    options("BiocManager.container_binary_repos" = bin_url)
-
-}
