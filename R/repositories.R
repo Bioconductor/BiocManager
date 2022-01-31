@@ -322,7 +322,7 @@ binary_repository <-
     tryCatch({
         suppressWarnings(open(url, "rb"))
         close(url)
-        setNames(bin_repos, "BioCcontainer")
+        setNames(bin_repos, "BiocBinaries")
     }, error = function(...) {
         close(url)
         character()

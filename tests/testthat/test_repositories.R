@@ -139,7 +139,7 @@ test_that("'binary_repository' & '.repositories_bioc' works", {
     bin_url <- "https://bioconductor.org/packages/%s/container-binaries"
     ver <- "3.13"
     bin_url <- sprintf(bin_url, ver)
-    expected_url <- setNames(bin_url, "BioCcontainer")
+    expected_url <- setNames(bin_url, "BiocBinaries")
     withr::with_envvar(
         c(
             "BIOCONDUCTOR_CONTAINER_BINARY_REPOS" = bin_url,
@@ -153,7 +153,7 @@ test_that("'binary_repository' & '.repositories_bioc' works", {
     withr::with_envvar(
         c("BIOCONDUCTOR_CONTAINER_BINARY_REPOS" = bin_url),
         expect_true(
-          !"BioCcontainer" %in% names(.repositories_bioc(ver))
+          !"BiocBinaries" %in% names(.repositories_bioc(ver))
         )
     )
     withr::with_envvar(
