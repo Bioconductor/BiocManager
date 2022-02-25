@@ -244,7 +244,7 @@
 }
 
 .install_updated_version <-
-    function(valid, update, old_pkgs, instPkgs, repos, ...)
+    function(valid, update, old_pkgs, instPkgs, repos, force, ...)
 {
     if (isTRUE(valid))
         return(valid)
@@ -254,7 +254,7 @@
     if (is.null(pkgs) || !update)
         return(pkgs)
 
-    .install(pkgs, old_pkgs, instPkgs, repos, ...)
+    .install(pkgs, old_pkgs, instPkgs, repos, force = force, ...)
     pkgs
 }
 
