@@ -4,8 +4,6 @@
 \alias{repositories}
 \alias{BiocManager.snapshot}
 \alias{BiocManager.check_repositories}
-\alias{BiocManager.container_binary_repos}
-\alias{BIOCONDUCTOR_CONTAINER_BINARY_REPOS}
 \alias{binary_repository}
 \alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
@@ -83,9 +81,8 @@ use of CRAN packages not consistent with \emph{Bioconductor} best
 practices.
 
 To install binary packages on containerized versions of Bioconductor,
-a default binary package location url can be set with the
-\code{BIOCONDUCTOR_CONTAINER_BINARY_REPOS} environment variable or the
-\code{BiocManager.container_binary_repos} option. Binary package installations
+a default binary package location URL is set as a package constant,
+see \code{BiocManager:::BINARY_BASE_URL}. Binary package installations
 are enabled by default for Bioconductor Docker containers. Anyone
 wishing to opt out of the binary package installation can set either the
 variable or the option to a \code{""} value. Note that the availability

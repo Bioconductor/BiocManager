@@ -135,7 +135,6 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' @title Display current Bioconductor and CRAN repositories.
 #'
 #' @aliases BiocManager.snapshot BiocManager.check_repositories
-#'     BiocManager.container_binary_repos BIOCONDUCTOR_CONTAINER_BINARY_REPOS
 #'
 #' @description `repositories()` reports the URLs from which to
 #'     install _Bioconductor_ and CRAN packages. It is used by
@@ -189,9 +188,8 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' practices.
 #'
 #' To install binary packages on containerized versions of Bioconductor,
-#' a default binary package location url can be set with the
-#' `BIOCONDUCTOR_CONTAINER_BINARY_REPOS` environment variable or the
-#' `BiocManager.container_binary_repos` option. Binary package installations
+#' a default binary package location URL is set as a package constant,
+#' see `BiocManager:::BINARY_BASE_URL`. Binary package installations
 #' are enabled by default for Bioconductor Docker containers. Anyone
 #' wishing to opt out of the binary package installation can set either the
 #' variable or the option to a `""` value. Note that the availability
@@ -342,15 +340,8 @@ binary_repository <-
     if (!versions_match)
         return(character())
 
-    binary_repos0 <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
-    binary_repos0 <- getOption(
-        "BiocManager.container_binary_repos",
-        binary_repos0
-    )
-
     ## does the binary repository exist?
-    if (!nzchar(binary_repos0))
-        binary_repos0 <- sprintf(binary_base_url, version, platform)
+    binary_repos0 <- sprintf(binary_base_url, version, platform)
     packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({
