@@ -1,4 +1,4 @@
-BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries"
+BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 .repositories_check_repos <-
     function(repos)
@@ -248,21 +248,49 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries"
 #' @md
 #' @export repositories
 repositories <-
-    function(site_repository = character(), version = BiocManager::version())
+    function(
+        site_repository = character(),
+        version = BiocManager::version(),
+        binary_base_url = BINARY_BASE_URL
+    )
 {
     stopifnot(
         length(site_repository) <= 1L,
         is.character(site_repository), !anyNA(site_repository)
     )
     version <- .version_validate(version)
-    .repositories(site_repository, version)
+    repositories <- .repositories(site_repository, version)
+
+    binary_repository <- binary_repository(version, binary_base_url)
+    if (length(binary_repository))
+        repositories <- c(binary_repository, repositories)
+
+    repositories
 }
 
-.test_container_bioc_versions <- function(version, container_version) {
-    bioconductor_version <- package_version(version)
+## is the docker container configured correctly?
+.repository_container_version_test <-
+    function(bioconductor_version, container_version)
+{
+    bioconductor_version <- package_version(bioconductor_version)
     docker_version <- package_version(container_version)
-    (bioconductor_version$major == docker_version$major) &
+    (bioconductor_version$major == docker_version$major) &&
         (bioconductor_version$minor == docker_version$minor)
+}
+
+## are we running on a docker container?
+.repository_container_version <-
+    function()
+{
+    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
+    if (nzchar(container_version)) {
+        platform <- "bioconductor_docker"
+    } else {
+        platform <- Sys.getenv("TERRA_R_PLATFORM")
+        container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
+    }
+
+    list(platform = platform, container_version = container_version)
 }
 
 #' @rdname repositories
@@ -294,16 +322,24 @@ binary_repository <-
         version = BiocManager::version(), binary_base_url = BINARY_BASE_URL
     )
 {
-    platform <- ""
-    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
-    if (!nzchar(container_version)) {
-        platform <- Sys.getenv("TERRA_R_PLATFORM")
-        container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
-    }
+    stopifnot(
+        ## 'version' validated in '.repository_container_version_test()'
+        .is_scalar_character(binary_base_url)
+    )
+
+    platform_docker <- .repository_container_version()
+    container_version <- platform_docker$container_version
+    platform <- platform_docker$platform
+
+    ## are we running on a known container?
     if (!nzchar(container_version))
         return(character())
 
-    if (!.test_container_bioc_versions(version, container_version))
+    ## do the versions of BiocManager::version() and the container match?
+    versions_match <- .repository_container_version_test(
+        version, container_version
+    )
+    if (!versions_match)
         return(character())
 
     bin_repos <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
@@ -312,11 +348,9 @@ binary_repository <-
         bin_repos
     )
 
-    if (!nzchar(bin_repos)) {
-        bin_repos <- sprintf(binary_base_url, version)
-        bin_repos <- paste0(bin_repos, platform, sep = "/")
-    }
-    ## validate binary_repos is available
+    ## does the binary repository exist?
+    if (!nzchar(bin_repos))
+        bin_repos <- sprintf(binary_base_url, version, platform)
     packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({

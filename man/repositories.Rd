@@ -10,7 +10,11 @@
 \alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
-repositories(site_repository = character(), version = BiocManager::version())
+repositories(
+  site_repository = character(),
+  version = BiocManager::version(),
+  binary_base_url = BINARY_BASE_URL
+)
 
 binary_repository(
   version = BiocManager::version(),

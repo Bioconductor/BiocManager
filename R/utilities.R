@@ -4,6 +4,17 @@
     !interactive() && ("CheckExEnv" %in% search())
 }
 
+.is_character <-
+    function(x, na.ok = FALSE, zchar = FALSE)
+{
+    is.character(x) &&
+        (na.ok || all(!is.na(x))) &&
+        (zchar || all(nzchar(x)))
+}
+
+.is_scalar_character <- function(x, na.ok = FALSE, zchar = FALSE)
+    length(x) == 1L && .is_character(x, na.ok, zchar)
+
 .getAnswer <- function(msg, allowed)
 {
     if (interactive()) {
