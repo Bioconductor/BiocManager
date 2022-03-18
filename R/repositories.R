@@ -342,21 +342,21 @@ binary_repository <-
     if (!versions_match)
         return(character())
 
-    bin_repos <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
-    bin_repos <- getOption(
+    binary_repos0 <- Sys.getenv("BIOCONDUCTOR_CONTAINER_BINARY_REPOS")
+    binary_repos0 <- getOption(
         "BiocManager.container_binary_repos",
-        bin_repos
+        binary_repos0
     )
 
     ## does the binary repository exist?
-    if (!nzchar(bin_repos))
-        bin_repos <- sprintf(binary_base_url, version, platform)
-    packages <- paste0(contrib.url(bin_repos), "/PACKAGES.gz")
+    if (!nzchar(binary_repos0))
+        binary_repos0 <- sprintf(binary_base_url, version, platform)
+    packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({
         suppressWarnings(open(url, "rb"))
         close(url)
-        setNames(bin_repos, "BiocBinaries")
+        setNames(binary_repos0, "BiocBinaries")
     }, error = function(...) {
         close(url)
         character()
