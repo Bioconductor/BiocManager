@@ -93,7 +93,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 #' @importFrom stats setNames
 .repositories_bioc <-
-    function(version)
+    function(version, type)
 {
     mirror <- getOption("BioC_mirror", "https://bioconductor.org")
     paths <- c(
@@ -104,7 +104,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
         BioCbooks = if (version() >= "3.12") "books" else character()
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
-    c(binary_repository(), setNames(bioc_repos, names(paths)))
+    c(binary_repository(type = type), setNames(bioc_repos, names(paths)))
 }
 
 .repositories_filter <-
@@ -123,10 +123,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 }
 
 .repositories <-
-    function(site_repository, version)
+    function(site_repository, version, type)
 {
     base <- .repositories_base()
-    bioc <- .repositories_bioc(version)
+    bioc <- .repositories_bioc(version, type)
 
     repos <- c(site_repository = site_repository, bioc, base)
     repos[!duplicated(names(repos))]
@@ -145,6 +145,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #'     internally maintained repository) in which to look for packages
 #'     to install. This repository will be prepended to the default
 #'     repositories returned by the function.
+#'
 #' @param version (Optional) `character(1)` or `package_version`
 #'     indicating the _Bioconductor_ version (e.g., "3.8") for which
 #'     repositories are required.
@@ -249,7 +250,8 @@ repositories <-
     function(
         site_repository = character(),
         version = BiocManager::version(),
-        binary_base_url = BINARY_BASE_URL
+        binary_base_url = BINARY_BASE_URL,
+        type
     )
 {
     stopifnot(
@@ -257,13 +259,7 @@ repositories <-
         is.character(site_repository), !anyNA(site_repository)
     )
     version <- .version_validate(version)
-    repositories <- .repositories(site_repository, version)
-
-    binary_repository <- binary_repository(version, binary_base_url)
-    if (length(binary_repository))
-        repositories <- c(binary_repository, repositories)
-
-    repositories
+    .repositories(site_repository, version, type = type)
 }
 
 ## is the docker container configured correctly?
@@ -305,6 +301,10 @@ repositories <-
 #'     package 'CRAN-style' repository; not usually required by the
 #'     end-user.
 #'
+#' @param type `character(1)` argument for opting out of binary packages,
+#'   similar to `getOption("pkgType")` but it is `missing` by default.
+#'   Set `type` to `"source"` to opt-out of binary package installations.
+#'
 #' @return `binary_repository()`: character(1) location of binary repository,
 #'     if available, or character(0) if not.
 #'
@@ -317,7 +317,9 @@ repositories <-
 #' @export
 binary_repository <-
     function(
-        version = BiocManager::version(), binary_base_url = BINARY_BASE_URL
+        version = BiocManager::version(),
+        binary_base_url = BINARY_BASE_URL,
+        type
     )
 {
     stopifnot(
@@ -338,6 +340,9 @@ binary_repository <-
         version, container_version
     )
     if (!versions_match)
+        return(character())
+
+    if (!missing(type) && identical(type, "source"))
         return(character())
 
     ## does the binary repository exist?

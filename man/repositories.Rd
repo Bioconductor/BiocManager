@@ -11,12 +11,14 @@
 repositories(
   site_repository = character(),
   version = BiocManager::version(),
-  binary_base_url = BINARY_BASE_URL
+  binary_base_url = BINARY_BASE_URL,
+  type
 )
 
 binary_repository(
   version = BiocManager::version(),
-  binary_base_url = BINARY_BASE_URL
+  binary_base_url = BINARY_BASE_URL,
+  type
 )
 }
 \arguments{
@@ -33,6 +35,10 @@ repositories are required.}
 \item{binary_base_url}{\code{character(1)} host and base path for binary
 package 'CRAN-style' repository; not usually required by the
 end-user.}
+
+\item{type}{\code{character(1)} argument for opting out of binary packages,
+similar to \code{getOption("pkgType")} but it is \code{missing} by default.
+Set \code{type} to \code{"source"} to opt-out of binary package installations.}
 }
 \value{
 \code{repositories()}: named \code{character()} of repositories.
