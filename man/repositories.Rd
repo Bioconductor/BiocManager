@@ -4,7 +4,7 @@
 \alias{repositories}
 \alias{BiocManager.snapshot}
 \alias{BiocManager.check_repositories}
-\alias{binary_repository}
+\alias{containerRepository}
 \alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
@@ -12,13 +12,13 @@ repositories(
   site_repository = character(),
   version = BiocManager::version(),
   binary_base_url = BINARY_BASE_URL,
-  type
+  useContainerRepository = TRUE
 )
 
-binary_repository(
+containerRepository(
   version = BiocManager::version(),
   binary_base_url = BINARY_BASE_URL,
-  type
+  useContainerRepository = TRUE
 )
 }
 \arguments{
@@ -36,14 +36,15 @@ repositories are required.}
 package 'CRAN-style' repository; not usually required by the
 end-user.}
 
-\item{type}{\code{character(1)} argument for opting out of binary packages,
-similar to \code{getOption("pkgType")} but it is \code{missing} by default.
-Set \code{type} to \code{"source"} to opt-out of binary package installations.}
+\item{useContainerRepository}{\code{logical(1)} whether to allow fast binary
+package installations within Bioconductor containers (by default, \code{TRUE});
+otherwise ignored. To opt-out of binary package installations within a
+container, set \code{useContainerRepository} to \code{FALSE}.}
 }
 \value{
 \code{repositories()}: named \code{character()} of repositories.
 
-\code{binary_repository()}: character(1) location of binary repository,
+\code{containerRepository()}: character(1) location of binary repository,
 if available, or character(0) if not.
 }
 \description{
@@ -51,8 +52,9 @@ if available, or character(0) if not.
 install \emph{Bioconductor} and CRAN packages. It is used by
 \code{BiocManager::install()} and other functions.
 
-\code{binary_repository()}reports the location of the repository of
-binary packages for fast installation, if available.
+\code{containerRepository()} reports the location of the repository
+of binary packages for fast installation within containerized versions
+of Bioconductor, if available.
 }
 \details{
 \code{repositories()} returns the appropriate software package
@@ -127,7 +129,7 @@ BiocManager::repositories()
 BiocManager::repositories(version="3.8")
 }
 
-binary_repository() # character(0) if not within a Bioconductor container
+containerRepository() # character(0) if not within a Bioconductor container
 
 }
 \seealso{

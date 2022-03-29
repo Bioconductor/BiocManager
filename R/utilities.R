@@ -15,6 +15,9 @@
 .is_scalar_character <- function(x, na.ok = FALSE, zchar = FALSE)
     length(x) == 1L && .is_character(x, na.ok, zchar)
 
+.is_scalar_logical <- function(x, na.ok = FALSE)
+    is.logical(x) && length(x) == 1L && (na.ok || !is.na(x))
+
 .getAnswer <- function(msg, allowed)
 {
     if (interactive()) {

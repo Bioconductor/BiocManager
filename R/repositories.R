@@ -1,10 +1,13 @@
 BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 .repositories_check_repos <-
-    function(repos)
+    function(repos, useContainerRepository)
 {
     conflict <-
-        names(repos) %in% c(names(.repositories_bioc(version())), "CRAN")
+        names(repos) %in% c(
+            names(.repositories_bioc(version(), useContainerRepository)),
+            "CRAN"
+        )
     conflict <- conflict & repos != "@CRAN@"
     conflicts <- repos[conflict]
 
@@ -64,10 +67,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 }
 
 .repositories_base <-
-    function()
+    function(useContainerRepository)
 {
     repos <- getOption("repos")
-    repos <- .repositories_check_repos(repos)
+    repos <- .repositories_check_repos(repos, useContainerRepository)
     rename <- repos == "@CRAN@"
     if (any(rename)) {
         ## default <- if (version() > "3.11") "MRAN" else "CRAN"
@@ -93,7 +96,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 #' @importFrom stats setNames
 .repositories_bioc <-
-    function(version, type)
+    function(version, useContainerRepository)
 {
     mirror <- getOption("BioC_mirror", "https://bioconductor.org")
     paths <- c(
@@ -104,7 +107,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
         BioCbooks = if (version() >= "3.12") "books" else character()
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
-    c(binary_repository(type = type), setNames(bioc_repos, names(paths)))
+    c(
+        containerRepository(useContainerRepository = useContainerRepository),
+        setNames(bioc_repos, names(paths))
+    )
 }
 
 .repositories_filter <-
@@ -123,10 +129,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 }
 
 .repositories <-
-    function(site_repository, version, type)
+    function(site_repository, version, useContainerRepository)
 {
-    base <- .repositories_base()
-    bioc <- .repositories_bioc(version, type)
+    base <- .repositories_base(useContainerRepository)
+    bioc <- .repositories_bioc(version, useContainerRepository)
 
     repos <- c(site_repository = site_repository, bioc, base)
     repos[!duplicated(names(repos))]
@@ -251,7 +257,7 @@ repositories <-
         site_repository = character(),
         version = BiocManager::version(),
         binary_base_url = BINARY_BASE_URL,
-        type
+        useContainerRepository = TRUE
     )
 {
     stopifnot(
@@ -259,7 +265,11 @@ repositories <-
         is.character(site_repository), !anyNA(site_repository)
     )
     version <- .version_validate(version)
-    .repositories(site_repository, version, type = type)
+    .repositories(
+        site_repository,
+        version,
+        useContainerRepository
+    )
 }
 
 ## is the docker container configured correctly?
@@ -283,7 +293,8 @@ repositories <-
         platform <- Sys.getenv("TERRA_R_PLATFORM")
         container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
     }
-
+    # platform and container_version are zero character vectors
+    # when not running on a container
     list(platform = platform, container_version = container_version)
 }
 
@@ -291,8 +302,9 @@ repositories <-
 #'
 #' @aliases BINARY_BASE_URL
 #'
-#' @description `binary_repository()`reports the location of the repository of
-#'     binary packages for fast installation, if available.
+#' @description `containerRepository()` reports the location of the repository
+#'     of binary packages for fast installation within containerized versions
+#'     of Bioconductor, if available.
 #'
 #' @details The unexported URL to the base repository is available
 #'     with `BiocManager:::BINARY_BASE_URL`.
@@ -301,30 +313,32 @@ repositories <-
 #'     package 'CRAN-style' repository; not usually required by the
 #'     end-user.
 #'
-#' @param type `character(1)` argument for opting out of binary packages,
-#'   similar to `getOption("pkgType")` but it is `missing` by default.
-#'   Set `type` to `"source"` to opt-out of binary package installations.
+#' @param useContainerRepository `logical(1)` whether to allow fast binary
+#'   package installations within Bioconductor containers (by default, `TRUE`);
+#'   otherwise ignored. To opt-out of binary package installations within a
+#'   container, set `useContainerRepository` to `FALSE`.
 #'
-#' @return `binary_repository()`: character(1) location of binary repository,
+#' @return `containerRepository()`: character(1) location of binary repository,
 #'     if available, or character(0) if not.
 #'
 #' @examples
-#' binary_repository() # character(0) if not within a Bioconductor container
+#' containerRepository() # character(0) if not within a Bioconductor container
 #'
 #' @importFrom utils contrib.url
 #'
 #' @md
 #' @export
-binary_repository <-
+containerRepository <-
     function(
         version = BiocManager::version(),
         binary_base_url = BINARY_BASE_URL,
-        type
+        useContainerRepository = TRUE
     )
 {
     stopifnot(
         ## 'version' validated in '.repository_container_version_test()'
-        .is_scalar_character(binary_base_url)
+        .is_scalar_character(binary_base_url),
+        .is_scalar_logical(useContainerRepository)
     )
 
     platform_docker <- .repository_container_version()
@@ -342,7 +356,7 @@ binary_repository <-
     if (!versions_match)
         return(character())
 
-    if (!missing(type) && identical(type, "source"))
+    if (!useContainerRepository)
         return(character())
 
     ## does the binary repository exist?
@@ -352,7 +366,7 @@ binary_repository <-
     tryCatch({
         suppressWarnings(open(url, "rb"))
         close(url)
-        setNames(binary_repos0, "BiocBinaries")
+        setNames(binary_repos0, "BioCcontainers")
     }, error = function(...) {
         close(url)
         character()
