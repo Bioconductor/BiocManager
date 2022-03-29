@@ -13,7 +13,8 @@ install(
   ask = TRUE,
   checkBuilt = FALSE,
   force = FALSE,
-  version = BiocManager::version()
+  version = BiocManager::version(),
+  useContainerRepository = TRUE
 )
 }
 \arguments{
@@ -52,6 +53,11 @@ currently up-to-date.}
 \item{version}{\code{character(1)} \emph{Bioconductor} version to install,
 e.g., \code{version = "3.8"}. The special symbol \code{version = "devel"}
 installs the current 'development' version.}
+
+\item{useContainerRepository}{\code{logical(1)} whether to allow fast binary
+package installations within Bioconductor containers (by default, \code{TRUE});
+otherwise ignored. To opt-out of binary package installations within a
+container, set \code{useContainerRepository} to \code{FALSE}.}
 }
 \value{
 \code{BiocManager::install()} returns the \code{pkgs} argument, invisibly.

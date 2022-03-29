@@ -98,6 +98,7 @@
 #' @author Martin Morgan \email{martin.morgan@@roswellpark.org}
 #' @seealso `BiocManager::\link{install}()` to update installed
 #'     packages.
+#' @inheritParams repositories
 #' @keywords environment
 #' @examples
 #' if (interactive()) {
@@ -109,7 +110,8 @@ valid <-
     function(pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA", type=getOption("pkgType"),
              filters=NULL, ..., checkBuilt = FALSE,
-             site_repository = character())
+             site_repository = character(),
+             useContainerRepository = TRUE)
 {
     stopifnot(
         is.logical(checkBuilt), length(checkBuilt) == 1L, !is.na(checkBuilt)
@@ -125,7 +127,9 @@ valid <-
         }
     }
     version <- .version_validate(version())
-    repos <- .repositories(site_repository, version = version)
+    repos <- .repositories(
+        site_repository, version = version, useContainerRepository
+    )
     repos <- .repositories_filter(repos)
 
     vout <- .valid_out_of_date_pkgs(pkgs = pkgs, lib.loc = lib.loc,
