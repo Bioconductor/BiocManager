@@ -394,7 +394,7 @@ install <-
     cmp <- .version_compare(version, version())
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
     repos <- .repositories(
-        site_repository, version = version, useContainerRepositories
+        site_repository, version = version, useContainerRepository
     )
 
     vout <- .valid_out_of_date_pkgs(pkgs = inst,
