@@ -67,7 +67,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 }
 
 .repositories_base <-
-    function(useContainerRepository)
+    function(useContainerRepository = FALSE)
 {
     repos <- getOption("repos")
     repos <- .repositories_check_repos(repos, useContainerRepository)
@@ -108,7 +108,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
     c(
-        containerRepository(useContainerRepository = useContainerRepository),
+        containerRepository(
+            version = version, useContainerRepository = useContainerRepository
+        ),
         setNames(bioc_repos, names(paths))
     )
 }
