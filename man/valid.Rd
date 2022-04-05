@@ -13,8 +13,7 @@ valid(
   filters = NULL,
   ...,
   checkBuilt = FALSE,
-  site_repository = character(),
-  useContainerRepository = TRUE
+  site_repository = character()
 )
 
 \method{print}{biocValid}(x, ...)
@@ -44,11 +43,6 @@ earlier major.minor version of R (e.g., 3.4) is considered to
 be old.}
 
 \item{site_repository}{\code{character(1)}. See \code{?install}.}
-
-\item{useContainerRepository}{\code{logical(1)} whether to allow fast binary
-package installations within Bioconductor containers (by default, \code{TRUE});
-otherwise ignored. To opt-out of binary package installations within a
-container, set \code{useContainerRepository} to \code{FALSE}.}
 
 \item{x}{A `biocValid` object returned by `BiocManager::valid()`.}
 }

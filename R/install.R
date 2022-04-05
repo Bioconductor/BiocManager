@@ -330,7 +330,6 @@
 #' @param version `character(1)` _Bioconductor_ version to install,
 #'     e.g., `version = "3.8"`. The special symbol `version = "devel"`
 #'     installs the current 'development' version.
-#' @inheritParams repositories
 #'
 #' @return `BiocManager::install()` returns the `pkgs` argument, invisibly.
 #' @seealso
@@ -372,7 +371,7 @@
 install <-
     function(pkgs = character(), ..., site_repository = character(),
         update = TRUE, ask = TRUE, checkBuilt = FALSE, force = FALSE,
-        version = BiocManager::version(), useContainerRepository = TRUE)
+        version = BiocManager::version())
 {
     stopifnot(
         is.character(pkgs), !anyNA(pkgs),
@@ -393,9 +392,7 @@ install <-
 
     cmp <- .version_compare(version, version())
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
-    repos <- .repositories(
-        site_repository, version = version, useContainerRepository
-    )
+    repos <- .repositories(site_repository, version = version)
 
     vout <- .valid_out_of_date_pkgs(pkgs = inst,
         repos = repos, ..., checkBuilt = checkBuilt,

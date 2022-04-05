@@ -11,14 +11,12 @@
 repositories(
   site_repository = character(),
   version = BiocManager::version(),
-  binary_base_url = BINARY_BASE_URL,
-  useContainerRepository = TRUE
+  binary_base_url = BINARY_BASE_URL
 )
 
 containerRepository(
   version = BiocManager::version(),
-  binary_base_url = BINARY_BASE_URL,
-  useContainerRepository = TRUE
+  binary_base_url = BINARY_BASE_URL
 )
 }
 \arguments{
@@ -35,11 +33,6 @@ repositories are required.}
 \item{binary_base_url}{\code{character(1)} host and base path for binary
 package 'CRAN-style' repository; not usually required by the
 end-user.}
-
-\item{useContainerRepository}{\code{logical(1)} whether to allow fast binary
-package installations within Bioconductor containers (by default, \code{TRUE});
-otherwise ignored. To opt-out of binary package installations within a
-container, set \code{useContainerRepository} to \code{FALSE}.}
 }
 \value{
 \code{repositories()}: named \code{character()} of repositories.
@@ -120,8 +113,13 @@ as much as possible to \emph{Bioconductor} best practices, use
 \code{repositories()} as a basis for constructing the \verb{repos =} argument
 to \code{install.packages()} and related functions.
 
-The unexported URL to the base repository is available
-with \code{BiocManager:::BINARY_BASE_URL}.
+The unexported URL to the base repository is available with
+\code{BiocManager:::BINARY_BASE_URL}.
+
+\env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} is an environment
+variable or global \code{options()} which, when set to \code{FALSE}, avoids
+the fast installation of binary packages within containerized
+versions of Bioconductor.
 }
 \examples{
 BiocManager::repositories()
