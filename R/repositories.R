@@ -252,8 +252,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 repositories <-
     function(
         site_repository = character(),
-        version = BiocManager::version(),
-        binary_base_url = BINARY_BASE_URL
+        version = BiocManager::version()
     )
 {
     stopifnot(
@@ -316,10 +315,6 @@ repositories <-
 #' the fast installation of binary packages within containerized
 #' versions of Bioconductor.
 #'
-#' @param binary_base_url `character(1)` host and base path for binary
-#'     package 'CRAN-style' repository; not usually required by the
-#'     end-user.
-#'
 #' @return `containerRepository()`: character(1) location of binary repository,
 #'     if available, or character(0) if not.
 #'
@@ -332,15 +327,9 @@ repositories <-
 #' @export
 containerRepository <-
     function(
-        version = BiocManager::version(),
-        binary_base_url = BINARY_BASE_URL
+        version = BiocManager::version()
     )
 {
-    stopifnot(
-        ## 'version' validated in '.repository_container_version_test()'
-        .is_scalar_character(binary_base_url)
-    )
-
     platform_docker <- .repository_container_version()
     container_version <- platform_docker$container_version
     platform <- platform_docker$platform
@@ -360,7 +349,7 @@ containerRepository <-
         return(character())
 
     ## does the binary repository exist?
-    binary_repos0 <- sprintf(binary_base_url, version, platform)
+    binary_repos0 <- sprintf(BINARY_BASE_URL, version, platform)
     packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({

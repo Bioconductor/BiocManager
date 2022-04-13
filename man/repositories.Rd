@@ -8,16 +8,9 @@
 \alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
-repositories(
-  site_repository = character(),
-  version = BiocManager::version(),
-  binary_base_url = BINARY_BASE_URL
-)
+repositories(site_repository = character(), version = BiocManager::version())
 
-containerRepository(
-  version = BiocManager::version(),
-  binary_base_url = BINARY_BASE_URL
-)
+containerRepository(version = BiocManager::version())
 }
 \arguments{
 \item{site_repository}{(Optional) \code{character(1)} representing an
@@ -29,10 +22,6 @@ repositories returned by the function.}
 \item{version}{(Optional) \code{character(1)} or \code{package_version}
 indicating the \emph{Bioconductor} version (e.g., "3.8") for which
 repositories are required.}
-
-\item{binary_base_url}{\code{character(1)} host and base path for binary
-package 'CRAN-style' repository; not usually required by the
-end-user.}
 }
 \value{
 \code{repositories()}: named \code{character()} of repositories.

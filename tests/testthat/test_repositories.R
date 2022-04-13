@@ -149,42 +149,26 @@ test_that("'containerRepository' & '.repositories_bioc' works", {
             expected_url
         )
     )
-    # When container is configured properly, get binaries url
-    withr::with_envvar(
-        c(
-            "BIOCONDUCTOR_DOCKER_VERSION" = ver
-        ),
-        with_mock(
-            `BiocManager:::.repository_container_version_test` =
-                function(...) TRUE,
-            expect_identical(
-                containerRepository(version = ver),
-                expected_url
-            )
-        )
-    )
-    # When container is misconfigured, return character(0)
-    withr::with_envvar(
-        c(
-            "BIOCONDUCTOR_DOCKER_VERSION" = ver
-        ),
-        with_mock(
-            `BiocManager:::.repository_container_version_test` =
-                function(...) FALSE,
-            expect_identical(
-                containerRepository(version = ver),
-                character(0L)
-            )
-        )
-    )
     # When no BIOCONDUCTOR_DOCKER_VERSION is set, no 'BioCcontainers' repo
-    expect_true(
-      !"BioCcontainers" %in% names(.repositories_bioc(ver))
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE,
+            "BIOCONDUCTOR_DOCKER_VERSION" = ""
+        ),
+        expect_true(
+            !"BioCcontainers" %in% names(.repositories_bioc(ver))
+        )
     )
     # When no BIOCONDUCTOR_DOCKER_VERSION is set, expect empty string
-    expect_identical(
-        containerRepository(version = ver),
-        character(0L)
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE,
+            "BIOCONDUCTOR_DOCKER_VERSION" = ""
+        ),
+        expect_identical(
+            containerRepository(version = ver),
+            character(0L)
+        )
     )
     # When BIOCONDUCTOR_DOCKER_VERSION is set and
     # BIOCONDUCTOR_USE_CONTAINER_REPOSITORY is true, expect binaries url
