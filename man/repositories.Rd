@@ -86,9 +86,9 @@ a default binary package location URL is set as a package constant,
 see \code{BiocManager:::BINARY_BASE_URL}. Binary package installations
 are enabled by default for Bioconductor Docker containers. Anyone
 wishing to opt out of the binary package installation can set either the
-variable or the option to a \code{""} value. Note that the availability
-of Bioconductor package binaries is still experimental and that binary
-installations are intended to be used with
+variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
+\code{FALSE}. Note that the availability of Bioconductor package binaries is
+experimental and binary installations are intended to be used with
 \code{Bioconductor/bioconductor_docker} images where such installations
 correspond to specific versions of Linux / Ubuntu.
 
