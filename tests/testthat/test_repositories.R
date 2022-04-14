@@ -15,10 +15,10 @@ test_that("repositories() does not return any NA repos", {
     expect_true(!anyNA(repositories()))
 })
 
-test_that("repositories() returns expected order", {
+test_that("repositories() returns BioCsoft in repositories vector", {
     .skip_if_misconfigured()
     skip_if_offline()
-    expect_identical("BioCsoft", names(repositories())[[1]])
+    expect_true("BioCsoft" %in% names(repositories()))
 })
 
 test_that("'site_repository=' inserted correctly", {
@@ -92,7 +92,7 @@ test_that("repositories helper replaces correct URL", {
 
     ## ...unless BiocManager.check_repositories == FALSE
     repos <- c(BioCsoft = "foo.bar")
-    withr::with_options(list(           # other renameing
+    withr::with_options(list(           # other renaming
                repos = repos,
                BiocManager.check_repositories = FALSE
            ), {
@@ -132,4 +132,65 @@ test_that("'.repositories_base()' respects BiocManager.snapshot", {
                list(BiocManager.snapshot = c("RSPM", "CRAN")),
                expect_error(.repositories_base(), "BiocManager.snapshot")
            )
+})
+
+test_that("'containerRepository' & '.repositories_bioc' works", {
+    skip_if_offline()
+    bin_url <- "https://bioconductor.org/packages/%s/container-binaries/%s"
+    ver <- "3.14"
+    bin_url <- sprintf(bin_url, ver, "bioconductor_docker")
+    expected_url <- setNames(bin_url, "BioCcontainers")
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_DOCKER_VERSION" = ver
+        ),
+        expect_identical(
+            containerRepository(version = ver),
+            expected_url
+        )
+    )
+    # When no BIOCONDUCTOR_DOCKER_VERSION is set, no 'BioCcontainers' repo
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE,
+            "BIOCONDUCTOR_DOCKER_VERSION" = ""
+        ),
+        expect_true(
+            !"BioCcontainers" %in% names(.repositories_bioc(ver))
+        )
+    )
+    # When no BIOCONDUCTOR_DOCKER_VERSION is set, expect empty string
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE,
+            "BIOCONDUCTOR_DOCKER_VERSION" = ""
+        ),
+        expect_identical(
+            containerRepository(version = ver),
+            character(0L)
+        )
+    )
+    # When BIOCONDUCTOR_DOCKER_VERSION is set and
+    # BIOCONDUCTOR_USE_CONTAINER_REPOSITORY is true, expect binaries url
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE,
+            "BIOCONDUCTOR_DOCKER_VERSION" = ver
+        ),
+        expect_identical(
+            containerRepository(version = ver),
+            expected_url
+        )
+    )
+    # When no BIOCONDUCTOR_DOCKER_VERSION is set, expect empty string
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = FALSE,
+            "BIOCONDUCTOR_DOCKER_VERSION" = ver
+        ),
+        expect_identical(
+            containerRepository(version = ver),
+            character(0L)
+        )
+    )
 })

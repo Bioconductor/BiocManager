@@ -1,3 +1,5 @@
+BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
+
 .repositories_check_repos <-
     function(repos)
 {
@@ -99,10 +101,13 @@
         BioCann = "data/annotation",
         BioCexp = "data/experiment",
         BioCworkflows = "workflows",
-        BioCbooks = if (version() >= "3.12") "books" else NULL
+        BioCbooks = if (version() >= "3.12") "books" else character()
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
-    setNames(bioc_repos, names(paths))
+    c(
+        containerRepository(version = version),
+        setNames(bioc_repos, names(paths))
+    )
 }
 
 .repositories_filter <-
@@ -143,6 +148,7 @@
 #'     internally maintained repository) in which to look for packages
 #'     to install. This repository will be prepended to the default
 #'     repositories returned by the function.
+#'
 #' @param version (Optional) `character(1)` or `package_version`
 #'     indicating the _Bioconductor_ version (e.g., "3.8") for which
 #'     repositories are required.
@@ -185,6 +191,17 @@
 #' use of CRAN packages not consistent with _Bioconductor_ best
 #' practices.
 #'
+#' To install binary packages on containerized versions of Bioconductor,
+#' a default binary package location URL is set as a package constant,
+#' see `BiocManager:::BINARY_BASE_URL`. Binary package installations
+#' are enabled by default for Bioconductor Docker containers. Anyone
+#' wishing to opt out of the binary package installation can set either the
+#' variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
+#' `FALSE`. Note that the availability of Bioconductor package binaries is
+#' experimental and binary installations are intended to be used with
+#' `bioconductor/bioconductor_docker` images where such installations
+#' correspond to specific versions of Linux / Ubuntu.
+#'
 #' If alternative default repositories are known to provide
 #' appropriate versions of CRAN or _Bioconductor_ packages, the warning
 #' may be silenced (displayed as a message) with
@@ -206,7 +223,7 @@
 #' `repositories()` as a basis for constructing the `repos =` argument
 #' to `install.packages()` and related functions.
 #'
-#' @return Named `character()` of repositories.
+#' @return `repositories()`: named `character()` of repositories.
 #'
 #' @seealso
 #'
@@ -241,4 +258,103 @@ repositories <-
     )
     version <- .version_validate(version)
     .repositories(site_repository, version)
+}
+
+## is the docker container configured correctly?
+.repository_container_version_test <-
+    function(bioconductor_version, container_version)
+{
+    bioconductor_version <- package_version(bioconductor_version)
+    docker_version <- package_version(container_version)
+    (bioconductor_version$major == docker_version$major) &&
+        (bioconductor_version$minor == docker_version$minor)
+}
+
+## are we running on a docker container?
+.repository_container_version <-
+    function()
+{
+    container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
+    if (nzchar(container_version)) {
+        platform <- "bioconductor_docker"
+    } else {
+        platform <- Sys.getenv("TERRA_R_PLATFORM")
+        container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
+    }
+    # platform and container_version are zero character vectors
+    # when not running on a container
+    list(platform = platform, container_version = container_version)
+}
+
+.repositories_use_container_repo <-
+    function()
+{
+    opt <- Sys.getenv("BIOCONDUCTOR_USE_CONTAINER_REPOSITORY", TRUE)
+    opt <- getOption("BIOCONDUCTOR_USE_CONTAINER_REPOSITORY", opt)
+    isTRUE(as.logical(opt))
+}
+
+#' @rdname repositories
+#'
+#' @aliases BINARY_BASE_URL
+#'
+#' @description `containerRepository()` reports the location of the repository
+#'     of binary packages for fast installation within containerized versions
+#'     of Bioconductor, if available.
+#'
+#' @details
+#'
+#' The unexported URL to the base repository is available with
+#' `BiocManager:::BINARY_BASE_URL`.
+#'
+#' \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} is an environment
+#' variable or global `options()` which, when set to `FALSE`, avoids
+#' the fast installation of binary packages within containerized
+#' versions of Bioconductor.
+#'
+#' @return `containerRepository()`: character(1) location of binary repository,
+#'     if available, or character(0) if not.
+#'
+#' @examples
+#' containerRepository() # character(0) if not within a Bioconductor container
+#'
+#' @importFrom utils contrib.url
+#'
+#' @md
+#' @export
+containerRepository <-
+    function(
+        version = BiocManager::version()
+    )
+{
+    platform_docker <- .repository_container_version()
+    container_version <- platform_docker$container_version
+    platform <- platform_docker$platform
+
+    ## are we running on a known container?
+    if (!nzchar(container_version))
+        return(character())
+
+    ## do the versions of BiocManager::version() and the container match?
+    versions_match <- .repository_container_version_test(
+        version, container_version
+    )
+    if (!versions_match)
+        return(character())
+
+    if (!.repositories_use_container_repo())
+        return(character())
+
+    ## does the binary repository exist?
+    binary_repos0 <- sprintf(BINARY_BASE_URL, version, platform)
+    packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
+    url <- url(packages)
+    tryCatch({
+        suppressWarnings(open(url, "rb"))
+        close(url)
+        setNames(binary_repos0, "BioCcontainers")
+    }, error = function(...) {
+        close(url)
+        character()
+    })
 }
