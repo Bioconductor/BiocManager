@@ -18,9 +18,6 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/BiocManager)](https://cran.r-project.org/package=BiocManager)
 [![CRAN release](http://www.r-pkg.org/badges/version-last-release/BiocManager)](https://github.com/Bioconductor/BiocManager/releases)
 [![CRAN downloads](http://cranlogs.r-pkg.org/badges/BiocManager)](https://cran.r-project.org/package=BiocManager)
-<br>
-[![Travis build status](https://travis-ci.org/Bioconductor/BiocManager.svg?branch=master)](https://travis-ci.org/Bioconductor/BiocManager)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/Bioconductor/BiocManager?branch=master&svg=true)](https://ci.appveyor.com/project/Bioconductor/BiocManager)
 <!-- badges: end -->
 
 ## Overview
