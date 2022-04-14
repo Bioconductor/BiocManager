@@ -250,10 +250,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' @md
 #' @export repositories
 repositories <-
-    function(
-        site_repository = character(),
-        version = BiocManager::version()
-    )
+    function(site_repository = character(), version = BiocManager::version())
 {
     stopifnot(
         length(site_repository) <= 1L,
