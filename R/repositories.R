@@ -199,7 +199,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
 #' `FALSE`. Note that the availability of Bioconductor package binaries is
 #' experimental and binary installations are intended to be used with
-#' `Bioconductor/bioconductor_docker` images where such installations
+#' `bioconductor/bioconductor_docker` images where such installations
 #' correspond to specific versions of Linux / Ubuntu.
 #'
 #' If alternative default repositories are known to provide
