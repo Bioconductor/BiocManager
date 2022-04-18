@@ -156,7 +156,8 @@ test_that("unwriteable packages are not considered", {
         ## how to create a read-only directory?
         return(TRUE)
 
-    dir.create(p2 <- tempfile(), mode="0400") # read but not write
+    isDirRnW <- dir.create(p2 <- tempfile(), mode="0400") # read but not write
+    skip_if_not(isDirRnW)
     pkgs <- matrix(c("Foo", p2), 1, byrow=TRUE,
                    dimnames=list("Foo", c("Package", "LibPath")))
     expect_identical(pkgs0, .filter(pkgs, NULL))
