@@ -4,9 +4,13 @@
 \alias{repositories}
 \alias{BiocManager.snapshot}
 \alias{BiocManager.check_repositories}
+\alias{containerRepository}
+\alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
 repositories(site_repository = character(), version = BiocManager::version())
+
+containerRepository(version = BiocManager::version())
 }
 \arguments{
 \item{site_repository}{(Optional) \code{character(1)} representing an
@@ -20,12 +24,19 @@ indicating the \emph{Bioconductor} version (e.g., "3.8") for which
 repositories are required.}
 }
 \value{
-Named \code{character()} of repositories.
+\code{repositories()}: named \code{character()} of repositories.
+
+\code{containerRepository()}: character(1) location of binary repository,
+if available, or character(0) if not.
 }
 \description{
 \code{repositories()} reports the URLs from which to
 install \emph{Bioconductor} and CRAN packages. It is used by
 \code{BiocManager::install()} and other functions.
+
+\code{containerRepository()} reports the location of the repository
+of binary packages for fast installation within containerized versions
+of Bioconductor, if available.
 }
 \details{
 \code{repositories()} returns the appropriate software package
@@ -59,6 +70,17 @@ consistent with the dates of the \emph{Bioconductor} release) results in
 use of CRAN packages not consistent with \emph{Bioconductor} best
 practices.
 
+To install binary packages on containerized versions of Bioconductor,
+a default binary package location URL is set as a package constant,
+see \code{BiocManager:::BINARY_BASE_URL}. Binary package installations
+are enabled by default for Bioconductor Docker containers. Anyone
+wishing to opt out of the binary package installation can set either the
+variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
+\code{FALSE}. Note that the availability of Bioconductor package binaries is
+experimental and binary installations are intended to be used with
+\code{bioconductor/bioconductor_docker} images where such installations
+correspond to specific versions of Linux / Ubuntu.
+
 If alternative default repositories are known to provide
 appropriate versions of CRAN or \emph{Bioconductor} packages, the warning
 may be silenced (displayed as a message) with
@@ -79,12 +101,22 @@ For greater flexiblity in installing packages while still adhering
 as much as possible to \emph{Bioconductor} best practices, use
 \code{repositories()} as a basis for constructing the \verb{repos =} argument
 to \code{install.packages()} and related functions.
+
+The unexported URL to the base repository is available with
+\code{BiocManager:::BINARY_BASE_URL}.
+
+\env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} is an environment
+variable or global \code{options()} which, when set to \code{FALSE}, avoids
+the fast installation of binary packages within containerized
+versions of Bioconductor.
 }
 \examples{
 BiocManager::repositories()
 \dontrun{
 BiocManager::repositories(version="3.8")
 }
+
+containerRepository() # character(0) if not within a Bioconductor container
 
 }
 \seealso{
