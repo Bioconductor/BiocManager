@@ -1,3 +1,16 @@
+CHANGES IN VERSION 1.30.17
+-------------------------
+
+NEW FEATURES
+
+    o `containerRepository` reports the location of binary packages for
+      containerized images of Bioconductor, if available.
+
+BUG FIXES
+
+    o `install` appropriately returns a warning from `install.packages` instead
+      of a character vector (#112, @mtmorgan).
+
 CHANGES IN VERSION 1.30.16
 -------------------------
 
