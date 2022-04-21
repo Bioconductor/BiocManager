@@ -3,10 +3,8 @@ We also checked for any major issues with `revdepcheck::revdep_check()` and
 found none.
 
 ## Test environments
-* local Ubuntu 20.10 (linux): R 4.0.5 patched, R 4.1.0 beta, R-devel 4.2.0
-* win-builder.r-project.org (windows): oldrel, release, devel
-* appveyor (windows): bioc-devel, bioc-release, bioc-oldrel,
-    oldrel, release, devel
+* local Ubuntu 20.10 (linux): R 4.0.5 patched, R 4.1.1 patched, R 4.2.0 beta
+* win-builder.r-project.org (windows): R 4.1.3, R 4.2.0 RC, devel
 
 ## R CMD check results
 
@@ -14,7 +12,7 @@ found none.
 
 * checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  'BiocVersion', 'remotes', 'rmarkdown', 'curl'
+  'BiocVersion'
 
 `BiocVersion` is only available in Bioconductor.
 
