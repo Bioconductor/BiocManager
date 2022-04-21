@@ -1,4 +1,4 @@
-Tested with `_R_CHECK_DEPENDS_ONLY=true` flag for Fedora.
+Tested on Fedora with `rhub::check_on_fedora()`.
 We also checked for any major issues with `revdepcheck::revdep_check()` and
 found none.
 
