@@ -381,7 +381,7 @@ format.version_sentinel <-
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
     version <- map$Bioc[map$BiocStatus == type]
-    if (is.na(version))
+    if (!length(version) || is.na(version))
         version <- .VERSION_UNKNOWN
     version
 }
