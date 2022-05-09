@@ -6,6 +6,12 @@
 .VERSION_MAP_UNABLE_TO_VALIDATE <-
     "Bioconductor version cannot be validated; no internet connection?"
 
+.VERSION_MAP_MISCONFIGURATION <-
+    "Bioconductor version map cannot be validated; is it misconfigured?"
+
+.VERSION_MAP_MISSPECIFICATION <-
+    "Bioconductor version map cannot be validated; is version misspecified?"
+
 .NO_ONLINE_VERSION_DIAGNOSIS <-
     "Bioconductor online version validation disabled;
     see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
@@ -13,12 +19,15 @@
 .LEGACY_INSTALL_CMD <-
     "source(\"https://bioconductor.org/biocLite.R\")"
 
+.VERSION_TAGS <-
+    c("out-of-date", "release", "devel", "future")
+
 .VERSION_MAP_SENTINEL <- data.frame(
     Bioc = package_version(list()),
     R = package_version(list()),
     BiocStatus = factor(
         factor(),
-        levels = c("out-of-date", "release", "devel", "future")
+        levels = .VERSION_TAGS
     ),
     RSPM = character(),
     MRAN = character()
@@ -159,7 +168,7 @@ format.version_sentinel <-
         Bioc = bioc, R = r,
         BiocStatus = factor(
             status,
-            levels = c("out-of-date", "release", "devel", "future")
+            levels = .VERSION_TAGS
         ),
         RSPM = unname(bioc_rspm_map[as.character(bioc)]),
         MRAN = unname(bioc_mran_map[as.character(bioc)])
@@ -177,7 +186,7 @@ format.version_sentinel <-
 
     r <- package_version(R.Version())[,1:2]
 
-    status <- c("out-of-date", "release", "devel", "future")
+    status <- .VERSION_TAGS
     rbind(.VERSION_MAP_SENTINEL, data.frame(
         Bioc = bioc, R = r,
         BiocStatus = factor(
@@ -257,6 +266,9 @@ format.version_sentinel <-
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
+    if (!all(.VERSION_TAGS %in% map$BiocStatus))
+        return(.VERSION_MAP_MISCONFIGURATION)
+
     if (!version %in% map$Bioc)
         return(sprintf(
             "unknown Bioconductor version '%s'; %s", version, .VERSION_HELP
@@ -297,6 +309,9 @@ format.version_sentinel <-
     map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
+
+    if (!all(.VERSION_TAGS %in% map$BiocStatus))
+        return(.VERSION_MAP_MISCONFIGURATION)
 
     r_version <- getRversion()[, 1:2]
     status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
@@ -360,6 +375,9 @@ format.version_sentinel <-
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.version_sentinel(.VERSION_MAP_UNABLE_TO_VALIDATE))
 
+    if (!all(.VERSION_TAGS %in% map$BiocStatus))
+        return(.version_sentinel(.VERSION_MAP_MISCONFIGURATION))
+
     map <- map[map$R == getRversion()[, 1:2],]
     if ("release" %in% map$BiocStatus)
         idx <- map$BiocStatus == "release"
@@ -380,6 +398,12 @@ format.version_sentinel <-
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
+    if (!all(.VERSION_TAGS %in% map$BiocStatus))
+        return(.VERSION_MAP_MISCONFIGURATION)
+
+    if (!type %in% .VERSION_TAGS)
+        return(.VERSION_MAP_MISSPECIFICATION)
+
     version <- map$Bioc[map$BiocStatus == type]
     if (!length(version) || is.na(version))
         version <- .VERSION_UNKNOWN
@@ -393,7 +417,13 @@ format.version_sentinel <-
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
-    map$R[map$BiocStatus == type]
+    if (!all(.VERSION_TAGS %in% map$BiocStatus))
+        return(.VERSION_MAP_MISCONFIGURATION)
+
+    version <- map$R[map$BiocStatus == type]
+    if (!length(version) || is.na(version))
+        version <- .VERSION_UNKNOWN
+    version
 }
 
 .local_version <-
