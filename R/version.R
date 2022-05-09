@@ -120,7 +120,7 @@ format.version_sentinel <-
     if (toggle_warning)
         .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE
 
-    if (inherits(txt, "error"))
+    if (!length(txt) || inherits(txt, "error"))
         return(.VERSION_MAP_SENTINEL)
 
     bioc_r_map <- .version_map_config_element(txt, "r_ver_for_bioc_ver")
