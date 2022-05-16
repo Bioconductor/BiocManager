@@ -12,6 +12,9 @@
 .VERSION_MAP_MISSPECIFICATION <-
     "Bioconductor version map cannot be validated; is version misspecified?"
 
+.VERSION_TYPE_MISSPECIFICATION <-
+    "Bioconductor version map cannot be validated; type input misspecified?"
+
 .NO_ONLINE_VERSION_DIAGNOSIS <-
     "Bioconductor online version validation disabled;
     see ?BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS"
@@ -402,7 +405,7 @@ format.version_sentinel <-
         return(.VERSION_MAP_MISCONFIGURATION)
 
     if (!type %in% .VERSION_TAGS)
-        return(.VERSION_MAP_MISSPECIFICATION)
+        return(.VERSION_TYPE_MISSPECIFICATION)
 
     version <- map$Bioc[map$BiocStatus == type]
     if (!length(version) || is.na(version))
@@ -419,6 +422,9 @@ format.version_sentinel <-
 
     if (!all(.VERSION_TAGS %in% map$BiocStatus))
         return(.VERSION_MAP_MISCONFIGURATION)
+
+    if (!type %in% .VERSION_TAGS)
+        return(.VERSION_TYPE_MISSPECIFICATION)
 
     version <- map$R[map$BiocStatus == type]
     if (!length(version) || is.na(version))

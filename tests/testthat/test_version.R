@@ -114,10 +114,11 @@ test_that(".version_validity(...) works", {
         rver
     }
 
+    ## proper mock map should include all four BiocStatus fields
     .ver_map <- data.frame(
-        Bioc = package_version(list("4.0", "4.1", "4.1")),
-        R = package_version(list("4.3", "4.4", "4.5")),
-        BiocStatus = c("release", "devel", "future")
+        Bioc = package_version(list("3.9", "4.0", "4.1", "4.1")),
+        R = package_version(list("4.2", "4.3", "4.4", "4.5")),
+        BiocStatus = c("out-of-date", "release", "devel", "future")
     )
 
     expect_true(
@@ -133,9 +134,105 @@ test_that(".version_validity(...) works", {
         .version_validity("4.1", .ver_map, .get_R_ver("4.5.0")),
         "does not yet build"
     )
+
+    .par_map <- .ver_map[1:2, ]
+    expect_match(
+        .version_validity("4.1", .par_map, .get_R_ver()),
+        "Bioconductor version map cannot be validated; is it misconfigured?"
+    )
 })
 
-test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
+test_that(".version_bioc() works", {
+    .skip_if_misconfigured()
+    skip_if_offline()
+
+    .ver_map <- data.frame(
+        Bioc = package_version(list("4.0", "4.1", "4.1")),
+        R = package_version(list("4.3", "4.4", "4.5")),
+        BiocStatus = c("release", "devel", "future")
+    )
+
+    ## map misconfiguration
+    with_mock(
+        `BiocManager:::.version_map` = function(...) {
+            .ver_map
+        },
+        expect_match(
+            .version_bioc("release"),
+            "Bioconductor version map cannot be validated; is it misconfigured?"
+        )
+    )
+
+    .ver_map <- rbind.data.frame(c("3.9", "4.2", "out-of-date"), .ver_map)
+
+    ## all good
+    with_mock(
+        `BiocManager:::.version_map` = function(...) {
+            .ver_map
+        },
+        expect_identical(
+            .version_bioc("release"), package_version("4.0")
+        )
+    )
+
+    ## type misspecified
+    type_miss <-
+        "Bioconductor version map cannot be validated; type input misspecified?"
+    with_mock(
+        `BiocManager:::.version_map` = function(...) {
+            .ver_map
+        },
+        expect_identical(
+            .version_bioc("foo"),
+            type_miss
+        )
+    )
+})
+
+test_that(".version_R() works", {
+    .skip_if_misconfigured()
+    skip_if_offline()
+
+    .ver_map <- data.frame(
+        Bioc = package_version(list("4.0", "4.1", "4.1")),
+        R = package_version(list("4.3", "4.4", "4.5")),
+        BiocStatus = c("release", "devel", "future")
+    )
+    ## out-of-date is missing
+    with_mock(
+        `BiocManager:::.version_map` = function(...) {
+            .ver_map
+        },
+        expect_match(
+            .version_R("release"),
+            "Bioconductor version map cannot be validated; is it misconfigured?"
+        )
+    )
+    .ver_map <- rbind.data.frame(c("3.9", "4.2", "out-of-date"), .ver_map)
+    ## all good
+    with_mock(
+        `BiocManager:::.version_map` = function(...) {
+            .ver_map
+        },
+        expect_identical(
+            .version_R("release"), package_version("4.3")
+        )
+    )
+    ## type is misspecified
+    with_mock(
+        `BiocManager:::.version_map` = function(...) {
+            .ver_map
+        },
+        expect_match(
+            .version_R("foo"),
+            "Bioconductor version map cannot be validated; type input misspecified?"
+        )
+    )
+})
+
+test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",
+{
+    skip_if_offline()
     .skip_if_BiocVersion_not_available()
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
         expect_match(
@@ -146,6 +243,7 @@ test_that(".version_validity() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
 })
 
 test_that(".version_validate() and BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS work",{
+    skip_if_offline()
     .skip_if_BiocVersion_not_available()
     withr::with_options(list(BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS=FALSE), {
         expect_error(
