@@ -1,19 +1,20 @@
 .VERSION_HELP <- "see https://bioconductor.org/install"
 
 .VERSION_UNKNOWN <-
-    "Bioconductor version cannot be determined; no internet connection?"
+    "Bioconductor version cannot be determined; no internet connection?
+    see #troubleshooting section in vignette"
 
 .VERSION_MAP_UNABLE_TO_VALIDATE <-
-    "Bioconductor version cannot be validated; no internet connection?"
+    "Bioconductor version cannot be validated; no internet connection?
+    see #troubleshooting section in vignette"
 
 .VERSION_MAP_MISCONFIGURATION <-
-    "Bioconductor version map cannot be validated; is it misconfigured?"
-
-.VERSION_MAP_MISSPECIFICATION <-
-    "Bioconductor version map cannot be validated; is version misspecified?"
+    "Bioconductor version map cannot be validated; is it misconfigured?
+    see #troubleshooting section in vignette"
 
 .VERSION_TYPE_MISSPECIFICATION <-
-    "Bioconductor version map cannot be validated; type input misspecified?"
+    "Bioconductor version cannot be validated; is type input misspecified?
+    see #troubleshooting section in vignette"
 
 .NO_ONLINE_VERSION_DIAGNOSIS <-
     "Bioconductor online version validation disabled;

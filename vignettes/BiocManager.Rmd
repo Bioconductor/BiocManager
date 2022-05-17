@@ -321,7 +321,7 @@ option to locate this file, e.g.,
     )
     ```
 
-# How it works -- details for advanced trouble-shooting
+# How it works
 
 BiocManager's job is to make sure that all packages are installed from
 the same _Bioconductor_ version, using compatible _R_ and _CRAN_
@@ -401,6 +401,10 @@ Answering `n` to the prompt to up- or downgrade packages leaves the
 installation unchanged, since this would immediately create an
 inconsistent installation.
 
+# Troubleshooting
+
+## Multiple `BiocVersion` installations
+
 One potential problem occurs when there are two or more `.libPaths()`,
 with more than one BiocVersion package installed. This might occur for
 instance if a 'system administrator' installed BiocVersion, and then a
@@ -408,6 +412,34 @@ user installed their own version. In this circumstance, it seems
 appropriate to standardize the installation by repeatedly calling
 `remove.packages("BiocVersion")` until all versions are removed, and
 then installing the desired version.
+
+## Bioconductor version cannot be determined; no internet connection?
+
+When the Bioconductor version cannot be obtained from the version map
+hosted at https://bioconductor.org/config.yaml, this error will occur.
+It may be a result of poor internet connectivity or offline use. See
+the [offline config.yaml](#offline-config.yaml) section above.
+
+## Bioconductor version cannot be validated; no internet connection?
+
+Usually occurs when the map is unable to be downloaded possibly due to
+a missing `BIOCONDUCTOR_CONFIG_FILE`. For offline use, a copy of the
+configuration file should be downloaded and its address set to the
+environment variable or option.
+
+## Bioconductor version map cannot be validated; is it misconfigured?
+
+On _rare_ occasion, the version map hosted at
+https://bioconductor.org/config.yaml may be misconfigured. The check ensures
+that all the version name tags, i.e., out-of-date, release, devel, and future
+are in the map.
+
+## Bioconductor version cannot be validated; is type input misspecified?
+
+The type input refers to the version name inputs, mainly release and devel.
+This error is chiefly due to internal logic and is not due to user error.
+Please open an issue on the
+[GitHub issues page](https://github.com/Bioconductor/BiocManager/issues).
 
 # `sessionInfo()`
 

@@ -177,12 +177,12 @@ test_that(".version_bioc() works", {
 
     ## type misspecified
     type_miss <-
-        "Bioconductor version map cannot be validated; type input misspecified?"
+        "Bioconductor version cannot be validated; is type input misspecified?.*"
     with_mock(
         `BiocManager:::.version_map` = function(...) {
             .ver_map
         },
-        expect_identical(
+        expect_match(
             .version_bioc("foo"),
             type_miss
         )
@@ -205,7 +205,7 @@ test_that(".version_R() works", {
         },
         expect_match(
             .version_R("release"),
-            "Bioconductor version map cannot be validated; is it misconfigured?"
+            "Bioconductor version map cannot be validated; is it misconfigured?.*"
         )
     )
     .ver_map <- rbind.data.frame(c("3.9", "4.2", "out-of-date"), .ver_map)
@@ -225,7 +225,7 @@ test_that(".version_R() works", {
         },
         expect_match(
             .version_R("foo"),
-            "Bioconductor version map cannot be validated; type input misspecified?"
+            "Bioconductor version cannot be validated; is type input misspecified?.*"
         )
     )
 })
