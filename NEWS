@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.30.18
+-------------------------
+
+MINOR CHANGES
+
+    o Increase robustness of code when loading and working with the
+      version map
+    o Add internal checks to version tags in map and update unit tests
+    o Include a 'troubleshooting' section in the vignette
+
 CHANGES IN VERSION 1.30.17
 -------------------------
 
