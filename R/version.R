@@ -2,19 +2,19 @@
 
 .VERSION_UNKNOWN <-
     "Bioconductor version cannot be determined; no internet connection?
-    see #troubleshooting section in vignette"
+    See #troubleshooting section in vignette"
 
 .VERSION_MAP_UNABLE_TO_VALIDATE <-
     "Bioconductor version cannot be validated; no internet connection?
-    see #troubleshooting section in vignette"
+    See #troubleshooting section in vignette"
 
 .VERSION_MAP_MISCONFIGURATION <-
     "Bioconductor version map cannot be validated; is it misconfigured?
-    see #troubleshooting section in vignette"
+    See #troubleshooting section in vignette"
 
 .VERSION_TYPE_MISSPECIFICATION <-
     "Bioconductor version cannot be validated; is type input misspecified?
-    see #troubleshooting section in vignette"
+    See #troubleshooting section in vignette"
 
 .NO_ONLINE_VERSION_DIAGNOSIS <-
     "Bioconductor online version validation disabled;
