@@ -78,8 +78,9 @@
         if (any(noInst))
             .warning(
                 paste(
-                    "package(s) not installed when version(s) same or greater",
-                    "than current; use `force = TRUE` to re-install: \n'%s'"
+                    "package(s) not installed when version(s) same as or",
+                    "greater than current; use `force = TRUE` to re-install: ",
+                    "\n'%s'"
                 ),
                 paste(pkgs[noInst], collapse = "' '")
             )
