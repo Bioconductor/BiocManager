@@ -172,7 +172,7 @@ print.biocValid <-
         return()
     }
 
-    fmt <-'  BiocManager::install(%s, update = TRUE, ask = FALSE)'
+    fmt <-'  BiocManager::install(%s, update = TRUE, ask = FALSE, force = TRUE)'
     if (n == 1L) {
         fmt <- sprintf(fmt, '"%s"')
     } else {
