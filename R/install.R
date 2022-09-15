@@ -143,9 +143,10 @@
 }
 
 .install_github <-
-    function(pkgs, lib, lib.loc, repos, force, ...)
+    function(pkgs, lib, lib.loc, repos, update, ask, force, ...)
 {
     doing <- .install_filter_github_repos(pkgs)
+    ask <- if (!update) "never" else if (update && !ask) "always" else "default"
 
     oopts <- options(repos = repos)     # required by remotes::
     on.exit(options(oopts))
@@ -154,7 +155,9 @@
         .message("Installing github package(s) %s", pkgNames)
         .install_github_load_remotes(pkgs, lib.loc = lib.loc)
         for (repo in doing)
-            remotes::install_github(repo, lib = lib, force = force, ...)
+            remotes::install_github(
+                repo, lib = lib, upgrade = ask, force = force, ...
+            )
     }
     setdiff(pkgs, doing)
 }
@@ -190,7 +193,7 @@
 
 .install <-
     function(pkgs, old_pkgs, instPkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
-        checkBuilt, force, ...)
+        checkBuilt, update, ask, force, ...)
 {
     requireNamespace("utils", quietly=TRUE) ||
         .stop("failed to load package 'utils'")
@@ -200,7 +203,8 @@
         checkBuilt = checkBuilt, force = force, ...
     )
     todo <- .install_github(
-        todo, lib = lib, lib.loc = lib.loc, repos = repos, force = force, ...
+        todo, lib = lib, lib.loc = lib.loc, repos = repos,
+        update = update, ask = ask, force = force, ...
     )
 
     if (length(todo))
@@ -424,7 +428,7 @@ install <-
 
     pkgs <- .install(
         pkgs, vout[["out_of_date"]], instPkgs = inst, repos = repos,
-        checkBuilt = checkBuilt, force = force, ...
+        checkBuilt = checkBuilt, update = update, ask = ask, force = force, ...
     )
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)
