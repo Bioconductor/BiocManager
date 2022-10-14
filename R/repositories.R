@@ -66,7 +66,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 .repositories_cran <-
     function(cran)
 {
-    if (identical(cran, c(CRAN = "@CRAN@")))
+    if (identical(cran, c(CRAN = "@CRAN@")) || is.na(cran))
         "https://cloud.r-project.org"
     else
         cran
