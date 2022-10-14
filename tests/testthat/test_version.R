@@ -270,6 +270,10 @@ test_that(".version_map() and BIOCONDUCTOR_CONFIG_FILE work", {
     expect_warning(
             .version_map_get_online_config("./fake/address/path/file.yaml")
     )
+    expect_identical(
+        .version_map_get_online(config),
+        .VERSION_MAP_SENTINEL
+    )
     skip_if_offline()
     expect_true(
         is.data.frame(
