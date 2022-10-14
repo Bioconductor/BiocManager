@@ -63,19 +63,20 @@ nor too new) with the version of R and \emph{Bioconductor} in use.
 \details{
 This function compares the version of installed packages
 to the version of packages associated with the version of \emph{R}
-and \emph{Bioconductor} currently in use.\preformatted{Packages are reported as 'out-of-date' if a more recent version
+and \emph{Bioconductor} currently in use.
+
+Packages are reported as 'out-of-date' if a more recent version
 is available at the repositories specified by
-`BiocManager::repositories()`.  Usually, `BiocManager::install()` is
+\code{BiocManager::repositories()}.  Usually, \code{BiocManager::install()} is
 sufficient to update packages to their most recent version.
 
 Packages are reported as 'too new' if the installed version is
 more recent than the most recent available in the
-`BiocManager::repositories()`. It is possible to down-grade by
+\code{BiocManager::repositories()}. It is possible to down-grade by
 re-installing a too new package "PkgA" with
-`BiocManger::install("PkgA")`. It is important for the user to
+\code{BiocManger::install("PkgA")}. It is important for the user to
 understand how their installation became too new, and to avoid
 this in the future.
-}
 }
 \examples{
 if (interactive()) {
