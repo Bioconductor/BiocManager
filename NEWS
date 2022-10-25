@@ -1,3 +1,14 @@
+CHANGES IN VERSION 1.30.19
+-------------------------
+
+MINOR CHANGES
+
+    o Updated warning message for clarity when packages are installed of the
+      same version or greater.
+    o The `ask` argument is passed through to the `remotes::install_github`
+    o Update unit tests which did not include the full scenario of options
+    o Catch zero length outputs when timeouts occur (#140, @hpages)
+
 CHANGES IN VERSION 1.30.18
 -------------------------
 
