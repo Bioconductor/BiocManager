@@ -259,7 +259,9 @@
     if (is.null(pkgs) || !update)
         return(pkgs)
 
-    .install(pkgs, old_pkgs, instPkgs, repos, force = force, ...)
+    .install(
+        pkgs, old_pkgs, instPkgs, repos, update = update, force = force, ...
+    )
     pkgs
 }
 

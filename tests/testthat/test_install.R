@@ -281,6 +281,25 @@ test_that("install() passes the force argument to .install", {
             )
         )
     )
+    expect_false(
+        with_mock(
+            `BiocManager:::.install` = function(...) {
+                list(...)[['update']]
+            },
+            `BiocManager:::.version_compare` = function(...) {
+                1L
+            },
+            `BiocManager:::.install_n_invalid_pkgs` = function(...) {
+                0L
+            },
+            `BiocManager:::.install_updated_version` = function(...) {
+                pkgs <<- list(...)[['update']]
+            },
+            suppressMessages(
+                install(force = FALSE, update = FALSE, ask = FALSE)
+            )
+        )
+    )    
 })
 
 test_that("install() without package names passes ... to install.packages", {
