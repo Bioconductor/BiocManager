@@ -193,14 +193,14 @@
 
 .install <-
     function(pkgs, old_pkgs, instPkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
-        checkBuilt, update, ask, force, ...)
+        update, ask, force, ...)
 {
     requireNamespace("utils", quietly=TRUE) ||
         .stop("failed to load package 'utils'")
 
     todo <- .install_repos(
         pkgs, old_pkgs, instPkgs = instPkgs, lib = lib, repos = repos,
-        checkBuilt = checkBuilt, force = force, ...
+        force = force, ...
     )
     todo <- .install_github(
         todo, lib = lib, lib.loc = lib.loc, repos = repos,
@@ -431,7 +431,7 @@ install <-
 
     pkgs <- .install(
         pkgs, vout[["out_of_date"]], instPkgs = inst, repos = repos,
-        checkBuilt = checkBuilt, update = update, ask = ask, force = force, ...
+        update = update, ask = ask, force = force, ...
     )
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)
