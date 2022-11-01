@@ -144,15 +144,6 @@ test_that("'containerRepository' & '.repositories_bioc' works", {
     ver <- "3.14"
     bin_url <- sprintf(bin_url, ver, "bioconductor_docker")
     expected_url <- setNames(bin_url, "BioCcontainers")
-    withr::with_envvar(
-        c(
-            "BIOCONDUCTOR_DOCKER_VERSION" = ver
-        ),
-        expect_identical(
-            containerRepository(version = ver),
-            expected_url
-        )
-    )
     # When no BIOCONDUCTOR_DOCKER_VERSION is set, no 'BioCcontainers' repo
     withr::with_envvar(
         c(
