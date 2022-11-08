@@ -137,6 +137,8 @@ format.version_sentinel <-
         return(.VERSION_MAP_SENTINEL)
 
     bioc_r_map <- .version_map_config_element(txt, "r_ver_for_bioc_ver")
+    if (!length(bioc_r_map))
+        return(.VERSION_MAP_SENTINEL)
     bioc <- package_version(names(bioc_r_map))
     r <- package_version(unname(bioc_r_map))
 

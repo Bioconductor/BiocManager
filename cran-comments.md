@@ -1,10 +1,12 @@
-Tested on Fedora with `rhub::check_on_fedora()`.
+We tried to use `rhub::check_on_fedora()` / `rhub::check_on_debian()` but they
+are not working, currently.
+
 We also checked for any major issues with `revdepcheck::revdep_check()` and
 found none.
 
 ## Test environments
-* local Ubuntu 20.10 (linux): R 4.0.5 patched, R 4.1.1 patched, R 4.2.0 beta
-* win-builder.r-project.org (windows): R 4.1.3, R 4.2.0 RC, devel
+* local Ubuntu 22.04 (linux): R 4.1.3 patched, R 4.2.1 patched, R devel 
+* win-builder.r-project.org (windows): R 4.2.1 patched, devel
 
 ## R CMD check results
 
@@ -18,10 +20,8 @@ Packages suggested but not available for checking:
 
 ## revdepcheck results
 
-We checked 157 reverse dependencies (0 from CRAN + 157 from Bioconductor),
+We checked 163 reverse dependencies (0 from CRAN + 163 from Bioconductor),
 comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems
  * We failed to check 0 packages
-
-https://github.com/LiNk-NY/BiocManagerRevDeps

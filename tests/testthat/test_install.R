@@ -44,7 +44,10 @@ test_that(".install_github() works", {
     .skip_if_misconfigured()
     skip_if_offline()
     repos <- repositories()
-    expect_identical(character(0), .install_github(character(), repos = repos))
+    expect_identical(
+        character(0),
+        .install_github(character(), repos = repos, update = FALSE, ask = TRUE)
+    )
 })
 
 test_that("Versions are checked in install", {
@@ -278,6 +281,44 @@ test_that("install() passes the force argument to .install", {
             )
         )
     )
+    expect_false(
+        with_mock(
+            `BiocManager:::.install` = function(...) {
+                list(...)[['update']]
+            },
+            `BiocManager:::.version_compare` = function(...) {
+                1L
+            },
+            `BiocManager:::.install_n_invalid_pkgs` = function(...) {
+                0L
+            },
+            `BiocManager:::.install_updated_version` = function(...) {
+                pkgs <<- list(...)[['update']]
+            },
+            suppressMessages(
+                install(force = FALSE, update = FALSE, ask = FALSE)
+            )
+        )
+    )    
+    expect_false(
+        with_mock(
+            `BiocManager:::.install` = function(...) {
+                list(...)[['ask']]
+            },
+            `BiocManager:::.version_compare` = function(...) {
+                1L
+            },
+            `BiocManager:::.install_n_invalid_pkgs` = function(...) {
+                0L
+            },
+            `BiocManager:::.install_updated_version` = function(...) {
+                pkgs <<- list(...)[['ask']]
+            },
+            suppressMessages(
+                install(force = FALSE, update = FALSE, ask = FALSE)
+            )
+        )
+    )    
 })
 
 test_that("install() without package names passes ... to install.packages", {
