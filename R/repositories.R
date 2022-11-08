@@ -8,16 +8,6 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     conflict <- conflict & repos != "@CRAN@"
     conflicts <- repos[conflict]
 
-    ## FIXME: allow for MRAN repositories from appropriate dates for
-    ## BiocManager::version()
-    ##
-    ## pattern <-
-    ##     "snapshot/(20[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{2})/*$"
-    ## is_snapshot <- grepl(pattern, repos)
-    ## if (any(is_snapshot)) {
-    ##     ...
-    ## }
-
     if (length(conflicts)) {
         txt <- paste(
             "'getOption(\"repos\")' replaces Bioconductor standard ",
@@ -46,7 +36,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     if (is.na(rspm_version)) {
         cran
     } else {
-        rspm_version <- format(as.Date(rspm_version, "%m/%d/%Y"), "%Y-%m-%d")
+        rspm_version <- as.Date(rspm_version, "%Y-%m-%d")
+        if (is.na(rspm_version))
+            stop("'RSPM' date format does not match '%Y-%m-%d'")
         paste0("https://packagemanager.rstudio.com/cran/", rspm_version)
     }
 }
@@ -58,7 +50,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     if (is.na(mran_version)) {
         cran
     } else {
-        mran_version <- format(as.Date(mran_version, "%m/%d/%Y"), "%Y-%m-%d")
+        mran_version <- as.Date(mran_version, "%Y-%m-%d")
+        if (is.na(mran_version))
+            stop("'MRAN' date format does not match '%Y-%m-%d'")
         paste0("https://mran.microsoft.com/snapshot/", mran_version)
     }
 }
@@ -86,7 +80,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
             paste0("'", valid, "'", collapse = " ")
         )
     cran <- repos["CRAN"]
-    rename <- repos == "@CRAN@"
+    rename <- repos == "@CRAN@" | names(repos) == "CRAN"
     repos[rename] <- switch(
         opt,
         RSPM = .repositories_rspm(cran),
