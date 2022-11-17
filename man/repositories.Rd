@@ -81,12 +81,13 @@ experimental and binary installations are intended to be used with
 \code{bioconductor/bioconductor_docker} images where such installations
 correspond to specific versions of Linux / Ubuntu.
 
-If alternative default repositories are known to provide
-appropriate versions of CRAN or \emph{Bioconductor} packages, the warning
-may be silenced (displayed as a message) with
-\code{options(BiocManager.check_repositories = FALSE)}. A message is
-still printed, to serve as a reminder when debugging problems
-related to incompatible package installation.
+If alternative default repositories are known to provide appropriate
+versions of CRAN or \emph{Bioconductor} packages, the message may be silenced
+by setting either the option or the variable to \code{FALSE}, i.e.,
+\code{options(BiocManager.check_repositories = FALSE)} or
+\env{BIOCMANAGER_CHECK_REPOSITORIES=FALSE}. Alternative default
+repositories are not guaranteed to work without issues related to
+incompatible package installations and are used at the user's own risk.
 
 The intended use of \verb{site_repository =} is to enable installation of
 packages not available in the default repositories, e.g., packages
