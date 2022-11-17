@@ -1,5 +1,13 @@
 BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
+.repositories_check_repos_envopt <-
+    function()
+{
+    opt <- Sys.getenv("BIOCMANAGER_CHECK_REPOSITORIES", TRUE)
+    opt <- getOption("BiocManager.check_repositories", opt)
+    isTRUE(as.logical(opt))
+}
+
 .repositories_check_repos <-
     function(repos)
 {
@@ -21,18 +29,19 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     if (length(conflicts)) {
         txt <- paste(
             "'getOption(\"repos\")' replaces Bioconductor standard ",
-            "repositories, see '?repositories' for details"
+            "repositories, see ",
+            "'help(\"repositories\", package = \"BiocManager\")' for details."
         )
         fmt <- paste0(
             .msg(txt, exdent = 0),
-            "\n\nreplacement repositories:",
+            "\n\nReplacement repositories:",
             "\n    %s\n"
         )
         repos_string <- paste0(
             names(conflicts), ": ", unname(conflicts),
             collapse = "\n    "
         )
-        if (getOption("BiocManager.check_repositories", TRUE))
+        if (.repositories_check_repos_envopt())
             .message(fmt, repos_string, call. = FALSE, wrap. = FALSE)
     }
 
