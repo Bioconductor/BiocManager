@@ -219,12 +219,13 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' `bioconductor/bioconductor_docker` images where such installations
 #' correspond to specific versions of Linux / Ubuntu.
 #'
-#' If alternative default repositories are known to provide
-#' appropriate versions of CRAN or _Bioconductor_ packages, the warning
-#' may be silenced (displayed as a message) with
-#' `options(BiocManager.check_repositories = FALSE)`. A message is
-#' still printed, to serve as a reminder when debugging problems
-#' related to incompatible package installation.
+#' If alternative default repositories are known to provide appropriate
+#' versions of CRAN or _Bioconductor_ packages, the message may be silenced
+#' by setting either the option or the variable to `FALSE`, i.e.,
+#' `options(BiocManager.check_repositories = FALSE)` or
+#' \env{BIOCMANAGER_CHECK_REPOSITORIES=FALSE}. Alternative default
+#' repositories are not guaranteed to work without issues related to
+#' incompatible package installations and are used at the user's own risk.
 #'
 #' The intended use of `site_repository =` is to enable installation of
 #' packages not available in the default repositories, e.g., packages
