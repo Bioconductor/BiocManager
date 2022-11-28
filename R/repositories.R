@@ -93,8 +93,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 #' @importFrom stats setNames
 .repositories_bioc <-
-    function(version)
+    function(version, ...)
 {
+    args <- list(...)
+    type <- args[["type"]]
     mirror <- getOption("BioC_mirror", "https://bioconductor.org")
     paths <- c(
         BioCsoft = "bioc",
@@ -105,7 +107,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
     c(
-        containerRepository(version = version),
+        containerRepository(version = version, type = type),
         setNames(bioc_repos, names(paths))
     )
 }
@@ -126,10 +128,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 }
 
 .repositories <-
-    function(site_repository, version)
+    function(site_repository, version, ...)
 {
     base <- .repositories_base()
-    bioc <- .repositories_bioc(version)
+    bioc <- .repositories_bioc(version, ...)
 
     repos <- c(site_repository = site_repository, bioc, base)
     repos[!duplicated(names(repos))]
@@ -152,6 +154,11 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' @param version (Optional) `character(1)` or `package_version`
 #'     indicating the _Bioconductor_ version (e.g., "3.8") for which
 #'     repositories are required.
+#'
+#' @param type (Optional) `character(1)` indicating the type of package
+#'   repository to retrieve (default: "both"). Setting `type` to "source" will
+#'   disable any Bioconductor binary packages specifically built for the
+#'   containers.
 #'
 #' @details
 #'
@@ -249,15 +256,17 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #'
 #' @md
 #' @export repositories
-repositories <-
-    function(site_repository = character(), version = BiocManager::version())
-{
+repositories <- function(
+    site_repository = character(),
+    version = BiocManager::version(),
+    type = "both"
+) {
     stopifnot(
         length(site_repository) <= 1L,
         is.character(site_repository), !anyNA(site_repository)
     )
     version <- .version_validate(version)
-    .repositories(site_repository, version)
+    .repositories(site_repository, version, type = type)
 }
 
 ## is the docker container configured correctly?
@@ -324,9 +333,11 @@ repositories <-
 #' @export
 containerRepository <-
     function(
-        version = BiocManager::version()
+        version = BiocManager::version(), type = "binary"
     )
 {
+    if (identical(type, "source"))
+        return(character())
     platform_docker <- .repository_container_version()
     container_version <- platform_docker$container_version
     platform <- platform_docker$platform
