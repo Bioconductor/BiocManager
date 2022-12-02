@@ -29,66 +29,13 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     repos
 }
 
-.repositories_rspm <-
-    function(cran)
-{
-    rspm_version <- .version_field("RSPM")
-    if (is.na(rspm_version)) {
-        cran
-    } else {
-        rspm_version <- as.Date(rspm_version, "%Y-%m-%d")
-        if (is.na(rspm_version))
-            stop("'RSPM' date format does not match '%Y-%m-%d'")
-        paste0("https://packagemanager.rstudio.com/cran/", rspm_version)
-    }
-}
-
-.repositories_mran <-
-    function(cran)
-{
-    mran_version <- .version_field("MRAN")
-    if (is.na(mran_version)) {
-        cran
-    } else {
-        mran_version <- as.Date(mran_version, "%Y-%m-%d")
-        if (is.na(mran_version))
-            stop("'MRAN' date format does not match '%Y-%m-%d'")
-        paste0("https://mran.microsoft.com/snapshot/", mran_version)
-    }
-}
-
-.repositories_cran <-
-    function(cran)
-{
-    if (identical(cran, c(CRAN = "@CRAN@")) || is.na(cran))
-        "https://cloud.r-project.org"
-    else
-        cran
-}
-
 .repositories_base <-
     function()
 {
     repos <- getOption("repos")
     repos <- .repositories_check_repos(repos)
-    ## default <- if (version() > "3.11") "MRAN" else "CRAN"
-    opt <- getOption("BiocManager.snapshot", "CRAN")
-    valid <- c("CRAN", "MRAN", "RSPM")
-    if (length(opt) != 1L || !opt %in% valid)
-        .stop(
-            "'getOption(\"BiocManager.snapshot\")' must be one of %s",
-            paste0("'", valid, "'", collapse = " ")
-        )
-    cran <- repos["CRAN"]
-    rename <- repos == "@CRAN@" | names(repos) == "CRAN"
-    repos[rename] <- switch(
-        opt,
-        RSPM = .repositories_rspm(cran),
-        MRAN = .repositories_mran(cran),
-        CRAN = .repositories_cran(cran),
-        .stop("unknown option 'BiocManager.snapshot = \"%s\"'", opt)
-    )
-
+    rename <- repos == "@CRAN@"
+    repos[rename] <- "https://cloud.r-project.org"
     repos
 }
 
