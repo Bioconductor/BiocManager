@@ -42,7 +42,7 @@ chooseCRANmirror()
 install.packages("BiocManager")
 ```
 
-## Installing _Bioconductor_, _CRAN_, or github packages
+## Installing _Bioconductor_, _CRAN_, or GitHub packages
 
 Install _Bioconductor_ (or CRAN) packages with
 
