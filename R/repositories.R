@@ -85,7 +85,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 #' @title Display current Bioconductor and CRAN repositories.
 #'
-#' @aliases BiocManager.snapshot BiocManager.check_repositories
+#' @aliases BiocManager.check_repositories
 #'
 #' @description `repositories()` reports the URLs from which to
 #'     install _Bioconductor_ and CRAN packages. It is used by
@@ -111,33 +111,6 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' other and the current version of packages on CRAN. _Bioconductor_
 #' best practice is to use packages from the same release, and from
 #' the appropriate CRAN repository.
-#'
-#' CRAN packages for out-of-date _Bioconductor_ installations can be
-#' installed from historical 'snapshots' consistent with the last date
-#' the Bioconductor version was current.  This behavior can be specified with
-#' `BiocManager.snapshot` For example, _Bioconductor_ version 3.11 was current
-#' until October 28, 2020; CRAN packages are therefore installed from
-#' a snapshot created on 2020-10-28. By default, the snapshots are
-#' from 'MRAN', the [Microsoft R Archive Network][MRAN]. Use
-#' `options(BiocManager.snapshot = "RSPM")` to instead use the
-#' [RStudio Package Manager][RSPM], or `options(BiocManager.snapshot =
-#' "CRAN")` to use the current CRAN repository (i.e., disabling the
-#' snapshot feature).
-#'
-#' [MRAN]: https://mran.microsoft.com/timemachine
-#' [RSPM]: https://packagemanager.rstudio.com/client/#/repos/2/overview
-#'
-#' It may be desirable to specify different default repositories,
-#' especially CRAN, for intentionally out-of-date _Bioconductor_
-#' releases (e.g., to support reproducible research). Use the approach
-#' provided by base _R_ to specify alternative repositories, e.g.,
-#' `options(repos = c(CRAN =
-#' "https://mran.microsoft.com/snapshot/2020-02-08"))`. This is
-#' supported, but generates an error because specification of an
-#' inappropriate CRAN repository (one providing packages not
-#' consistent with the dates of the _Bioconductor_ release) results in
-#' use of CRAN packages not consistent with _Bioconductor_ best
-#' practices.
 #'
 #' To install binary packages on containerized versions of Bioconductor,
 #' a default binary package location URL is set as a package constant,

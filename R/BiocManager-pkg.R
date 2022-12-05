@@ -38,9 +38,8 @@ NULL
 #' Options influencing package behavior (see `?options`, `?getOption`)
 #' include:
 #'
-#' - `"repos"`, `"BiocManager.check_repositories"`,
-#'   `"BiocManager.snapshot"`: URLs of additional repositories for use
-#'   by `BiocManger::install()`. See `?repositories`.
+#' - `"repos"`, `"BiocManager.check_repositories"`: URLs of additional
+#'   repositories for use by `BiocManger::install()`. See `?repositories`.
 #'
 #' - `"pkgType"`: The default type of packages to be downloaded and
 #'   installed; see `?install.packages`.

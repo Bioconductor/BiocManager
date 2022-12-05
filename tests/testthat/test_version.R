@@ -318,7 +318,7 @@ test_that(".VERSION_MAP_SENTINEL class and colnames", {
     )
     ## check column names
     expect_identical(
-        c("Bioc", "R", "BiocStatus", "RSPM", "MRAN"),
+        c("Bioc", "R", "BiocStatus"),
         names(.VERSION_MAP_SENTINEL)
     )
 })
@@ -346,40 +346,4 @@ test_that("BiocVersion version matches with .version_map()", {
         expect(bioc_version %in% map$Bioc, failure_message)
     }
     expect_version(bioc_version, R_version)
-})
-
-test_that(".version_map_get() works with MRAN & RSPM", {
-
-    config0 <- c(
-        'r_ver_for_bioc_ver',
-        '  "3.9": "3.6"',
-        '  "3.10": "3.6"',
-        '  "3.11": "4.0"',
-        '  "3.12": "4.0"',
-        '  "3.13": "4.1"'
-    )
-    writeLines(config0, config <- tempfile())
-    map <- .version_map_get(config)
-    expect_identical(dim(map), c(6L, 5L))
-    expect_true(all(c("RSPM", "MRAN") %in% names(map)))
-    expect_true(all(is.na(map[["RSPM"]])))
-    expect_true(all(is.na(map[["MRAN"]])))
-
-    config1 <- c(
-        config0,
-        'rspm_ver_for_bioc_ver',
-        '  "3.10": 04/27/2020"',
-        '  "3.11": "10/28/2020"',
-        'mran_ver_for_bioc_ver',
-        '  "3.10": "04/27/2020"',
-        '  "3.11": "10/28/2020"',
-        collapse = "\n"
-    )
-    writeLines(config1, config <- tempfile())
-    map <- .version_map_get(config)
-    expect_identical(dim(map), c(6L, 5L))
-    expect_true(all(c("RSPM", "MRAN") %in% names(map)))
-    expect_identical(sum(is.na(map[["RSPM"]])), 4L)
-    expect_identical(sum(is.na(map[["MRAN"]])), 4L)
-
 })
