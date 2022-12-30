@@ -153,6 +153,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #'     indicating the _Bioconductor_ version (e.g., "3.8") for which
 #'     repositories are required.
 #'
+#' @param ... Additional parameters passed to lower level functions, not
+#'   used.
+#'
 #' @param type (Optional) `character(1)` indicating the type of package
 #'   repository to retrieve (default: "both"). Setting `type` to "source" will
 #'   disable any Bioconductor binary packages specifically built for the
@@ -257,6 +260,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 repositories <- function(
     site_repository = character(),
     version = BiocManager::version(),
+    ...,
     type = "both"
 ) {
     stopifnot(
@@ -264,7 +268,7 @@ repositories <- function(
         is.character(site_repository), !anyNA(site_repository)
     )
     version <- .version_validate(version)
-    .repositories(site_repository, version, type = type)
+    .repositories(site_repository, version, ..., type = type)
 }
 
 ## is the docker container configured correctly?
