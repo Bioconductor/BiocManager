@@ -11,6 +11,7 @@
 repositories(
   site_repository = character(),
   version = BiocManager::version(),
+  ...,
   type = "both"
 )
 
@@ -26,6 +27,9 @@ repositories returned by the function.}
 \item{version}{(Optional) \code{character(1)} or \code{package_version}
 indicating the \emph{Bioconductor} version (e.g., "3.8") for which
 repositories are required.}
+
+\item{...}{Additional parameters passed to lower level functions, not
+used.}
 
 \item{type}{(Optional) \code{character(1)} indicating the type of package
 repository to retrieve (default: "both"). Setting \code{type} to "source" will
