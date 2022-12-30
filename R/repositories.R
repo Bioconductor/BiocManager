@@ -93,10 +93,8 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 #' @importFrom stats setNames
 .repositories_bioc <-
-    function(version, ...)
+    function(version, ..., type = NULL)
 {
-    args <- list(...)
-    type <- args[["type"]]
     mirror <- getOption("BioC_mirror", "https://bioconductor.org")
     paths <- c(
         BioCsoft = "bioc",
