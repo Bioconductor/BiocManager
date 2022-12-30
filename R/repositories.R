@@ -34,7 +34,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
         )
         fmt <- paste0(
             .msg(txt, exdent = 0),
-            "\n\nReplacement repositories:",
+            "\nReplacement repositories:",
             "\n    %s\n"
         )
         repos_string <- paste0(
@@ -42,7 +42,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
             collapse = "\n    "
         )
         if (.repositories_check_repos_envopt())
-            .message(fmt, repos_string, call. = FALSE, wrap. = FALSE)
+            .message(
+                fmt, repos_string,
+                call. = FALSE, wrap. = FALSE, appendLF = FALSE
+            )
     }
 
     repos
