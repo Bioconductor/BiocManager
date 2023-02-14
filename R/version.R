@@ -40,9 +40,9 @@
 .version_sentinel <-
     function(msg)
 {
-    version <- package_version(list())
+    version <- package_version(NA, strict = FALSE)
     structure(
-        unclass(version),
+        version,
         msg = msg,
         class = c("version_sentinel", class(version))
     )
@@ -184,10 +184,10 @@ format.version_sentinel <-
 .version_map_get_offline <-
     function()
 {
-    bioc <- tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
-    }, error = identity)
-    if (inherits(bioc, "error"))
+    bioc <- suppressWarnings({
+       packageVersion("BiocVersion")[, 1:2]
+    })
+    if (is.na(bioc))
         return(.VERSION_MAP_SENTINEL)
 
     r <- package_version(R.Version())[,1:2]
@@ -440,8 +440,8 @@ format.version_sentinel <-
 {
     tryCatch({
         packageVersion("BiocVersion")[, 1:2]
-    }, error = function(e) {
-        .version_sentinel("package 'BiocVersion' not installed")
+    }, warning = function(w) {
+        .version_sentinel(conditionMessage(w))
     })
 }
 
@@ -469,7 +469,7 @@ version <-
 {
     tryCatch({
         packageVersion("BiocVersion")[, 1:2]
-    }, error = function(e) {
+    }, warning = function(w) {
         .version_choose_best()
     })
 }
