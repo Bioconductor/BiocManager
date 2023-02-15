@@ -184,9 +184,16 @@ format.version_sentinel <-
 .version_map_get_offline <-
     function()
 {
-    bioc <- suppressWarnings({
-       .get_BiocVersion_version()
-    })
+    bioc <- tryCatch({
+        .get_BiocVersion_version()
+    },
+        error = function(e) {
+            .version_sentinel(conditionMessage(e))
+        },
+        warning = function(w) {
+            .version_sentinel(conditionMessage(w))
+        }
+    )
     if (is.na(bioc))
         return(.VERSION_MAP_SENTINEL)
 
@@ -445,6 +452,8 @@ format.version_sentinel <-
         .get_BiocVersion_version()
     }, warning = function(w) {
         .version_sentinel(conditionMessage(w))
+    }, error = function(e) {
+        .version_sentinel(conditionMessage(e))
     })
 }
 
@@ -472,9 +481,14 @@ version <-
 {
     tryCatch({
         .get_BiocVersion_version()
-    }, warning = function(w) {
-        .version_choose_best()
-    })
+    },
+        warning = function(w) {
+            .version_choose_best()
+        },
+        error = function(e) {
+            .version_choose_best()
+        }
+    )
 }
 
 .package_version <-
