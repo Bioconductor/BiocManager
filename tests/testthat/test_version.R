@@ -383,3 +383,50 @@ test_that(".version_map_get() works with MRAN & RSPM", {
     expect_identical(sum(is.na(map[["MRAN"]])), 4L)
 
 })
+
+test_that(".version_sentinel() works", {
+    msg <- "this is a message"
+    vs <- .version_sentinel(msg)
+    expect_true(is.na(vs))
+    expect_true(inherits(vs, "version_sentinel"))
+    expect_true(inherits(vs, "package_version"))
+    out <- capture.output(vs)
+    expect_identical(
+        paste0("unknown version: ", msg),
+        out
+    )
+})
+
+test_that(".version_map_get_offline() works", {
+    with_mock(
+        `BiocManager:::.get_BiocVersion_version` = function(...) {
+            package_version(NA, strict = FALSE)
+        },
+        expect_identical(
+            .version_map_get_offline(),
+            .VERSION_MAP_SENTINEL
+        )
+    )
+    .skip_if_misconfigured()
+    skip_if_offline()
+    rver <- package_version("4.3")
+    class(rver) <- c("R_system_version", class(rver))
+    with_mock(
+        `BiocManager:::.get_BiocVersion_version` = function(...) {
+            package_version("3.14")
+        },
+        `BiocManager:::.get_R_version` = function(...) {
+            rver <- package_version("4.3")
+            class(rver) <- c("R_system_version", class(rver))
+            rver
+        },
+        expect_identical(
+            .version_map_get_offline(),
+            rbind(.VERSION_MAP_SENTINEL, data.frame(
+                Bioc = package_version('3.14'), R = rver,
+                BiocStatus = factor(NA, levels = .VERSION_TAGS),
+                RSPM = NA_character_, MRAN = NA_character_
+            ))
+        )
+    )
+})

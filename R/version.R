@@ -185,12 +185,12 @@ format.version_sentinel <-
     function()
 {
     bioc <- suppressWarnings({
-       packageVersion("BiocVersion")[, 1:2]
+       .get_BiocVersion_version()
     })
     if (is.na(bioc))
         return(.VERSION_MAP_SENTINEL)
 
-    r <- package_version(R.Version())[,1:2]
+    r <- .get_R_version()[,1:2]
 
     status <- .VERSION_TAGS
     rbind(.VERSION_MAP_SENTINEL, data.frame(
@@ -239,6 +239,9 @@ format.version_sentinel <-
 
 .get_R_version <- function()
     getRversion()
+
+.get_BiocVersion_version <- function()
+    packageVersion("BiocVersion")[, 1:2]
 
 .version_string <-
     function(bioc_version = version())
@@ -439,7 +442,7 @@ format.version_sentinel <-
     function()
 {
     tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
+        .get_BiocVersion_version()
     }, warning = function(w) {
         .version_sentinel(conditionMessage(w))
     })
@@ -468,7 +471,7 @@ version <-
     function()
 {
     tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
+        .get_BiocVersion_version()
     }, warning = function(w) {
         .version_choose_best()
     })
@@ -495,5 +498,5 @@ version <-
 print.version_sentinel <-
     function(x, ...)
 {
-    cat(format(x), "\n")
+    cat(format(x), "\n", sep = "")
 }
