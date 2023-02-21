@@ -445,18 +445,6 @@ format.version_sentinel <-
     version
 }
 
-.local_version <-
-    function()
-{
-    tryCatch({
-        .get_BiocVersion_version()
-    }, warning = function(w) {
-        .version_sentinel(conditionMessage(w))
-    }, error = function(e) {
-        .version_sentinel(conditionMessage(e))
-    })
-}
-
 #' Version of Bioconductor currently in use.
 #'
 #' `version()` reports the version of _Bioconductor_ appropropriate
