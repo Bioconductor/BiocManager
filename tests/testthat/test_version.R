@@ -407,6 +407,24 @@ test_that(".version_map_get_offline() works", {
             .VERSION_MAP_SENTINEL
         )
     )
+    with_mock(
+        `BiocManager:::.get_BiocVersion_version` = function(...) {
+            stop("there is no package called 'ABCD'")
+        },
+        expect_identical(
+            .version_map_get_offline(),
+            .VERSION_MAP_SENTINEL
+        )
+    )
+    with_mock(
+        `BiocManager:::.get_BiocVersion_version` = function(...) {
+            warning("no package 'ABCD' was found")
+        },
+        expect_identical(
+            .version_map_get_offline(),
+            .VERSION_MAP_SENTINEL
+        )
+    )
     .skip_if_misconfigured()
     skip_if_offline()
     rver <- package_version("4.3")
@@ -427,6 +445,36 @@ test_that(".version_map_get_offline() works", {
                 BiocStatus = factor(NA, levels = .VERSION_TAGS),
                 RSPM = NA_character_, MRAN = NA_character_
             ))
+        )
+    )
+})
+
+test_that("version chooses best", {
+    target_version <-  structure(
+        list(c(3L, 17L), class = c("package_version", "numeric_version"))
+    )
+    with_mock(
+        `BiocManager:::.get_BiocVersion_version` = function(...) {
+            stop("there is no package called 'ABCD'")
+        },
+        `BiocManager:::.version_choose_best` = function(...) {
+            target_version
+        },
+        expect_identical(
+            version(),
+            target_version
+        )
+    )
+    with_mock(
+        `BiocManager:::.get_BiocVersion_version` = function(...) {
+            warning("no package 'ABCD' was found")
+        },
+        `BiocManager:::.version_choose_best` = function(...) {
+            target_version
+        },
+        expect_identical(
+            version(),
+            target_version
         )
     )
 })
