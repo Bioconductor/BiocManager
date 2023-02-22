@@ -397,28 +397,22 @@ test_that(".version_sentinel() works", {
     )
 })
 
+test_that(".get_BiocVersion_version returns .version_sentinel output", {
+    with_mock(
+        `BiocManager:::.get_sys_file` = function(...) {
+            ""
+        },
+        expect_identical(
+            .get_BiocVersion_version(),
+            .version_sentinel("BiocVersion is not installed")
+        )
+    )
+})
+
 test_that(".version_map_get_offline() works", {
     with_mock(
         `BiocManager:::.get_BiocVersion_version` = function(...) {
-            package_version(NA, strict = FALSE)
-        },
-        expect_identical(
-            .version_map_get_offline(),
-            .VERSION_MAP_SENTINEL
-        )
-    )
-    with_mock(
-        `BiocManager:::.get_BiocVersion_version` = function(...) {
-            stop("there is no package called 'ABCD'")
-        },
-        expect_identical(
-            .version_map_get_offline(),
-            .VERSION_MAP_SENTINEL
-        )
-    )
-    with_mock(
-        `BiocManager:::.get_BiocVersion_version` = function(...) {
-            warning("no package 'ABCD' was found")
+            .version_sentinel("BiocVersion is not installed")
         },
         expect_identical(
             .version_map_get_offline(),
@@ -455,19 +449,7 @@ test_that("version chooses best", {
     )
     with_mock(
         `BiocManager:::.get_BiocVersion_version` = function(...) {
-            stop("there is no package called 'ABCD'")
-        },
-        `BiocManager:::.version_choose_best` = function(...) {
-            target_version
-        },
-        expect_identical(
-            version(),
-            target_version
-        )
-    )
-    with_mock(
-        `BiocManager:::.get_BiocVersion_version` = function(...) {
-            warning("no package 'ABCD' was found")
+            .version_sentinel("BiocVersion is not installed")
         },
         `BiocManager:::.version_choose_best` = function(...) {
             target_version
