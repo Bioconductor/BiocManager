@@ -1,3 +1,22 @@
+CHANGES IN VERSION 1.30.20
+-------------------------
+
+NEW FEATURES
+
+    o Add `BIOCMANAGER_CHECK_REPOSITORIES` environment variable for
+      non-interactive sessions as an alternative to the
+      `BiocManager.check_repositories` option (#144, @HenrikBengtsson)
+
+MINOR CHANGES
+
+    o Re-use and translate `update` and `ask` arguments when installing via
+      `install_github` (#126, @Jiefei-Wang)
+    o Allow `type` argument during package installation to opt out of binary
+      installations (#103, @lshep)
+    o Check `BiocVersion` installation with `system.file` rather than with
+      `packageVersion` (K. Hornik)
+
+
 CHANGES IN VERSION 1.30.19
 -------------------------
 
