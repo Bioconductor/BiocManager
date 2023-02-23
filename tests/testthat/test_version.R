@@ -397,13 +397,13 @@ test_that(".version_sentinel() works", {
     )
 })
 
-test_that(".get_BiocVersion_version returns .version_sentinel output", {
+test_that(".version_BiocVersion returns .version_sentinel output", {
     with_mock(
-        `BiocManager:::.get_sys_file` = function(...) {
-            ""
+        `BiocManager:::.version_BiocVersion_installed` = function(...) {
+            FALSE
         },
         expect_identical(
-            .get_BiocVersion_version(),
+            .version_BiocVersion(),
             .version_sentinel("BiocVersion is not installed")
         )
     )
@@ -411,7 +411,7 @@ test_that(".get_BiocVersion_version returns .version_sentinel output", {
 
 test_that(".version_map_get_offline() works", {
     with_mock(
-        `BiocManager:::.get_BiocVersion_version` = function(...) {
+        `BiocManager:::.version_BiocVersion` = function(...) {
             .version_sentinel("BiocVersion is not installed")
         },
         expect_identical(
@@ -424,10 +424,10 @@ test_that(".version_map_get_offline() works", {
     rver <- package_version("4.3")
     class(rver) <- c("R_system_version", class(rver))
     with_mock(
-        `BiocManager:::.get_BiocVersion_version` = function(...) {
+        `BiocManager:::.version_BiocVersion` = function(...) {
             package_version("3.14")
         },
-        `BiocManager:::.get_R_version` = function(...) {
+        `BiocManager:::.version_R_version` = function(...) {
             rver <- package_version("4.3")
             class(rver) <- c("R_system_version", class(rver))
             rver
@@ -448,7 +448,7 @@ test_that("version chooses best", {
         list(c(3L, 17L), class = c("package_version", "numeric_version"))
     )
     with_mock(
-        `BiocManager:::.get_BiocVersion_version` = function(...) {
+        `BiocManager:::.version_BiocVersion` = function(...) {
             .version_sentinel("BiocVersion is not installed")
         },
         `BiocManager:::.version_choose_best` = function(...) {

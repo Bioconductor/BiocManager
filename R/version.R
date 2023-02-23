@@ -184,11 +184,11 @@ format.version_sentinel <-
 .version_map_get_offline <-
     function()
 {
-    bioc <- .get_BiocVersion_version()
+    bioc <- .version_BiocVersion()
     if (is.na(bioc))
         return(.VERSION_MAP_SENTINEL)
 
-    r <- .get_R_version()[,1:2]
+    r <- .version_R_version()[,1:2]
 
     status <- .VERSION_TAGS
     rbind(.VERSION_MAP_SENTINEL, data.frame(
@@ -235,20 +235,19 @@ format.version_sentinel <-
     map[idx, field]
 }
 
-.get_R_version <- function()
+.version_R_version <- function()
     getRversion()
 
-.get_sys_file <- function()
-    system.file(package = "BiocVersion")
+.version_BiocVersion_installed <- function()
+    nzchar(system.file(package = "BiocVersion"))
 
-.get_BiocVersion_version <-
+.version_BiocVersion <-
     function()
 {
-    if (nzchar(.get_sys_file())) {
+    if (.version_BiocVersion_installed())
         packageVersion("BiocVersion")[, 1:2]
-    } else {
+    else
         .version_sentinel("BiocVersion is not installed")
-    }
 }
 
 .version_string <-
@@ -266,7 +265,7 @@ format.version_sentinel <-
 ## the version is invalid. It does NOT call message / warning / etc
 ## directly.
 .version_validity <-
-    function(version, map = .version_map(), r_version = .get_R_version())
+    function(version, map = .version_map(), r_version = .version_R_version())
 {
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
@@ -468,11 +467,11 @@ format.version_sentinel <-
 version <-
     function()
 {
-    bioc <- .get_BiocVersion_version()
+    bioc <- .version_BiocVersion()
     if (is.na(bioc))
-        .version_choose_best()
-    else
-        bioc
+        bioc <- .version_choose_best()
+
+    bioc
 }
 
 .package_version <-
