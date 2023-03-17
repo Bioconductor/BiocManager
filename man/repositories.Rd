@@ -134,16 +134,16 @@ containerRepository() # character(0) if not within a Bioconductor container
 
 }
 \seealso{
-\verb{BiocManager::\link{install}()} Installs or updates Bioconductor,
+\code{BiocManager::\link{install}()} Installs or updates Bioconductor,
 CRAN, and GitHub packages.
 
-\verb{\link{chooseBioCmirror}()} choose an alternative Bioconductor
+\code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
 mirror; not usually necessary.
 
-\verb{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
-usually necessary.
+\code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror;
+not usually necessary.
 
-\verb{\link{setRepositories}()} Select additional repositories for
+\code{\link{setRepositories}()} Select additional repositories for
 searching.
 }
 \keyword{environment}

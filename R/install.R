@@ -285,13 +285,13 @@
 #' packages uses the `remotes::install_github()`.
 #'
 #' When installing CRAN or _Bioconductor_ packages, typical arguments
-#' include: `lib.loc`, passed to `\link{old.packages}()` and used to
+#' include: `lib.loc`, passed to \code{\link{old.packages}()} and used to
 #' determine the library location of installed packages to be updated;
-#' and `lib`, passed to `\link{install.packages}()` to determine the
+#' and `lib`, passed to \code{\link{install.packages}()} to determine the
 #' library location where `pkgs` are to be installed.
 #'
 #' When installing GitHub packages, `...` is passed to the
-#' \pkg{remotes} package functions `\link[remotes]{install_github}()`
+#' \pkg{remotes} package functions \code{\link[remotes]{install_github}()}
 #' and `remotes:::install()`. A typical use is to build vignettes, via
 #' `dependencies=TRUE, build_vignettes=TRUE`.
 #'
@@ -320,7 +320,7 @@
 #'     representing an additional repository in which to look for
 #'     packages to install. This repository will be prepended to the
 #'     default repositories (which you can see with
-#'     `BiocManager::\link{repositories}()`).
+#'     \code{BiocManager::\link{repositories}()}).
 #' @param update `logical(1)`. When `FALSE`, `BiocManager::install()`
 #'     does not attempt to update old packages. When `TRUE`, update
 #'     old packages according to `ask`.
@@ -342,19 +342,19 @@
 #' @return `BiocManager::install()` returns the `pkgs` argument, invisibly.
 #' @seealso
 #'
-#' `BiocManager::\link{repositories}()` returns the _Bioconductor_ and
-#' CRAN repositories used by `install()`.
+#' \code{BiocManager::\link{repositories}()} returns the _Bioconductor_
+#' and CRAN repositories used by `install()`.
 #'
-#' `\link{install.packages}()` installs the packages themselves (used by
-#' `BiocManager::install` internally).
+#' \code{\link{install.packages}()} installs the packages themselves
+#' (used by \code{BiocManager::install} internally).
 #'
-#' `\link{update.packages}()` updates all installed packages (used by
-#' `BiocManager::install` internally).
+#' \code{\link{update.packages}()} updates all installed packages (used
+#' by \code{BiocManager::install} internally).
 #'
-#' `\link{chooseBioCmirror}()` allows choice of a mirror from all
+#' \code{\link{chooseBioCmirror}()} allows choice of a mirror from all
 #' public _Bioconductor_ mirrors.
 #'
-#' `\link{chooseCRANmirror}()` allows choice of a mirror from all
+#' \code{\link{chooseCRANmirror}()} allows choice of a mirror from all
 #' public CRAN mirrors.
 #'
 #' @keywords environment

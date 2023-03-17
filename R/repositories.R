@@ -248,16 +248,16 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #'
 #' @seealso
 #'
-#' `BiocManager::\link{install}()` Installs or updates Bioconductor,
+#' \code{BiocManager::\link{install}()} Installs or updates Bioconductor,
 #'  CRAN, and GitHub packages.
 #'
-#' `\link{chooseBioCmirror}()` choose an alternative Bioconductor
+#' \code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
 #' mirror; not usually necessary.
 #'
-#' `\link{chooseCRANmirror}()` choose an alternative CRAN mirror; not
-#' usually necessary.
+#' \code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror;
+#' not usually necessary.
 #'
-#' `\link{setRepositories}()` Select additional repositories for
+#' \code{\link{setRepositories}()} Select additional repositories for
 #' searching.
 #'
 #' @keywords environment

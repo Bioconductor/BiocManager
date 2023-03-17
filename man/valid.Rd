@@ -20,23 +20,23 @@ valid(
 }
 \arguments{
 \item{pkgs}{A character() vector of package names for checking, or
-a matrix as returned by \verb{\link{installed.packages}}.}
+a matrix as returned by \code{\link{installed.packages}}.}
 
 \item{lib.loc}{A character() vector of library location(s) of
-packages to be validated; see \verb{\link{installed.packages}()}.}
+packages to be validated; see \code{\link{installed.packages}()}.}
 
 \item{priority}{character(1) Check validity of all, "base", or
-"recommended" packages; see \verb{\link{installed.packages}()}.}
+"recommended" packages; see \code{\link{installed.packages}()}.}
 
 \item{type}{character(1) The type of available package (e.g.,
 binary, source) to check validity against; see
-\verb{\link{available.packages}()}.}
+\code{\link{available.packages}()}.}
 
 \item{filters}{character(1) Filter available packages to check
-validity against; see \verb{\link{available.packages}()}.}
+validity against; see \code{\link{available.packages}()}.}
 
 \item{\dots}{Additional arguments, passed to
-\verb{BiocManager::\link{install}()} when \code{fix=TRUE}.}
+\code{BiocManager::\link{install}()} when \code{fix=TRUE}.}
 
 \item{checkBuilt}{\code{logical(1)}. If \code{TRUE} a package built under an
 earlier major.minor version of R (e.g., 3.4) is considered to
@@ -84,7 +84,7 @@ if (interactive()) {
 }
 }
 \seealso{
-\verb{BiocManager::\link{install}()} to update installed
+\code{BiocManager::\link{install}()} to update installed
 packages.
 }
 \author{
