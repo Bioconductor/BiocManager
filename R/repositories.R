@@ -249,6 +249,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' that _R_'s standard rules of package selection apply, so the most
 #' recent version of candidate packages is selected independent of the
 #' location of the repository in the vector returned by `repositories()`.
+#' To set a more permenanent `site_repository`, one can use either the
+#' \env{BIOCMANAGER_SITE_REPOSITORY} environment variable or the
+#' `options(BiocManager.site_repository = ...)` option.
 #'
 #' For greater flexiblity in installing packages while still adhering
 #' as much as possible to _Bioconductor_ best practices, use
