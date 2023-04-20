@@ -52,6 +52,14 @@ System environment variables influencing package behavior include:
 \item \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} advanced
 configuration to avoid \emph{Bioconductor} version checks. See
 \code{?install}.
+\item \env{BIOCONDUCTOR_CONFIG_FILE} for offline use of BiocManager
+versioning functionality. See \code{?install}.
+\item \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} opt out of binary package
+installations. See \code{?containerRepository}.
+\item \env{BIOCMANAGER_CHECK_REPOSITORIES} silence messages regarding
+non-standard CRAN or Bioconductor repositories. See \code{?repositories}.
+\item \env{BIOCMANAGER_SITE_REPOSITORY} configure a more permanent
+\code{site_repository} input to \code{repositories()}. See \code{?repositories}.
 }
 }
 \examples{
