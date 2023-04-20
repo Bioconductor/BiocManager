@@ -8,6 +8,17 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     isTRUE(as.logical(opt))
 }
 
+.repositories_site_repository <-
+    function()
+{
+    opt <- Sys.getenv("BIOCMANAGER_SITE_REPOSITORY", "")
+    opt <- getOption("BiocManager.site_repository", opt)
+    if (!nzchar(opt))
+        character()
+    else
+        opt
+}
+
 .repositories_check_repos <-
     function(repos)
 {
@@ -276,6 +287,9 @@ repositories <- function(
     ...,
     type = "both"
 ) {
+    if (!nzchar(site_repository))
+        site_repository <- .repositories_site_repository()
+
     stopifnot(
         length(site_repository) <= 1L,
         is.character(site_repository), !anyNA(site_repository)
