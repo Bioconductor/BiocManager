@@ -110,6 +110,9 @@ binaries) of packages available in the default repositories. Note
 that \emph{R}'s standard rules of package selection apply, so the most
 recent version of candidate packages is selected independent of the
 location of the repository in the vector returned by \code{repositories()}.
+To set a more permenanent \code{site_repository}, one can use either the
+\env{BIOCMANAGER_SITE_REPOSITORY} environment variable or the
+\code{options(BiocManager.site_repository = ...)} option.
 
 For greater flexiblity in installing packages while still adhering
 as much as possible to \emph{Bioconductor} best practices, use
