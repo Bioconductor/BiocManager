@@ -55,6 +55,18 @@ NULL
 #'   configuration to avoid _Bioconductor_ version checks. See
 #'   `?install`.
 #'
+#' - \env{BIOCONDUCTOR_CONFIG_FILE} for offline use of BiocManager
+#'   versioning functionality. See `?install`.
+#'
+#' - \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} opt out of binary package
+#'   installations. See `?containerRepository`.
+#'
+#' - \env{BIOCMANAGER_CHECK_REPOSITORIES} silence messages regarding
+#'   non-standard CRAN or Bioconductor repositories. See `?repositories`.
+#'
+#' - \env{BIOCMANAGER_SITE_REPOSITORY} configure a more permanent
+#'   `site_repository` input to `repositories()`. See `?repositories`.
+#'
 #' @md
 #' @name BiocManager-pkg
 #' @aliases BiocManager
