@@ -290,7 +290,7 @@ repositories <- function(
     ...,
     type = "both"
 ) {
-    if (!nzchar(site_repository))
+    if (!length(site_repository) || !nzchar(site_repository))
         site_repository <- .repositories_site_repository()
 
     stopifnot(
