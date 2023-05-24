@@ -3,7 +3,7 @@
 {
     version <- version()
 
-    validity <- .version_validity(version)
+    validity <- .version_validity(version, check_future = TRUE)
     isTRUE(validity) || .packageStartupMessage(validity)
 
     if (interactive() && isTRUE(validity))
