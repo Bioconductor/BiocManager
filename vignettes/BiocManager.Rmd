@@ -31,15 +31,19 @@ package helps users install packages from the same release.
 
 # Basic use
 
-## Installing BiocManager
+## Installing _R_
+
+We recommend using the current 'release' version of _R_. [Follow
+instructions][6] for installing _R_.
+
+## Installing _BiocManager_
 
 Use standard _R_ installation procedures to install the
 [BiocManager][1] package. This command is requried only once per _R_
 installation.
 
 ```{r, eval = FALSE}
-chooseCRANmirror()
-install.packages("BiocManager")
+install.packages("BiocManager", repos = "https://cloud.r-project.org")
 ```
 
 ## Installing _Bioconductor_, _CRAN_, or GitHub packages
@@ -116,88 +120,6 @@ BiocManager::available("BSgenome.Hsapiens") # BSgenome.Hsapiens.* packages
 Questions about installing and managing _Bioconductor_ packages should
 be addressed to the [_Bioconductor_ support site][3].
 
-# Troubleshooting
-
-## Failure after updating _R_
-
-After updating _R_ (e.g., from _R_ version 3.5.x to _R_ version 3.6.x
-at the time of writing this) and trying to load `BiocManager`, _R_
-replies
-
-```
-Error: .onLoad failed in loadNamespace() for 'BiocManager', details:
-  call: NULL
-  error: Bioconductor version '3.8' requires R version '3.5'; see
-  https://bioconductor.org/install
-```
-
-This problem arises because `BiocManager` uses a second package,
-`BiocVersion`, to indicate the version of _Bioconductor_ in use. In
-the original installation, `BiocManager` had installed `BiocVersion`
-appropriate for _R_ version 3.5. With the update, the version of
-_Bioconductor_ indicated by `BiocVersion` is no longer valid -- you'll
-need to update `BiocVersion` and all _Bioconductor_ packages to the
-most recent version available for your new version of _R_.
-
-The recommended practice is to maintain a separate library for each
-_R_ and _Bioconductor_ version. So instead of installing packages into
-_R_'s system library (e.g., as 'administrator'), install only base _R_
-into the system location. Then use aliases or other approaches to
-create _R_ / _Bioconductor_ version-specific installations. This is
-described in the section on [maintaining multiple
-versions](#multiple-versions) of _R_ and _Bioconductor_.
-
-Alternatively, one could update all _Bioconductor_ packages in the
-previous installation directory. The problem with this is that the
-previous version of _Bioconductor_ is removed, compromising the
-ability to reproduce earlier results. Update all _Bioconductor_
-packages in the previous installation directory by removing _all_
-versions of `BiocVersion`
-
-```
-remove.packages("BiocVersion")  # repeat until all instances removed
-```
-
-Then install the updated `BiocVersion`, and update all _Bioconductor_
-packages; answer 'yes' when you are asked to update a potentially
-large number of _Bioconductor_ packages.
-
-```{r, eval = FALSE}
-BiocManager::install()
-```
-
-Confirm that the updated _Bioconductor_ is valid for your version of
-_R_
-
-```{r, eval = FALSE}
-BiocManager::valid()
-```
-
-## Timeout during package download
-
-Large packages can take a long time to downloaded over poor internet
-connects. The BiocManager package sets the time limit to 300 seconds,
-using `options(timeout = 300)`. Only part of a package may download,
-e.g., only 15.1 of 79.4 MB in the example below
-
-```
-trying URL 'https://bioconductor.org/packages/3.12/data/annotation/src/contrib/org.Hs.eg.db_3.12.0.tar.gz'
-Content type 'application/x-gzip' length 83225518 bytes (79.4 MB)
-=========
-downloaded 15.1 MB
-```
-
-or perhaps with a warning (often difficult to see in the output)
-
-```
-Error in download.file(url, destfile, method, mode = "wb", ...) :
-...
-...: Timeout of 300 seconds was reached
-...
-```
-
-Try increasing the download timeout, e.g, `options(timeout = 600)`.
-
 # Advanced use
 
 ## Changing version
@@ -212,8 +134,8 @@ BiocManager::install(version="3.7")
 _Bioconductor_ versions are associated with specific _R_ versions, as
 summarized [here][5]. Attempting to install a version of
 _Bioconductor_ that is not supported by the version of _R_ in use
-leads to an error; using the most recent version of _Bioconductor_ may require
-installing a new version of _R_.
+leads to an error; using the most recent version of _Bioconductor_ may
+require installing a new version of _R_.
 
 ```
 > BiocManager::install(version="3.9")
@@ -309,11 +231,11 @@ BiocManager can then be used for subsequent installations, e.g.,
 ### Offline config.yaml
 
 _BiocManager_ also expects to reference an online configuration yaml
-file for Bioconductor version validation at
+file for _Bioconductor_ version validation at
 https://bioconductor.org/config.yaml. With offline use, users are
-expected to either host this file locally or provide their `config.yaml`
-version. The package allows either an environment variable or R-specific
-option to locate this file, e.g.,
+expected to either host this file locally or provide their
+`config.yaml` version. The package allows either an environment
+variable or R-specific option to locate this file, e.g.,
 
     ```{r, eval = FALSE}
     options(
@@ -403,6 +325,214 @@ inconsistent installation.
 
 # Troubleshooting
 
+## Package not available
+
+(An initial draft of this section was produced by ChatGPT on 25 May 2023)
+
+A user failed to install the 'celldex' package on 25 May 2023. A
+transcript of the _R_ session is as follows:
+
+```
+> BiocManager::version()
+[1] '3.18'
+> BiocManager::install("celldex")
+Bioconductor version 3.18 (BiocManager 1.30.20), R 4.3.0 Patched (2023-05-01
+  r84362)
+Installing package(s) 'celldex'
+Warning message:
+package 'celldex' is not available for Bioconductor version '3.18'
+
+A version of this package for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages
+```
+
+The availability of specific packages within _Bioconductor_ can depend
+on various factors, including simple errors in entering the package
+name, the package's development status, maintenance, and compatibility
+with the latest version of _Bioconductor_, as well as the availability
+of CRAN packages that the _Bioconductor_ package depends on.
+
+Package Name: _R_ package names are case sensitive and must be spelt
+correctly, so using `BiocManager::install("Celldex")` (with a capital
+`C`) or `BiocManager::install("celdex")` (with only one `l`) would
+both fail to install `celldex`; _R_ will sometimes suggest the correct
+name.
+
+_CRAN_ Packages: `BiocManager::install()` tries to install packages
+from CRAN and from _Bioconductor_. Check that the package is not a CRAN
+package by trying to visit the CRAN 'landing page'
+
+- https://cran.R-project.org/package=celldex
+
+If this page is found, then the package is a CRAN package; see the
+[R-admin][9] manual section on troubleshooting CRAN package
+installations.
+
+Check also that the package is not a CRAN package that has been
+'archived' and no longer available by trying to visit
+
+- https://cran.R-project.org/src/contrib/Archive/celldex/
+
+If this page exists but the 'landing page' does not, this means that
+the package has been removed from CRAN. While it is possible to
+install archived packages, usually the best course of action is to
+identify alternative packages to accomplish the task you are
+interested in. This is especially true if the 'Last modified' date of
+the most recent archived package is more than several months ago.
+
+Compatibility: A _Bioconductor_ package must be available for the
+specific version of _Bioconductor_ you are using. Try visiting the
+'landing page' of the package for your version of _Bioconductor_,
+e.g., for _Bioconductor_ version 3.18 and package celldex
+
+- https://bioconductor.org/packages/3.18/celldex
+
+If this landing page does not exist, then the package is not available
+for your version of _Bioconductor_.
+
+Users may sometimes have an out-of-date version of _R_ or
+_Bioconductor_ installed; this may be intentional (e.g., to ensure
+reproducibility of existing analyses) or simply because _Bioconductor_
+has not yet been updated. Try visiting the current release landing
+page
+
+- https://bioconductor.org/packages/release/celldex
+
+If the release landing page exists, and it is not important that you
+continue using the out-of-date version of _Bioconductor_, consider
+updating _R_ (if necessary) and _Bioconductor_ to the current release
+versions using instructions at the top of this document.
+
+Packages recently contributed to _Bioconductor_ are added to the
+'devel' branch, whereas most users are configured to use the 'release'
+branch. Try visiting the 'devel' landing page
+
+- https://bioconductor.org/packages/devel/celldex
+
+If only the devel landing page exists, then consider updating your
+installation to use the development version of _Bioconductor_. Note
+that the development version is not as stable as the release version,
+so should not be used for time-critical or 'production' analysis.
+
+It may be that the package you are interested in has been removed from
+_Bioconductor_. Check this by visiting
+
+- https://bioconductor.org/about/removed-packages/
+
+If the package has been removed, the best course of action is to
+identify alternative packages to accomplish the task you are
+interested in.
+
+Maintenance and Operating System Availability: A package may be
+included in the release or devel version of _Bioconductor_, but
+currently unavailable because it requires maintenance. This might be
+indicated by a red 'build' badge as in the image below (details of the
+build problem are available by clicking on the badge). The build error
+usually requires that the package maintainer correct an issue with
+their package; the maintainer and email address are listed on the
+package landing page.
+
+```{r out.width = '100%', echo = FALSE, eval = TRUE}
+knitr::include_graphics("img/badges.png")
+```
+
+A small number of _Bioconductor_ packages are not available on all
+operating systems. An orange 'platforms' badge indicates this. Click
+on the badge to be taken to the 'Package Archives' section of the
+landing page; BGmix is not supported on Windows, and not available on
+'Intel' macOS because of build-related errors. Consider using an
+alternative operating system if the package is essential to your work
+
+```{r out.width = '100%', echo = FALSE, eval = TRUE}
+knitr::include_graphics("img/archives.png")
+```
+
+Packages with landing pages from older releases but not available for
+your operating system cannot be updated by the maintainer. If the
+package is available in the current release and for your operating
+system, consider updating to the current release of _Bioconductor_.
+
+## Cannot load _BiocManager_
+
+After updating _R_ (e.g., from _R_ version 3.5.x to _R_ version 3.6.x
+at the time of writing this) and trying to load `BiocManager`, _R_
+replies
+
+```
+Error: .onLoad failed in loadNamespace() for 'BiocManager', details:
+  call: NULL
+  error: Bioconductor version '3.8' requires R version '3.5'; see
+  https://bioconductor.org/install
+```
+
+This problem arises because `BiocManager` uses a second package,
+`BiocVersion`, to indicate the version of _Bioconductor_ in use. In
+the original installation, `BiocManager` had installed `BiocVersion`
+appropriate for _R_ version 3.5. With the update, the version of
+_Bioconductor_ indicated by `BiocVersion` is no longer valid -- you'll
+need to update `BiocVersion` and all _Bioconductor_ packages to the
+most recent version available for your new version of _R_.
+
+The recommended practice is to maintain a separate library for each
+_R_ and _Bioconductor_ version. So instead of installing packages into
+_R_'s system library (e.g., as 'administrator'), install only base _R_
+into the system location. Then use aliases or other approaches to
+create _R_ / _Bioconductor_ version-specific installations. This is
+described in the section on [maintaining multiple
+versions](#multiple-versions) of _R_ and _Bioconductor_.
+
+Alternatively, one could update all _Bioconductor_ packages in the
+previous installation directory. The problem with this is that the
+previous version of _Bioconductor_ is removed, compromising the
+ability to reproduce earlier results. Update all _Bioconductor_
+packages in the previous installation directory by removing _all_
+versions of `BiocVersion`
+
+```
+remove.packages("BiocVersion")  # repeat until all instances removed
+```
+
+Then install the updated `BiocVersion`, and update all _Bioconductor_
+packages; answer 'yes' when you are asked to update a potentially
+large number of _Bioconductor_ packages.
+
+```{r, eval = FALSE}
+BiocManager::install()
+```
+
+Confirm that the updated _Bioconductor_ is valid for your version of
+_R_
+
+```{r, eval = FALSE}
+BiocManager::valid()
+```
+
+## Timeout during package download
+
+Large packages can take a long time to downloaded over poor internet
+connects. The BiocManager package sets the time limit to 300 seconds,
+using `options(timeout = 300)`. Only part of a package may download,
+e.g., only 15.1 of 79.4 MB in the example below
+
+```
+trying URL 'https://bioconductor.org/packages/3.12/data/annotation/src/contrib/org.Hs.eg.db_3.12.0.tar.gz'
+Content type 'application/x-gzip' length 83225518 bytes (79.4 MB)
+=========
+downloaded 15.1 MB
+```
+
+or perhaps with a warning (often difficult to see in the output)
+
+```
+Error in download.file(url, destfile, method, mode = "wb", ...) :
+...
+...: Timeout of 300 seconds was reached
+...
+```
+
+Try increasing the download timeout, e.g, `options(timeout = 600)`.
+
 ## Multiple `BiocVersion` installations
 
 One potential problem occurs when there are two or more `.libPaths()`,
@@ -413,35 +543,38 @@ appropriate to standardize the installation by repeatedly calling
 `remove.packages("BiocVersion")` until all versions are removed, and
 then installing the desired version.
 
-## Bioconductor version cannot be determined; no internet connection?
+## Errors determining _Bioconductor_ version
 
-When the Bioconductor version cannot be obtained from the version map
-hosted at https://bioconductor.org/config.yaml, this error will occur.
-It may be a result of poor internet connectivity or offline use. See
-the [offline config.yaml](#offline-config.yaml) section above.
+An essential task for _BiocManager_ is to determine that the version
+of _Bioconductor_ is appropriate for the version of _R_. Several
+errors can occur when this task fails.
 
-## Bioconductor version cannot be validated; no internet connection?
+- Bioconductor version cannot be determined; no internet connection?
+  When the _Bioconductor_ version cannot be obtained from the version
+  map hosted at https://bioconductor.org/config.yaml, this error will
+  occur.  It may be a result of poor internet connectivity or offline
+  use. See the [offline config.yaml](#offline-config.yaml) section
+  above.
 
-Usually occurs when the map is unable to be downloaded possibly due to
-a missing `BIOCONDUCTOR_CONFIG_FILE`. For offline use, a copy of the
-configuration file should be downloaded and its address set to the
-environment variable or option.
+- Bioconductor version cannot be validated; no internet connection?
+  Usually occurs when the map is unable to be downloaded possibly due
+  to a missing `BIOCONDUCTOR_CONFIG_FILE`. For offline use, a copy of
+  the configuration file should be downloaded and its address set to
+  the environment variable or option.
 
-## Bioconductor version map cannot be validated; is it misconfigured?
+- Bioconductor version map cannot be validated; is it misconfigured?
+  On _rare_ occasion, the version map hosted at
+  https://bioconductor.org/config.yaml may be misconfigured. The check
+  ensures that all the version name tags, i.e., out-of-date, release,
+  devel, and future are in the map.
 
-On _rare_ occasion, the version map hosted at
-https://bioconductor.org/config.yaml may be misconfigured. The check ensures
-that all the version name tags, i.e., out-of-date, release, devel, and future
-are in the map.
+- Bioconductor version cannot be validated; is type input
+  mis-specified? The type input refers to the version name inputs,
+  mainly release and devel.  This error is chiefly due to internal
+  logic and is not due to user error.  Please open a [GitHub
+  issue][10].
 
-## Bioconductor version cannot be validated; is type input misspecified?
-
-The type input refers to the version name inputs, mainly release and devel.
-This error is chiefly due to internal logic and is not due to user error.
-Please open an issue on the
-[GitHub issues page](https://github.com/Bioconductor/BiocManager/issues).
-
-# `sessionInfo()`
+# Session information
 
 ```{r, eval = TRUE}
 sessionInfo()
@@ -454,3 +587,5 @@ sessionInfo()
 [6]: https://cran.R-project.org/
 [7]: https://bioconductor.org/about/mirrors/mirror-how-to/
 [8]: https://cran.r-project.org/mirror-howto.html
+[9]: https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages
+[10]: https://github.com/Bioconductor/BiocManager/issues
