@@ -17,6 +17,7 @@ Suggests:
     withr,
     curl,
     knitr
+URL: https://bioconductor.github.io/BiocManager/
 BugReports: https://github.com/Bioconductor/BiocManager/issues
 VignetteBuilder: knitr
 License: Artistic-2.0
