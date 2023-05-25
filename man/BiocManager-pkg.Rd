@@ -72,6 +72,7 @@ BiocManager::version()
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://bioconductor.github.io/BiocManager/}
   \item Report bugs at \url{https://github.com/Bioconductor/BiocManager/issues}
 }
 

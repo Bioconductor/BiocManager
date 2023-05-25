@@ -4,6 +4,7 @@
 ^\.git$
 ^\.gitignore$
 ^\.gitattributes$
+^\.github$
 
 #----------------------------
 # RStudio and R

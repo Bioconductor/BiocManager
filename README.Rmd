@@ -22,10 +22,11 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The `BiocManager` package, as the modern successor package to `BiocInstaller`,
-allows users to install and manage packages from the _[Bioconductor][1]_
-project. Bioconductor focuses on the statistical analysis and comprehension of
-high-throughput genomic data.
+The `BiocManager` package allows users to install and manage packages
+from the _[Bioconductor][1]_ project, including CRAN packages that
+depend or import Bioconductor packages. Bioconductor focuses on the
+statistical analysis and comprehension of high-throughput genomic
+data.
 
 Current _Bioconductor_ packages are available on a 'release' version intended
 for every-day use, and a 'devel' version where new features are continually
@@ -43,12 +44,12 @@ appropriate release.
 
 ```{r, eval = FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+    install.packages("BiocManager", repos = "https://cran.R-project.org")
 ```
 
 ## Usage
 
-### Checking Bioconductor version currently installed
+### Checking Bioconductor version currently in use
 
 ```{r, message=FALSE}
 BiocManager::version()
@@ -68,8 +69,9 @@ BiocManager::valid()
 
 ## More information
 
-Please see the package vignette for more detailed information such as changing
-Bioconductor version, offline use, and other advanced usage.
+Please see the 'Get started' document (package vignette) for more
+detailed information such as changing Bioconductor version, offline
+use, and other advanced usage.
 
 ## Getting help
 
