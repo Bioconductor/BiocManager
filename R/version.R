@@ -308,7 +308,7 @@ format.version_sentinel <-
         } else {
             rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
             rec_msg <- sprintf(
-                "use `BiocManager::install(version = '%s')` with R version %s",
+                "use `version = '%s'` with R version %s",
                 rec_fun(rec$Bioc, 1), r_version
             )
 
