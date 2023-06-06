@@ -255,9 +255,11 @@ New-&gt;Shortcut. In the “type the location of the item” box, put:</p>
 <div class="section level3">
 <h3 id="offline-use">Offline use<a class="anchor" aria-label="anchor" href="#offline-use"></a>
 </h3>
-<p><em>BiocManager</em> expects to be able to connect to online
-<em>Bioconductor</em> and <em>CRAN</em> repositories. Off-line use
-generally requires the following steps.</p>
+<p>Offline use of <em>BiocManager</em> is possible for organizations and
+users that would like to provide access to internal repositories of
+<em>Bioconductor</em> packages while enforcing appropriate version
+checks between Bioconductor and R. For offline use, organizations and
+users require the following steps:</p>
 <ol style="list-style-type: decimal">
 <li>
 <p>Use <code>rsync</code> to create local repositories of <a href="https://cran.r-project.org/mirror-howto.html" class="external-link">CRAN</a> and <a href="https://bioconductor.org/about/mirrors/mirror-how-to/" class="external-link">Bioconductor</a>.

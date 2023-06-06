@@ -150,16 +150,17 @@ and <code>remotes:::install()</code>. A typical use is to build vignettes, via
 <p>See <code><a href="repositories.html">?repositories</a></code> for additional detail on customizing where
 BiocManager searches for package installation.</p>
 <p><code class="env">BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS</code> is an environment
-variable or global <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> which, when set to <code>FALSE</code>, avoids
-the R and <em>Bioconductor</em> version checks that are done by querying
-an online configuration file. Setting
-<code class="env">BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS</code> to <code>FALSE</code> can speed
-package loading when internet access is slow or non-existent, but
-may result in out-of-date information about the current release and
-development versions of <em>Bioconductor</em>. Offline users should
-set the <code class="env">BIOCONDUCTOR_CONFIG_FILE</code> environment variable or option
-to a <code>.yaml</code> file similar to <a href="https://bioconductor.org/config.yaml" class="external-link">https://bioconductor.org/config.yaml</a>
-for full offline use and version validation.</p>
+variable or global <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> which, when set to <code>FALSE</code>, allows
+organizations and its users to use offline repositories with BiocManager
+while enforcing appropriate version checks between <em>Bioconductor</em> and R.
+Setting <code class="env">BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS</code> to <code>FALSE</code> can speed
+package loading when internet access is slow or non-existent, but may
+result in out-of-date information regarding the current release and
+development versions of <em>Bioconductor</em>. In addition, offline
+organizations and its users should set the <code class="env">BIOCONDUCTOR_CONFIG_FILE</code>
+environment variable or option to a <code>.yaml</code> file similar to
+<a href="https://bioconductor.org/config.yaml" class="external-link">https://bioconductor.org/config.yaml</a> for full offline use and
+version validation.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
