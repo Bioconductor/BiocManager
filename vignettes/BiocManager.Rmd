@@ -194,9 +194,10 @@ Click "Next". In the "Type a name for this shortcut" box, type `Bioc-3.7`.
 
 ## Offline use
 
-_BiocManager_ expects to be able to connect to online _Bioconductor_
-and _CRAN_ repositories. Off-line use generally requires the following
-steps.
+Offline use of _BiocManager_ is possible for organizations and users that would
+like to provide access to internal repositories of _Bioconductor_ packages
+while enforcing appropriate version checks between Bioconductor and R.
+For offline use, organizations and users require the following steps:
 
 1. Use `rsync` to create local repositories of [CRAN][8] and
    [Bioconductor][7]. Tell _R_ about these repositories using (e.g.,

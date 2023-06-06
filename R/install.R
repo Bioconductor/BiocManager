@@ -299,16 +299,17 @@
 #' BiocManager searches for package installation.
 #'
 #' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
-#' variable or global `options()` which, when set to `FALSE`, avoids
-#' the R and _Bioconductor_ version checks that are done by querying
-#' an online configuration file. Setting
-#' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} to `FALSE` can speed
-#' package loading when internet access is slow or non-existent, but
-#' may result in out-of-date information about the current release and
-#' development versions of _Bioconductor_. Offline users should
-#' set the \env{BIOCONDUCTOR_CONFIG_FILE} environment variable or option
-#' to a `.yaml` file similar to \url{https://bioconductor.org/config.yaml}
-#' for full offline use and version validation.
+#' variable or global `options()` which, when set to `FALSE`, allows
+#' organizations and its users to use offline repositories with BiocManager
+#' while enforcing appropriate version checks between _Bioconductor_ and R.
+#' Setting \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} to `FALSE` can speed
+#' package loading when internet access is slow or non-existent, but may
+#' result in out-of-date information regarding the current release and
+#' development versions of _Bioconductor_. In addition, offline
+#' organizations and its users should set the \env{BIOCONDUCTOR_CONFIG_FILE}
+#' environment variable or option to a `.yaml` file similar to
+#' \url{https://bioconductor.org/config.yaml} for full offline use and
+#' version validation.
 #'
 #' @param pkgs `character()` vector of package names to install or
 #'     update.  A missing value updates installed packages according
