@@ -1,6 +1,14 @@
 CHANGES IN VERSION 1.30.21
 -------------------------
 
+NEW FEATURES
+
+    o Enable the use of the Bioc-devel branch on R-devel during the 'summer'
+      release cycle (@mtmorgan, #166)
+    o Allow `BIOCMANAGER_SITE_REPOSITORY` environment variable and
+      `BiocManager.site_repository` option as a more permanent option for
+      `site_repository` users (@LiNk-NY).
+
 MINOR CHANGES
 
     o Correct links on help pages. See
@@ -24,7 +32,6 @@ MINOR CHANGES
       installations (#103, @lshep)
     o Check `BiocVersion` installation with `system.file` rather than with
       `packageVersion` (K. Hornik)
-
 
 CHANGES IN VERSION 1.30.19
 -------------------------
