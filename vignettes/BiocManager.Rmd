@@ -364,7 +364,7 @@ _CRAN_ Packages: `BiocManager::install()` tries to install packages
 from CRAN and from _Bioconductor_. Check that the package is not a CRAN
 package by trying to visit the CRAN 'landing page'
 
-- https://cran.R-project.org/package=celldex
+- `https://cran.R-project.org/package=celldex`
 
 If this page is found, then the package is a CRAN package; see the
 [R-admin][9] manual section on troubleshooting CRAN package
@@ -373,7 +373,7 @@ installations.
 Check also that the package is not a CRAN package that has been
 'archived' and no longer available by trying to visit
 
-- https://cran.R-project.org/src/contrib/Archive/celldex/
+- `https://cran.R-project.org/src/contrib/Archive/celldex/`
 
 If this page exists but the 'landing page' does not, this means that
 the package has been removed from CRAN. While it is possible to
