@@ -3,10 +3,8 @@ found none.
 
 ## Test environments
 
-* local Ubuntu 22.04 (linux): R 4.1.3 patched, R 4.2.2 patched, R devel (r83801)
-* R-Hub Service: Fedora Linux, R-devel, GCC; Debian Linux, R-release, GCC
-* win-builder.r-project.org (windows): R 4.1.3 patched, R 4.2.2 patched, R
-devel (r83888)
+* local Ubuntu 22.04 (linux): R 4.2.2 patched, R 4.3.0 patched, R devel (r84486)
+* win-builder.r-project.org (windows): R 4.2.3, R 4.3.0, R devel (r84521)
 
 ## R CMD check results
 
@@ -20,7 +18,7 @@ Packages suggested but not available for checking:
 
 ## revdepcheck results
 
-We checked 169 reverse dependencies (0 from CRAN + 169 from Bioconductor),
+We checked 177 reverse dependencies (0 from CRAN + 177 from Bioconductor),
 comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems
