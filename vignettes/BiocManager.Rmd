@@ -61,11 +61,11 @@ BiocManager::install()
 ```
 
 CRAN packages for out-of-date _Bioconductor_ releases can be installed
-from the [Microsoft _R_ Application Network][MRAN] or [RStudio Package
+from the [Microsoft _R_ Application Network][MRAN] or [Posit Package
 Manager][RSPM]; see `?BiocManager.snapshot` to change this behavior.
 
 [MRAN]: https://mran.microsoft.com/timemachine
-[RSPM]: https://packagemanager.rstudio.com/client/#/repos/2/overview
+[RSPM]: https://packagemanager.posit.co/client/#/repos/2/overview
 
 ## Version and validity of installations
 

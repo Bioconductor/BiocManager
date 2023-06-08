@@ -70,7 +70,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
         cran
     } else {
         rspm_version <- format(as.Date(rspm_version, "%m/%d/%Y"), "%Y-%m-%d")
-        paste0("https://packagemanager.rstudio.com/cran/", rspm_version)
+        paste0("https://packagemanager.posit.co/cran/", rspm_version)
     }
 }
 
@@ -203,12 +203,12 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' a snapshot created on 2020-10-28. By default, the snapshots are
 #' from 'MRAN', the [Microsoft R Archive Network][MRAN]. Use
 #' `options(BiocManager.snapshot = "RSPM")` to instead use the
-#' [RStudio Package Manager][RSPM], or `options(BiocManager.snapshot =
+#' [Posit Package Manager][RSPM], or `options(BiocManager.snapshot =
 #' "CRAN")` to use the current CRAN repository (i.e., disabling the
 #' snapshot feature).
 #'
 #' [MRAN]: https://mran.microsoft.com/timemachine
-#' [RSPM]: https://packagemanager.rstudio.com/client/#/repos/2/overview
+#' [RSPM]: https://packagemanager.posit.co/client/#/repos/2/overview
 #'
 #' It may be desirable to specify different default repositories,
 #' especially CRAN, for intentionally out-of-date _Bioconductor_

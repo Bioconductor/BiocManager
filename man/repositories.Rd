@@ -69,7 +69,7 @@ until October 28, 2020; CRAN packages are therefore installed from
 a snapshot created on 2020-10-28. By default, the snapshots are
 from 'MRAN', the \href{https://mran.microsoft.com/timemachine}{Microsoft R Archive Network}. Use
 \code{options(BiocManager.snapshot = "RSPM")} to instead use the
-\href{https://packagemanager.rstudio.com/client/#/repos/2/overview}{RStudio Package Manager}, or \code{options(BiocManager.snapshot = "CRAN")} to use the current CRAN repository (i.e., disabling the
+\href{https://packagemanager.posit.co/client/#/repos/2/overview}{Posit Package Manager}, or \code{options(BiocManager.snapshot = "CRAN")} to use the current CRAN repository (i.e., disabling the
 snapshot feature).
 
 It may be desirable to specify different default repositories,
