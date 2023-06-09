@@ -32,9 +32,7 @@
     BiocStatus = factor(
         factor(),
         levels = .VERSION_TAGS
-    ),
-    RSPM = character(),
-    MRAN = character()
+    )
 )
 
 .version_sentinel <-
@@ -142,9 +140,6 @@ format.version_sentinel <-
     bioc <- package_version(names(bioc_r_map))
     r <- package_version(unname(bioc_r_map))
 
-    bioc_rspm_map <- .version_map_config_element(txt, "rspm_ver_for_bioc_ver")
-    bioc_mran_map <- .version_map_config_element(txt, "mran_ver_for_bioc_ver")
-
     pattern <- "^release_version: \"(.*)\""
     release <- package_version(
         sub(pattern, "\\1", grep(pattern, txt, value=TRUE))
@@ -175,10 +170,8 @@ format.version_sentinel <-
         BiocStatus = factor(
             status,
             levels = .VERSION_TAGS
-        ),
-        RSPM = unname(bioc_rspm_map[as.character(bioc)]),
-        MRAN = unname(bioc_mran_map[as.character(bioc)])
-   ))
+        )  
+    ))
 }
 
 .version_map_get_offline <-
@@ -196,9 +189,7 @@ format.version_sentinel <-
         BiocStatus = factor(
             NA,
             levels = status
-        ),
-        RSPM = NA_character_,
-        MRAN = NA_character_
+        )
     ))
 }
 

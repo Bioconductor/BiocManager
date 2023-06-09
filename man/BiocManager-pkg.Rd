@@ -37,9 +37,8 @@ by code in base R.
 Options influencing package behavior (see \code{?options}, \code{?getOption})
 include:
 \itemize{
-\item \code{"repos"}, \code{"BiocManager.check_repositories"},
-\code{"BiocManager.snapshot"}: URLs of additional repositories for use
-by \code{BiocManger::install()}. See \code{?repositories}.
+\item \code{"repos"}, \code{"BiocManager.check_repositories"}: URLs of additional
+repositories for use by \code{BiocManger::install()}. See \code{?repositories}.
 \item \code{"pkgType"}: The default type of packages to be downloaded and
 installed; see \code{?install.packages}.
 \item \code{"timeout"}: The maximum time allowed for download of a single

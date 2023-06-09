@@ -123,21 +123,6 @@ test_that("'.repositories_filter()' works", {
     expect_equal(.repositories_filter(repos), repos0)
 })
 
-test_that("'.repositories_base()' respects BiocManager.snapshot", {
-    withr::with_options(
-        list(
-            BiocManager.snapshot = "FOO", repos = c(CRAN = "@CRAN@")
-        ),
-        expect_error(.repositories_base(), "BiocManager.snapshot")
-    )
-    withr::with_options(
-        list(
-            BiocManager.snapshot = c("RSPM", "CRAN"), repos = c(CRAN = "@CRAN@")
-        ),
-        expect_error(.repositories_base(), "BiocManager.snapshot")
-    )
-})
-
 test_that("'containerRepository' uses 'type' argument", {
     skip_if_offline()
     bin_url <- "https://bioconductor.org/packages/%s/container-binaries/%s"
