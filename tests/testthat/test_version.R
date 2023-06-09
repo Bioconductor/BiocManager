@@ -400,8 +400,7 @@ test_that(".version_map_get_offline() works", {
             .version_map_get_offline(),
             rbind(.VERSION_MAP_SENTINEL, data.frame(
                 Bioc = package_version('3.14'), R = rver,
-                BiocStatus = factor(NA, levels = .VERSION_TAGS),
-                RSPM = NA_character_, MRAN = NA_character_
+                BiocStatus = factor(NA, levels = .VERSION_TAGS)
             ))
         )
     )
