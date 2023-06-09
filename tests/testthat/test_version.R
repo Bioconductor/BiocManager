@@ -127,12 +127,12 @@ test_that(".version_validity(...) works", {
 
     expect_match(
         .version_validity("4.1", .ver_map, .get_R_ver()),
-        "BiocManager::install"
+        "Bioconductor version '4.1'"
     )
 
-    expect_match(
-        .version_validity("4.1", .ver_map, .get_R_ver("4.5.0")),
-        "does not yet build"
+    ## installing with future R versions supported
+    expect_true(
+        .version_validity("4.1", .ver_map, .get_R_ver("4.5.0"))
     )
 
     .par_map <- .ver_map[1:2, ]
