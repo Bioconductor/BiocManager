@@ -8,6 +8,8 @@ NEW FEATURES
     o Allow `BIOCMANAGER_SITE_REPOSITORY` environment variable and
       `BiocManager.site_repository` option as a more permanent option for
       `site_repository` users (@LiNk-NY).
+    o Support for "time machine" CRAN installations has moved to BiocArchive
+      and has been removed from the package (#151, @LiNk-NY)
 
 MINOR CHANGES
 
