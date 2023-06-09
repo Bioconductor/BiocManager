@@ -193,14 +193,14 @@
 
 .install <-
     function(pkgs, old_pkgs, instPkgs, repos, lib.loc=NULL, lib=.libPaths()[1],
-        checkBuilt, update, ask, force, ...)
+        update, ask, force, ...)
 {
     requireNamespace("utils", quietly=TRUE) ||
         .stop("failed to load package 'utils'")
 
     todo <- .install_repos(
         pkgs, old_pkgs, instPkgs = instPkgs, lib = lib, repos = repos,
-        checkBuilt = checkBuilt, force = force, ...
+        force = force, ...
     )
     todo <- .install_github(
         todo, lib = lib, lib.loc = lib.loc, repos = repos,
@@ -285,13 +285,13 @@
 #' packages uses the `remotes::install_github()`.
 #'
 #' When installing CRAN or _Bioconductor_ packages, typical arguments
-#' include: `lib.loc`, passed to `\link{old.packages}()` and used to
+#' include: `lib.loc`, passed to \code{\link{old.packages}()} and used to
 #' determine the library location of installed packages to be updated;
-#' and `lib`, passed to `\link{install.packages}()` to determine the
+#' and `lib`, passed to \code{\link{install.packages}{}} to determine the
 #' library location where `pkgs` are to be installed.
 #'
 #' When installing GitHub packages, `...` is passed to the
-#' \pkg{remotes} package functions `\link[remotes]{install_github}()`
+#' \pkg{remotes} package functions \code{\link[remotes]{install_github}()}
 #' and `remotes:::install()`. A typical use is to build vignettes, via
 #' `dependencies=TRUE, build_vignettes=TRUE`.
 #'
@@ -299,16 +299,17 @@
 #' BiocManager searches for package installation.
 #'
 #' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
-#' variable or global `options()` which, when set to `FALSE`, avoids
-#' the R and _Bioconductor_ version checks that are done by querying
-#' an online configuration file. Setting
-#' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} to `FALSE` can speed
-#' package loading when internet access is slow or non-existent, but
-#' may result in out-of-date information about the current release and
-#' development versions of _Bioconductor_. Offline users should
-#' set the \env{BIOCONDUCTOR_CONFIG_FILE} environment variable or option
-#' to a `.yaml` file similar to \url{https://bioconductor.org/config.yaml}
-#' for full offline use and version validation.
+#' variable or global `options()` which, when set to `FALSE`, allows
+#' organizations and its users to use offline repositories with BiocManager
+#' while enforcing appropriate version checks between _Bioconductor_ and R.
+#' Setting \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} to `FALSE` can speed
+#' package loading when internet access is slow or non-existent, but may
+#' result in out-of-date information regarding the current release and
+#' development versions of _Bioconductor_. In addition, offline
+#' organizations and its users should set the \env{BIOCONDUCTOR_CONFIG_FILE}
+#' environment variable or option to a `.yaml` file similar to
+#' \url{https://bioconductor.org/config.yaml} for full offline use and
+#' version validation.
 #'
 #' @param pkgs `character()` vector of package names to install or
 #'     update.  A missing value updates installed packages according
@@ -320,7 +321,7 @@
 #'     representing an additional repository in which to look for
 #'     packages to install. This repository will be prepended to the
 #'     default repositories (which you can see with
-#'     `BiocManager::\link{repositories}()`).
+#'     \code{BiocManager::\link{repositories}()}).
 #' @param update `logical(1)`. When `FALSE`, `BiocManager::install()`
 #'     does not attempt to update old packages. When `TRUE`, update
 #'     old packages according to `ask`.
@@ -342,19 +343,19 @@
 #' @return `BiocManager::install()` returns the `pkgs` argument, invisibly.
 #' @seealso
 #'
-#' `BiocManager::\link{repositories}()` returns the _Bioconductor_ and
+#' \code{BiocManager::\link{repositories}()} returns the _Bioconductor_ and
 #' CRAN repositories used by `install()`.
 #'
-#' `\link{install.packages}()` installs the packages themselves (used by
+#' \code{\link{install.packages}()} installs the packages themselves (used by
 #' `BiocManager::install` internally).
 #'
-#' `\link{update.packages}()` updates all installed packages (used by
+#' \code{\link{update.packages}()} updates all installed packages (used by
 #' `BiocManager::install` internally).
 #'
-#' `\link{chooseBioCmirror}()` allows choice of a mirror from all
+#' \code{\link{chooseBioCmirror}()} allows choice of a mirror from all
 #' public _Bioconductor_ mirrors.
 #'
-#' `\link{chooseCRANmirror}()` allows choice of a mirror from all
+#' \code{\link{chooseCRANmirror}()} allows choice of a mirror from all
 #' public CRAN mirrors.
 #'
 #' @keywords environment
@@ -400,7 +401,7 @@ install <-
 
     cmp <- .version_compare(version, version())
     action <- if (cmp < 0) "Downgrade" else "Upgrade"
-    repos <- .repositories(site_repository, version = version)
+    repos <- .repositories(site_repository, version = version, ...)
 
     vout <- .valid_out_of_date_pkgs(pkgs = inst,
         repos = repos, ..., checkBuilt = checkBuilt,
@@ -431,7 +432,7 @@ install <-
 
     pkgs <- .install(
         pkgs, vout[["out_of_date"]], instPkgs = inst, repos = repos,
-        checkBuilt = checkBuilt, update = update, ask = ask, force = force, ...
+        update = update, ask = ask, force = force, ...
     )
     if (update && cmp == 0L) {
         .install_update(repos, ask, checkBuilt = checkBuilt, ...)

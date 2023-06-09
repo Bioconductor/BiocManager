@@ -1,5 +1,24 @@
 BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
+.repositories_check_repos_envopt <-
+    function()
+{
+    opt <- Sys.getenv("BIOCMANAGER_CHECK_REPOSITORIES", TRUE)
+    opt <- getOption("BiocManager.check_repositories", opt)
+    isTRUE(as.logical(opt))
+}
+
+.repositories_site_repository <-
+    function()
+{
+    opt <- Sys.getenv("BIOCMANAGER_SITE_REPOSITORY", "")
+    opt <- getOption("BiocManager.site_repository", opt)
+    if (!nzchar(opt))
+        character()
+    else
+        opt
+}
+
 .repositories_check_repos <-
     function(repos)
 {
@@ -11,19 +30,23 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     if (length(conflicts)) {
         txt <- paste(
             "'getOption(\"repos\")' replaces Bioconductor standard ",
-            "repositories, see '?repositories' for details"
+            "repositories, see ",
+            "'help(\"repositories\", package = \"BiocManager\")' for details."
         )
         fmt <- paste0(
             .msg(txt, exdent = 0),
-            "\n\nreplacement repositories:",
+            "\nReplacement repositories:",
             "\n    %s\n"
         )
         repos_string <- paste0(
             names(conflicts), ": ", unname(conflicts),
             collapse = "\n    "
         )
-        if (getOption("BiocManager.check_repositories", TRUE))
-            .message(fmt, repos_string, call. = FALSE, wrap. = FALSE)
+        if (.repositories_check_repos_envopt())
+            .message(
+                fmt, repos_string,
+                call. = FALSE, wrap. = FALSE, appendLF = FALSE
+            )
     }
 
     repos
@@ -41,7 +64,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 
 #' @importFrom stats setNames
 .repositories_bioc <-
-    function(version)
+    function(version, ..., type = NULL)
 {
     mirror <- getOption("BioC_mirror", "https://bioconductor.org")
     paths <- c(
@@ -53,7 +76,7 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     )
     bioc_repos <- paste(mirror, "packages", version, paths, sep="/")
     c(
-        containerRepository(version = version),
+        containerRepository(version = version, type = type),
         setNames(bioc_repos, names(paths))
     )
 }
@@ -74,10 +97,10 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 }
 
 .repositories <-
-    function(site_repository, version)
+    function(site_repository, version, ...)
 {
     base <- .repositories_base()
-    bioc <- .repositories_bioc(version)
+    bioc <- .repositories_bioc(version, ...)
 
     repos <- c(site_repository = site_repository, bioc, base)
     repos[!duplicated(names(repos))]
@@ -101,6 +124,14 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #'     indicating the _Bioconductor_ version (e.g., "3.8") for which
 #'     repositories are required.
 #'
+#' @param ... Additional parameters passed to lower level functions, not
+#'   used.
+#'
+#' @param type (Optional) `character(1)` indicating the type of package
+#'   repository to retrieve (default: "both"). Setting `type` to "source" will
+#'   disable any Bioconductor binary packages specifically built for the
+#'   containers.
+#'
 #' @details
 #'
 #' `repositories()` returns the appropriate software package
@@ -123,12 +154,13 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' `bioconductor/bioconductor_docker` images where such installations
 #' correspond to specific versions of Linux / Ubuntu.
 #'
-#' If alternative default repositories are known to provide
-#' appropriate versions of CRAN or _Bioconductor_ packages, the warning
-#' may be silenced (displayed as a message) with
-#' `options(BiocManager.check_repositories = FALSE)`. A message is
-#' still printed, to serve as a reminder when debugging problems
-#' related to incompatible package installation.
+#' If alternative default repositories are known to provide appropriate
+#' versions of CRAN or _Bioconductor_ packages, the message may be silenced
+#' by setting either the option or the variable to `FALSE`, i.e.,
+#' `options(BiocManager.check_repositories = FALSE)` or
+#' \env{BIOCMANAGER_CHECK_REPOSITORIES=FALSE}. Alternative default
+#' repositories are not guaranteed to work without issues related to
+#' incompatible package installations and are used at the user's own risk.
 #'
 #' The intended use of `site_repository =` is to enable installation of
 #' packages not available in the default repositories, e.g., packages
@@ -138,6 +170,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' that _R_'s standard rules of package selection apply, so the most
 #' recent version of candidate packages is selected independent of the
 #' location of the repository in the vector returned by `repositories()`.
+#' To set a more permenanent `site_repository`, one can use either the
+#' \env{BIOCMANAGER_SITE_REPOSITORY} environment variable or the
+#' `options(BiocManager.site_repository = ...)` option.
 #'
 #' For greater flexiblity in installing packages while still adhering
 #' as much as possible to _Bioconductor_ best practices, use
@@ -148,16 +183,16 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #'
 #' @seealso
 #'
-#' `BiocManager::\link{install}()` Installs or updates Bioconductor,
+#' \code{BiocManager::\link{install}()} Installs or updates Bioconductor,
 #'  CRAN, and GitHub packages.
 #'
-#' `\link{chooseBioCmirror}()` choose an alternative Bioconductor
+#' \code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
 #' mirror; not usually necessary.
 #'
-#' `\link{chooseCRANmirror}()` choose an alternative CRAN mirror; not
+#' \code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
 #' usually necessary.
 #'
-#' `\link{setRepositories}()` Select additional repositories for
+#' \code{\link{setRepositories}()} Select additional repositories for
 #' searching.
 #'
 #' @keywords environment
@@ -170,15 +205,21 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #'
 #' @md
 #' @export repositories
-repositories <-
-    function(site_repository = character(), version = BiocManager::version())
-{
+repositories <- function(
+    site_repository = character(),
+    version = BiocManager::version(),
+    ...,
+    type = "both"
+) {
+    if (!length(site_repository) || !nzchar(site_repository))
+        site_repository <- .repositories_site_repository()
+
     stopifnot(
         length(site_repository) <= 1L,
         is.character(site_repository), !anyNA(site_repository)
     )
     version <- .version_validate(version)
-    .repositories(site_repository, version)
+    .repositories(site_repository, version, ..., type = type)
 }
 
 ## is the docker container configured correctly?
@@ -245,9 +286,11 @@ repositories <-
 #' @export
 containerRepository <-
     function(
-        version = BiocManager::version()
+        version = BiocManager::version(), type = "binary"
     )
 {
+    if (identical(type, "source"))
+        return(character())
     platform_docker <- .repository_container_version()
     container_version <- platform_docker$container_version
     platform <- platform_docker$platform

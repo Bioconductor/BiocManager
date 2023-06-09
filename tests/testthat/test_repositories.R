@@ -123,7 +123,7 @@ test_that("'.repositories_filter()' works", {
     expect_equal(.repositories_filter(repos), repos0)
 })
 
-test_that("'containerRepository' & '.repositories_bioc' works", {
+test_that("'containerRepository' uses 'type' argument", {
     skip_if_offline()
     bin_url <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     ver <- "3.14"
@@ -131,13 +131,42 @@ test_that("'containerRepository' & '.repositories_bioc' works", {
     expected_url <- setNames(bin_url, "BioCcontainers")
     withr::with_envvar(
         c(
-            "BIOCONDUCTOR_DOCKER_VERSION" = ver
+            "BIOCONDUCTOR_DOCKER_VERSION" = ver,
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE
         ),
         expect_identical(
-            containerRepository(version = ver),
+            containerRepository(version = ver, type = "source"),
+            character(0L)
+        )
+    )
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_DOCKER_VERSION" = ver,
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE
+        ),
+        expect_identical(
+            containerRepository(version = ver, type = "both"),
             expected_url
         )
     )
+    withr::with_envvar(
+        c(
+            "BIOCONDUCTOR_DOCKER_VERSION" = ver,
+            "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY" = TRUE
+        ),
+        expect_identical(
+            containerRepository(version = ver, type = "binary"),
+            expected_url
+        )
+    )
+})
+
+test_that("'containerRepository' & '.repositories_bioc' works", {
+    skip_if_offline()
+    bin_url <- "https://bioconductor.org/packages/%s/container-binaries/%s"
+    ver <- "3.14"
+    bin_url <- sprintf(bin_url, ver, "bioconductor_docker")
+    expected_url <- setNames(bin_url, "BioCcontainers")
     # When no BIOCONDUCTOR_DOCKER_VERSION is set, no 'BioCcontainers' repo
     withr::with_envvar(
         c(

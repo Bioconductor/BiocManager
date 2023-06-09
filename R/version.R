@@ -38,7 +38,7 @@
 .version_sentinel <-
     function(msg)
 {
-    version <- package_version(list())
+    version <- package_version(NA, strict = FALSE)
     structure(
         unclass(version),
         msg = msg,
@@ -177,13 +177,11 @@ format.version_sentinel <-
 .version_map_get_offline <-
     function()
 {
-    bioc <- tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
-    }, error = identity)
-    if (inherits(bioc, "error"))
+    bioc <- .version_BiocVersion()
+    if (is.na(bioc))
         return(.VERSION_MAP_SENTINEL)
 
-    r <- package_version(R.Version())[,1:2]
+    r <- .version_R_version()[,1:2]
 
     status <- .VERSION_TAGS
     rbind(.VERSION_MAP_SENTINEL, data.frame(
@@ -228,8 +226,20 @@ format.version_sentinel <-
     map[idx, field]
 }
 
-.get_R_version <- function()
+.version_R_version <- function()
     getRversion()
+
+.version_BiocVersion_installed <- function()
+    nzchar(system.file(package = "BiocVersion"))
+
+.version_BiocVersion <-
+    function()
+{
+    if (.version_BiocVersion_installed())
+        packageVersion("BiocVersion")[, 1:2]
+    else
+        .version_sentinel("BiocVersion is not installed")
+}
 
 .version_string <-
     function(bioc_version = version())
@@ -246,7 +256,8 @@ format.version_sentinel <-
 ## the version is invalid. It does NOT call message / warning / etc
 ## directly.
 .version_validity <-
-    function(version, map = .version_map(), r_version = .get_R_version())
+    function(version, map = .version_map(), r_version = .version_R_version(),
+             check_future = FALSE)
 {
     if (identical(version, "devel"))
         version <- .version_bioc("devel")
@@ -277,16 +288,18 @@ format.version_sentinel <-
         rec <- map[map$R == r_version, , drop = FALSE]
         one_up <- required
         one_up[, 2] <- as.integer(required[, 2]) + 1L
-        if (r_version == one_up && "future" %in% rec$BiocStatus)
-            return(sprintf(
-                "Bioconductor does not yet build and check packages for R
-                 version %s; %s",
-                r_version, .VERSION_HELP
-            ))
-        else {
+        if (r_version == one_up && "future" %in% rec$BiocStatus) {
+            if (check_future) {
+                return(sprintf(
+                    "Bioconductor does not yet build and check packages for R
+                     version %s, using unsupported Bioconductor version %s; %s",
+                    r_version, version, .VERSION_HELP
+                ))
+            }
+        } else {
             rec_fun <- ifelse("devel" %in% rec$BiocStatus, head, tail)
             rec_msg <- sprintf(
-                "use `BiocManager::install(version = '%s')` with R version %s",
+                "use `version = '%s'` with R version %s",
                 rec_fun(rec$Bioc, 1), r_version
             )
 
@@ -296,28 +309,6 @@ format.version_sentinel <-
             ))
         }
     }
-
-    TRUE
-}
-
-.version_is_not_future <-
-    function(version)
-{
-    map <- .version_map()
-    if (identical(map, .VERSION_MAP_SENTINEL))
-        return(.VERSION_MAP_UNABLE_TO_VALIDATE)
-
-    if (!all(.VERSION_TAGS %in% map$BiocStatus))
-        return(.VERSION_MAP_MISCONFIGURATION)
-
-    r_version <- getRversion()[, 1:2]
-    status <- map$BiocStatus[map$Bioc == version & map$R == r_version]
-    if (identical(status, "future"))
-        return(sprintf(
-            "Bioconductor does not yet build and check packages for R version
-             %s; %s",
-            r_version, .VERSION_HELP
-        ))
 
     TRUE
 }
@@ -426,16 +417,6 @@ format.version_sentinel <-
     version
 }
 
-.local_version <-
-    function()
-{
-    tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
-    }, error = function(e) {
-        .version_sentinel("package 'BiocVersion' not installed")
-    })
-}
-
 #' Version of Bioconductor currently in use.
 #'
 #' `version()` reports the version of _Bioconductor_ appropropriate
@@ -458,11 +439,11 @@ format.version_sentinel <-
 version <-
     function()
 {
-    tryCatch({
-        packageVersion("BiocVersion")[, 1:2]
-    }, error = function(e) {
-        .version_choose_best()
-    })
+    bioc <- .version_BiocVersion()
+    if (is.na(bioc))
+        bioc <- .version_choose_best()
+
+    bioc
 }
 
 .package_version <-
@@ -486,5 +467,5 @@ version <-
 print.version_sentinel <-
     function(x, ...)
 {
-    cat(format(x), "\n")
+    cat(format(x), "\n", sep = "")
 }

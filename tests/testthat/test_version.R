@@ -127,12 +127,12 @@ test_that(".version_validity(...) works", {
 
     expect_match(
         .version_validity("4.1", .ver_map, .get_R_ver()),
-        "BiocManager::install"
+        "Bioconductor version '4.1'"
     )
 
-    expect_match(
-        .version_validity("4.1", .ver_map, .get_R_ver("4.5.0")),
-        "does not yet build"
+    ## installing with future R versions supported
+    expect_true(
+        .version_validity("4.1", .ver_map, .get_R_ver("4.5.0"))
     )
 
     .par_map <- .ver_map[1:2, ]
@@ -346,4 +346,81 @@ test_that("BiocVersion version matches with .version_map()", {
         expect(bioc_version %in% map$Bioc, failure_message)
     }
     expect_version(bioc_version, R_version)
+})
+
+test_that(".version_sentinel() works", {
+    msg <- "this is a message"
+    vs <- .version_sentinel(msg)
+    expect_true(is.na(vs))
+    expect_true(inherits(vs, "version_sentinel"))
+    expect_true(inherits(vs, "package_version"))
+    out <- capture.output(vs)
+    expect_identical(
+        paste0("unknown version: ", msg),
+        out
+    )
+})
+
+test_that(".version_BiocVersion returns .version_sentinel output", {
+    with_mock(
+        `BiocManager:::.version_BiocVersion_installed` = function(...) {
+            FALSE
+        },
+        expect_identical(
+            .version_BiocVersion(),
+            .version_sentinel("BiocVersion is not installed")
+        )
+    )
+})
+
+test_that(".version_map_get_offline() works", {
+    with_mock(
+        `BiocManager:::.version_BiocVersion` = function(...) {
+            .version_sentinel("BiocVersion is not installed")
+        },
+        expect_identical(
+            .version_map_get_offline(),
+            .VERSION_MAP_SENTINEL
+        )
+    )
+    .skip_if_misconfigured()
+    skip_if_offline()
+    rver <- package_version("4.3")
+    class(rver) <- c("R_system_version", class(rver))
+    with_mock(
+        `BiocManager:::.version_BiocVersion` = function(...) {
+            package_version("3.14")
+        },
+        `BiocManager:::.version_R_version` = function(...) {
+            rver <- package_version("4.3")
+            class(rver) <- c("R_system_version", class(rver))
+            rver
+        },
+        expect_identical(
+            .version_map_get_offline(),
+            rbind(.VERSION_MAP_SENTINEL, data.frame(
+                Bioc = package_version('3.14'), R = rver,
+                BiocStatus = factor(NA, levels = .VERSION_TAGS),
+                RSPM = NA_character_, MRAN = NA_character_
+            ))
+        )
+    )
+})
+
+test_that("version chooses best", {
+    target_version <-  structure(
+        list(c(3L, 17L), class = c("package_version", "numeric_version"))
+    )
+    with_mock(
+        `BiocManager:::.version_BiocVersion` = function(...) {
+            .version_sentinel("BiocVersion is not installed")
+        },
+        `BiocManager:::.version_choose_best` = function(...) {
+            target_version
+        },
+        expect_identical(
+            version(),
+            target_version
+        )
+    )
 })

@@ -1,12 +1,10 @@
-We tried to use `rhub::check_on_fedora()` / `rhub::check_on_debian()` but they
-are not working, currently.
-
-We also checked for any major issues with `revdepcheck::revdep_check()` and
+We checked for any major issues with `revdepcheck::revdep_check()` and
 found none.
 
 ## Test environments
-* local Ubuntu 22.04 (linux): R 4.1.3 patched, R 4.2.1 patched, R devel 
-* win-builder.r-project.org (windows): R 4.2.1 patched, devel
+
+* local Ubuntu 22.04 (linux): R 4.2.2 patched, R 4.3.0 patched, R devel (r84486)
+* win-builder.r-project.org (windows): R 4.2.3, R 4.3.0, R devel (r84521)
 
 ## R CMD check results
 
@@ -14,13 +12,13 @@ found none.
 
 * checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  'BiocVersion'
+  'BiocVersion', 'curl'
 
 `BiocVersion` is only available in Bioconductor.
 
 ## revdepcheck results
 
-We checked 163 reverse dependencies (0 from CRAN + 163 from Bioconductor),
+We checked 177 reverse dependencies (0 from CRAN + 177 from Bioconductor),
 comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems

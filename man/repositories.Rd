@@ -7,9 +7,14 @@
 \alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
-repositories(site_repository = character(), version = BiocManager::version())
+repositories(
+  site_repository = character(),
+  version = BiocManager::version(),
+  ...,
+  type = "both"
+)
 
-containerRepository(version = BiocManager::version())
+containerRepository(version = BiocManager::version(), type = "binary")
 }
 \arguments{
 \item{site_repository}{(Optional) \code{character(1)} representing an
@@ -21,6 +26,14 @@ repositories returned by the function.}
 \item{version}{(Optional) \code{character(1)} or \code{package_version}
 indicating the \emph{Bioconductor} version (e.g., "3.8") for which
 repositories are required.}
+
+\item{...}{Additional parameters passed to lower level functions, not
+used.}
+
+\item{type}{(Optional) \code{character(1)} indicating the type of package
+repository to retrieve (default: "both"). Setting \code{type} to "source" will
+disable any Bioconductor binary packages specifically built for the
+containers.}
 }
 \value{
 \code{repositories()}: named \code{character()} of repositories.
@@ -58,12 +71,13 @@ experimental and binary installations are intended to be used with
 \code{bioconductor/bioconductor_docker} images where such installations
 correspond to specific versions of Linux / Ubuntu.
 
-If alternative default repositories are known to provide
-appropriate versions of CRAN or \emph{Bioconductor} packages, the warning
-may be silenced (displayed as a message) with
-\code{options(BiocManager.check_repositories = FALSE)}. A message is
-still printed, to serve as a reminder when debugging problems
-related to incompatible package installation.
+If alternative default repositories are known to provide appropriate
+versions of CRAN or \emph{Bioconductor} packages, the message may be silenced
+by setting either the option or the variable to \code{FALSE}, i.e.,
+\code{options(BiocManager.check_repositories = FALSE)} or
+\env{BIOCMANAGER_CHECK_REPOSITORIES=FALSE}. Alternative default
+repositories are not guaranteed to work without issues related to
+incompatible package installations and are used at the user's own risk.
 
 The intended use of \verb{site_repository =} is to enable installation of
 packages not available in the default repositories, e.g., packages
@@ -73,6 +87,9 @@ binaries) of packages available in the default repositories. Note
 that \emph{R}'s standard rules of package selection apply, so the most
 recent version of candidate packages is selected independent of the
 location of the repository in the vector returned by \code{repositories()}.
+To set a more permenanent \code{site_repository}, one can use either the
+\env{BIOCMANAGER_SITE_REPOSITORY} environment variable or the
+\code{options(BiocManager.site_repository = ...)} option.
 
 For greater flexiblity in installing packages while still adhering
 as much as possible to \emph{Bioconductor} best practices, use
@@ -97,16 +114,16 @@ containerRepository() # character(0) if not within a Bioconductor container
 
 }
 \seealso{
-\verb{BiocManager::\link{install}()} Installs or updates Bioconductor,
+\code{BiocManager::\link{install}()} Installs or updates Bioconductor,
 CRAN, and GitHub packages.
 
-\verb{\link{chooseBioCmirror}()} choose an alternative Bioconductor
+\code{\link{chooseBioCmirror}()} choose an alternative Bioconductor
 mirror; not usually necessary.
 
-\verb{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
+\code{\link{chooseCRANmirror}()} choose an alternative CRAN mirror; not
 usually necessary.
 
-\verb{\link{setRepositories}()} Select additional repositories for
+\code{\link{setRepositories}()} Select additional repositories for
 searching.
 }
 \keyword{environment}

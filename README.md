@@ -72,4 +72,4 @@ changing Bioconductor version, offline use, and other advanced usage.
 ## Getting help
 
 To report apparent bugs, create a minimal and reproducible example on
-[github](https://github.com/Bioconductor/BiocManager/issues).
+[GitHub](https://github.com/Bioconductor/BiocManager/issues).
