@@ -1,12 +1,3 @@
-CHANGES IN VERSION 1.30.20
--------------------------
-
-NEW FEATURES
-
-    o Time machine functionality for old Bioconductor releases using BiocManager
-    has been moved to `BiocPkgTools`. See `?BiocPkgTools.snapshot` for more
-    details.
-
 CHANGES IN VERSION 1.30.19
 -------------------------
 
