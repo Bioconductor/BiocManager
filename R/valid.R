@@ -32,14 +32,18 @@
     )
 }
 
+.valid_out_of_date_filter <- function(out_of_date) {
+    out_of_date[rownames(out_of_date) != "BiocVersion", , drop = FALSE]
+}
+
 .valid_result <-
     function(avail_out, pkgs = installed.packages(lib.loc, priority=priority),
              lib.loc=NULL, priority="NA")
 {
     too_new <- .valid_pkgs_too_new(pkgs, avail_out[["available"]])
-    out_of_date <- avail_out[["out_of_date"]]
+    out_of_date <- .valid_out_of_date_filter(avail_out[["out_of_date"]])
 
-    result <- !nrow(too_new) && is.null(out_of_date)
+    result <- !nrow(too_new) && (is.null(out_of_date) || !nrow(out_of_date))
 
     if (!result || avail_out[["noRepos"]]) {
         result <- structure(
