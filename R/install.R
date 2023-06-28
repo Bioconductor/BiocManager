@@ -392,6 +392,9 @@ install <-
         is.logical(checkBuilt), length(checkBuilt) == 1L, !is.na(checkBuilt),
         length(version) == 1L || inherits(version, "version_sentinel")
     )
+    if (!length(site_repository) || !nzchar(site_repository))
+        site_repository <- .repositories_site_repository()
+
     version <- .version_validate(version)
 
     inst <- installed.packages()
