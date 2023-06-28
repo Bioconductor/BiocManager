@@ -112,8 +112,13 @@ valid <-
              site_repository = character())
 {
     stopifnot(
-        is.logical(checkBuilt), length(checkBuilt) == 1L, !is.na(checkBuilt)
+        is.logical(checkBuilt), length(checkBuilt) == 1L, !is.na(checkBuilt),
+        length(site_repository) <= 1L,
+        is.character(site_repository), !any(is.na(site_repository))
     )
+    if (!length(site_repository) || !nzchar(site_repository))
+        site_repository <- .repositories_site_repository()
+
     if (!is.matrix(pkgs)) {
         if (is.character(pkgs)) {
             pkgs <- installed.packages(pkgs, lib.loc=lib.loc)
