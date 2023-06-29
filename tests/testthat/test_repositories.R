@@ -29,6 +29,53 @@ test_that("'site_repository=' inserted correctly", {
     expect_identical(c(site_repository = site_repository), repos[1])
 })
 
+test_that("site_repository is used when env var or option available", {
+    .skip_if_misconfigured()
+    expected_repository <- "https://example.com/bioc"
+    withr::with_envvar(
+        c(BIOCMANAGER_SITE_REPOSITORY = expected_repository),
+        {
+            actual_repository <- .repositories_site_repository()
+            expect_equal(actual_repository, expected_repository)
+        }
+    )
+    withr::with_envvar(
+        c(BIOCMANAGER_SITE_REPOSITORY = ""),
+        {
+            actual_repository <- .repositories_site_repository()
+            expect_equal(actual_repository, character(0L))
+        }
+    )
+    withr::with_envvar(
+        c(BIOCMANAGER_SITE_REPOSITORY = NULL),
+        {
+            actual_repository <- .repositories_site_repository()
+            expect_equal(actual_repository, character(0L))
+        }
+    )
+    withr::with_options(
+        list(BiocManager.site_repository = expected_repository),
+        {
+            actual_value <- .repositories_site_repository()
+            expect_equal(actual_value, expected_repository)
+        }
+    )
+    withr::with_options(
+        list(BiocManager.site_repository = ""),
+        {
+            actual_value <- .repositories_site_repository()
+            expect_equal(actual_value, character(0L))
+        }
+    )
+    withr::with_options(
+        list(BiocManager.site_repository = NULL),
+        {
+            actual_value <- .repositories_site_repository()
+            expect_equal(actual_value, character(0L))
+        }
+    )
+})
+
 test_that("repositories() rejects invalid versions", {
     skip_if_offline()
     expect_error(
