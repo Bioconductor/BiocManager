@@ -27,8 +27,8 @@
     c("out-of-date", "release", "devel", "future")
 
 .VERSION_MAP_SENTINEL <- data.frame(
-    Bioc = package_version(list()),
-    R = package_version(list()),
+    Bioc = package_version(character()),
+    R = package_version(character()),
     BiocStatus = factor(
         factor(),
         levels = .VERSION_TAGS
@@ -38,7 +38,7 @@
 .version_sentinel <-
     function(msg)
 {
-    version <- package_version(NA, strict = FALSE)
+    version <- package_version(NA_character_, strict = FALSE)
     structure(
         unclass(version),
         msg = msg,
