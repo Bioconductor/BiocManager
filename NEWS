@@ -1,9 +1,19 @@
-CHANGES IN VERSION 1.30.21
+CHANGES IN VERSION 1.30.22
 -------------------------
 
 NEW FEATURES
 
     o Enable site_repository environment variable or option for install, valid
+
+MINOR CHANGES
+
+    o Ensure character input to package_version function (@kurthornik)
+
+CHANGES IN VERSION 1.30.21
+-------------------------
+
+NEW FEATURES
+
     o Enable the use of the Bioc-devel branch on R-devel during the 'summer'
       release cycle (@mtmorgan, #166)
     o Allow `BIOCMANAGER_SITE_REPOSITORY` environment variable and
@@ -14,12 +24,11 @@ NEW FEATURES
 
 MINOR CHANGES
 
-    o Ensure character input to package_version function (@kurthornik)
     o Correct links on help pages. See
       <https://github.com/Bioconductor/BiocManager/pull/160>; thanks
       @aitap
     o Additional documentation provided for offline use of BiocManager in
-      `?install` and in the main vignette (#165, @mtmorgan). 
+      `?install` and in the main vignette (#165, @mtmorgan).
 
 CHANGES IN VERSION 1.30.20
 -------------------------
