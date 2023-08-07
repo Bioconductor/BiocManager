@@ -115,7 +115,7 @@ test_that("repositories helper replaces correct URL", {
     )
 
     ## DO NOT update CRAN repo
-    repos <- c(CRAN = "https://mran.microsoft.com/snapshot/2017-05-01")
+    repos <- c(CRAN = "https://packagemanager.posit.co/")
     withr::with_options(
         list(repos = repos),
         {
