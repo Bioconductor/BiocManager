@@ -67,9 +67,7 @@ NULL
 #'   `site_repository` input to `repositories()`. See `?repositories`.
 #'
 #' @md
-#' @name BiocManager-pkg
 #' @aliases BiocManager
-#' @docType package
 #'
 #' @examples
 #' R.version.string
