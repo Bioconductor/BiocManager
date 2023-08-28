@@ -123,6 +123,78 @@ BiocManager::available("BSgenome.Hsapiens") # BSgenome.Hsapiens.* packages
 Questions about installing and managing _Bioconductor_ packages should
 be addressed to the [_Bioconductor_ support site][3].
 
+## Updating old packages
+
+The user can often get an update packages prompt similar to: 
+
+```
+> BiocManager::install("AnVIL")
+Bioconductor version 3.18 (BiocManager 1.30.22), R 4.3.1 (2023-06-16)
+Old packages: 'AnnotationDbi', 'arrow', 'basilisk.utils', 'beachmat',
+  'BiocParallel', 'BiocSingular', 'biocthis', 'Biostrings', 'bluster',
+  'DelayedArray', 'downlit', 'edgeR', 'GenomeInfoDb', 'GenomicFeatures',
+  'IRanges', 'limma', 'pkgbuild', 'pkgload', 'processx', 'RcppSpdlog', 'rhdf5',
+  'rstudioapi', 'SingleR', 'testthat', 'usethis', 'xml2', 'KernSmooth',
+  'Matrix', 'mgcv'
+Update all/some/none? [a/s/n]: 
+```
+
+A decision should be made regarding updating packages. In the following section
+we will detail the rationale, pros, and cons of updating packages.
+
+(An initial draft of this section was produced by ChatGPT on 28 August 2023)
+
+### Rationale
+
+Package updates often include bug fixes, improvements in functionality, and
+optimizations. By updating, the user can ensure that they are benefiting from
+the latest enhancements and fixes in the packages they use.
+
+### Pros of updating
+
+* **Bug Fixes**: Updating packages can resolve known issues and bugs present in
+older versions. This can lead to more accurate and reliable analyses.
+* **Performance**: Package updates might come with performance optimizations
+that can lead to faster execution of code and analyses.
+* **New Features**: Updated packages might introduce new features, functions,
+and capabilities that can enhance your workflow and analysis options.
+* **Compatibility**: Newer packages are often developed with compatibility in
+mind. Using outdated packages might lead to compatibility issues with other
+packages or R itself.
+* **Security**: In some cases, package updates address security
+vulnerabilities. Keeping packages up to date can help maintain the security of
+the computational environment.
+* **Documentation**: Newer versions of packages might come with updated
+documentation that reflects recent changes and improvements in package
+functionality.
+
+### Cons of updating
+
+* **Code Breakage**: Updates can introduce changes in package behavior,
+function signatures, or syntax. This can potentially break existing code if it
+relies on the previous behavior.
+* **Version Conflicts**: Updates to one package might trigger dependencies on
+updated versions of other packages. This can lead to conflicts if those updated
+versions are not compatible with other parts of your workflow.
+* **Workflow Disruption**: When you update packages, you might need to retest
+and validate your analyses to ensure that the changes in package behavior don't
+affect your results.
+* **Learning Curve**: New features and changes introduced in updated packages
+might require you to invest time in understanding how to use them effectively.
+* **Temporary Instability**: Right after a major update, the new version might
+not be as stable as the previous one, leading to unexpected behavior.
+
+### Balancing the Decision
+
+* Consider how critical the package is to your analysis. If a package is central
+to your workflow, updating might be more important.
+* Read the release notes of the package to understand what changes are
+introduced in the update.
+* Consider using a separate environment (e.g., Docker container) for testing
+updates before applying them to the main analysis environment.
+* Make sure to backup code and data before performing updates.
+* Check if there are any compatibility issues with other packages you are using.
+
 # Advanced use
 
 ## Changing version
