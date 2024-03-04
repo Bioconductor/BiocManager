@@ -78,9 +78,11 @@ format.version_sentinel <-
 .version_validity_online_check <-
     function()
 {
-    opt <- Sys.getenv("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", TRUE)
-    opt <- getOption("BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS", opt)
-    opt <- isTRUE(as.logical(opt))
+    opt <- .env_opt_lgl(
+        "BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS",
+        "BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS",
+        TRUE
+    )
 
     if (.VERSION_MAP$WARN_NO_ONLINE_CONFIG && !opt) {
         .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE

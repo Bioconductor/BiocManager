@@ -33,6 +33,12 @@
     }
 }
 
+.env_opt_lgl <- function(envvar, option, default) {
+    opt <- Sys.getenv(envvar, default)
+    opt <- getOption(option, opt)
+    isTRUE(as.logical(opt))
+}
+
 .sQuote <- function(x)
     sprintf("'%s'", as.character(x))
 

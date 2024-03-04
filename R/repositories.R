@@ -3,9 +3,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 .repositories_check_repos_envopt <-
     function()
 {
-    opt <- Sys.getenv("BIOCMANAGER_CHECK_REPOSITORIES", TRUE)
-    opt <- getOption("BiocManager.check_repositories", opt)
-    isTRUE(as.logical(opt))
+    .env_opt_lgl(
+        "BIOCMANAGER_CHECK_REPOSITORIES", "BiocManager.check_repositories", TRUE
+    )
 }
 
 .repositories_site_repository <-
@@ -68,11 +68,30 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     repos
 }
 
+.repositories_ci_mirror_envopt <-
+    function()
+{
+    .env_opt_lgl(
+        "BIOCMANAGER_USE_CI_MIRROR", "BiocManager.use_ci_mirror", TRUE
+    ) && as.logical(Sys.getenv("CI"))
+}
+
+.BIOCONDUCTOR_CI_MIRROR <- "https://ci-mirror.bioconductor.org"
+
+.repositories_bioc_mirror <- function() {
+    if (
+        .repositories_ci_mirror_envopt() && .url_exists(.BIOCONDUCTOR_CI_MIRROR)
+    )
+        .BIOCONDUCTOR_CI_MIRROR
+    else
+        getOption("BioC_mirror", "https://bioconductor.org")
+}
+
 #' @importFrom stats setNames
 .repositories_bioc <-
     function(version, ..., type = NULL)
 {
-    mirror <- getOption("BioC_mirror", "https://bioconductor.org")
+    mirror <- .repositories_bioc_mirror()
     paths <- c(
         BioCsoft = "bioc",
         BioCann = "data/annotation",
@@ -256,9 +275,11 @@ repositories <- function(
 .repositories_use_container_repo <-
     function()
 {
-    opt <- Sys.getenv("BIOCONDUCTOR_USE_CONTAINER_REPOSITORY", TRUE)
-    opt <- getOption("BIOCONDUCTOR_USE_CONTAINER_REPOSITORY", opt)
-    isTRUE(as.logical(opt))
+    .env_opt_lgl(
+        "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY",
+        "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY",
+        TRUE
+    )
 }
 
 #' @rdname repositories
