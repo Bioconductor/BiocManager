@@ -116,8 +116,8 @@ test_that(".version_validity(...) works", {
 
     ## proper mock map should include all four BiocStatus fields
     .ver_map <- data.frame(
-        Bioc = package_version(list("3.9", "4.0", "4.1", "4.1")),
-        R = package_version(list("4.2", "4.3", "4.4", "4.5")),
+        Bioc = package_version(c("3.9", "4.0", "4.1", "4.1")),
+        R = package_version(c("4.2", "4.3", "4.4", "4.5")),
         BiocStatus = c("out-of-date", "release", "devel", "future")
     )
 
@@ -147,8 +147,8 @@ test_that(".version_bioc() works", {
     skip_if_offline()
 
     .ver_map <- data.frame(
-        Bioc = package_version(list("4.0", "4.1", "4.1")),
-        R = package_version(list("4.3", "4.4", "4.5")),
+        Bioc = package_version(c("4.0", "4.1", "4.1")),
+        R = package_version(c("4.3", "4.4", "4.5")),
         BiocStatus = c("release", "devel", "future")
     )
 
@@ -194,8 +194,8 @@ test_that(".version_R() works", {
     skip_if_offline()
 
     .ver_map <- data.frame(
-        Bioc = package_version(list("4.0", "4.1", "4.1")),
-        R = package_version(list("4.3", "4.4", "4.5")),
+        Bioc = package_version(c("4.0", "4.1", "4.1")),
+        R = package_version(c("4.3", "4.4", "4.5")),
         BiocStatus = c("release", "devel", "future")
     )
     ## out-of-date is missing

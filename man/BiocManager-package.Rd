@@ -3,7 +3,6 @@
 \docType{package}
 \name{BiocManager-package}
 \alias{BiocManager-package}
-\alias{_PACKAGE}
 \alias{BiocManager}
 \title{Install or update Bioconductor, CRAN, or GitHub packages}
 \description{
