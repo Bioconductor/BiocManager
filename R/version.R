@@ -100,26 +100,27 @@ format.version_sentinel <-
     txt
 }
 
-.version_map_config_element <-
-    function(txt, tag)
-{
+.version_config_section <- function(txt, tag) {
     grps <- grep("^[^[:blank:]]", txt)
     start <- match(grep(tag, txt), grps)
     if (!length(start))
         return(setNames(character(), character()))
     end <- ifelse(length(grps) < start + 1L, length(txt), grps[start + 1] - 1L)
-    map <- txt[seq(grps[start] + 1, end)]
-    map <- trimws(gsub("\"", "", sub(" #.*", "", map)))
+    txt[seq(grps[start] + 1, end)]
+}
 
+.version_map_config_element <-
+    function(txt, tag)
+{
+    map <- .version_config_section(txt = txt, tag = tag)
+    map <- trimws(gsub("\"", "", sub(" #.*", "", map)))
     pattern <- "(.*): (.*)"
     key <- sub(pattern, "\\1", map)
     value <- sub(pattern, "\\2", map)
     setNames(value, key)
 }
 
-.version_map_get_online <-
-    function(config)
-{
+.version_map_read_online <- function(config) {
     toggle_warning <- FALSE
     withCallingHandlers({
         txt <- .version_map_get_online_config(config)
@@ -130,7 +131,13 @@ format.version_sentinel <-
     })
     if (toggle_warning)
         .VERSION_MAP$WARN_NO_ONLINE_CONFIG <- FALSE
+    txt
+}
 
+.version_map_get_online <-
+    function(config)
+{
+    txt <- .version_map_read_online(config = config)
     if (!length(txt) || inherits(txt, "error"))
         return(.VERSION_MAP_SENTINEL)
 
@@ -170,7 +177,7 @@ format.version_sentinel <-
         BiocStatus = factor(
             status,
             levels = .VERSION_TAGS
-        )  
+        )
     ))
 }
 

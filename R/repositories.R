@@ -76,13 +76,40 @@ BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
     isTRUE(as.logical(opt)) && as.logical(Sys.getenv("CI", FALSE))
 }
 
-.BIOCONDUCTOR_CI_MIRROR <- "https://ci-mirror.bioconductor.org"
+.repositories_config_section <- function(sections, headings, inner_tag) {
+    grps <- grep(headings, sections)
+    start <- match(grep(inner_tag, sections), grps)
+    if (!length(start))
+        return(setNames(character(), character()))
+    end <- ifelse(
+        length(grps) < start + 1L, length(sections), grps[start + 1] - 1L
+    )
+    sections[seq(grps[start] + 1, end)]
+}
+
+.repositories_config_mirror_element <- function(txt, tag) {
+    section <- trimws(.version_config_section(txt = txt, tag = tag))
+    section <- .repositories_config_section(
+        section, "-\\sinstitution:.*", "Bioconductor.*CI.*"
+    )
+    mkey_val <- Filter(function(x) startsWith(x, "https_mirror_url"), section)
+    sub("https_mirror_url: (.*)", "\\1", mkey_val)
+}
+
+.repositories_read_bioc_mirrors <-
+    function(config = "https://bioconductor.org/config.yaml")
+{
+    txt <- .version_map_read_online(config)
+    mirror <- .repositories_config_mirror_element(txt, "mirrors:")
+    if (!length(mirror) || !nzchar(mirror))
+        mirror <- "https://bioconductor.org"
+}
 
 .repositories_bioc_mirror <- function() {
     if (
         .repositories_ci_mirror_envopt() && .url_exists(.BIOCONDUCTOR_CI_MIRROR)
     )
-        mirror_url <- .BIOCONDUCTOR_CI_MIRROR
+        mirror_url <- .repositories_read_bioc_mirrors()
     else
         mirror_url <- "https://bioconductor.org"
     getOption("BioC_mirror", mirror_url)
@@ -341,10 +368,10 @@ containerRepository <-
 
     ## does the binary repository exist?
     mirror <- .repositories_bioc_mirror()
-    .repositories_try_container_url(version, mirror)
+    .repositories_try_container_url(version, mirror, platform)
 }
 
-.repositories_try_container_url <- function(version, mirror) {
+.repositories_try_container_url <- function(version, mirror, platform) {
     bioc_url <- paste0(mirror, BINARY_SLUG_URL)
     binary_repos0 <- sprintf(bioc_url, version, platform)
     packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
@@ -356,12 +383,13 @@ containerRepository <-
     }, error = function(...) {
         close(url)
         .repositories_try_cont_url2(
-            version = version, mirror = "https://bioconductor.org"
+            version = version, mirror = "https://bioconductor.org",
+            platform = platform
         )
     })
 }
 
-.repositories_try_cont_url2 <- function(version, mirror) {
+.repositories_try_cont_url2 <- function(version, mirror, platform) {
     bioc_url <- paste0(mirror, BINARY_SLUG_URL)
     binary_repos0 <- sprintf(bioc_url, version, platform)
     packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
