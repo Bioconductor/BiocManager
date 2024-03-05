@@ -4,7 +4,6 @@
 \alias{repositories}
 \alias{BiocManager.check_repositories}
 \alias{containerRepository}
-\alias{BINARY_BASE_URL}
 \title{Display current Bioconductor and CRAN repositories.}
 \usage{
 repositories(
@@ -61,8 +60,9 @@ best practice is to use packages from the same release, and from
 the appropriate CRAN repository.
 
 To install binary packages on containerized versions of Bioconductor,
-a default binary package location URL is set as a package constant,
-see \code{BiocManager:::BINARY_BASE_URL}. Binary package installations
+a default binary package location URL is resolved from the
+\code{getOption("BioC_mirror")} (or the default \verb{https://bioconductor.org})
+and the \code{BiocManager:::BINARY_SLUG_URL}. Binary package installations
 are enabled by default for Bioconductor Docker containers. Anyone
 wishing to opt out of the binary package installation can set either the
 variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
@@ -96,8 +96,14 @@ as much as possible to \emph{Bioconductor} best practices, use
 \code{repositories()} as a basis for constructing the \verb{repos =} argument
 to \code{install.packages()} and related functions.
 
-The unexported URL to the base repository is available with
-\code{BiocManager:::BINARY_BASE_URL}.
+On Continuous Integration (CI) platforms, \code{BiocManager} re-routes
+requests to low-cost mirror sites. Users may opt out of this by
+setting either the option or the variable to \code{FALSE}, i.e.,
+\code{options(BiocManager.use_ci_mirror = FALSE)} or
+\env{BIOCMANAGER_USE_CI_MIRROR}.
+
+The binary URL is a combination of \code{getOption("BioC_mirror")} and
+\code{BiocManager:::BINARY_SLUG_URL}.
 
 \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} is an environment
 variable or global \code{options()} which, when set to \code{FALSE}, avoids
