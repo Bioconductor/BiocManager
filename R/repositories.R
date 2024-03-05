@@ -3,9 +3,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 .repositories_check_repos_envopt <-
     function()
 {
-    .env_opt_lgl(
-        "BIOCMANAGER_CHECK_REPOSITORIES", "BiocManager.check_repositories", TRUE
-    )
+    opt <- Sys.getenv("BIOCMANAGER_CHECK_REPOSITORIES", TRUE)
+    opt <- getOption("BiocManager.check_repositories", opt)
+    isTRUE(as.logical(opt))
 }
 
 .repositories_site_repository <-
@@ -71,9 +71,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 .repositories_ci_mirror_envopt <-
     function()
 {
-    .env_opt_lgl(
-        "BIOCMANAGER_USE_CI_MIRROR", "BiocManager.use_ci_mirror", TRUE
-    ) && as.logical(Sys.getenv("CI"))
+    opt <- Sys.getenv("BIOCMANAGER_USE_CI_MIRROR", TRUE)
+    opt <- getOption("BiocManager.use_ci_mirror", opt)
+    isTRUE(as.logical(opt)) && as.logical(Sys.getenv("CI"))
 }
 
 .BIOCONDUCTOR_CI_MIRROR <- "https://ci-mirror.bioconductor.org"
@@ -275,11 +275,9 @@ repositories <- function(
 .repositories_use_container_repo <-
     function()
 {
-    .env_opt_lgl(
-        "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY",
-        "BIOCONDUCTOR_USE_CONTAINER_REPOSITORY",
-        TRUE
-    )
+    opt <- Sys.getenv("BIOCONDUCTOR_USE_CONTAINER_REPOSITORY", TRUE)
+    opt <- getOption("BIOCONDUCTOR_USE_CONTAINER_REPOSITORY", opt)
+    isTRUE(as.logical(opt))
 }
 
 #' @rdname repositories
