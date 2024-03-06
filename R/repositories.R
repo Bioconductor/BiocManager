@@ -1,4 +1,4 @@
-BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
+.BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
 
 .repositories_check_repos_envopt <-
     function()
@@ -189,7 +189,7 @@ BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
 #' To install binary packages on containerized versions of Bioconductor,
 #' a default binary package location URL is resolved from the
 #' `getOption("BioC_mirror")` (or the default `https://bioconductor.org`)
-#' and the `BiocManager:::BINARY_SLUG_URL`. Binary package installations
+#' and the `BiocManager:::.BINARY_SLUG_URL`. Binary package installations
 #' are enabled by default for Bioconductor Docker containers. Anyone
 #' wishing to opt out of the binary package installation can set either the
 #' variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
@@ -314,7 +314,7 @@ repositories <- function(
 #' @details
 #'
 #' The binary URL is a combination of `getOption("BioC_mirror")` and
-#' `BiocManager:::BINARY_SLUG_URL`.
+#' `BiocManager:::.BINARY_SLUG_URL`.
 #'
 #' \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} is an environment
 #' variable or global `options()` which, when set to `FALSE`, avoids
@@ -361,35 +361,31 @@ containerRepository <-
     .repositories_try_container_url(version, mirror, platform)
 }
 
-.repositories_try_container_url <- function(version, mirror, platform) {
-    bioc_url <- paste0(mirror, BINARY_SLUG_URL)
+.repositories_try_url_con <- function(version, mirror, platform, FUN, ...) {
+    bioc_url <- paste0(mirror, .BINARY_SLUG_URL)
     binary_repos0 <- sprintf(bioc_url, version, platform)
     packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({
         suppressWarnings(open(url, "rb"))
-        close(url)
         setNames(binary_repos0, "BioCcontainers")
     }, error = function(...) {
-        close(url)
-        .repositories_try_cont_url2(
-            version = version, mirror = "https://bioconductor.org",
-            platform = platform
-        )
-    })
+        FUN(...)
+    }, finally = {close(url)})
 }
 
-.repositories_try_cont_url2 <- function(version, mirror, platform) {
-    bioc_url <- paste0(mirror, BINARY_SLUG_URL)
-    binary_repos0 <- sprintf(bioc_url, version, platform)
-    packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
-    url <- url(packages)
-    tryCatch({
-        suppressWarnings(open(url, "rb"))
-        close(url)
-        setNames(binary_repos0, "BioCcontainers")
-    }, error = function(...) {
-        close(url)
-        character()
-    })
+.repositories_try_container_url <- function(version, mirror, platform) {
+    .repositories_try_url_con(
+        version = version,
+        mirror = mirror,
+        platform = platform,
+        FUN = function(...) {
+            .repositories_try_url_con(
+                version = version,
+                mirror = "https://bioconductor.org",
+                platform = platform,
+                FUN = character
+            )
+        }
+    )
 }
