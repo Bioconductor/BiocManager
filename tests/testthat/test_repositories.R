@@ -169,6 +169,33 @@ test_that("'.repositories_filter()' works", {
     expect_equal(.repositories_filter(repos), repos0)
 })
 
+test_that("config.yaml is parsed correctly", {
+    test.config <- c(
+        "mirrors:",
+        "  - 1-Bioconductor:",
+        "    - institution: Bioconductor CI redirect",
+        "      https_mirror_url: https://foobar.com/"
+    )
+    expect_identical(
+        .repositories_config_mirror_element(
+            test.config
+        ),
+        "https://foobar.com/"
+    )
+    test.config <- c(
+        "mirrors:",
+        "  - 1-Bioconductor:",
+        "    - institution: Bioconductor CI redirect",
+        "      https_mirror_url: "
+    )
+    expect_identical(
+        .repositories_config_mirror_element(
+            test.config
+        ),
+        "https://bioconductor.org"
+    )
+})
+
 test_that("'containerRepository' uses 'type' argument", {
     skip_if_offline()
     bin_url <- "https://bioconductor.org/packages/%s/container-binaries/%s"

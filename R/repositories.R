@@ -76,14 +76,13 @@
     isTRUE(as.logical(opt)) && as.logical(Sys.getenv("CI", FALSE))
 }
 
-.repositories_config_mirror_element <- function(config) {
-    txt <- .version_map_read_online(config)
+.repositories_config_mirror_element <- function(txt) {
     section <- .version_config_section(txt, "^[^[:blank:]]", "mirrors:")
     section <- .version_config_section(
         trimws(section), "-\\sinstitution:.*", "Bioconductor.*CI.*"
     )
-    m_value <- Filter(function(x) startsWith(x, "https_mirror_url"), section)
-    murl <- sub("https_mirror_url: (.*)", "\\1", m_value)
+    mvalue <- Filter(function(x) startsWith(x, "https_mirror_url"), section)
+    murl <- sub("https_mirror_url:\\s*(.*)", "\\1", mvalue)
     if (!length(murl) || !nzchar(murl))
         murl <- "https://bioconductor.org"
     murl
@@ -93,13 +92,15 @@
     function(config)
 {
     mirror <- "https://bioconductor.org"
-    if (.repositories_ci_mirror_envopt())
-        mirror <- .repositories_config_mirror_element(config)
+    if (.repositories_ci_mirror_envopt()) {
+        txt <- .version_map_read_online(config)
+        mirror <- .repositories_config_mirror_element(txt)
+    }
     mirror
 }
 
 .repositories_bioc_mirror <- function() {
-    mirror_url <- .repositories_read_bioc_mirrors(
+    mirror_url <- .repositories_read_bioc_mirror(
         "https://bioconductor.org/config.yaml"
     )
     getOption("BioC_mirror", mirror_url)
