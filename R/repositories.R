@@ -77,9 +77,7 @@ BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
 }
 
 .repositories_config_mirror_element <- function(txt, tag) {
-    section <- .version_config_section(
-        txt = txt, grp = "^[^[:blank:]]", tag = tag
-    )
+    section <- .version_config_section(txt, "^[^[:blank:]]", tag)
     section <- .version_config_section(
         trimws(section), "-\\sinstitution:.*", "Bioconductor.*CI.*"
     )
