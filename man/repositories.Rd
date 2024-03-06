@@ -62,7 +62,7 @@ the appropriate CRAN repository.
 To install binary packages on containerized versions of Bioconductor,
 a default binary package location URL is resolved from the
 \code{getOption("BioC_mirror")} (or the default \verb{https://bioconductor.org})
-and the \code{BiocManager:::BINARY_SLUG_URL}. Binary package installations
+and the \code{BiocManager:::.BINARY_SLUG_URL}. Binary package installations
 are enabled by default for Bioconductor Docker containers. Anyone
 wishing to opt out of the binary package installation can set either the
 variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
@@ -103,7 +103,7 @@ setting either the option or the variable to \code{FALSE}, i.e.,
 \env{BIOCMANAGER_USE_CI_MIRROR}.
 
 The binary URL is a combination of \code{getOption("BioC_mirror")} and
-\code{BiocManager:::BINARY_SLUG_URL}.
+\code{BiocManager:::.BINARY_SLUG_URL}.
 
 \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} is an environment
 variable or global \code{options()} which, when set to \code{FALSE}, avoids
