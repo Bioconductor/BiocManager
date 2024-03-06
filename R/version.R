@@ -100,8 +100,8 @@ format.version_sentinel <-
     txt
 }
 
-.version_config_section <- function(txt, tag) {
-    grps <- grep("^[^[:blank:]]", txt)
+.version_config_section <- function(txt, grp, tag) {
+    grps <- grep(grp, txt)
     start <- match(grep(tag, txt), grps)
     if (!length(start))
         return(setNames(character(), character()))
@@ -112,7 +112,7 @@ format.version_sentinel <-
 .version_map_config_element <-
     function(txt, tag)
 {
-    map <- .version_config_section(txt = txt, tag = tag)
+    map <- .version_config_section(txt = txt, grp = "^[^[:blank:]]", tag = tag)
     map <- trimws(gsub("\"", "", sub(" #.*", "", map)))
     pattern <- "(.*): (.*)"
     key <- sub(pattern, "\\1", map)
