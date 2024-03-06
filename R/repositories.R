@@ -96,9 +96,7 @@ BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
 }
 
 .repositories_bioc_mirror <- function() {
-    if (
-        .repositories_ci_mirror_envopt() && .url_exists(.BIOCONDUCTOR_CI_MIRROR)
-    )
+    if (.repositories_ci_mirror_envopt())
         mirror_url <- .repositories_read_bioc_mirrors(
             config = "https://bioconductor.org/config.yaml"
         )
