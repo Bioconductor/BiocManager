@@ -1,4 +1,5 @@
 .BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
+.BIOC_DOMAIN_URL <- "https://bioconductor.org"
 
 .repositories_check_repos_envopt <-
     function()
@@ -76,25 +77,27 @@
     isTRUE(as.logical(opt)) && as.logical(Sys.getenv("CI", FALSE))
 }
 
-.repositories_config_mirror_element <- function(txt) {
+.repositories_config_mirror_url <- function(txt) {
     section <- .version_config_section(txt, "^[^[:blank:]]", "mirrors:")
     section <- .version_config_section(
         trimws(section), "-\\sinstitution:.*", "Bioconductor.*CI.*"
     )
-    mvalue <- Filter(function(x) startsWith(x, "https_mirror_url"), section)
-    murl <- sub("https_mirror_url:\\s*(.*)", "\\1", mvalue)
-    if (!length(murl) || !nzchar(murl))
-        murl <- "https://bioconductor.org"
-    murl
+    mirror_value <- Filter(
+        function(x) startsWith(x, "https_mirror_url"), section
+    )
+    mirror <- sub("https_mirror_url:\\s*(.*)", "\\1", mirror_value)
+    if (!length(mirror) || !nzchar(mirror))
+        mirror <- .BIOC_DOMAIN_URL
+    mirror
 }
 
-.repositories_read_bioc_mirrors <-
+.repositories_read_bioc_mirror <-
     function(config)
 {
-    mirror <- "https://bioconductor.org"
+    mirror <- .BIOC_DOMAIN_URL
     if (.repositories_ci_mirror_envopt()) {
         txt <- .version_map_read_online(config)
-        mirror <- .repositories_config_mirror_element(txt)
+        mirror <- .repositories_config_mirror_url(txt)
     }
     mirror
 }
@@ -383,7 +386,7 @@ containerRepository <-
         FUN = function(...) {
             .repositories_try_url_con(
                 version = version,
-                mirror = "https://bioconductor.org",
+                mirror = .BIOC_DOMAIN_URL,
                 platform = platform,
                 FUN = character
             )

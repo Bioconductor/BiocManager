@@ -177,7 +177,7 @@ test_that("config.yaml is parsed correctly", {
         "      https_mirror_url: https://foobar.com/"
     )
     expect_identical(
-        .repositories_config_mirror_element(
+        .repositories_config_mirror_url(
             test.config
         ),
         "https://foobar.com/"
@@ -189,10 +189,10 @@ test_that("config.yaml is parsed correctly", {
         "      https_mirror_url: "
     )
     expect_identical(
-        .repositories_config_mirror_element(
+        .repositories_config_mirror_url(
             test.config
         ),
-        "https://bioconductor.org"
+        .BIOC_DOMAIN_URL
     )
 })
 
