@@ -65,10 +65,10 @@ BiocManager::install()
 To install CRAN package versions consistent with previous releases of
 Bioconductor, use the [BiocArchive][BiocArchive] package. BiocArchive enables
 contemporary installations of CRAN packages with out-of-date _Bioconductor_
-releases using [Posit Package Manager][RSPM].
+releases using [Posit Package Manager][PPM].
 
 [BiocArchive]: https://github.com/Bioconductor/BiocArchive
-[RSPM]: https://packagemanager.posit.co/client/#/repos/2/overview
+[PPM]: https://packagemanager.posit.co/
 
 ## Version and validity of installations
 
