@@ -1,4 +1,5 @@
-BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
+.BINARY_SLUG_URL <- "/packages/%s/container-binaries/%s"
+.BIOC_DOMAIN_URL <- "https://bioconductor.org"
 
 .repositories_check_repos_envopt <-
     function()
@@ -68,11 +69,51 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     repos
 }
 
+.repositories_ci_mirror_envopt <-
+    function()
+{
+    opt <- Sys.getenv("BIOCMANAGER_USE_CI_MIRROR", TRUE)
+    opt <- getOption("BiocManager.use_ci_mirror", opt)
+    isTRUE(as.logical(opt)) && as.logical(Sys.getenv("CI", FALSE))
+}
+
+.repositories_config_mirror_url <- function(txt) {
+    section <- .version_config_section(txt, "^[^[:blank:]]", "mirrors:")
+    section <- .version_config_section(
+        trimws(section), "-\\sinstitution:.*", "Bioconductor.*CI.*"
+    )
+    mirror_value <- Filter(
+        function(x) startsWith(x, "https_mirror_url"), section
+    )
+    mirror <- sub("https_mirror_url:\\s*(.*)", "\\1", mirror_value)
+    if (!length(mirror) || !nzchar(mirror))
+        mirror <- .BIOC_DOMAIN_URL
+    mirror
+}
+
+.repositories_read_bioc_mirror <-
+    function(config)
+{
+    mirror <- .BIOC_DOMAIN_URL
+    if (.repositories_ci_mirror_envopt()) {
+        txt <- .version_map_read_online(config)
+        mirror <- .repositories_config_mirror_url(txt)
+    }
+    mirror
+}
+
+.repositories_bioc_mirror <- function() {
+    mirror_url <- .repositories_read_bioc_mirror(
+        "https://bioconductor.org/config.yaml"
+    )
+    getOption("BioC_mirror", mirror_url)
+}
+
 #' @importFrom stats setNames
 .repositories_bioc <-
     function(version, ..., type = NULL)
 {
-    mirror <- getOption("BioC_mirror", "https://bioconductor.org")
+    mirror <- .repositories_bioc_mirror()
     paths <- c(
         BioCsoft = "bioc",
         BioCann = "data/annotation",
@@ -150,8 +191,9 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' the appropriate CRAN repository.
 #'
 #' To install binary packages on containerized versions of Bioconductor,
-#' a default binary package location URL is set as a package constant,
-#' see `BiocManager:::BINARY_BASE_URL`. Binary package installations
+#' a default binary package location URL is resolved from the
+#' `getOption("BioC_mirror")` (or the default `https://bioconductor.org`)
+#' and the `BiocManager:::.BINARY_SLUG_URL`. Binary package installations
 #' are enabled by default for Bioconductor Docker containers. Anyone
 #' wishing to opt out of the binary package installation can set either the
 #' variable or the option, \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY}, to
@@ -184,6 +226,12 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
 #' as much as possible to _Bioconductor_ best practices, use
 #' `repositories()` as a basis for constructing the `repos =` argument
 #' to `install.packages()` and related functions.
+#'
+#' On Continuous Integration (CI) platforms, `BiocManager` re-routes
+#' requests to low-cost mirror sites. Users may opt out of this by
+#' setting either the option or the variable to `FALSE`, i.e.,
+#' `options(BiocManager.use_ci_mirror = FALSE)` or
+#' \env{BIOCMANAGER_USE_CI_MIRROR}.
 #'
 #' @return `repositories()`: named `character()` of repositories.
 #'
@@ -263,16 +311,14 @@ repositories <- function(
 
 #' @rdname repositories
 #'
-#' @aliases BINARY_BASE_URL
-#'
 #' @description `containerRepository()` reports the location of the repository
 #'     of binary packages for fast installation within containerized versions
 #'     of Bioconductor, if available.
 #'
 #' @details
 #'
-#' The unexported URL to the base repository is available with
-#' `BiocManager:::BINARY_BASE_URL`.
+#' The binary URL is a combination of `getOption("BioC_mirror")` and
+#' `BiocManager:::.BINARY_SLUG_URL`.
 #'
 #' \env{BIOCONDUCTOR_USE_CONTAINER_REPOSITORY} is an environment
 #' variable or global `options()` which, when set to `FALSE`, avoids
@@ -315,15 +361,35 @@ containerRepository <-
         return(character())
 
     ## does the binary repository exist?
-    binary_repos0 <- sprintf(BINARY_BASE_URL, version, platform)
+    mirror <- .repositories_bioc_mirror()
+    .repositories_try_container_url(version, mirror, platform)
+}
+
+.repositories_try_url_con <- function(version, mirror, platform, FUN, ...) {
+    bioc_url <- paste0(mirror, .BINARY_SLUG_URL)
+    binary_repos0 <- sprintf(bioc_url, version, platform)
     packages <- paste0(contrib.url(binary_repos0), "/PACKAGES.gz")
     url <- url(packages)
     tryCatch({
         suppressWarnings(open(url, "rb"))
-        close(url)
         setNames(binary_repos0, "BioCcontainers")
     }, error = function(...) {
-        close(url)
-        character()
-    })
+        FUN(...)
+    }, finally = {close(url)})
+}
+
+.repositories_try_container_url <- function(version, mirror, platform) {
+    .repositories_try_url_con(
+        version = version,
+        mirror = mirror,
+        platform = platform,
+        FUN = function(...) {
+            .repositories_try_url_con(
+                version = version,
+                mirror = .BIOC_DOMAIN_URL,
+                platform = platform,
+                FUN = character
+            )
+        }
+    )
 }
