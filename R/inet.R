@@ -41,7 +41,9 @@ NULL
 {
     withCallingHandlers({
         tryCatch({
-            readLines(...)
+            tmp_config <- tempfile()
+            download.file(..., destfile = tmp_config, quiet = TRUE)
+            readLines(tmp_config)
         }, error = function(e) {
             .inet_error(e)
             e
