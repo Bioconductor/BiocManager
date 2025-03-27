@@ -106,8 +106,11 @@ format.version_sentinel <-
     function(config)
 {
     txt <- tryCatch(.inet_readLines(config), error = identity)
-    if (inherits(txt, "error") && startsWith(config, "https://")) {
-        config <- sub("https", "http", config)
+    if (inherits(txt, "error")) {
+        if (startsWith(config, "https://"))
+            config <- sub("https", "http", config)
+        else if (!startsWith(config, "http"))
+            config <- paste0("file://", config)
         txt <- tryCatch(.inet_readLines(config), error = identity)
     }
     txt
