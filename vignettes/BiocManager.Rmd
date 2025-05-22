@@ -39,7 +39,7 @@ instructions][6] for installing _R_.
 ## Installing _BiocManager_
 
 Use standard _R_ installation procedures to install the
-[BiocManager][1] package. This command is requried only once per _R_
+[BiocManager][1] package. This command is required only once per _R_
 installation.
 
 ```{r, eval = FALSE}
@@ -316,6 +316,40 @@ cmd /C "set R_LIBS_USER=C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.7 && R"
 ```
 
 Click "Next". In the "Type a name for this shortcut" box, type `Bioc-3.7`.
+
+### Using the same R version {#same-r-version}
+
+Note that managing multiple versions of R and Bioconductor is important even
+when the Bioconductor versions use the same R version. The Bioconductor
+libraries should be kept in _separate_ directories to avoid conflicts between
+packages. For example, Bioconductor versions 3.7 and 3.8 both use R version 3.5.
+To manage packages from these versions, create _two_ separate library
+directories. Using the same setup as shown above, the second library directory
+would be:
+
+- Linux: `~/R/3.5-Bioc-3.8`
+- macOS: `~/Library/R/3.5-Bioc-3.8/library`
+- Windows: `C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.8`
+
+It is also convenient to set a separate alias or shortcut for this version:
+
+- Linux: `alias Bioc3.8='R_LIBS_USER=~/R/3.5-Bioc-3.8 R'`
+- macOS: `alias Bioc3.8='R_LIBS_USER=~/Library/R/3.5-Bioc-3.8/library R'`
+
+On Windows, create a shortcut. Go to My Computer and navigate to a directory
+that is in your PATH. Then right-click and choose New->Shortcut.
+In the "type the location of the item" box, put:
+
+- Windows: `cmd /C "set R_LIBS_USER=C:\Users\USER_NAME\Documents\R\3.5-Bioc-3.8 && R"`
+
+Now there are two sets of aliases or shortcuts, one for each version of
+Bioconductor. This strategy can be extended to any number of versions of
+Bioconductor as long as the corresponding R version is installed on the
+system. When working with separate R versions, the path to the `R` executable
+must be specified in the alias or shortcut.
+
+Keep in mind that mixing packages from different versions of Bioconductor
+can lead to unexpected behavior and errors.
 
 ## Offline use
 

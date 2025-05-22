@@ -243,7 +243,7 @@ repositories <- function(
 {
     container_version <- Sys.getenv("BIOCONDUCTOR_DOCKER_VERSION")
     if (nzchar(container_version)) {
-        platform <- "bioconductor_docker"
+        platform <- Sys.getenv("BIOCONDUCTOR_NAME", "bioconductor_docker")
     } else {
         platform <- Sys.getenv("TERRA_R_PLATFORM")
         container_version <- Sys.getenv("TERRA_R_PLATFORM_BINARY_VERSION")
