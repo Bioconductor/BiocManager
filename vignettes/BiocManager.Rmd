@@ -419,7 +419,8 @@ the command `source("https://.../biocLite.R")` to read a file from the
 web. The file contained an installation script that was smart enough
 to figure out what version of _R_ and _Bioconductor_ were in use or
 appropriate for the person invoking the script. Sourcing an executable
-script from the web is an obvious security problem.
+script from the web is an obvious security problem. In 2024, the script
+was removed and is no longer in use.
 
 Our solution is to use a CRAN package BiocManager, so that users
 install from pre-configured CRAN mirrors rather than typing in a URL

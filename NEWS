@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.30.26
+-------------------------
+
+MINOR CHANGES
+
+    o Remove mention of biocLite script and remove `.LEGACY_INSTALL_CMD`
+
 CHANGES IN VERSION 1.30.25
 -------------------------
 
