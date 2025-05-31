@@ -1,0 +1,7 @@
+title: BiocManager
+url: https://bioconductor.github.io/BiocManager
+
+template:
+  bootstrap: 5
+  params:
+    bootswatch: flatly
