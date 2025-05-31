@@ -36,6 +36,7 @@ NULL
     }, warning = .inet_warning)
 }
 
+#' @importFrom utils download.file
 .inet_readLines <-
     function(...)
 {
