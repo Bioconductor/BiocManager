@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# BiocManager
+# BiocManager <a href="https://bioconductor.github.io/BiocManager/"><img src="man/figures/BiocManager.png" align="right" height="138" alt="BiocManager CRAN landing page"></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/BiocManager)](https://cran.r-project.org/package=BiocManager)
