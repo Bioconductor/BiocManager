@@ -4,6 +4,13 @@ CHANGES IN VERSION 1.30.26
 MINOR CHANGES
 
     o Remove mention of biocLite script and remove `.LEGACY_INSTALL_CMD`
+    (@sneumann, #195)
+    o Explain management of multiple Bioconductor versions when using the same
+    R version in the vignette
+    o Use `BIOCONDUCTOR_NAME` environment variable for binary URL resolution
+    (@almahmoud, #199)
+    o Use `download.file` to obtain the `config.yaml` file before running
+    `readLines` (@glin, #198)
 
 CHANGES IN VERSION 1.30.25
 -------------------------
