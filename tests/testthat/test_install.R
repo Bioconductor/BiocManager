@@ -337,40 +337,9 @@ test_that("install() passes the force argument to .install", {
                 install(
                     force = FALSE, checkBuilt = TRUE,
                     update = FALSE, ask = FALSE
-            )
+                )
             )
         )
     )
 })
 
-test_that("install() without package names passes ... to install.packages", {
-    skip("Doesn't work with with_mocked_bindings()")
-    # This test relied on the mocked version of install.packages() being 
-    # called from update.packages(). This no longer happens because 
-    # with_mocked_bindings() only affects the current package.
-
-    .skip_if_misconfigured()
-    object <- FALSE
-    with_mocked_bindings(
-        available.packages = function(...) {
-            cbind(
-                Package = "BiocGenerics", Version = "0.33.0",
-                LibPath = .libPaths()[1]
-            )
-        },
-        old.packages = function(...) {
-            ## claim that BiocGenerics is out-of-date
-            cbind(
-                Package = "BiocGenerics", Version = "0.32.0",
-                LibPath = .libPaths()[1]
-            )
-        },
-        install.packages = function(pkgs, ..., INSTALL_opts) {
-            object <<-
-                identical(pkgs, c(Package = "BiocGenerics")) &&
-                identical(INSTALL_opts, "--build")
-        },
-        install(ask = FALSE, INSTALL_opts = "--build")
-    )
-    expect_true(object)
-})
