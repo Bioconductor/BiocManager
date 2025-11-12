@@ -153,8 +153,8 @@ test_that(".version_bioc() works", {
     )
 
     ## map misconfiguration
-    with_mock(
-        `BiocManager:::.version_map` = function(...) {
+    with_mocked_bindings(
+        .version_map = function(...) {
             .ver_map
         },
         expect_match(
@@ -166,8 +166,8 @@ test_that(".version_bioc() works", {
     .ver_map <- rbind.data.frame(c("3.9", "4.2", "out-of-date"), .ver_map)
 
     ## all good
-    with_mock(
-        `BiocManager:::.version_map` = function(...) {
+    with_mocked_bindings(
+        .version_map = function(...) {
             .ver_map
         },
         expect_identical(
@@ -178,8 +178,8 @@ test_that(".version_bioc() works", {
     ## type misspecified
     type_miss <-
         "Bioconductor version cannot be validated; is type input misspecified?.*"
-    with_mock(
-        `BiocManager:::.version_map` = function(...) {
+    with_mocked_bindings(
+        .version_map = function(...) {
             .ver_map
         },
         expect_match(
@@ -199,8 +199,8 @@ test_that(".version_R() works", {
         BiocStatus = c("release", "devel", "future")
     )
     ## out-of-date is missing
-    with_mock(
-        `BiocManager:::.version_map` = function(...) {
+    with_mocked_bindings(
+        .version_map = function(...) {
             .ver_map
         },
         expect_match(
@@ -210,8 +210,8 @@ test_that(".version_R() works", {
     )
     .ver_map <- rbind.data.frame(c("3.9", "4.2", "out-of-date"), .ver_map)
     ## all good
-    with_mock(
-        `BiocManager:::.version_map` = function(...) {
+    with_mocked_bindings(
+        .version_map = function(...) {
             .ver_map
         },
         expect_identical(
@@ -219,8 +219,8 @@ test_that(".version_R() works", {
         )
     )
     ## type is misspecified
-    with_mock(
-        `BiocManager:::.version_map` = function(...) {
+    with_mocked_bindings(
+        .version_map = function(...) {
             .ver_map
         },
         expect_match(
@@ -362,8 +362,8 @@ test_that(".version_sentinel() works", {
 })
 
 test_that(".version_BiocVersion returns .version_sentinel output", {
-    with_mock(
-        `BiocManager:::.version_BiocVersion_installed` = function(...) {
+    with_mocked_bindings(
+        .version_BiocVersion_installed = function(...) {
             FALSE
         },
         expect_identical(
@@ -374,8 +374,8 @@ test_that(".version_BiocVersion returns .version_sentinel output", {
 })
 
 test_that(".version_map_get_offline() works", {
-    with_mock(
-        `BiocManager:::.version_BiocVersion` = function(...) {
+    with_mocked_bindings(
+        .version_BiocVersion = function(...) {
             .version_sentinel("BiocVersion is not installed")
         },
         expect_identical(
@@ -387,11 +387,11 @@ test_that(".version_map_get_offline() works", {
     skip_if_offline()
     rver <- package_version("4.3")
     class(rver) <- c("R_system_version", class(rver))
-    with_mock(
-        `BiocManager:::.version_BiocVersion` = function(...) {
+    with_mocked_bindings(
+        .version_BiocVersion = function(...) {
             package_version("3.14")
         },
-        `BiocManager:::.version_R_version` = function(...) {
+        .version_R_version = function(...) {
             rver <- package_version("4.3")
             class(rver) <- c("R_system_version", class(rver))
             rver
@@ -410,11 +410,11 @@ test_that("version chooses best", {
     target_version <-  structure(
         list(c(3L, 17L), class = c("package_version", "numeric_version"))
     )
-    with_mock(
-        `BiocManager:::.version_BiocVersion` = function(...) {
+    with_mocked_bindings(
+        .version_BiocVersion = function(...) {
             .version_sentinel("BiocVersion is not installed")
         },
-        `BiocManager:::.version_choose_best` = function(...) {
+        .version_choose_best = function(...) {
             target_version
         },
         expect_identical(

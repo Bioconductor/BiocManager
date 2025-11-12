@@ -3,8 +3,8 @@ context("Check for the valid function")
 test_that("valid returns an empty list without internet", {
     .skip_if_misconfigured()
 
-    result <- with_mock(
-        `BiocManager:::.repositories_filter` = function(...) {
+    result <- with_mocked_bindings(
+        .repositories_filter = function(...) {
             ..1[FALSE]
         }, BiocManager::valid()
     )
