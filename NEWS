@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.30.27
+-------------------------
+
+MINOR CHANGES
+
+    o Integrate changes to unit tests with testthat version 3.3.0 (@hadley,
+    #202)
+
 CHANGES IN VERSION 1.30.26
 -------------------------
 
@@ -34,7 +42,7 @@ NEW FEATURES
 
     o Ensure compatibility with `package_version` changes in R 4.4.0
     (@kurthornik)
-    
+
 MINOR CHANGES
 
     o Added "Updating old packages" and "Archived CRAN packages" sections in
