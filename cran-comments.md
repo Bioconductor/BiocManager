@@ -1,7 +1,7 @@
 ## Test environments
 
-* local Ubuntu 24.04 (linux): R 4.4.2 patched, R 4.5.0 patched, R devel (r88148)
-* win-builder.r-project.org (windows): R 4.4.3, R 4.5.0, R devel (r88278)
+* local Ubuntu 24.04 (linux): R 4.4.2 patched, R 4.5.1 patched, R devel (r88973)
+* win-builder.r-project.org (windows): R 4.4.3, R 4.5.2, R devel (r89009)
 
 ## R CMD check results
 
