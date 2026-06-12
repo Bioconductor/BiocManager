@@ -99,7 +99,7 @@
 .install_github_load_remotes <-
     function(pkgs, lib.loc = NULL)
 {
-    if (!"remotes" %in% rownames(installed.packages(lib.loc))) {
+    if (!requireNamespace("remotes", lib.loc = lib.loc, quietly = TRUE)) {
         if (is.null(lib.loc))
             lib.loc <- .libPaths()
         .stop(
