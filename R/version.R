@@ -215,7 +215,7 @@ format.version_sentinel <-
     if (!.version_validity_online_check())
         .version_map_get_offline()
     else {
-        if (is.null(config) || !nchar(config))
+        if (is.null(config) || !nzchar(config))
             config <- "https://bioconductor.org/config.yaml"
         .version_map_get_online(config)
     }
