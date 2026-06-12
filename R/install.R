@@ -146,7 +146,7 @@
     function(pkgs, lib, lib.loc, repos, update, ask, force, ...)
 {
     doing <- .install_filter_github_repos(pkgs)
-    ask <- if (!update) "never" else if (update && !ask) "always" else "default"
+    ask <- if (!update) "never" else if (!ask) "always" else "default"
 
     oopts <- options(repos = repos)     # required by remotes::
     on.exit(options(oopts))
