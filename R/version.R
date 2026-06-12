@@ -108,7 +108,7 @@ format.version_sentinel <-
     txt <- tryCatch(.inet_readLines(config), error = identity)
     if (inherits(txt, "error")) {
         if (startsWith(config, "https://"))
-            config <- sub("https", "http", config)
+            config <- sub("https", "http", config, fixed = TRUE)
         else if (!startsWith(config, "http"))
             config <- paste0("file://", config)
         txt <- tryCatch(.inet_readLines(config), error = identity)
@@ -125,7 +125,7 @@ format.version_sentinel <-
         return(setNames(character(), character()))
     end <- ifelse(length(grps) < start + 1L, length(txt), grps[start + 1] - 1L)
     map <- txt[seq(grps[start] + 1, end)]
-    map <- trimws(gsub("\"", "", sub(" #.*", "", map)))
+    map <- trimws(gsub("\"", "", sub(" #.*", "", map), fixed = TRUE))
 
     pattern <- "(.*): (.*)"
     key <- sub(pattern, "\\1", map)
@@ -263,7 +263,7 @@ format.version_sentinel <-
     sprintf(
         "Bioconductor version %s (BiocManager %s), %s",
         bioc_version, packageVersion("BiocManager"),
-        sub(" version", "", R.version.string)
+        sub(" version", "", R.version.string, fixed = TRUE)
     )
 }
 
