@@ -129,6 +129,6 @@ isRelease <-
 .skip_if_BiocVersion_not_available <-
     function()
 {
-    if (!"BiocVersion" %in% rownames(installed.packages()))
+    if (!requireNamespace("BiocVersion", quietly = TRUE))
         testthat::skip("BiocVersion not installed")
 }
