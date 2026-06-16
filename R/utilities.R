@@ -129,6 +129,6 @@ isRelease <-
 .skip_if_BiocVersion_not_available <-
     function()
 {
-    if (!requireNamespace("BiocVersion", quietly = TRUE))
+    if (!.version_BiocVersion_installed())
         testthat::skip("BiocVersion not installed")
 }
