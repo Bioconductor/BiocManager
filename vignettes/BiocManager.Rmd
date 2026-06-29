@@ -18,15 +18,27 @@ vignette: |
 knitr::opts_chunk$set(echo = TRUE, eval = interactive())
 ```
 
+# What is Bioconductor?
+
+The _[Bioconductor][1]_ project aims to provide tools for the analysis and
+comprehension of high-throughput genomic data. The project provides access to a
+wide range of statistical and graphical methods for the analysis of genomic
+data, as well as annotation data for a variety of model organisms. Bioconductor
+is open source and open development, and encourages participation from the
+wider community.
+
 # Introduction
 
-Use the [BiocManager][1] package to install and manage packages from the
-_[Bioconductor][2]_ project for the statistical analysis and comprehension of
-high-throughput genomic data.
+[BiocManager][2] is the main entry-point for installing and managing
+_Bioconductor_ packages. It is a CRAN package that provides a consistent
+interface for installing _Bioconductor_ packages, as well as for managing
+package versions and dependencies. The package is designed to work with the
+latest version of _Bioconductor_, and is compatible with the latest version of
+_R_.
 
 Current _Bioconductor_ packages are available on a 'release' version intended
 for every-day use, and a 'devel' version where new features are introduced. A
-new release version is created every six months. Using the [BiocManager][1]
+new release version is created every six months. Using the [BiocManager][2]
 package helps users install packages from the same release.
 
 # Basic use
@@ -39,7 +51,7 @@ instructions][6] for installing _R_.
 ## Installing _BiocManager_
 
 Use standard _R_ installation procedures to install the
-[BiocManager][1] package. This command is required only once per _R_
+[BiocManager][2] package. This command is required only once per _R_
 installation.
 
 ```{r, eval = FALSE}
@@ -741,8 +753,8 @@ errors can occur when this task fails.
 sessionInfo()
 ```
 
-[1]: https://cran.r-project.org/package=BiocManager
-[2]: https://bioconductor.org
+[1]: https://bioconductor.org
+[2]: https://cran.r-project.org/package=BiocManager
 [3]: https://support.bioconductor.org
 [5]: https://bioconductor.org/about/release-announcements/
 [6]: https://cran.R-project.org/
