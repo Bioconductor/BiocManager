@@ -26,4 +26,4 @@ BugReports: https://github.com/Bioconductor/BiocManager/issues
 VignetteBuilder: knitr
 License: Artistic-2.0
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+Config/roxygen2/version: 8.0.0
