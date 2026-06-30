@@ -71,7 +71,7 @@ packages uses the \code{remotes::install_github()}.
 When installing CRAN or \emph{Bioconductor} packages, typical arguments
 include: \code{lib.loc}, passed to \code{\link{old.packages}()} and used to
 determine the library location of installed packages to be updated;
-and \code{lib}, passed to \code{\link{install.packages}{}} to determine the
+and \code{lib}, passed to \code{\link{install.packages}()} to determine the
 library location where \code{pkgs} are to be installed.
 
 When installing GitHub packages, \code{...} is passed to the

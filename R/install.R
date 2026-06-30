@@ -287,7 +287,7 @@
 #' When installing CRAN or _Bioconductor_ packages, typical arguments
 #' include: `lib.loc`, passed to \code{\link{old.packages}()} and used to
 #' determine the library location of installed packages to be updated;
-#' and `lib`, passed to \code{\link{install.packages}{}} to determine the
+#' and `lib`, passed to \code{\link{install.packages}()} to determine the
 #' library location where `pkgs` are to be installed.
 #'
 #' When installing GitHub packages, `...` is passed to the
