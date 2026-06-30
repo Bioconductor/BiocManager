@@ -76,6 +76,7 @@ BiocManager::version()
 Useful links:
 \itemize{
   \item \url{https://bioconductor.github.io/BiocManager/}
+  \item \url{https://bioconductor.org/}
   \item Report bugs at \url{https://github.com/Bioconductor/BiocManager/issues}
 }
 
@@ -85,6 +86,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Marcel Ramos \email{marcel.ramos@sph.cuny.edu} (\href{https://orcid.org/0000-0002-3242-0582}{ORCID})
   \item Martin Morgan \email{martin.morgan@roswellpark.org} (\href{https://orcid.org/0000-0002-5874-8148}{ORCID})
 }
 
