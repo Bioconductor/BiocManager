@@ -1,5 +1,5 @@
 #' @importFrom utils available.packages install.packages old.packages
-#'     update.packages
+#' @importFrom utils update.packages
 NULL
 
 .inet_warning <-

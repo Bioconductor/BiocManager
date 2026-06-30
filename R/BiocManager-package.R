@@ -1,5 +1,5 @@
 #' @importFrom utils packageVersion contrib.url head
-#'     installed.packages sessionInfo tail
+#' @importFrom utils installed.packages sessionInfo tail
 NULL
 
 #' Install or update Bioconductor, CRAN, or GitHub packages
