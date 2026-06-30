@@ -1,6 +1,9 @@
 Package: BiocManager
 Title: Access the Bioconductor Project Package Repository
-Description: A convenient tool to install and update Bioconductor packages.
+Description: The Bioconductor project publishes packages on a six-month release
+    cycle. This package is a convenient tool to install and update Bioconductor
+    packages. For more information about Bioconductor, see
+    <https://bioconductor.org>.
 Version: 1.30.27
 Authors@R: c(
     person("Martin", "Morgan", email = "martin.morgan@roswellpark.org",
