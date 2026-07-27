@@ -9,7 +9,7 @@
 }
 
 .package_filter_unwriteable <-
-    function(pkgs, instlib=NULL)
+    function(pkgs, instlib=NULL, verbose=TRUE)
 {
     if (!nrow(pkgs))
         return(pkgs)
@@ -40,7 +40,7 @@
         status[status] <- file.access(ulibs[status], 2L) == 0
 
     status <- status[match(libs, ulibs)]
-    if (!all(status)) {
+    if (!all(status) && verbose) {
         failed_pkgs <- pkgs[!status, "Package"]
         failed_lib <- pkgs[!status, "LibPath"]
         failed <- split(failed_pkgs, failed_lib)
@@ -216,6 +216,14 @@
     setdiff(pkgs, todo)
 }
 
+.install_unwrite_verbose_envopt <-
+    function()
+{
+    opt <- Sys.getenv("BIOCMANAGER_UNWRITEABLE_VERBOSE", TRUE)
+    opt <- getOption("BiocManager.unwriteable_verbose", opt)
+    isTRUE(as.logical(opt))
+}
+
 .install_update <-
     function(repos, ask, lib.loc = NULL, instlib = NULL, checkBuilt, ...)
 {
@@ -224,7 +232,10 @@
         return()
 
     old_pkgs <- .package_filter_masked(old_pkgs)
-    old_pkgs <- .package_filter_unwriteable(old_pkgs, instlib)
+
+    verbose <- .install_unwrite_verbose_envopt()
+    old_pkgs <-
+        .package_filter_unwriteable(old_pkgs, instlib, verbose)
 
     if (!nrow(old_pkgs))
         return()
@@ -268,6 +279,7 @@
 
 #' @name install
 #' @aliases BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS
+#' @aliases BIOCMANAGER_UNWRITEABLE_VERBOSE
 #' @md
 #'
 #' @title Install or update Bioconductor, CRAN, and GitHub packages
@@ -313,6 +325,16 @@
 #' \url{https://bioconductor.org/config.yaml} for full offline use and
 #' version validation. When `TRUE` (the default), online version diagnosis is
 #' enabled.
+#'
+#' \env{BIOCMANAGER_UNWRITEABLE_VERBOSE} is an environment variable or global
+#' `options()` (via `BiocManager.unwriteable_verbose`) which controls whether
+#' BiocManager displays messages about packages in non-writeable library paths
+#' during updates. Packages in non-writeable locations are filtered out from
+#' updates regardless of this setting. When `TRUE` (the default), BiocManager
+#' displays an informative message listing the packages and paths that could not
+#' be updated. When `FALSE`, BiocManager silently filters out these packages
+#' without displaying messages. This is useful for users who have non-writeable
+#' library paths and want to suppress the update messages.
 #'
 #' @param pkgs `character()` vector of package names to install or
 #'     update.  A missing value updates installed packages according
