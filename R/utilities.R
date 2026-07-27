@@ -53,11 +53,9 @@
     )
     ## Use this helper to format all error / warning / message text
 {
-    txt <- sprintf(fmt, ...)
+    txt <- if (...length() == 0L) fmt else sprintf(fmt, ...)
     if (wrap.) {
-        txt <- strwrap(
-            sprintf(fmt, ...), width=width, indent = indent, exdent=exdent
-        )
+        txt <- strwrap(txt, width=width, indent = indent, exdent=exdent)
         paste(txt, collapse="\n")
     } else {
         txt
