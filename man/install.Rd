@@ -3,6 +3,7 @@
 \name{install}
 \alias{install}
 \alias{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS}
+\alias{BIOCMANAGER_UNWRITEABLE_VERBOSE}
 \title{Install or update Bioconductor, CRAN, and GitHub packages}
 \usage{
 install(
@@ -96,6 +97,16 @@ environment variable or option to a \code{.yaml} file similar to
 \url{https://bioconductor.org/config.yaml} for full offline use and
 version validation. When \code{TRUE} (the default), online version diagnosis is
 enabled.
+
+\env{BIOCMANAGER_UNWRITEABLE_VERBOSE} is an environment variable or global
+\code{options()} (via \code{BiocManager.unwriteable_verbose}) which controls whether
+BiocManager displays messages about packages in non-writeable library paths
+during updates. Packages in non-writeable locations are filtered out from
+updates regardless of this setting. When \code{TRUE} (the default), BiocManager
+displays an informative message listing the packages and paths that could not
+be updated. When \code{FALSE}, BiocManager silently filters out these packages
+without displaying messages. This is useful for users who have non-writeable
+library paths and want to suppress the update messages.
 }
 }
 \examples{
