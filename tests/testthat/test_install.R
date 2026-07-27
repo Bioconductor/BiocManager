@@ -155,6 +155,16 @@ test_that("unwriteable packages are not considered", {
 
     expect_message(.filter(pkgs, NULL), "^Installation paths not writeable")
 
+    ## many packages produce a string > 8192 chars; should not error (#211)
+    many_pkgs <- paste0("package", seq_len(1000))
+    pkgs_many <- matrix(
+        c(many_pkgs, rep(p1, 1000)), 1000, 2,
+        dimnames=list(many_pkgs, c("Package", "LibPath")))
+    expect_message(
+        .filter(pkgs_many, NULL),
+        "^Installation paths not writeable"
+    )
+
     if (.Platform$OS.type == "windows")
         ## how to create a read-only directory?
         return(TRUE)
