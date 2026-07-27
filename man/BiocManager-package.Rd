@@ -64,6 +64,14 @@ version of Bioconductor. \code{install()}, \code{version()}, \code{available()},
 \code{valid()}, and \code{repositories()} all use the version \emph{without}
 checking that it is consistent with the version of \emph{R} in use.
 }
+
+Note that the options are checked in the following order (environment
+variable takes precedence over global option):
+\enumerate{
+\item Environment variable (e.g., \code{BIOCMANAGER_CHECK_REPOSITORIES})
+\item Global option (e.g., \code{BiocManager.check_repositories})
+\item Default value (see documentation)
+}
 }
 \examples{
 R.version.string

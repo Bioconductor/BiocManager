@@ -81,6 +81,7 @@ and \code{remotes:::install()}. A typical use is to build vignettes, via
 
 See \code{?repositories} for additional detail on customizing where
 BiocManager searches for package installation.
+\subsection{Environment variables and options}{
 
 \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
 variable or global \code{options()} which, when set to \code{FALSE}, allows
@@ -93,7 +94,9 @@ development versions of \emph{Bioconductor}. In addition, offline
 organizations and its users should set the \env{BIOCONDUCTOR_CONFIG_FILE}
 environment variable or option to a \code{.yaml} file similar to
 \url{https://bioconductor.org/config.yaml} for full offline use and
-version validation.
+version validation. When \code{TRUE} (the default), online version diagnosis is
+enabled.
+}
 }
 \examples{
 

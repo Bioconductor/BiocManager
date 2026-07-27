@@ -75,6 +75,14 @@ NULL
 #'   `valid()`, and `repositories()` all use the version *without*
 #'   checking that it is consistent with the version of *R* in use.
 #'
+#' Note that the options are checked in the following order (environment
+#' variable takes precedence over global option):
+#' \enumerate{
+#'   \item Environment variable (e.g., `BIOCMANAGER_CHECK_REPOSITORIES`)
+#'   \item Global option (e.g., `BiocManager.check_repositories`)
+#'   \item Default value (see documentation)
+#' }
+#'
 #' @md
 #' @aliases BiocManager
 #'

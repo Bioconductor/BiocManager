@@ -298,6 +298,8 @@
 #' See `?repositories` for additional detail on customizing where
 #' BiocManager searches for package installation.
 #'
+#' ## Environment variables and options
+#'
 #' \env{BIOCONDUCTOR_ONLINE_VERSION_DIAGNOSIS} is an environment
 #' variable or global `options()` which, when set to `FALSE`, allows
 #' organizations and its users to use offline repositories with BiocManager
@@ -309,7 +311,8 @@
 #' organizations and its users should set the \env{BIOCONDUCTOR_CONFIG_FILE}
 #' environment variable or option to a `.yaml` file similar to
 #' \url{https://bioconductor.org/config.yaml} for full offline use and
-#' version validation.
+#' version validation. When `TRUE` (the default), online version diagnosis is
+#' enabled.
 #'
 #' @param pkgs `character()` vector of package names to install or
 #'     update.  A missing value updates installed packages according
