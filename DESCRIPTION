@@ -4,7 +4,7 @@ Description: The Bioconductor project publishes packages on a six-month release
     cycle. This package is a convenient tool to install and update Bioconductor
     packages. For more information about Bioconductor, see
     <https://bioconductor.org>.
-Version: 1.30.27.5
+Version: 1.30.27.6
 Authors@R: c(
     person("Martin", "Morgan", email = "martin.morgan@roswellpark.org",
         role = "aut", comment = c(ORCID = "0000-0002-5874-8148")),
