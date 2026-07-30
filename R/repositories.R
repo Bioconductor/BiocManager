@@ -109,6 +109,11 @@ BINARY_BASE_URL <- "https://bioconductor.org/packages/%s/container-binaries/%s"
     bioc <- .repositories_bioc(version, ...)
 
     repos <- c(site_repository = site_repository, bioc, base)
+
+    if (version != .version_bioc("devel")) {
+        repos <- c(repos, CRANhaven = "https://cranhaven.r-universe.dev")
+    }
+    
     repos[!duplicated(names(repos))]
 }
 
