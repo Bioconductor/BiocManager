@@ -424,6 +424,49 @@ test_that("version chooses best", {
     )
 })
 
+test_that(".version_force_version_parse() works offline", {
+    map <- data.frame(
+        Bioc = package_version(c("3.19", "3.20", "3.21", "3.21")),
+        R = package_version(c("4.4", "4.4", "4.5", "4.6")),
+        BiocStatus = .VERSION_TAGS
+    )
+
+    expect_identical(
+        .version_force_version_parse("3.20", stop("map not needed")),
+        package_version("3.20")
+    )
+    expect_identical(
+        .version_force_version_parse("", stop("map not needed")), NA
+    )
+    for (tag in c("release", " RELEASE\t"))
+        expect_identical(
+            .version_force_version_parse(tag, map), package_version("3.20")
+        )
+    for (tag in c("devel", "\tDeVeL "))
+        expect_identical(
+            .version_force_version_parse(tag, map), package_version("3.21")
+        )
+    expect_error(.version_force_version_parse("invalid", map), "invalid")
+    expect_error(
+        .version_force_version_parse("release", .VERSION_MAP_SENTINEL),
+        "version cannot be validated"
+    )
+    expect_error(
+        .version_force_version_parse("devel", map[-1, ]), "misconfigured"
+    )
+
+    with_mocked_bindings(
+        .version_map = function() map,
+        for (tag in c("release", "devel"))
+            withr::with_envvar(c(R_BIOC_VERSION = tag), {
+                expected <- .version_force_version_parse(tag, map)
+                expect_identical(.version_force_version(), expected)
+                expect_identical(version(), expected)
+                expect_identical(.version_validate(expected), expected)
+            })
+    )
+})
+
 test_that(".version_force_version() works", {
     skip_if_offline()
 

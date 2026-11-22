@@ -33,7 +33,9 @@ not available.
 
 The environment variable \code{R_BIOC_VERSION} can be used to specify a
 version that is not consistent with \emph{Bioconductor} release
-versioning. Use of this variable is strongly discouraged.
+versioning. Specify a numeric version (e.g., \code{"3.20"}), \code{"release"}, or
+\code{"devel"}. The latter two are resolved using the Bioconductor version
+map. Use of this variable is strongly discouraged.
 }
 \examples{
 BiocManager::version()

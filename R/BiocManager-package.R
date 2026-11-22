@@ -71,7 +71,9 @@ NULL
 #'   `site_repository` input to `repositories()`. See `?repositories`.
 #'
 #' - \env{R_BIOC_VERSION} use a specific, possibly unsupported,
-#'   version of Bioconductor. `install()`, `version()`, `available()`,
+#'   version of Bioconductor, as a numeric version (e.g., `"3.20"`),
+#'   `"release"`, or `"devel"`. The latter two are resolved using the
+#'   Bioconductor version map. `install()`, `version()`, `available()`,
 #'   `valid()`, and `repositories()` all use the version *without*
 #'   checking that it is consistent with the version of *R* in use.
 #'

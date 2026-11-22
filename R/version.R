@@ -40,6 +40,20 @@
     ## check R_BIOC_VERSION environment variable
     force_version <- Sys.getenv("R_BIOC_VERSION", "")
 
+    .version_force_version_parse(force_version)
+}
+
+.version_force_version_parse <-
+    function(force_version, map = .version_map())
+{
+    tag <- tolower(trimws(force_version))
+    if (tag %in% c("release", "devel")) {
+        version <- .version_bioc(tag, map)
+        if (!is.package_version(version))
+            .stop(version)
+        return(version)
+    }
+
     ## return either NA (do no force version) or the version to use
     if (nzchar(force_version)) {
         package_version(force_version)
@@ -407,9 +421,8 @@ format.version_sentinel <-
 }
 
 .version_bioc <-
-    function(type)
+    function(type, map = .version_map())
 {
-    map <- .version_map()
     if (identical(map, .VERSION_MAP_SENTINEL))
         return(.VERSION_MAP_UNABLE_TO_VALIDATE)
 
@@ -456,7 +469,9 @@ format.version_sentinel <-
 #'
 #' The environment variable `R_BIOC_VERSION` can be used to specify a
 #' version that is not consistent with *Bioconductor* release
-#' versioning. Use of this variable is strongly discouraged.
+#' versioning. Specify a numeric version (e.g., `"3.20"`), `"release"`, or
+#' `"devel"`. The latter two are resolved using the Bioconductor version
+#' map. Use of this variable is strongly discouraged.
 #'
 #' @return A two-digit version, e.g., `3.8`, of class
 #'     `package_version` describing the version of _Bioconductor_ in

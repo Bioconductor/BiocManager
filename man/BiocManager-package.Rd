@@ -60,7 +60,9 @@ non-standard CRAN or Bioconductor repositories. See \code{?repositories}.
 \item \env{BIOCMANAGER_SITE_REPOSITORY} configure a more permanent
 \code{site_repository} input to \code{repositories()}. See \code{?repositories}.
 \item \env{R_BIOC_VERSION} use a specific, possibly unsupported,
-version of Bioconductor. \code{install()}, \code{version()}, \code{available()},
+version of Bioconductor, as a numeric version (e.g., \code{"3.20"}),
+\code{"release"}, or \code{"devel"}. The latter two are resolved using the
+Bioconductor version map. \code{install()}, \code{version()}, \code{available()},
 \code{valid()}, and \code{repositories()} all use the version \emph{without}
 checking that it is consistent with the version of \emph{R} in use.
 }
